@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- META TAGS -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Macaroni - AI-First Software Company</title>
-    <meta name="description" content="Digital Macaroni builds AI-powered mobile applications and SaaS platforms that solve real problems across multiple industries. Innovation-driven software development.">
-    <meta name="keywords" content="AI software company, SaaS development, mobile app development, artificial intelligence solutions, software holding company, tech startup, AI products, intelligent applications">
+    <meta name="description"
+        content="Digital Macaroni builds AI-powered mobile applications and SaaS platforms that solve real problems across multiple industries. Innovation-driven software development.">
+    <meta name="keywords"
+        content="AI software company, SaaS development, mobile app development, artificial intelligence solutions, software holding company, tech startup, AI products, intelligent applications">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Digital Macaroni">
     <link rel="canonical" href="https://digitalmacaroni.io">
@@ -16,7 +19,8 @@
 
     <!-- OPEN GRAPH TAGS -->
     <meta property="og:title" content="Digital Macaroni - AI-First Software Company">
-    <meta property="og:description" content="Building AI-powered mobile applications and SaaS platforms that solve real problems across multiple industries.">
+    <meta property="og:description"
+        content="Building AI-powered mobile applications and SaaS platforms that solve real problems across multiple industries.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://digitalmacaroni.io">
     <meta property="og:site_name" content="Digital Macaroni">
@@ -24,7 +28,8 @@
     <!-- TWITTER CARD TAGS -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Digital Macaroni - AI-First Software Company">
-    <meta name="twitter:description" content="Building AI-powered mobile applications and SaaS platforms that solve real problems across multiple industries.">
+    <meta name="twitter:description"
+        content="Building AI-powered mobile applications and SaaS platforms that solve real problems across multiple industries.">
 
     <!-- STRUCTURED DATA (JSON-LD) -->
     <script type="application/ld+json">
@@ -44,7 +49,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -67,19 +74,51 @@
             scroll-behavior: smooth;
         }
 
+        body {
+            background-color: #030712;
+            /* gray-950 */
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.08) 0%, transparent 25%);
+            min-height: 100vh;
+        }
+
         .gradient-text {
-            background: linear-gradient(135deg, #ec4899 0%, #f97316 100%);
+            background: linear-gradient(135deg, #a5b4fc 0%, #f472b6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .glass-card {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .card-hover:hover {
+        .glass-card:hover {
             transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow:
+                0 4px 20px -2px rgba(0, 0, 0, 0.5),
+                0 0 15px -3px rgba(99, 102, 241, 0.2);
+        }
+
+        .tech-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+
+        .glass-card:hover .tech-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e5e7eb;
         }
 
         .fade-in {
@@ -91,6 +130,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -104,129 +144,214 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-gray-950 text-white">
+
+<body class="font-sans antialiased text-white selection:bg-indigo-500/30">
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 px-6 py-6 bg-gradient-to-br from-gray-950 to-gray-900 backdrop-blur-md border-b border-gray-800/50">
+    <header
+        class="fixed top-0 left-0 right-0 z-50 px-6 py-6 transition-all duration-300 bg-gray-950/80 backdrop-blur-md border-b border-white/5">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="Logos/Digital-Macaroni.svg" alt="Digital Macaroni Logo" class="h-10 w-10 md:h-12 md:w-12">
-                <h1 class="font-logo text-3xl md:text-4xl font-medium text-white">
+                <img src="Logos/Digital-Macaroni.svg" alt="Digital Macaroni Logo"
+                    class="h-10 w-10 md:h-12 md:w-12 opacity-90">
+                <h1 class="font-logo text-2xl md:text-3xl font-medium text-white tracking-tight">
                     Digital Macaroni
                 </h1>
             </div>
-            <a href="mailto:hello@digitalmacaroni.io" class="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 font-medium">
+            <a href="mailto:hello@digitalmacaroni.io"
+                class="px-6 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 rounded-full transition-all duration-200 font-medium text-sm">
                 Contact Us
             </a>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center px-6 py-20 bg-gradient-to-br from-gray-950 to-gray-900">
-        <div class="max-w-5xl mx-auto text-center fade-in pt-20">
-            <p class="text-2xl md:text-3xl font-light text-gray-300 mb-8">
-                We build AI products that actually solve problems
-            </p>
-            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                Digital Macaroni creates mobile apps and SaaS platforms for health, hospitality, and local businesses. We use AI to fix things that are broken—and we move fast doing it.
+    <section class="min-h-[90vh] flex items-center justify-center px-6 py-20 relative overflow-hidden">
+        <!-- Background Glow -->
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[120px] -z-10">
+        </div>
+
+        <div class="max-w-4xl mx-auto text-center fade-in pt-10">
+            <div
+                class="inline-block mb-6 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-medium tracking-wide">
+                AI-FIRST VENTURE STUDIO
+            </div>
+            <h2 class="text-5xl md:text-7xl font-bold mb-8 tracking-tight leading-tight">
+                We build software that <br>
+                <span class="gradient-text">actually solves problems.</span>
+            </h2>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                Digital Macaroni creates intelligent mobile apps and SaaS platforms. We identify broken markets, deploy
+                AI solutions, and scale what works.
             </p>
         </div>
     </section>
 
     <!-- What We Build Section -->
-    <section class="py-24 px-6 bg-gray-900">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold mb-8 text-center text-white">What We Build</h2>
-            <div class="space-y-6 text-lg text-gray-300 leading-relaxed">
-                <p>
-                    We find markets that get ignored and problems that don't have good solutions yet. Then we build AI-powered products that people actually want to use.
-                </p>
-                <p>
-                    No fluff. No vanity features. Just tools that work for real users and real businesses.
-                </p>
-                <p class="font-medium text-white">
-                    We start with the pain point. We end with something that scales.
-                </p>
+    <section class="py-24 px-6 border-t border-white/5">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-white">Our Philosophy</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center mb-4 text-indigo-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-white">Speed to Value</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">We don't spend years in R&D. We ship fast, gather
+                        feedback, and iterate based on real usage.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center mb-4 text-pink-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-white">AI Native</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Artificial Intelligence isn't an add-on. It's the
+                        core engine of every product we build.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+                    <div
+                        class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4 text-orange-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-white">Problem First</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">We don't chase hype. We find painful problems in
+                        specific industries and solve them.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Our Portfolio Section -->
-    <section class="py-24 px-6 bg-gray-950">
+    <section class="py-24 px-6 relative">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center text-white">Our Portfolio</h2>
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center text-white">Portfolio</h2>
 
-            <div class="grid md:grid-cols-1 gap-8">
+            <div class="grid md:grid-cols-2 gap-6">
 
                 <!-- Kaivo Card -->
                 <a href="https://kaivo.app" target="_blank" rel="noopener noreferrer"
-                   class="card-hover bg-gray-900 rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-2xl border border-gray-800">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                        <div class="flex-1">
-                            <div class="logo-container mb-4">
-                                <img src="Logos/kaivo-logo.svg" alt="Kaivo Logo" class="h-12">
-                            </div>
-                            <p class="text-lg text-gray-300 mb-4 font-medium">Your personal vaping cessation companion</p>
-                            <p class="text-gray-400 leading-relaxed">
-                                A comprehensive mobile app that combines AI-powered coaching, community support, real-time health tracking, and relief tools to help you quit vaping. Features 24/7 empathetic AI assistance, meditation exercises, and progress visualization.
-                            </p>
-                        </div>
-                        <div class="md:ml-8">
-                            <span class="inline-flex items-center text-white font-medium group">
-                                Visit Site
-                                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                                </svg>
-                            </span>
-                        </div>
+                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </div>
+                    <div class="logo-container mb-6">
+                        <img src="Logos/kaivo-logo.svg" alt="Kaivo Logo" class="h-10">
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Kaivo</h3>
+                    <p class="text-gray-400 mb-6 line-clamp-2">AI-powered vaping cessation companion with 24/7 coaching
+                        and community support.</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="tech-badge">Mobile App</span>
+                        <span class="tech-badge">Health</span>
+                        <span class="tech-badge">AI Coaching</span>
                     </div>
                 </a>
 
                 <!-- Plately Card -->
                 <a href="https://getplately.com" target="_blank" rel="noopener noreferrer"
-                   class="card-hover bg-gray-900 rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-2xl border border-gray-800">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                        <div class="flex-1">
-                            <div class="logo-container mb-4">
-                                <img src="Logos/plately-logo.svg" alt="Plately Logo" class="h-12">
-                            </div>
-                            <p class="text-lg text-gray-300 mb-4 font-medium">AI-powered social media marketing for restaurants</p>
-                            <p class="text-gray-400 leading-relaxed">
-                                Transform hours of social media work into minutes. Plately generates professional food photography and platform-optimized captions, then schedules posts across six major platforms—all tailored to your restaurant's unique brand voice.
-                            </p>
-                        </div>
-                        <div class="md:ml-8">
-                            <span class="inline-flex items-center text-white font-medium group">
-                                Visit Site
-                                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                                </svg>
-                            </span>
-                        </div>
+                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </div>
+                    <div class="logo-container mb-6">
+                        <img src="Logos/plately-logo.svg" alt="Plately Logo" class="h-10">
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Plately</h3>
+                    <p class="text-gray-400 mb-6 line-clamp-2">Automated social media marketing and content generation
+                        for restaurants.</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="tech-badge">SaaS</span>
+                        <span class="tech-badge">Generative AI</span>
+                        <span class="tech-badge">Hospitality</span>
                     </div>
                 </a>
 
                 <!-- RankLadder Card -->
                 <a href="https://rankladder.app" target="_blank" rel="noopener noreferrer"
-                   class="card-hover bg-gray-900 rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-2xl border border-gray-800">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                        <div class="flex-1">
-                            <div class="logo-container mb-4">
-                                <img src="Logos/rankladder-logo.svg" alt="RankLadder Logo" class="h-12">
-                            </div>
-                            <p class="text-lg text-gray-300 mb-4 font-medium">Google review intelligence platform</p>
-                            <p class="text-gray-400 leading-relaxed">
-                                Know exactly how many 5-star reviews you need to reach your target rating. Strategic calculators, AI-powered response generation, and automated review campaigns help local businesses scientifically improve their Google ratings.
-                            </p>
-                        </div>
-                        <div class="md:ml-8">
-                            <span class="inline-flex items-center text-white font-medium group">
-                                Visit Site
-                                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                                </svg>
-                            </span>
-                        </div>
+                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </div>
+                    <div class="logo-container mb-6">
+                        <img src="Logos/rankladder-logo.svg" alt="RankLadder Logo" class="h-10">
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">RankLadder</h3>
+                    <p class="text-gray-400 mb-6 line-clamp-2">Google review intelligence and reputation management for
+                        local businesses.</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="tech-badge">SaaS</span>
+                        <span class="tech-badge">Analytics</span>
+                        <span class="tech-badge">B2B</span>
+                    </div>
+                </a>
+
+                <!-- Kinetikk Card -->
+                <a href="https://kinetikk.app" target="_blank" rel="noopener noreferrer"
+                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </div>
+                    <div class="logo-container mb-6">
+                        <img src="Logos/Kinetikk/Kinetikk.svg" alt="Kinetikk Logo" class="h-10">
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Kinetikk</h3>
+                    <p class="text-gray-400 mb-6 line-clamp-2">Real-time form correction and rep counting using computer
+                        vision.</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="tech-badge">Mobile App</span>
+                        <span class="tech-badge">Computer Vision</span>
+                        <span class="tech-badge">Fitness</span>
+                    </div>
+                </a>
+
+                <!-- ProteinLoop Card -->
+                <a href="#" target="_blank" rel="noopener noreferrer"
+                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </div>
+                    <div class="logo-container mb-6">
+                        <img src="Logos/Proteinloop..svg" alt="ProteinLoop Logo" class="h-10">
+                    </div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">ProteinLoop</h3>
+                    <p class="text-gray-400 mb-6 line-clamp-2">Streamlined macro tracker designed specifically for
+                        protein prioritization.</p>
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        <span class="tech-badge">Mobile App</span>
+                        <span class="tech-badge">Health</span>
+                        <span class="tech-badge">Utility</span>
                     </div>
                 </a>
 
@@ -235,13 +360,19 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-6 bg-gray-900 border-t border-gray-800">
-        <div class="max-w-6xl mx-auto text-center text-gray-400">
-            <p>&copy; 2025 Digital Macaroni LLC</p>
-            <p class="mt-2">30 N Gould St Ste N Sheridan, WY 82801</p>
-            <p class="mt-1">(206)399-5382</p>
+    <footer class="py-12 px-6 border-t border-white/5 bg-gray-950/50">
+        <div
+            class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-gray-500 text-sm">
+            <div class="text-center md:text-left">
+                <p>&copy; 2025 Digital Macaroni LLC</p>
+                <p class="mt-1">Building the future of work and health.</p>
+            </div>
+            <div class="text-center md:text-right">
+                <p>30 N Gould St Ste N, Sheridan, WY 82801</p>
+                <a href="mailto:hello@digitalmacaroni.io"
+                    class="hover:text-white transition-colors">hello@digitalmacaroni.io</a>
+            </div>
         </div>
     </footer>
 
 </body>
-</html>
