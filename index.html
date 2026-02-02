@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Macaroni | AI Venture Studio</title>
     <meta name="description"
-        content="An AI-first venture studio building intelligent mobile apps and SaaS platforms. Creators of Plately, RankLadder, Kinetikk, and Kaivo.">
+        content="An AI-first venture studio building intelligent mobile apps and SaaS platforms. Creators of TwoTop, RankLadder, Kinetikk, and ProteinLoop.">
     <meta name="keywords"
-        content="AI Venture Studio, Plately, RankLadder, Kinetikk, Kaivo, SaaS development, mobile app development, artificial intelligence, software holding company">
+        content="AI Venture Studio, TwoTop, RankLadder, Kinetikk, ProteinLoop, SaaS development, mobile app development, artificial intelligence, software holding company">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Digital Macaroni">
     <link rel="canonical" href="https://digitalmacaroni.io">
@@ -20,7 +20,7 @@
     <!-- OPEN GRAPH TAGS -->
     <meta property="og:title" content="Digital Macaroni | AI Venture Studio">
     <meta property="og:description"
-        content="We build software that actually solves problems. Creators of Plately, RankLadder, Kinetikk, and Kaivo.">
+        content="We build software that actually solves problems. Creators of TwoTop, RankLadder, Kinetikk, and ProteinLoop.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://digitalmacaroni.io">
     <meta property="og:site_name" content="Digital Macaroni">
@@ -30,7 +30,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Digital Macaroni | AI Venture Studio">
     <meta name="twitter:description"
-        content="We build software that actually solves problems. Creators of Plately, RankLadder, Kinetikk, and Kaivo.">
+        content="We build software that actually solves problems. Creators of TwoTop, RankLadder, Kinetikk, and ProteinLoop.">
     <meta name="twitter:image" content="https://digitalmacaroni.io/Logos/Digital-Macaroni.png">
 
     <!-- STRUCTURED DATA (JSON-LD) -->
@@ -92,20 +92,52 @@
             background-clip: text;
         }
 
-        .glass-card {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .glass-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(99, 102, 241, 0.3);
-            box-shadow:
-                0 4px 20px -2px rgba(0, 0, 0, 0.5),
-                0 0 15px -3px rgba(99, 102, 241, 0.2);
+        .spotlight-card {
+            background: rgba(17, 24, 39, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+
+        .spotlight-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
         }
 
         .tech-badge {
@@ -191,45 +223,56 @@
     </section>
 
     <!-- What We Build Section -->
-    <section class="py-24 px-6 border-t border-white/5">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-white">Our Philosophy</h2>
-            <div class="grid md:grid-cols-3 gap-8 text-left">
-                <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+    <section class="py-24 px-6 border-t border-white/5 bg-gradient-to-b from-gray-950 to-[#050A18]">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-20 text-center text-white">Our Philosophy</h2>
+            <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+                <!-- Speed to Value -->
+                <div class="group">
                     <div
-                        class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center mb-4 text-indigo-400">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        class="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-6 text-indigo-400 mx-auto md:mx-0 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                 d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2 text-white">Speed to Value</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">We don't spend years in R&D. We ship fast, gather
-                        feedback, and iterate based on real usage.</p>
+                    <h3 class="text-xl font-bold mb-3 text-white">Speed to Value</h3>
+                    <p class="text-gray-400 text-base leading-relaxed">
+                        We don't spend years in R&D. We ship fast, gather feedback from real users, and iterate
+                        ruthlessly. Value delivered > time spent planning.
+                    </p>
                 </div>
-                <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+
+                <!-- AI Native -->
+                <div class="group">
                     <div
-                        class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center mb-4 text-pink-400">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        class="w-14 h-14 rounded-2xl bg-pink-500/10 flex items-center justify-center mb-6 text-pink-400 mx-auto md:mx-0 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                 d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2 text-white">AI Native</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Artificial Intelligence isn't an add-on. It's the
-                        core engine of every product we build.</p>
+                    <h3 class="text-xl font-bold mb-3 text-white">AI Native</h3>
+                    <p class="text-gray-400 text-base leading-relaxed">
+                        Artificial Intelligence isn't just a feature—it's the core. We build systems where AI handles
+                        the complexity, making powerful tools feel simple.
+                    </p>
                 </div>
-                <div class="p-6 rounded-2xl bg-white/5 border border-white/5">
+
+                <!-- Problem First -->
+                <div class="group">
                     <div
-                        class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4 text-orange-400">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        class="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-6 text-orange-400 mx-auto md:mx-0 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                 d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2 text-white">Problem First</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">We don't chase hype. We find painful problems in
-                        specific industries and solve them.</p>
+                    <h3 class="text-xl font-bold mb-3 text-white">Problem First</h3>
+                    <p class="text-gray-400 text-base leading-relaxed">
+                        We ignore hype cycles. We look for unglamorous, painful problems in specific industries and
+                        deploy technology to solve them permanently.
+                    </p>
                 </div>
             </div>
         </div>
@@ -240,123 +283,139 @@
         <div class="max-w-6xl mx-auto">
             <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center text-white">Portfolio</h2>
 
-            <div class="grid md:grid-cols-2 gap-6">
+            <!-- Business SaaS -->
+            <div class="mb-32 grid lg:grid-cols-3 gap-12 items-start">
+                <!-- Section Header (Sticky Side) -->
+                <div class="lg:col-span-1 lg:sticky lg:top-24">
+                    <h3
+                        class="text-indigo-400 text-sm font-semibold tracking-wider uppercase mb-6 flex items-center gap-3">
+                        <span class="w-12 h-px bg-indigo-500/30"></span>
+                        Business SaaS
+                    </h3>
+                    <h4 class="text-2xl md:text-3xl text-white font-bold leading-tight mb-6">
+                        Modern tools for the <br class="hidden lg:block"> digital backbone.
+                    </h4>
+                    <p class="text-gray-400 text-base leading-relaxed">
+                        We build intelligent platforms for small and medium-sized businesses, the engines of our
+                        communities.
+                        Our goal is simple: level the playing field. We provide the enterprise-grade digital
+                        infrastructure
+                        local businesses need to compete, thrive, and scale in the modern economy.
+                    </p>
+                </div>
 
-                <!-- Kaivo Card -->
-                <a href="https://kaivo.app" target="_blank" rel="noopener noreferrer"
-                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    </div>
-                    <div class="logo-container mb-6">
-                        <img src="Logos/kaivo-logo.svg" alt="Kaivo Logo" class="h-10">
-                    </div>
-                    <h3 class="text-2xl font-semibold text-white mb-2">Kaivo</h3>
-                    <p class="text-gray-400 mb-6 line-clamp-2">AI-powered vaping cessation companion with 24/7 coaching
-                        and community support.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="tech-badge">Mobile App</span>
-                        <span class="tech-badge">Health</span>
-                        <span class="tech-badge">AI Coaching</span>
-                    </div>
-                </a>
+                <!-- Cards Grid -->
+                <div class="lg:col-span-2 grid md:grid-cols-2 gap-6">
+                    <!-- RankLadder Card -->
+                    <a href="https://rankladder.app" target="_blank" rel="noopener noreferrer"
+                        class="spotlight-card rounded-2xl p-8 group h-full">
+                        <div class="card-content h-full flex flex-col">
+                            <div class="logo-container mb-8 h-12 flex items-center">
+                                <img src="Logos/rankladder-logo.svg" alt="RankLadder Logo" class="h-10 w-auto">
+                            </div>
+                            <h3
+                                class="text-2xl font-semibold text-white mb-2 group-hover:text-indigo-400 transition-colors">
+                                RankLadder</h3>
+                            <p class="text-gray-400 mb-8 line-clamp-3 leading-relaxed">Google review intelligence and
+                                reputation
+                                management
+                                for local businesses.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5">
+                                <span class="tech-badge text-xs">SaaS</span>
+                                <span class="tech-badge text-xs">Analytics</span>
+                                <span class="tech-badge text-xs">B2B</span>
+                            </div>
+                        </div>
+                    </a>
 
-                <!-- Plately Card -->
-                <a href="https://getplately.com" target="_blank" rel="noopener noreferrer"
-                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
+                    <!-- TwoTop Card -->
+                    <div class="spotlight-card rounded-2xl p-8 h-full">
+                        <div class="card-content h-full flex flex-col">
+                            <div class="logo-container mb-8 h-12 flex items-center justify-between">
+                                <img src="Logos/TwoTop-Logo.svg" alt="TwoTop Logo" class="h-10 w-auto">
+                                <span
+                                    class="bg-indigo-500/20 text-indigo-400 text-xs font-bold px-3 py-1 rounded-full border border-indigo-500/30 shadow-[0_0_10px_rgba(99,102,241,0.2)]">
+                                    Launching Soon
+                                </span>
+                            </div>
+                            <h3 class="text-2xl font-semibold text-white mb-2">TwoTop</h3>
+                            <p class="text-gray-400 mb-8 line-clamp-3 leading-relaxed">Automated social media marketing
+                                and content
+                                generation for restaurants.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5">
+                                <span class="tech-badge text-xs">SaaS</span>
+                                <span class="tech-badge text-xs">Generative AI</span>
+                                <span class="tech-badge text-xs">Hospitality</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="logo-container mb-6">
-                        <img src="Logos/plately-logo.svg" alt="Plately Logo" class="h-10">
-                    </div>
-                    <h3 class="text-2xl font-semibold text-white mb-2">Plately</h3>
-                    <p class="text-gray-400 mb-6 line-clamp-2">Automated social media marketing and content generation
-                        for restaurants.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="tech-badge">SaaS</span>
-                        <span class="tech-badge">Generative AI</span>
-                        <span class="tech-badge">Hospitality</span>
-                    </div>
-                </a>
+                </div>
+            </div>
 
-                <!-- RankLadder Card -->
-                <a href="https://rankladder.app" target="_blank" rel="noopener noreferrer"
-                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    </div>
-                    <div class="logo-container mb-6">
-                        <img src="Logos/rankladder-logo.svg" alt="RankLadder Logo" class="h-10">
-                    </div>
-                    <h3 class="text-2xl font-semibold text-white mb-2">RankLadder</h3>
-                    <p class="text-gray-400 mb-6 line-clamp-2">Google review intelligence and reputation management for
-                        local businesses.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="tech-badge">SaaS</span>
-                        <span class="tech-badge">Analytics</span>
-                        <span class="tech-badge">B2B</span>
-                    </div>
-                </a>
+            <!-- Consumer Health Apps -->
+            <div class="grid lg:grid-cols-3 gap-12 items-start">
+                <!-- Section Header (Sticky Side) -->
+                <div class="lg:col-span-1 lg:sticky lg:top-24">
+                    <h3
+                        class="text-pink-400 text-sm font-semibold tracking-wider uppercase mb-6 flex items-center gap-3">
+                        <span class="w-12 h-px bg-pink-500/30"></span>
+                        Consumer Health Apps
+                    </h3>
+                    <h4 class="text-2xl md:text-3xl text-white font-bold leading-tight mb-6">
+                        Technology that <br class="hidden lg:block"> empowers human potential.
+                    </h4>
+                    <p class="text-gray-400 text-base leading-relaxed">
+                        Health isn't just about data, it's about clarity. We build AI-driven tools that turn complex
+                        metrics into simple, actionable insights, helping individuals master their physical well-being
+                        and accelerate personal growth.
+                    </p>
+                </div>
 
-                <!-- Kinetikk Card -->
-                <a href="https://kinetikk.app" target="_blank" rel="noopener noreferrer"
-                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    </div>
-                    <div class="logo-container mb-6">
-                        <img src="Logos/Kinetikk/Kinetikk.svg" alt="Kinetikk Logo" class="h-10">
-                    </div>
-                    <h3 class="text-2xl font-semibold text-white mb-2">Kinetikk</h3>
-                    <p class="text-gray-400 mb-6 line-clamp-2">Real-time form correction and rep counting using computer
-                        vision.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="tech-badge">Mobile App</span>
-                        <span class="tech-badge">Computer Vision</span>
-                        <span class="tech-badge">Fitness</span>
-                    </div>
-                </a>
+                <!-- Cards Grid -->
+                <div class="lg:col-span-2 grid md:grid-cols-2 gap-6">
+                    <!-- Kinetikk Card -->
+                    <a href="https://kinetikk.com/" target="_blank" rel="noopener noreferrer"
+                        class="spotlight-card rounded-2xl p-8 group h-full">
+                        <div class="card-content h-full flex flex-col">
+                            <div class="logo-container mb-8 h-12 flex items-center">
+                                <img src="Logos/Kinetikk/Kinetikk.svg" alt="Kinetikk Logo" class="h-10 w-auto">
+                            </div>
+                            <h3
+                                class="text-2xl font-semibold text-white mb-2 group-hover:text-pink-400 transition-colors">
+                                Kinetikk</h3>
+                            <p class="text-gray-400 mb-8 line-clamp-3 leading-relaxed">Real-time form correction and rep
+                                counting using
+                                computer vision.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5">
+                                <span class="tech-badge text-xs">Mobile App</span>
+                                <span class="tech-badge text-xs">Computer Vision</span>
+                                <span class="tech-badge text-xs">Fitness</span>
+                            </div>
+                        </div>
+                    </a>
 
-                <!-- ProteinLoop Card -->
-                <a href="#" target="_blank" rel="noopener noreferrer"
-                    class="glass-card rounded-2xl p-8 group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-50 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-6 h-6 text-gray-500 group-hover:text-white transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    </div>
-                    <div class="logo-container mb-6">
-                        <img src="Logos/Proteinloop..svg" alt="ProteinLoop Logo" class="h-10">
-                    </div>
-                    <h3 class="text-2xl font-semibold text-white mb-2">ProteinLoop</h3>
-                    <p class="text-gray-400 mb-6 line-clamp-2">Streamlined macro tracker designed specifically for
-                        protein prioritization.</p>
-                    <div class="flex flex-wrap gap-2 mt-auto">
-                        <span class="tech-badge">Mobile App</span>
-                        <span class="tech-badge">Health</span>
-                        <span class="tech-badge">Utility</span>
-                    </div>
-                </a>
-
+                    <!-- ProteinLoop Card -->
+                    <a href="https://proteinloop.app/" target="_blank" rel="noopener noreferrer"
+                        class="spotlight-card rounded-2xl p-8 group h-full">
+                        <div class="card-content h-full flex flex-col">
+                            <div class="logo-container mb-8 h-12 flex items-center">
+                                <img src="Logos/Proteinloop..svg" alt="ProteinLoop Logo" class="h-10 w-auto">
+                            </div>
+                            <h3
+                                class="text-2xl font-semibold text-white mb-2 group-hover:text-pink-400 transition-colors">
+                                ProteinLoop</h3>
+                            <p class="text-gray-400 mb-8 line-clamp-3 leading-relaxed">Streamlined macro tracker
+                                designed specifically
+                                for
+                                protein prioritization.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5">
+                                <span class="tech-badge text-xs">Mobile App</span>
+                                <span class="tech-badge text-xs">Health</span>
+                                <span class="tech-badge text-xs">Utility</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -377,4 +436,16 @@
         </div>
     </footer>
 
+    <script>
+        // Spotlight Effect
+        document.querySelectorAll('.spotlight-card').forEach(card => {
+            card.onmousemove = e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            }
+        });
+    </script>
 </body>
