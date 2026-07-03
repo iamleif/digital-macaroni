@@ -2,458 +2,451 @@
 <html lang="en">
 
 <head>
-    <!-- META TAGS -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Macaroni | AI Venture Studio</title>
+    <title>Digital Macaroni · AI venture studio</title>
     <meta name="description"
-        content="An AI-first venture studio building intelligent mobile apps and SaaS platforms. Creators of TwoTop, RankLadder, Kinetikk, and ProteinLoop.">
+        content="AI-first venture studio building practical software for SMBs and consumers. Creators of RankLadder, Kaivo, and Ask Kazmo, with ProteinLoop and Kinetikk in build.">
     <meta name="keywords"
-        content="AI Venture Studio, TwoTop, RankLadder, Kinetikk, ProteinLoop, SaaS development, mobile app development, artificial intelligence, software holding company">
+        content="AI Venture Studio, RankLadder, Kaivo, quit nicotine app, Ask Kazmo, voice-first astrology, Kinetikk, ProteinLoop, SaaS, mobile applications, artificial intelligence">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Digital Macaroni">
     <link rel="canonical" href="https://digitalmacaroni.io">
 
-    <!-- FAVICON -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <!-- OPEN GRAPH TAGS -->
-    <meta property="og:title" content="Digital Macaroni | AI Venture Studio">
+    <meta property="og:title" content="Digital Macaroni · AI venture studio">
     <meta property="og:description"
-        content="We build software that actually solves problems. Creators of TwoTop, RankLadder, Kinetikk, and ProteinLoop.">
+        content="We build things that listen. RankLadder, Kaivo (quit nicotine), and Ask Kazmo (voice-first astrology) are live. ProteinLoop and Kinetikk are in build.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://digitalmacaroni.io">
     <meta property="og:site_name" content="Digital Macaroni">
     <meta property="og:image" content="https://digitalmacaroni.io/Logos/Digital-Macaroni.png">
 
-    <!-- TWITTER CARD TAGS -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Digital Macaroni | AI Venture Studio">
+    <meta name="twitter:title" content="Digital Macaroni · AI venture studio">
     <meta name="twitter:description"
-        content="We build software that actually solves problems. Creators of TwoTop, RankLadder, Kinetikk, and ProteinLoop.">
+        content="We build things that listen. RankLadder, Kaivo (quit nicotine), and Ask Kazmo (voice-first astrology) are live. ProteinLoop and Kinetikk are in build.">
     <meta name="twitter:image" content="https://digitalmacaroni.io/Logos/Digital-Macaroni.png">
 
-    <!-- STRUCTURED DATA (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Digital Macaroni",
-      "description": "AI-first software company building mobile applications and SaaS platforms",
+      "description": "AI-first venture studio building practical software for SMBs and consumers",
       "foundingDate": "2024",
-      "foundingLocation": "Wyoming, USA",
       "url": "https://digitalmacaroni.io",
-      "sameAs": [],
-      "knowsAbout": ["Artificial Intelligence", "Software Development", "SaaS", "Mobile Applications"]
+      "email": "hello@digitalmacaroni.io",
+      "knowsAbout": ["Artificial Intelligence", "Voice AI", "Software Development", "SaaS", "Mobile Applications", "Behavior Change"]
     }
     </script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        logo: ['Alan Sans', 'sans-serif'],
-                    },
-                    colors: {
-                        'dm-dark': '#0A0E27',
-                        'dm-gray': '#1E2139',
-                        'dm-accent': '#6366F1',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: #030712;
-            /* gray-950 */
-            background-image:
-                radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.08) 0%, transparent 25%);
-            min-height: 100vh;
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc 0%, #f472b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .spotlight-card {
-            background: rgba(17, 24, 39, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .spotlight-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .spotlight-card:hover::before {
-            opacity: 1;
-        }
-
-        .spotlight-card:hover {
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .card-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .tech-badge {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #9ca3af;
-            transition: all 0.2s;
-        }
-
-        .glass-card:hover .tech-badge {
-            background: rgba(255, 255, 255, 0.1);
-            color: #e5e7eb;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .logo-container img {
-            max-height: 50px;
-            width: auto;
-            object-fit: contain;
-        }
-    </style>
+    <link rel="stylesheet" href="/src/styles.css">
 </head>
 
-<body class="font-sans antialiased text-white selection:bg-indigo-500/30">
+<body>
 
-    <!-- Header -->
-    <header
-        class="fixed top-0 left-0 right-0 z-50 px-6 py-6 transition-all duration-300 bg-gray-950/80 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img src="Logos/Digital-Macaroni.svg" alt="Digital Macaroni Logo"
-                    class="h-10 w-10 md:h-12 md:w-12 opacity-90">
-                <h1 class="font-logo text-2xl md:text-3xl font-medium text-white tracking-tight">
-                    Digital Macaroni
-                </h1>
-            </div>
-            <a href="mailto:hello@digitalmacaroni.io"
-                class="px-6 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-gray-200 rounded-full transition-all duration-200 font-medium text-sm">
-                Contact Us
-            </a>
-        </div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <a href="#top" class="skip-link">Skip to content</a>
+
+    <header class="masthead">
+        <a href="#top" class="masthead-mark">
+            <img src="/Logos/logo.png" alt="" class="masthead-logo" width="15" height="20">
+            Digital Macaroni
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="siteMenu">
+            <span class="menu-toggle-label">Index</span>
+            <span class="menu-toggle-icon"><span></span><span></span></span>
+        </button>
     </header>
 
-    <!-- Hero Section -->
-    <section class="min-h-[90vh] flex items-center justify-center px-6 py-20 relative overflow-hidden">
-        <!-- Background Glow -->
-        <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[120px] -z-10">
-        </div>
-
-        <div class="max-w-4xl mx-auto text-center fade-in pt-10">
-            <h2 class="text-4xl md:text-6xl font-bold mb-8 tracking-tight leading-tight">
-                Practical Software for <br>
-                <span class="gradient-text">Business Growth and Personal Health</span>
-            </h2>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                Digital Macaroni is a venture studio building high-utility tools that help SMBs compete and individuals
-                thrive. From reputation management for local businesses to streamlined nutrition tracking, we build
-                software that works.
-            </p>
-        </div>
-    </section>
-
-    <!-- What We Build Section -->
-    <section class="py-24 px-6 border-t border-white/5 bg-gradient-to-b from-gray-950 to-[#050A18]">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-20 text-center text-white">Our Philosophy</h2>
-            <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
-                <!-- Purpose-Built Tools -->
-                <div class="group">
-                    <div
-                        class="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-6 text-orange-400 mx-auto md:mx-0 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Purpose-Built Tools</h3>
-                    <p class="text-gray-400 text-base leading-relaxed">
-                        We ignore hype cycles. We look for unglamorous, everyday challenges in specific industries—like
-                        managing reputation or tracking nutrition—and build software that solves them permanently.
-                    </p>
-                </div>
-
-                <!-- Speed to Utility -->
-                <div class="group">
-                    <div
-                        class="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-6 text-indigo-400 mx-auto md:mx-0 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Speed to Utility</h3>
-                    <p class="text-gray-400 text-base leading-relaxed">
-                        We don’t believe in over-engineering. We focus on "Speed to Utility"—shipping functional tools
-                        quickly so users can see results immediately. We prioritize real-world impact over prolonged
-                        planning.
-                    </p>
-                </div>
-
-                <!-- Meaningful Technology -->
-                <div class="group">
-                    <div
-                        class="w-14 h-14 rounded-2xl bg-pink-500/10 flex items-center justify-center mb-6 text-pink-400 mx-auto md:mx-0 group-hover:scale-110 transition-transform duration-300">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-white">Meaningful Technology</h3>
-                    <p class="text-gray-400 text-base leading-relaxed">
-                        While we leverage advanced technology like AI, we treat it as an engine, not a talking point. We
-                        use it to handle complexity behind the scenes, keeping the user experience simple, intuitive,
-                        and focused on the task at hand.
-                    </p>
-                </div>
+    <nav class="site-menu" id="siteMenu" aria-hidden="true">
+        <div class="site-menu-inner">
+            <ol class="site-menu-list">
+                <li style="--c:var(--red)"><a href="#rankladder"><span class="n">01</span>RankLadder</a></li>
+                <li style="--c:var(--navy)"><a href="#kazmo"><span class="n">02</span>Ask Kazmo</a></li>
+                <li style="--c:var(--forest)"><a href="#kaivo"><span class="n">03</span>Kaivo</a></li>
+                <li style="--c:var(--muted-dot)"><a href="#build"><span class="n">04</span>In build</a></li>
+                <li style="--c:var(--red)"><a href="#philosophy"><span class="n">05</span>Philosophy</a></li>
+                <li style="--c:var(--red)"><a href="#process"><span class="n">06</span>How we work</a></li>
+                <li style="--c:var(--red)"><a href="#contact"><span class="n">07</span>Contact</a></li>
+            </ol>
+            <div class="site-menu-foot">
+                <a href="mailto:hello@digitalmacaroni.io">hello@digitalmacaroni.io</a>
+                <span>Est. 2024 · AI-first venture studio</span>
             </div>
         </div>
-    </section>
+    </nav>
 
-    <!-- Our Portfolio Section -->
-    <section class="py-24 px-6 relative">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center text-white">Portfolio</h2>
+    <aside class="rail" aria-hidden="true">
+        <button class="rail-dot" data-target="cover" aria-label="Cover"></button>
+        <button class="rail-dot" data-target="rankladder" style="--c:var(--red)" aria-label="RankLadder"></button>
+        <button class="rail-dot" data-target="kazmo" style="--c:var(--navy)" aria-label="Ask Kazmo"></button>
+        <button class="rail-dot" data-target="kaivo" style="--c:var(--forest)" aria-label="Kaivo"></button>
+        <button class="rail-dot" data-target="build" style="--c:var(--muted-dot)" aria-label="In build"></button>
+        <button class="rail-dot" data-target="philosophy" style="--c:var(--red)" aria-label="Philosophy"></button>
+        <button class="rail-dot" data-target="process" style="--c:var(--red)" aria-label="How we work"></button>
+        <button class="rail-dot" data-target="contact" style="--c:var(--red)" aria-label="Contact"></button>
+    </aside>
 
-            <!-- Business SaaS -->
-            <div class="mb-32 grid lg:grid-cols-3 gap-12 items-start">
-                <!-- Section Header (Sticky Side) -->
-                <div class="lg:col-span-1 lg:sticky lg:top-24">
-                    <h3
-                        class="text-indigo-400 text-sm font-semibold tracking-wider uppercase mb-6 flex items-center gap-3">
-                        <span class="w-12 h-px bg-indigo-500/30"></span>
-                        Business SaaS
-                    </h3>
-                    <h4 class="text-2xl md:text-3xl text-white font-bold leading-tight mb-6">
-                        Tools built for the <br class="hidden lg:block"> digital backbone.
-                    </h4>
-                    <p class="text-gray-400 text-base leading-relaxed">
-                        We build practical platforms for small and medium-sized businesses—the engines of our
-                        communities. Our goal is to level the playing field by providing local businesses with the same
-                        caliber of tools used by global brands. Whether it’s managing a digital reputation or automating
-                        hospitality marketing, we give you the edge you need to compete, thrive, and scale.
-                    </p>
+    <main id="top">
+
+        <section class="cover" id="cover">
+            <div class="wrap cover-inner">
+                <div class="cover-eyebrow">Vol. 01 — 2026 edition · An AI-first venture studio</div>
+                <h1 class="cover-headline">We build<br>things that<br><em>listen</em>.</h1>
+                <p class="cover-dek">Two of our three live products talk back — voice coaching, voice-first
+                    astrology. The third listens to what your customers are already saying. AI does the hard
+                    part: hearing you, in real time. The interface just has to stay out of the way.</p>
+                <div class="cover-facts">
+                    <span>Founded 2024</span>
+                    <span>3 shipped</span>
+                    <span>2 in build</span>
                 </div>
-
-                <!-- Cards Grid -->
-                <div class="lg:col-span-2 grid md:grid-cols-2 gap-6">
-                    <!-- RankLadder Card -->
-                    <a href="https://rankladder.app" target="_blank" rel="noopener noreferrer"
-                        class="spotlight-card rounded-2xl p-8 group h-full">
-                        <div class="card-content h-full flex flex-col">
-                            <div class="logo-container mb-8 h-12 flex items-center">
-                                <img src="Logos/rankladder-logo.svg" alt="RankLadder Logo" class="h-10 w-auto">
-                            </div>
-                            <h3
-                                class="text-2xl font-semibold text-white mb-2 group-hover:text-indigo-400 transition-colors">
-                                RankLadder</h3>
-                            <p class="text-gray-400 mb-8 line-clamp-3 leading-relaxed">Google review intelligence and
-                                reputation
-                                management
-                                for local businesses.</p>
-                            <div class="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5">
-                                <span class="tech-badge text-xs">SaaS</span>
-                                <span class="tech-badge text-xs">Analytics</span>
-                                <span class="tech-badge text-xs">B2B</span>
-                            </div>
-                        </div>
+                <div class="cover-index">
+                    <a href="#rankladder" class="cover-index-item" style="--c:var(--red)">
+                        <span class="ci-num">01</span>
+                        <span class="ci-name">RankLadder</span>
+                        <span class="ci-tag">Live · B2B</span>
                     </a>
-
-                    <!-- TwoTop Card -->
-                    <div class="spotlight-card rounded-2xl p-8 h-full">
-                        <div class="card-content h-full flex flex-col">
-                            <div class="logo-container mb-8 h-12 flex items-center justify-between">
-                                <img src="Logos/TwoTop-Logo.svg" alt="TwoTop Logo" class="h-10 w-auto">
-                                <span
-                                    class="bg-indigo-500/20 text-indigo-400 text-xs font-bold px-3 py-1 rounded-full border border-indigo-500/30 shadow-[0_0_10px_rgba(99,102,241,0.2)]">
-                                    Launching Soon
-                                </span>
-                            </div>
-                            <h3 class="text-2xl font-semibold text-white mb-2">TwoTop</h3>
-                            <p class="text-gray-400 mb-8 line-clamp-3 leading-relaxed">Automated social media marketing
-                                and content
-                                generation for restaurants.</p>
-                            <div class="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5">
-                                <span class="tech-badge text-xs">SaaS</span>
-                                <span class="tech-badge text-xs">Generative AI</span>
-                                <span class="tech-badge text-xs">Hospitality</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Consumer Health Apps -->
-            <div class="grid lg:grid-cols-3 gap-12 items-start">
-                <!-- Section Header (Sticky Side) -->
-                <div class="lg:col-span-1 lg:sticky lg:top-24">
-                    <h3
-                        class="text-pink-400 text-sm font-semibold tracking-wider uppercase mb-6 flex items-center gap-3">
-                        <span class="w-12 h-px bg-pink-500/30"></span>
-                        Consumer Health Apps
-                    </h3>
-                    <h4 class="text-2xl md:text-3xl text-white font-bold leading-tight mb-6">
-                        Technology that <br class="hidden lg:block"> simplifies your health.
-                    </h4>
-                    <p class="text-gray-400 text-base leading-relaxed">
-                        Health isn't about more data; it's about clarity. We build straightforward tools that turn
-                        complex metrics into simple, actionable habits. By removing the guesswork from workout tracking
-                        and nutrition, we help individuals focus on what actually moves the needle for their physical
-                        well-being.
-                    </p>
-                </div>
-
-                <!-- Cards Grid -->
-                <div class="lg:col-span-2 grid md:grid-cols-2 gap-6">
-                    <!-- Kinetikk Card -->
-                    <a href="https://kinetikk.com/" target="_blank" rel="noopener noreferrer"
-                        class="spotlight-card rounded-2xl p-8 group h-full">
-                        <div class="card-content h-full flex flex-col">
-                            <div class="logo-container mb-8 h-12 flex items-center">
-                                <img src="Logos/Kinetikk/Kinetikk.svg" alt="Kinetikk Logo" class="h-10 w-auto">
-                            </div>
-                            <h3
-                                class="text-2xl font-semibold text-white mb-2 group-hover:text-pink-400 transition-colors">
-                                Kinetikk</h3>
-                            <p class="text-gray-400 mb-8 line-clamp-3 leading-relaxed">Real-time form correction and rep
-                                counting using
-                                computer vision.</p>
-                            <div class="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5">
-                                <span class="tech-badge text-xs">Mobile App</span>
-                                <span class="tech-badge text-xs">Computer Vision</span>
-                                <span class="tech-badge text-xs">Fitness</span>
-                            </div>
-                        </div>
+                    <a href="#kazmo" class="cover-index-item" style="--c:var(--navy)">
+                        <span class="ci-num">02</span>
+                        <span class="ci-name">Ask Kazmo</span>
+                        <span class="ci-tag">Live · Lifestyle</span>
                     </a>
-
-                    <!-- ProteinLoop Card -->
-                    <a href="https://proteinloop.app/" target="_blank" rel="noopener noreferrer"
-                        class="spotlight-card rounded-2xl p-8 group h-full">
-                        <div class="card-content h-full flex flex-col">
-                            <div class="logo-container mb-8 h-12 flex items-center">
-                                <img src="Logos/Proteinloop..svg" alt="ProteinLoop Logo" class="h-10 w-auto">
-                            </div>
-                            <h3
-                                class="text-2xl font-semibold text-white mb-2 group-hover:text-pink-400 transition-colors">
-                                ProteinLoop</h3>
-                            <p class="text-gray-400 mb-8 line-clamp-3 leading-relaxed">Streamlined macro tracker
-                                designed specifically
-                                for
-                                protein prioritization.</p>
-                            <div class="flex flex-wrap gap-2 mt-auto pt-6 border-t border-white/5">
-                                <span class="tech-badge text-xs">Mobile App</span>
-                                <span class="tech-badge text-xs">Health</span>
-                                <span class="tech-badge text-xs">Utility</span>
-                            </div>
-                        </div>
+                    <a href="#kaivo" class="cover-index-item" style="--c:var(--forest)">
+                        <span class="ci-num">03</span>
+                        <span class="ci-name">Kaivo</span>
+                        <span class="ci-tag">Live · Health</span>
+                    </a>
+                    <a href="#build" class="cover-index-item" style="--c:var(--muted-dot)">
+                        <span class="ci-num">04</span>
+                        <span class="ci-name">ProteinLoop &amp; Kinetikk</span>
+                        <span class="ci-tag">In build</span>
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="py-12 px-6 border-t border-white/5 bg-gray-950/50">
-        <div
-            class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-gray-500 text-sm">
-            <div class="text-center md:text-left">
-                <a href="https://www.linkedin.com/company/digitalmacaroni/" target="_blank" rel="noopener noreferrer"
-                    class="inline-block hover:text-white transition-colors opacity-80 hover:opacity-100 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-current" viewBox="0 0 32 32">
-                        <path
-                            d="M26.111,3H5.889c-1.595,0-2.889,1.293-2.889,2.889V26.111c0,1.595,1.293,2.889,2.889,2.889H26.111c1.595,0,2.889-1.293,2.889-2.889V5.889c0-1.595-1.293-2.889-2.889-2.889ZM10.861,25.389h-3.877V12.87h3.877v12.519Zm-1.957-14.158c-1.267,0-2.293-1.034-2.293-2.31s1.026-2.31,2.293-2.31,2.292,1.034,2.292,2.31-1.026,2.31-2.292,2.31Zm16.485,14.158h-3.858v-6.571c0-1.802-.685-2.809-2.111-2.809-1.551,0-2.362,1.048-2.362,2.809v6.571h-3.718V12.87h3.718v1.686s1.118-2.069,3.775-2.069,4.556,1.621,4.556,4.975v7.926Z"
-                            fill-rule="evenodd"></path>
+        <section class="spread reveal" id="rankladder" style="--spread:var(--red)">
+            <div class="spread-watermark" aria-hidden="true">01</div>
+            <div class="wrap spread-grid">
+                <div class="spread-copy">
+                    <div class="spread-index">01 / 05 — Live</div>
+                    <h2 class="spread-name">RankLadder</h2>
+                    <p class="spread-desc">Google reviews, finally a system. RankLadder reads what customers
+                        are already saying, prompts the ones who haven't left a review yet, and pings the team
+                        the moment something needs a reply — before it becomes a one-star problem.</p>
+                    <div class="spread-meta">
+                        <span class="spread-tag">B2B · Local SaaS</span>
+                        <span class="spread-tag">Live since 2024</span>
+                    </div>
+                    <a href="https://rankladder.app" target="_blank" rel="noopener noreferrer" class="spread-link">
+                        Visit rankladder.app
+                        <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="spread-art">
+                    <div class="visual-ladder">
+                        <div data-stars="★★★★★"></div>
+                        <div data-stars="★★★★"></div>
+                        <div data-stars="★★★"></div>
+                        <div data-stars="★★"></div>
+                        <div data-stars="★"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="spread reverse reveal" id="kazmo" style="--spread:var(--navy)">
+            <div class="spread-watermark" aria-hidden="true">02</div>
+            <div class="wrap spread-grid">
+                <div class="spread-art">
+                    <div class="visual-celestial">
+                        <div class="visual-celestial-ring"></div>
+                        <div class="visual-celestial-disc"></div>
+                        <div class="visual-celestial-star" style="top:8%;left:72%;"></div>
+                        <div class="visual-celestial-star" style="top:60%;left:90%;width:7px;height:7px;"></div>
+                        <div class="visual-celestial-star" style="top:88%;left:38%;width:7px;height:7px;"></div>
+                        <div class="visual-celestial-star" style="top:28%;left:-4%;width:7px;height:7px;"></div>
+                    </div>
+                </div>
+                <div class="spread-copy">
+                    <div class="spread-index">02 / 05 — Live</div>
+                    <h2 class="spread-name">Ask Kazmo</h2>
+                    <p class="spread-desc">Stop reading your horoscope. Start talking to your chart. Kazmo
+                        turns a birth chart into a conversation — ask about timing, relationships, or why this
+                        week feels like a lot, then ask again. It answers like the wise friend who picked up
+                        at 2am.</p>
+                    <div class="spread-meta">
+                        <span class="spread-tag">Consumer · Lifestyle</span>
+                        <span class="spread-tag">Voice-first astrology</span>
+                    </div>
+                    <a href="https://askkazmo.com" target="_blank" rel="noopener noreferrer" class="spread-link">
+                        Visit askkazmo.com
+                        <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="spread reveal" id="kaivo" style="--spread:var(--forest)">
+            <div class="spread-watermark" aria-hidden="true">03</div>
+            <div class="wrap spread-grid">
+                <div class="spread-copy">
+                    <div class="spread-index">03 / 05 — Live</div>
+                    <h2 class="spread-name">Kaivo</h2>
+                    <p class="spread-desc">A quieter voice for quitting nicotine. Cravings peak around 90
+                        seconds — Kaivo picks up, listens, and talks you through it in real time. No streaks
+                        to break, no lectures, just someone on your side at 2pm or 2am.</p>
+                    <div class="spread-meta">
+                        <span class="spread-tag">Consumer · Health</span>
+                        <span class="spread-tag">Voice coaching</span>
+                    </div>
+                    <a href="https://kaivo.app" target="_blank" rel="noopener noreferrer" class="spread-link">
+                        Visit kaivo.app
+                        <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.4"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="spread-art">
+                    <div class="visual-wave">
+                        <div style="--h:38%;--i:0"></div>
+                        <div style="--h:64%;--i:1"></div>
+                        <div style="--h:42%;--i:2"></div>
+                        <div style="--h:88%;--i:3"></div>
+                        <div style="--h:56%;--i:4"></div>
+                        <div style="--h:100%;--i:5"></div>
+                        <div style="--h:52%;--i:6"></div>
+                        <div style="--h:72%;--i:7"></div>
+                        <div style="--h:40%;--i:8"></div>
+                        <div style="--h:60%;--i:9"></div>
+                        <div style="--h:34%;--i:10"></div>
+                        <div style="--h:80%;--i:11"></div>
+                        <div style="--h:46%;--i:12"></div>
+                        <div style="--h:66%;--i:13"></div>
+                        <div style="--h:36%;--i:14"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="spread build reveal" id="build">
+            <div class="wrap">
+                <div class="spread-index dark">04 / 05 — In build</div>
+                <h2 class="build-heading">Two more in the oven.</h2>
+                <div class="build-grid">
+                    <div class="build-item">
+                        <div class="build-art">
+                            <div class="visual-motion">
+                                <div class="hoop"></div>
+                                <div class="hoop"></div>
+                                <div class="hoop"></div>
+                                <div class="hoop"></div>
+                                <div class="rep-dot"></div>
+                            </div>
+                        </div>
+                        <h3>Kinetikk</h3>
+                        <p>Computer vision for the gym. Counts reps, catches form breakdown, in real time.</p>
+                        <span class="spread-tag">Consumer · Health</span>
+                    </div>
+                    <div class="build-item">
+                        <div class="build-art">
+                            <div class="pill-stack">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <h3>ProteinLoop</h3>
+                        <p>One number, every day. The macro tracker for people who only care about protein.</p>
+                        <span class="spread-tag">Consumer · Health</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quote reveal" id="philosophy">
+            <div class="wrap">
+                <div class="section-num"><strong>05</strong>Philosophy</div>
+                <div class="quote-grid">
+                    <blockquote class="quote-main">
+                        Three people who ship something on Tuesday will always beat fifty
+                        <em>who meet about it on Thursday.</em>
+                    </blockquote>
+                    <ol class="quote-notes">
+                        <li style="--c:var(--forest)">
+                            <span class="qn-num">01</span>
+                            <div>
+                                <h4>Purpose-built tools.</h4>
+                                <p>We ignore hype cycles. We look for unglamorous, everyday problems — reviews,
+                                    cravings, macros, a chart nobody explained to you — and build software that
+                                    solves them and stays out of the way.</p>
+                            </div>
+                        </li>
+                        <li style="--c:var(--plum)">
+                            <span class="qn-num">02</span>
+                            <div>
+                                <h4>Speed to utility.</h4>
+                                <p>No staging environments, no roadmap theatre. We ship the first working
+                                    version in weeks, watch what people actually do with it, and let real use
+                                    earn the next feature.</p>
+                            </div>
+                        </li>
+                        <li style="--c:var(--amber)">
+                            <span class="qn-num">03</span>
+                            <div>
+                                <h4>Small on purpose.</h4>
+                                <p>We could grow the team. We don't, because the same people who build
+                                    RankLadder, Kaivo, and Ask Kazmo are the ones who read what customers say
+                                    about them. Nobody here is more than one conversation away from the thing
+                                    that's actually broken.</p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section class="method reveal" id="process">
+            <div class="wrap">
+                <div class="section-num"><strong>06</strong>How we work</div>
+                <h2 class="method-title">Hunch to live, in a <em>few</em> weeks.</h2>
+                <ol class="method-list">
+                    <li class="method-item">
+                        <div class="method-when">Week 0</div>
+                        <h3>Find the pain</h3>
+                        <p>We look for unglamorous problems with a clear daily user and a willingness to pay.
+                            If we can't describe it in a sentence, we drop it.</p>
+                    </li>
+                    <li class="method-item">
+                        <div class="method-when">Week 1–3</div>
+                        <h3>Ship v1</h3>
+                        <p>A small team puts a working tool in front of real users inside three weeks. No
+                            staging, no waiting room.</p>
+                    </li>
+                    <li class="method-item">
+                        <div class="method-when">Month 2–6</div>
+                        <h3>Find the loop</h3>
+                        <p>We watch how people actually use it. The one behaviour that compounds gets all our
+                            attention. Everything else gets cut.</p>
+                    </li>
+                    <li class="method-item">
+                        <div class="method-when">Year 1+</div>
+                        <h3>Keep it running</h3>
+                        <p>We operate the products we build. Operators and capital come in only when growth
+                            says so, not before.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="colophon reveal" id="contact">
+            <div class="wrap">
+                <div class="section-num light"><strong>07</strong>Contact</div>
+                <h2 class="colophon-title">Got an idea worth <em>building</em>?</h2>
+                <a href="mailto:hello@digitalmacaroni.io" class="colophon-email">
+                    hello@digitalmacaroni.io
+                    <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 16L16 4M16 4H7M16 4V13" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
                     </svg>
                 </a>
-                <p>&copy; 2026 Digital Macaroni</p>
-                <p class="mt-1">Building the future of work and health.</p>
+                <dl class="colophon-list">
+                    <div><dt>Live</dt><dd><a href="https://rankladder.app" target="_blank" rel="noopener noreferrer">RankLadder</a>, <a href="https://kaivo.app" target="_blank" rel="noopener noreferrer">Kaivo</a>, <a href="https://askkazmo.com" target="_blank" rel="noopener noreferrer">Ask Kazmo</a></dd></div>
+                    <div><dt>In build</dt><dd>ProteinLoop, Kinetikk</dd></div>
+                    <div><dt>Phone</dt><dd><a href="tel:+12063995382">+1 (206) 399-5382</a></dd></div>
+                    <div><dt>Social</dt><dd><a href="https://www.linkedin.com/company/digitalmacaroni/" target="_blank" rel="noopener noreferrer">LinkedIn</a></dd></div>
+                </dl>
             </div>
-            <div class="text-center md:text-right flex flex-col items-center md:items-end gap-2">
-                <p>30 N Gould St Ste N, Sheridan, WY 82801</p>
-                <a href="tel:+12063995382" class="hover:text-white transition-colors">+1 (206) 399-5382</a>
-                <a href="mailto:hello@digitalmacaroni.io"
-                    class="hover:text-white transition-colors">hello@digitalmacaroni.io</a>
-            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>© 2026 Digital Macaroni</div>
+            <div>hello@digitalmacaroni.io</div>
+            <div>Building practical software.</div>
         </div>
     </footer>
 
     <script>
-        // Spotlight Effect
-        document.querySelectorAll('.spotlight-card').forEach(card => {
-            card.onmousemove = e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            }
+        // Overlay menu
+        const menuToggle = document.getElementById('menuToggle');
+        const siteMenu = document.getElementById('siteMenu');
+        const setMenu = (open) => {
+            menuToggle.setAttribute('aria-expanded', String(open));
+            siteMenu.setAttribute('aria-hidden', String(!open));
+            siteMenu.classList.toggle('open', open);
+            document.body.classList.toggle('menu-open', open);
+        };
+        menuToggle.addEventListener('click', () => setMenu(!siteMenu.classList.contains('open')));
+        siteMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') setMenu(false);
         });
+
+        // Side rail: click to scroll, highlight active section
+        const railDots = document.querySelectorAll('.rail-dot');
+        railDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                document.getElementById(dot.dataset.target)?.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+        const trackedIds = ['cover', 'rankladder', 'kazmo', 'kaivo', 'build', 'philosophy', 'process', 'contact'];
+        const trackedEls = trackedIds.map(id => document.getElementById(id)).filter(Boolean);
+        if ('IntersectionObserver' in window) {
+            const railIo = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        railDots.forEach(d => d.classList.toggle('active', d.dataset.target === id));
+                    }
+                });
+            }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+            trackedEls.forEach(el => railIo.observe(el));
+        }
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const revealIfVisible = (el) => {
+            const r = el.getBoundingClientRect();
+            if (r.top < window.innerHeight + 200) el.classList.add('in');
+        };
+        reveals.forEach(revealIfVisible);
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('in');
+                        io.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.05, rootMargin: '0px 0px 100px 0px' });
+            reveals.forEach(el => { if (!el.classList.contains('in')) io.observe(el); });
+        } else {
+            reveals.forEach(el => el.classList.add('in'));
+        }
+        setTimeout(() => reveals.forEach(el => el.classList.add('in')), 2000);
     </script>
+
 </body>
+
+</html>
