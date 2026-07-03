@@ -428,18 +428,28 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: 0 0 0 4px rgba(255,255,255,0.28);
 }
 
-/* Reviews ladder visual */
-.visual-ladder { display: flex; flex-direction: column-reverse; gap: 8px; width: 82%; max-width: 380px; }
-.visual-ladder > div { height: 18px; background: #fff; border-radius: 2px; opacity: 0.22; position: relative; }
-.visual-ladder > div::after {
-  content: attr(data-stars); position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-  font-family: var(--mono); font-size: 10px; color: var(--spread, var(--red)); letter-spacing: 0.04em;
+/* RankLadder visual (answered call) */
+.visual-call { position: relative; width: 42%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+.visual-call .call-ring {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.55);
+  animation: call-pulse 2.4s ease-out infinite;
 }
-.visual-ladder > div:nth-child(1) { width: 30%; opacity: 0.22; }
-.visual-ladder > div:nth-child(2) { width: 46%; opacity: 0.4; }
-.visual-ladder > div:nth-child(3) { width: 63%; opacity: 0.6; }
-.visual-ladder > div:nth-child(4) { width: 82%; opacity: 0.82; }
-.visual-ladder > div:nth-child(5) { width: 100%; opacity: 1; }
+.visual-call .call-icon { position: relative; color: #fff; z-index: 1; }
+.visual-call .call-badge {
+  position: absolute; bottom: 4%; right: 4%;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--spread, var(--red));
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+}
+@keyframes call-pulse {
+  0% { transform: scale(0.6); opacity: 0.85; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
 
 /* Kaivo voice waveform visual */
 .visual-wave { display: grid; grid-auto-flow: column; gap: 6px; width: 100%; max-width: 400px; height: 46%; align-items: center; }
@@ -672,6 +682,7 @@ button { font-family: inherit; cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; scroll-snap-type: none; }
   .visual-wave > div { animation: none; }
+  .visual-call .call-ring { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .site-menu { transition: none; }
 }
