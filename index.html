@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Macaroni · AI venture studio</title>
     <meta name="description"
-        content="We build things that answer: RankLadder answers the phone, Kaivo answers a craving, Ask Kazmo answers a birth chart question. Three shipped, two in build.">
+        content="We build things that answer. RankLadder picks up your missed calls, Kaivo talks you down from a craving, and Kazmo finally explains your birth chart.">
     <meta name="keywords"
-        content="AI Venture Studio, RankLadder, Kaivo, quit nicotine app, Ask Kazmo, voice-first astrology, Kinetikk, ProteinLoop, SaaS, mobile applications, artificial intelligence">
+        content="AI venture studio, AI receptionist, local business software, RankLadder, Kaivo, quit nicotine app, Ask Kazmo, voice-first astrology, voice AI, SaaS, artificial intelligence">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Digital Macaroni">
     <link rel="canonical" href="https://digitalmacaroni.io">
@@ -17,35 +17,81 @@
 
     <meta property="og:title" content="Digital Macaroni · AI venture studio">
     <meta property="og:description"
-        content="We build things that answer: RankLadder answers the phone, Kaivo answers a craving, Ask Kazmo answers a birth chart question. Three shipped, two in build.">
+        content="We build things that answer. RankLadder picks up your missed calls, Kaivo talks you down from a craving, and Kazmo finally explains your birth chart.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://digitalmacaroni.io">
     <meta property="og:site_name" content="Digital Macaroni">
+    <meta property="og:locale" content="en_US">
     <meta property="og:image" content="https://digitalmacaroni.io/Logos/Digital-Macaroni.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Digital Macaroni logo">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Digital Macaroni · AI venture studio">
     <meta name="twitter:description"
-        content="We build things that answer: RankLadder answers the phone, Kaivo answers a craving, Ask Kazmo answers a birth chart question. Three shipped, two in build.">
+        content="We build things that answer. RankLadder picks up your missed calls, Kaivo talks you down from a craving, and Kazmo finally explains your birth chart.">
     <meta name="twitter:image" content="https://digitalmacaroni.io/Logos/Digital-Macaroni.png">
+    <meta name="twitter:image:alt" content="Digital Macaroni logo">
 
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Digital Macaroni",
-      "description": "AI-first venture studio building practical software for SMBs and consumers",
-      "foundingDate": "2024",
-      "url": "https://digitalmacaroni.io",
-      "email": "hello@digitalmacaroni.io",
-      "knowsAbout": ["Artificial Intelligence", "Voice AI", "Software Development", "SaaS", "Mobile Applications", "Behavior Change"]
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://digitalmacaroni.io/#organization",
+          "name": "Digital Macaroni",
+          "description": "Independent AI venture studio building practical software for local businesses and everyday people.",
+          "foundingDate": "2024",
+          "url": "https://digitalmacaroni.io",
+          "logo": "https://digitalmacaroni.io/Logos/Digital-Macaroni.png",
+          "email": "hello@digitalmacaroni.io",
+          "telephone": "+1-206-399-5382",
+          "sameAs": ["https://www.linkedin.com/company/digitalmacaroni/"],
+          "knowsAbout": ["Artificial Intelligence", "Voice AI", "AI Receptionists", "Software Development", "SaaS", "Behavior Change"]
+        },
+        {
+          "@type": "ItemList",
+          "name": "Digital Macaroni products",
+          "itemListElement": [
+            {
+              "@type": "SoftwareApplication",
+              "position": 1,
+              "name": "RankLadder",
+              "url": "https://rankladder.app",
+              "applicationCategory": "BusinessApplication",
+              "description": "AI receptionist for local businesses. Answers missed calls before voicemail does and texts the job details to the owner.",
+              "creator": { "@id": "https://digitalmacaroni.io/#organization" }
+            },
+            {
+              "@type": "SoftwareApplication",
+              "position": 2,
+              "name": "Ask Kazmo",
+              "url": "https://askkazmo.com",
+              "applicationCategory": "LifestyleApplication",
+              "description": "Voice-first astrology app that turns a birth chart into an ongoing conversation.",
+              "creator": { "@id": "https://digitalmacaroni.io/#organization" }
+            },
+            {
+              "@type": "SoftwareApplication",
+              "position": 3,
+              "name": "Kaivo",
+              "url": "https://kaivo.app",
+              "applicationCategory": "HealthApplication",
+              "description": "Voice coaching app that talks people through nicotine cravings in real time.",
+              "creator": { "@id": "https://digitalmacaroni.io/#organization" }
+            }
+          ]
+        }
+      ]
     }
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Instrument+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:ital,opsz,wght@0,12..96,200..800;1,12..96,200..800&family=Instrument+Sans:wght@400;500;600&family=Geist:wght@500;600;700&family=Geist+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/src/styles.css">
 </head>
@@ -73,10 +119,9 @@
                 <li style="--c:var(--red)"><a href="#rankladder"><span class="n">01</span>RankLadder</a></li>
                 <li style="--c:var(--navy)"><a href="#kazmo"><span class="n">02</span>Ask Kazmo</a></li>
                 <li style="--c:var(--forest)"><a href="#kaivo"><span class="n">03</span>Kaivo</a></li>
-                <li style="--c:var(--muted-dot)"><a href="#build"><span class="n">04</span>In build</a></li>
-                <li style="--c:var(--red)"><a href="#philosophy"><span class="n">05</span>Philosophy</a></li>
-                <li style="--c:var(--red)"><a href="#process"><span class="n">06</span>How we work</a></li>
-                <li style="--c:var(--red)"><a href="#contact"><span class="n">07</span>Contact</a></li>
+                <li style="--c:var(--red)"><a href="#philosophy"><span class="n">04</span>Philosophy</a></li>
+                <li style="--c:var(--red)"><a href="#process"><span class="n">05</span>How we work</a></li>
+                <li style="--c:var(--red)"><a href="#contact"><span class="n">06</span>Contact</a></li>
             </ol>
             <div class="site-menu-foot">
                 <a href="mailto:hello@digitalmacaroni.io">hello@digitalmacaroni.io</a>
@@ -90,7 +135,6 @@
         <button class="rail-dot" data-target="rankladder" style="--c:var(--red)" aria-label="RankLadder"></button>
         <button class="rail-dot" data-target="kazmo" style="--c:var(--navy)" aria-label="Ask Kazmo"></button>
         <button class="rail-dot" data-target="kaivo" style="--c:var(--forest)" aria-label="Kaivo"></button>
-        <button class="rail-dot" data-target="build" style="--c:var(--muted-dot)" aria-label="In build"></button>
         <button class="rail-dot" data-target="philosophy" style="--c:var(--red)" aria-label="Philosophy"></button>
         <button class="rail-dot" data-target="process" style="--c:var(--red)" aria-label="How we work"></button>
         <button class="rail-dot" data-target="contact" style="--c:var(--red)" aria-label="Contact"></button>
@@ -100,23 +144,19 @@
 
         <section class="cover" id="cover">
             <div class="wrap cover-inner">
-                <div class="cover-eyebrow">Vol. 01 — 2026 edition · An independent digital studio</div>
                 <h1 class="cover-headline">We build<br>things that<br><em>answer</em>.</h1>
-                <p class="cover-dek">A missed call, a craving at 11pm, a question about your own chart —
-                    moments that used to just ring out. We're three people, not a boardroom, and we'd rather
-                    ship the phone system, the coach, and the astrologer than pitch you a deck about any of
-                    them.</p>
+                <p class="cover-dek">A missed call. A craving at 11pm. A question about your own chart.
+                    Most software shrugs at moments like these. We build the kind that picks up.</p>
                 <div class="cover-facts">
                     <span>Founded 2024</span>
-                    <span>Team of three</span>
-                    <span>3 shipped</span>
-                    <span>2 in build</span>
+                    <span>Independent</span>
+                    <span>3 products</span>
                 </div>
                 <div class="cover-index">
                     <a href="#rankladder" class="cover-index-item" style="--c:var(--red)">
                         <span class="ci-num">01</span>
                         <span class="ci-name">RankLadder</span>
-                        <span class="ci-tag">Live · B2B</span>
+                        <span class="ci-tag">Local · B2B</span>
                     </a>
                     <a href="#kazmo" class="cover-index-item" style="--c:var(--navy)">
                         <span class="ci-num">02</span>
@@ -128,11 +168,6 @@
                         <span class="ci-name">Kaivo</span>
                         <span class="ci-tag">Live · Health</span>
                     </a>
-                    <a href="#build" class="cover-index-item" style="--c:var(--muted-dot)">
-                        <span class="ci-num">04</span>
-                        <span class="ci-name">ProteinLoop &amp; Kinetikk</span>
-                        <span class="ci-tag">In build</span>
-                    </a>
                 </div>
             </div>
         </section>
@@ -141,14 +176,14 @@
             <div class="spread-watermark" aria-hidden="true">01</div>
             <div class="wrap spread-grid">
                 <div class="spread-copy">
-                    <div class="spread-index">01 / 05 — Live</div>
                     <h2 class="spread-name">RankLadder</h2>
-                    <p class="spread-desc">The phone stops going to voicemail. RankLadder answers before it
-                        rings out, using what it already knows about your business, and texts you the job
-                        before you've even noticed the missed call — before it becomes work for someone else.</p>
+                    <p class="spread-desc">Every missed call is a customer dialing your competitor next.
+                        RankLadder picks up before voicemail does, talks like it actually works there, and
+                        texts you the job while you're still elbow-deep in the last one. Voicemail never
+                        stood a chance.</p>
                     <div class="spread-meta">
                         <span class="spread-tag">B2B · AI Receptionist</span>
-                        <span class="spread-tag">Live since 2024</span>
+                        <span class="spread-tag">Built for local businesses</span>
                     </div>
                     <a href="https://rankladder.app" target="_blank" rel="noopener noreferrer" class="spread-link">
                         Visit rankladder.app
@@ -182,21 +217,21 @@
             <div class="wrap spread-grid">
                 <div class="spread-art">
                     <div class="visual-celestial">
+                        <div class="visual-celestial-orbit"><span class="visual-celestial-orbit-dot"></span></div>
                         <div class="visual-celestial-ring"></div>
                         <div class="visual-celestial-disc"></div>
-                        <div class="visual-celestial-star" style="top:8%;left:72%;"></div>
-                        <div class="visual-celestial-star" style="top:60%;left:90%;width:7px;height:7px;"></div>
-                        <div class="visual-celestial-star" style="top:88%;left:38%;width:7px;height:7px;"></div>
-                        <div class="visual-celestial-star" style="top:28%;left:-4%;width:7px;height:7px;"></div>
+                        <div class="visual-celestial-star" style="top:8%;left:72%;--delay:0s"></div>
+                        <div class="visual-celestial-star" style="top:60%;left:90%;width:7px;height:7px;--delay:.8s"></div>
+                        <div class="visual-celestial-star" style="top:88%;left:38%;width:7px;height:7px;--delay:1.6s"></div>
+                        <div class="visual-celestial-star" style="top:28%;left:-4%;width:7px;height:7px;--delay:2.4s"></div>
                     </div>
                 </div>
                 <div class="spread-copy">
-                    <div class="spread-index">02 / 05 — Live</div>
                     <h2 class="spread-name">Ask Kazmo</h2>
-                    <p class="spread-desc">Stop reading your horoscope. Start talking to your chart. Kazmo
-                        turns a birth chart into a conversation — ask about timing, relationships, or why this
-                        week feels like a lot, then ask again. It answers like the wise friend who picked up
-                        at 2am.</p>
+                    <p class="spread-desc">Your horoscope doesn't know you. Your birth chart does. Kazmo turns
+                        it into a conversation. Ask about timing, about the relationship, about why this week
+                        feels like a lot. Then ask the follow-up. It answers like the friend who always picks
+                        up at 2am.</p>
                     <div class="spread-meta">
                         <span class="spread-tag">Consumer · Lifestyle</span>
                         <span class="spread-tag">Voice-first astrology</span>
@@ -216,11 +251,11 @@
             <div class="spread-watermark" aria-hidden="true">03</div>
             <div class="wrap spread-grid">
                 <div class="spread-copy">
-                    <div class="spread-index">03 / 05 — Live</div>
                     <h2 class="spread-name">Kaivo</h2>
-                    <p class="spread-desc">A quieter voice for quitting nicotine. Cravings peak around 90
-                        seconds — Kaivo picks up, listens, and talks you through it in real time. No streaks
-                        to break, no lectures, just someone on your side at 2pm or 2am.</p>
+                    <p class="spread-desc">A craving peaks in about 90 seconds. That's the whole fight.
+                        Kaivo answers, listens, and talks you through the minute and a half that actually
+                        matters. No streaks, no lectures, no shame. Just a quieter voice on your side,
+                        at 2pm or 2am.</p>
                     <div class="spread-meta">
                         <span class="spread-tag">Consumer · Health</span>
                         <span class="spread-tag">Voice coaching</span>
@@ -234,58 +269,26 @@
                     </a>
                 </div>
                 <div class="spread-art">
-                    <div class="visual-wave">
-                        <div style="--h:38%;--i:0"></div>
-                        <div style="--h:64%;--i:1"></div>
-                        <div style="--h:42%;--i:2"></div>
-                        <div style="--h:88%;--i:3"></div>
-                        <div style="--h:56%;--i:4"></div>
-                        <div style="--h:100%;--i:5"></div>
-                        <div style="--h:52%;--i:6"></div>
-                        <div style="--h:72%;--i:7"></div>
-                        <div style="--h:40%;--i:8"></div>
-                        <div style="--h:60%;--i:9"></div>
-                        <div style="--h:34%;--i:10"></div>
-                        <div style="--h:80%;--i:11"></div>
-                        <div style="--h:46%;--i:12"></div>
-                        <div style="--h:66%;--i:13"></div>
-                        <div style="--h:36%;--i:14"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="spread build reveal" id="build">
-            <div class="wrap">
-                <div class="spread-index dark">04 / 05 — In build</div>
-                <h2 class="build-heading">Two more, not live yet.</h2>
-                <div class="build-grid">
-                    <div class="build-item">
-                        <div class="build-art">
-                            <div class="visual-motion">
-                                <div class="hoop"></div>
-                                <div class="hoop"></div>
-                                <div class="hoop"></div>
-                                <div class="hoop"></div>
-                                <div class="rep-dot"></div>
-                            </div>
+                    <div class="visual-kaivo">
+                        <div class="breathe-ring"></div>
+                        <div class="breathe-ring" style="animation-delay:1.3s"></div>
+                        <div class="visual-wave">
+                            <div style="--h:38%;--i:0"></div>
+                            <div style="--h:64%;--i:1"></div>
+                            <div style="--h:42%;--i:2"></div>
+                            <div style="--h:88%;--i:3"></div>
+                            <div style="--h:56%;--i:4"></div>
+                            <div style="--h:100%;--i:5"></div>
+                            <div style="--h:52%;--i:6"></div>
+                            <div style="--h:72%;--i:7"></div>
+                            <div style="--h:40%;--i:8"></div>
+                            <div style="--h:60%;--i:9"></div>
+                            <div style="--h:34%;--i:10"></div>
+                            <div style="--h:80%;--i:11"></div>
+                            <div style="--h:46%;--i:12"></div>
+                            <div style="--h:66%;--i:13"></div>
+                            <div style="--h:36%;--i:14"></div>
                         </div>
-                        <h3>Kinetikk</h3>
-                        <p>Computer vision for the gym. Counts reps, catches form breakdown, in real time.</p>
-                        <span class="spread-tag">Consumer · Health</span>
-                    </div>
-                    <div class="build-item">
-                        <div class="build-art">
-                            <div class="pill-stack">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
-                        </div>
-                        <h3>ProteinLoop</h3>
-                        <p>One number, every day. The macro tracker for people who only care about protein.</p>
-                        <span class="spread-tag">Consumer · Health</span>
                     </div>
                 </div>
             </div>
@@ -293,10 +296,10 @@
 
         <section class="quote reveal" id="philosophy">
             <div class="wrap">
-                <div class="section-num"><strong>05</strong>Philosophy</div>
+                <div class="section-num"><strong>04</strong>Philosophy</div>
                 <div class="quote-grid">
                     <blockquote class="quote-main">
-                        Three people who ship something on Tuesday will always beat fifty
+                        Shipping something on Tuesday will always beat fifty people
                         <em>who meet about it on Thursday.</em>
                     </blockquote>
                     <ol class="quote-notes">
@@ -304,28 +307,27 @@
                             <span class="qn-num">01</span>
                             <div>
                                 <h4>Purpose-built tools.</h4>
-                                <p>We ignore hype cycles. We look for unglamorous, everyday problems — missed
-                                    calls, cravings, macros, a chart nobody explained to you — and build
-                                    software that solves them and stays out of the way.</p>
+                                <p>Hype cycles come and go. Missed calls and 11pm cravings stick around.
+                                    We pick the unglamorous problems people actually have, build the tool
+                                    that fixes them, and then get out of the way.</p>
                             </div>
                         </li>
                         <li style="--c:var(--plum)">
                             <span class="qn-num">02</span>
                             <div>
-                                <h4>Speed to utility.</h4>
-                                <p>No staging environments, no roadmap theatre. We ship the first working
-                                    version in weeks, watch what people actually do with it, and let real use
-                                    earn the next feature.</p>
+                                <h4>Speed over ceremony.</h4>
+                                <p>No roadmap theater, no coming-soon page. We ship a working version in
+                                    weeks, put it in front of real people, and let real use earn the next
+                                    feature.</p>
                             </div>
                         </li>
                         <li style="--c:var(--amber)">
                             <span class="qn-num">03</span>
                             <div>
                                 <h4>Small on purpose.</h4>
-                                <p>We could grow the team. We don't, because the same people who build
-                                    RankLadder, Kaivo, and Ask Kazmo are the ones who read what customers say
-                                    about them. Nobody here is more than one conversation away from the thing
-                                    that's actually broken.</p>
+                                <p>We could hire. We don't. The same hands that build RankLadder, Kaivo,
+                                    and Ask Kazmo read every support email. Nobody here is more than one
+                                    conversation away from the thing that's actually broken.</p>
                             </div>
                         </li>
                     </ol>
@@ -335,31 +337,30 @@
 
         <section class="method reveal" id="process">
             <div class="wrap">
-                <div class="section-num"><strong>06</strong>How we work</div>
+                <div class="section-num"><strong>05</strong>How we work</div>
                 <h2 class="method-title">Hunch to live, in a <em>few</em> weeks.</h2>
                 <ol class="method-list">
                     <li class="method-item">
                         <div class="method-when">Week 0</div>
                         <h3>Find the pain</h3>
-                        <p>We look for unglamorous problems with a clear daily user and a willingness to pay.
-                            If we can't describe it in a sentence, we drop it.</p>
+                        <p>We look for unglamorous problems with a clear daily user and someone willing to
+                            pay for the fix. Can't explain it in one sentence? We drop it.</p>
                     </li>
                     <li class="method-item">
                         <div class="method-when">Week 1–3</div>
                         <h3>Ship v1</h3>
-                        <p>A small team puts a working tool in front of real users inside three weeks. No
-                            staging, no waiting room.</p>
+                        <p>Three weeks, one working tool, real users. No staging, no waiting room.</p>
                     </li>
                     <li class="method-item">
                         <div class="method-when">Month 2–6</div>
                         <h3>Find the loop</h3>
-                        <p>We watch how people actually use it. The one behaviour that compounds gets all our
-                            attention. Everything else gets cut.</p>
+                        <p>We watch what people actually do with it. The one habit that compounds gets all
+                            our attention. Everything else gets cut.</p>
                     </li>
                     <li class="method-item">
                         <div class="method-when">Year 1+</div>
                         <h3>Keep it running</h3>
-                        <p>We operate the products we build. Operators and capital come in only when growth
+                        <p>We run the products we build. Operators and capital come in only when growth
                             says so, not before.</p>
                     </li>
                 </ol>
@@ -368,7 +369,7 @@
 
         <section class="colophon reveal" id="contact">
             <div class="wrap">
-                <div class="section-num light"><strong>07</strong>Contact</div>
+                <div class="section-num light"><strong>06</strong>Contact</div>
                 <h2 class="colophon-title">Got an idea worth <em>building</em>?</h2>
                 <a href="mailto:hello@digitalmacaroni.io" class="colophon-email">
                     hello@digitalmacaroni.io
@@ -378,8 +379,7 @@
                     </svg>
                 </a>
                 <dl class="colophon-list">
-                    <div><dt>Live</dt><dd><a href="https://rankladder.app" target="_blank" rel="noopener noreferrer">RankLadder</a>, <a href="https://kaivo.app" target="_blank" rel="noopener noreferrer">Kaivo</a>, <a href="https://askkazmo.com" target="_blank" rel="noopener noreferrer">Ask Kazmo</a></dd></div>
-                    <div><dt>In build</dt><dd>ProteinLoop, Kinetikk</dd></div>
+                    <div><dt>Products</dt><dd><a href="https://rankladder.app" target="_blank" rel="noopener noreferrer">RankLadder</a>, <a href="https://kaivo.app" target="_blank" rel="noopener noreferrer">Kaivo</a>, <a href="https://askkazmo.com" target="_blank" rel="noopener noreferrer">Ask Kazmo</a></dd></div>
                     <div><dt>Phone</dt><dd><a href="tel:+12063995382">+1 (206) 399-5382</a></dd></div>
                     <div><dt>Social</dt><dd><a href="https://www.linkedin.com/company/digitalmacaroni/" target="_blank" rel="noopener noreferrer">LinkedIn</a></dd></div>
                 </dl>
@@ -392,7 +392,7 @@
         <div class="footer-inner">
             <div>© 2026 Digital Macaroni</div>
             <div>hello@digitalmacaroni.io</div>
-            <div>Building practical software.</div>
+            <div>Software that actually answers.</div>
         </div>
     </footer>
 
@@ -419,7 +419,7 @@
                 document.getElementById(dot.dataset.target)?.scrollIntoView({ behavior: 'smooth' });
             });
         });
-        const trackedIds = ['cover', 'rankladder', 'kazmo', 'kaivo', 'build', 'philosophy', 'process', 'contact'];
+        const trackedIds = ['cover', 'rankladder', 'kazmo', 'kaivo', 'philosophy', 'process', 'contact'];
         const trackedEls = trackedIds.map(id => document.getElementById(id)).filter(Boolean);
         if ('IntersectionObserver' in window) {
             const railIo = new IntersectionObserver((entries) => {
@@ -455,8 +455,6 @@
         }
         setTimeout(() => reveals.forEach(el => el.classList.add('in')), 2000);
     </script>
-
-    <script async src="https://app.rankladder.app/widget/v1.js" data-rl-widget="wk_wFIy1Ddo1wR4D0lYxmyKZqkmvRsKxhsp"></script>
 
 </body>
 

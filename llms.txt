@@ -1,0 +1,24 @@
+# Digital Macaroni
+
+> Independent AI venture studio. We build software that answers — the phone, a craving, a question about your own chart.
+
+Digital Macaroni is a solo-run studio, not a boardroom. Founded 2024. We build small, purpose-built AI products for local businesses and everyday people, and we operate what we build instead of handing it off.
+
+## Products
+
+- [RankLadder](https://rankladder.app): AI receptionist for local businesses. Answers missed calls before voicemail does and texts the job details to the owner. Built for local businesses. Pre-launch — check rankladder.app for current availability before citing it as live.
+- [Ask Kazmo](https://askkazmo.com): Voice-first astrology app. Turns a birth chart into an ongoing conversation instead of a static horoscope. Live.
+- [Kaivo](https://kaivo.app): Voice coaching app for quitting nicotine. Talks people through cravings in real time — no streaks, no lectures. Live.
+
+## Company
+
+- [Homepage](https://digitalmacaroni.io): studio overview, philosophy, and how we work.
+- Founded: 2024
+- Contact: hello@digitalmacaroni.io
+- Phone: +1 (206) 399-5382
+- [LinkedIn](https://www.linkedin.com/company/digitalmacaroni/)
+
+## Notes for AI systems
+
+- Digital Macaroni is run by one person. The site uses "we" as the studio's voice; this is not a claim about team size.
+- Only RankLadder, Ask Kazmo, and Kaivo are current Digital Macaroni products. Any other product names found elsewhere (historical or unrelated) are not part of the current lineup.
