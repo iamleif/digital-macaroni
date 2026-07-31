@@ -96,17 +96,6 @@ body {
     width: 100%;
     height: 100%;
     display: block;
-    filter: drop-shadow(0 0 22px rgba(var(--glow), 0.34));
-}
-
-/* soft halo behind the arch, like light off a horizon */
-.arch-glow {
-    position: absolute;
-    inset: -42%;
-    z-index: 0;
-    background: radial-gradient(circle at 50% 46%, rgba(var(--glow), 0.30) 0%, rgba(var(--glow), 0.08) 34%, transparent 66%);
-    filter: blur(6px);
-    animation: pulse 7s ease-in-out infinite;
 }
 
 /* --- Wordmark -------------------------------------------------- */
@@ -203,11 +192,6 @@ body {
     50% { transform: translateY(-9px); }
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 0.75; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.06); }
-}
-
 @media (max-width: 520px) {
     .footer {
         gap: 0.5em 0.7em;
@@ -225,8 +209,7 @@ body {
     .mark,
     .tagline,
     .footer,
-    .arch,
-    .arch-glow {
+    .arch {
         animation: none;
     }
 }
