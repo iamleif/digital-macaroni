@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "lodgify",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-13",
+  "releaseDate": {
+    "date": "2013-08-29",
+    "precision": "day",
+    "sourceId": "lodgify-turns-10"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No new hands-on test was completed.",
+      "Reports cover different property counts and channel combinations.",
+      "OTA connections and plan limits can change and should be checked before buying.",
+      "Trustpilot has a much larger sample than the other sources and may overrepresent onboarding experiences."
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-website",
+      "name": "Lodgify official website",
+      "url": "https://www.lodgify.com",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Direct booking", "Channel management", "Reservations", "Guest messaging"]
+    },
+    {
+      "id": "official-about",
+      "name": "About Lodgify",
+      "url": "https://www.lodgify.com/about-us/",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Independent hosts", "Vacation rentals", "Company background"]
+    },
+    {
+      "id": "lodgify-turns-10",
+      "name": "Lodgify Turns 10",
+      "url": "https://www.lodgify.com/blog/lodgify-turns-10/",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Public launch", "Company history"]
+    },
+    {
+      "id": "official-pricing",
+      "name": "Lodgify pricing and plan features",
+      "url": "https://www.lodgify.com/pricing/",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Plans", "Booking fee", "Feature gates", "Property operations"]
+    },
+    {
+      "id": "g2",
+      "name": "Lodgify Reviews 2026 on G2",
+      "url": "https://www.g2.com/products/lodgify/reviews",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 65,
+      "keyThemes": ["Channel management", "Direct-booking sites", "Usability", "Support"]
+    },
+    {
+      "id": "capterra",
+      "name": "Lodgify verified reviews on Capterra",
+      "url": "https://www.capterra.com/p/131924/Lodgify/reviews/",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 100,
+      "keyThemes": ["Direct booking", "Central operations", "Customization", "Technical problems"]
+    },
+    {
+      "id": "trustpilot",
+      "name": "Lodgify customer reviews on Trustpilot",
+      "url": "https://uk.trustpilot.com/review/lodgify.com",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 4098,
+      "keyThemes": ["Onboarding", "Setup help", "Follow-through", "Synchronization"]
+    },
+    {
+      "id": "getapp",
+      "name": "Lodgify reviews on GetApp",
+      "url": "https://www.getapp.com/industries-software/a/lodgify/",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 50,
+      "keyThemes": ["Support", "Customization", "Integrations", "Pricing sync"]
+    },
+    {
+      "id": "app-store",
+      "name": "Lodgify Vacation Rental App reviews",
+      "url": "https://apps.apple.com/us/app/lodgify-vacation-rental-app/id1635159280?platform=iphone&see-all=reviews",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 238,
+      "keyThemes": ["Mobile performance", "Web parity", "Messaging", "Connections"]
+    },
+    {
+      "id": "reddit-small-host",
+      "name": "Lodgify feedback for a small host",
+      "url": "https://www.reddit.com/r/ShortTermRentals/comments/1mhdvt9/lodgify/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 10,
+      "keyThemes": ["Small portfolios", "Direct booking", "PriceLabs", "Early problems"]
+    },
+    {
+      "id": "reddit-optimization",
+      "name": "Advice for optimizing Lodgify",
+      "url": "https://www.reddit.com/r/ShortTermRentals/comments/1tc8pzq/advice_for_optimizing_use_of_lodgify/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 8,
+      "keyThemes": ["Migration", "Vrbo", "Blocked dates", "Double booking"]
+    },
+    {
+      "id": "reddit-switching",
+      "name": "Experiences switching to Lodgify",
+      "url": "https://www.reddit.com/r/ShortTermRentals/comments/1n5loyp/thinking_of_switching_to_lodgify_whats_been_your/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 20,
+      "keyThemes": ["Channel sync", "Calendar controls", "Interface", "Portfolio size"]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Lodgify says it launched publicly on August 29, 2013.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["lodgify-turns-10"]
+    },
+    {
+      "statement": "Lodgify combines a direct-booking website and booking engine with channel management, reservations, guest messaging, payments, analytics, and property operations.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["official-website", "official-pricing"]
+    },
+    {
+      "statement": "The product is best supported by evidence from independent hosts and small to midsize vacation-rental portfolios.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["official-about", "g2", "capterra", "reddit-small-host"]
+    },
+    {
+      "statement": "A direct-booking website is a repeated reason hosts choose Lodgify.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["g2", "capterra", "reddit-small-host", "reddit-switching"]
+    },
+    {
+      "statement": "Onboarding guidance and setup help receive strong praise across large review samples.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["trustpilot", "g2", "capterra"]
+    },
+    {
+      "statement": "Calendar and OTA synchronization failures can cause wrong availability and double bookings, although these reports are a minority of the total feedback.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["capterra", "getapp", "reddit-optimization", "reddit-switching"]
+    },
+    {
+      "statement": "Support earns praise during onboarding, while some users report slow or fragmented help after urgent operational failures.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["trustpilot", "g2", "getapp", "reddit-optimization"]
+    },
+    {
+      "statement": "The Starter plan includes a 1.9 percent booking fee, and higher-plan feature gates can raise the practical cost as booking volume grows.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["official-pricing"]
+    },
+    {
+      "statement": "The mobile app has credible reports of messaging, reporting, and connection problems and does not always match the web product.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["app-store"]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Small hosts repeatedly praise setup guidance and the speed of getting a basic portfolio running.",
+    "product": "The direct-booking and centralized operations package is useful, but even uncommon sync failures have serious consequences.",
+    "support": "Setup support is a strength. Reports of fragmented help during urgent operational problems keep the score lower.",
+    "billing": "The entry plan looks approachable, but its booking fee and higher-plan feature gates make value depend on booking volume.",
+    "overall": "Lodgify is a strong fit for small vacation-rental operators who want direct booking in the same system as daily operations. Larger or more complex portfolios should test every channel connection before committing."
+  },
+  "conflictsAndUnknowns": [
+    "Trustpilot shows very strong satisfaction, while detailed community and app-store reports describe high-impact synchronization failures.",
+    "Small hosts often find the platform simple and cost-effective, while larger operators report more limits in controls and reporting.",
+    "No new hands-on test was completed.",
+    "Current OTA behavior and plan gates can change and require buyer verification."
+  ]
+}

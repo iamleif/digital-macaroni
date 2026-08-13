@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="4200" height="700" viewBox="0 0 4200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Digital Macaroni LinkedIn company banner</title>
+  <desc id="desc">We use software. Say what we think. The left side is kept clear for LinkedIn's overlaid company avatar.</desc>
+
+  <rect width="4200" height="700" fill="#fff7e6"/>
+  <rect width="4200" height="14" fill="#191815"/>
+  <rect y="686" width="4200" height="14" fill="#191815"/>
+
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" fill="#191815">
+    <text x="950" y="276" font-size="142" font-weight="700" letter-spacing="-7">WE USE SOFTWARE.</text>
+    <text x="950" y="444" font-size="142" font-weight="700" letter-spacing="-7" fill="#ef4f2f">SAY WHAT WE THINK.</text>
+
+    <text x="950" y="610" font-size="42" font-weight="700" letter-spacing="3" fill="#ef4f2f">REVIEWED ON:</text>
+    <text x="1340" y="610" font-size="56" font-weight="700" letter-spacing="1">ONBOARDING / PRODUCT / SUPPORT / BILLING</text>
+  </g>
+
+  <rect x="3342" y="102" width="670" height="518" fill="#191815"/>
+  <rect x="3310" y="70" width="670" height="518" fill="#ef4f2f" stroke="#191815" stroke-width="14"/>
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif" fill="#fff7e6">
+    <text x="3370" y="326" font-size="250" font-weight="700" letter-spacing="-14">4</text>
+    <text x="3570" y="280" font-size="70" font-weight="700" letter-spacing="1">RATINGS.</text>
+
+    <line x1="3370" y1="352" x2="3915" y2="352" stroke="#fff7e6" stroke-width="6"/>
+
+    <text x="3370" y="565" font-size="250" font-weight="700" letter-spacing="-14">1</text>
+    <text x="3535" y="465" font-size="62" font-weight="700" letter-spacing="1">HONEST</text>
+    <text x="3535" y="535" font-size="62" font-weight="700" letter-spacing="1">SCORE.</text>
+  </g>
+</svg>

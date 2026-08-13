@@ -1,0 +1,46 @@
+{
+  "minimumIndependentPlatforms": 2,
+  "minimumVoiceSamples": 20,
+  "minimumTotalSources": 6,
+  "minimumCommunitySources": 1,
+  "requiredSourceGroups": [
+    "official",
+    "independent-review-platform"
+  ],
+  "preferredReviewPlatforms": [
+    "G2",
+    "Capterra",
+    "TrustRadius",
+    "GetApp",
+    "Software Advice",
+    "Trustpilot",
+    "Product Hunt",
+    "AppSumo"
+  ],
+  "communitySources": [
+    "Reddit",
+    "Hacker News",
+    "Indie Hackers",
+    "relevant specialist communities"
+  ],
+  "firstPartySources": [
+    "official product site",
+    "pricing page",
+    "documentation",
+    "terms and privacy pages",
+    "public changelog or status page"
+  ],
+  "rules": [
+    "AppSumo may be one source, but it may never be the only independent source.",
+    "Verify the product release date from a first-party launch post, changelog, documentation, or another strong dated source before scheduling a review.",
+    "Check Product Hunt and other dated launch directories as part of release-date research, but prefer a first-party dated record when one exists.",
+    "Never publish or backdate a review earlier than the verified product release date.",
+    "If no defensible public release date can be found, mark the candidate blocked and replace it. Never estimate a release date.",
+    "Use at least six sources, including two independent review platforms and one relevant community source.",
+    "Record the URL, access date, source type, sample count, and key themes for every source.",
+    "Treat vendor claims as claims until another source or hands-on testing confirms them.",
+    "Do not copy review wording. Summarize patterns and keep conflicting evidence.",
+    "Respect robots.txt, site terms, rate limits, authentication walls, and personal data.",
+    "Label anything we did not verify as unknown."
+  ]
+}

@@ -1,0 +1,20 @@
+import type { MetadataRoute } from "next";
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: [
+      { userAgent: "OAI-SearchBot", allow: "/" },
+      { userAgent: "ChatGPT-User", allow: "/" },
+      { userAgent: "PerplexityBot", allow: "/" },
+      { userAgent: "ClaudeBot", allow: "/" },
+      { userAgent: "anthropic-ai", allow: "/" },
+      { userAgent: "Google-Extended", allow: "/" },
+      { userAgent: "bingbot", allow: "/" },
+      { userAgent: "GPTBot", disallow: "/" },
+      { userAgent: "CCBot", disallow: "/" },
+      { userAgent: "*", allow: "/" },
+    ],
+    sitemap: "https://digitalmacaroni.io/sitemap.xml",
+    host: "https://digitalmacaroni.io",
+  };
+}

@@ -1,4 +1,10 @@
 node_modules
 .DS_Store
 dist
-.env
+.next
+.vercel
+*.tsbuildinfo
+__pycache__/
+*.py[cod]
+.env*
+!.env.example

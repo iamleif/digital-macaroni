@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "voicenotes",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-13",
+  "releaseDate": {
+    "date": "2024-05-13",
+    "precision": "day",
+    "sourceId": "product-hunt"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No new hands-on test was completed.",
+      "Public review reports do not establish how often recording or transcription failures occur.",
+      "The large App Store score must not erase smaller but material reliability reports."
+    ]
+  },
+  "sources": [
+    {
+      "id": "product-hunt",
+      "name": "Voicenotes Product Hunt launch and reviews",
+      "url": "https://www.producthunt.com/products/voicenotes",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 31,
+      "keyThemes": ["Launch date", "Capture", "Transcription", "Summaries", "Search", "Reliability", "Integrations"]
+    },
+    {
+      "id": "official-website",
+      "name": "Voicenotes official website",
+      "url": "https://voicenotes.com/",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Recording notes and meetings", "Transcription", "Summaries", "Search", "AI questions", "Content reuse"]
+    },
+    {
+      "id": "official-pricing",
+      "name": "Voicenotes pricing and billing guide",
+      "url": "https://help.voicenotes.com/en/articles/15389129-pricing-and-billing",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Basic plan", "Pro plan", "Recording storage", "Integrations", "Privacy claims"]
+    },
+    {
+      "id": "app-store",
+      "name": "Voicenotes App Store reviews",
+      "url": "https://apps.apple.com/us/app/voicenotes-ai-notes-meetings/id6483293628?platform=iphone&see-all=reviews",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 6600,
+      "keyThemes": ["Capture", "Transcription", "Reuse", "Recording loss", "Reliability"]
+    },
+    {
+      "id": "trustpilot",
+      "name": "Voicenotes reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/voicenotes.com",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 53,
+      "keyThemes": ["Ease of use", "Support", "Billing", "Service experience"]
+    },
+    {
+      "id": "g2",
+      "name": "Voicenotes seller reviews on G2",
+      "url": "https://www.g2.com/sellers/voicenotes",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 1,
+      "keyThemes": ["Phone", "Browser", "Desktop", "Watch", "Community"]
+    },
+    {
+      "id": "reddit-reliability",
+      "name": "Voicenotes transcription reliability discussion",
+      "url": "https://www.reddit.com/r/Voicenotesai/comments/1kh4qt4/having_used_a_few_different_tools_in_the_past_i/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 8,
+      "keyThemes": ["Quick notes", "To-do lists", "Meeting transcription", "Backup recordings", "Speaker labels"]
+    },
+    {
+      "id": "reddit-current-use",
+      "name": "Voicenotes current meeting and dictation discussion",
+      "url": "https://www.reddit.com/r/Voicenotesai/comments/1vg0rib/all_infinally/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 10,
+      "keyThemes": ["Product improvement", "Calendar gap", "Dictation quality", "Speaker naming"]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Voicenotes launched on May 13, 2024.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["product-hunt"]
+    },
+    {
+      "statement": "Voicenotes records notes and meetings, creates transcripts and summaries, supports search and AI questions, and can reuse captured material.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["official-website"]
+    },
+    {
+      "statement": "The official guide lists a free Basic plan with 100 minutes of weekly transcripts and summaries, and a Pro plan at $9 per user per month when checked.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["official-pricing"]
+    },
+    {
+      "statement": "Fast capture, searchable transcripts, summaries, simple access across devices, and reuse are repeated positive themes.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["product-hunt", "app-store", "g2", "reddit-current-use"]
+    },
+    {
+      "statement": "Recording loss, failed uploads, cut-off transcription, invented output, and missing meeting features are material reliability concerns even though they are not the majority view.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["product-hunt", "app-store", "reddit-reliability", "reddit-current-use"]
+    },
+    {
+      "statement": "Users value Voicenotes for quick notes and tasks but do not consistently trust it as the only record of important meetings.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": ["reddit-reliability", "app-store"]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "The basic capture flow is repeatedly described as simple, and the free plan gives people a clear way to try it across devices.",
+    "product": "Quick capture, search, summaries, and note questions solve a real daily problem. Recording loss and uneven transcription are too serious for a higher score.",
+    "support": "Public feedback includes both helpful service experiences and unresolved reliability concerns. The evidence does not support a top support score.",
+    "billing": "The free plan is generous and Pro pricing is clear. Buyers should prove the capture habit and reliability before paying for unlimited use.",
+    "overall": "Voicenotes is strong for low-stakes capture and finding old thoughts. It is not dependable enough to be the only record of an important meeting or interview."
+  },
+  "conflictsAndUnknowns": [
+    "The App Store has a large positive rating while smaller public samples contain serious recording and transcription complaints.",
+    "No new hands-on test was completed.",
+    "Pricing and product behavior can change quickly and need future checks."
+  ]
+}

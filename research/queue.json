@@ -1,0 +1,101 @@
+[
+  {
+    "slug": "twenty",
+    "product": "Twenty",
+    "productUrl": "https://twenty.com",
+    "status": "drafting",
+    "researchStatus": "documented",
+    "category": "CRM & sales",
+    "priority": 3
+  },
+  {
+    "slug": "recall",
+    "product": "Recall",
+    "productUrl": "https://www.getrecall.ai",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "AI tools",
+    "priority": 3
+  },
+  {
+    "slug": "lodgify",
+    "product": "Lodgify",
+    "productUrl": "https://www.lodgify.com",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "Property management",
+    "priority": 3
+  },
+  {
+    "slug": "linear",
+    "product": "Linear",
+    "productUrl": "https://linear.app",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "Project management",
+    "priority": 1
+  },
+  {
+    "slug": "openphone",
+    "product": "Quo",
+    "productUrl": "https://www.quo.com",
+    "status": "published",
+    "researchStatus": "needs-refresh",
+    "category": "Business phone",
+    "priority": 2
+  },
+  {
+    "slug": "voicenotes",
+    "product": "Voicenotes",
+    "productUrl": "https://voicenotes.com",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "AI tools",
+    "priority": 1
+  },
+  {
+    "slug": "wispr-flow",
+    "product": "Wispr Flow",
+    "productUrl": "https://wisprflow.ai",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "AI tools",
+    "priority": 1
+  },
+  {
+    "slug": "tally",
+    "product": "Tally",
+    "productUrl": "https://tally.so",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "No-code & automation",
+    "priority": 1
+  },
+  {
+    "slug": "saner-ai",
+    "product": "Saner.AI",
+    "productUrl": "https://saner.ai",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "AI tools",
+    "priority": 1
+  },
+  {
+    "slug": "typingmind",
+    "product": "TypingMind",
+    "productUrl": "https://www.typingmind.com",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "AI tools",
+    "priority": 1
+  },
+  {
+    "slug": "tella",
+    "product": "Tella",
+    "productUrl": "https://www.tella.com",
+    "status": "published",
+    "researchStatus": "documented",
+    "category": "Video & audio",
+    "priority": 1
+  }
+]

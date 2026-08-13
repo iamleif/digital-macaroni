@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "replace-me",
+  "reviewType": "research-based",
+  "researchStarted": "YYYY-MM-DD",
+  "researchUpdated": "YYYY-MM-DD",
+  "releaseDate": {
+    "date": "YYYY-MM-DD",
+    "precision": "day",
+    "sourceId": "official-launch"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": []
+  },
+  "sources": [
+    {
+      "id": "official-launch",
+      "name": "Official launch or changelog record",
+      "url": "https://example.com/changelog",
+      "accessed": "YYYY-MM-DD",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Public release date"]
+    },
+    {
+      "id": "official-homepage",
+      "name": "Official product website",
+      "url": "https://example.com",
+      "accessed": "YYYY-MM-DD",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": []
+    },
+    {
+      "id": "review-platform-one",
+      "name": "Independent review platform",
+      "url": "https://example.com/reviews",
+      "accessed": "YYYY-MM-DD",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 10,
+      "keyThemes": []
+    },
+    {
+      "id": "review-platform-two",
+      "name": "Second independent review platform",
+      "url": "https://example.org/reviews",
+      "accessed": "YYYY-MM-DD",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 10,
+      "keyThemes": []
+    },
+    {
+      "id": "community-one",
+      "name": "Relevant user community discussion",
+      "url": "https://example.net/discussion",
+      "accessed": "YYYY-MM-DD",
+      "sourceType": "community",
+      "reviewCountSampled": 5,
+      "keyThemes": []
+    },
+    {
+      "id": "editorial-one",
+      "name": "Independent editorial review",
+      "url": "https://example.net/review",
+      "accessed": "YYYY-MM-DD",
+      "sourceType": "editorial-review",
+      "reviewCountSampled": 1,
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "A specific factual claim used in the review.",
+      "kind": "fact",
+      "status": "unverified",
+      "sourceIds": ["official-homepage"]
+    },
+    {
+      "statement": "An explicitly identified Digital Macaroni judgment.",
+      "kind": "editorial-opinion",
+      "status": "editorial",
+      "sourceIds": []
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Evidence and reasoning for this score.",
+    "product": "Evidence and reasoning for this score.",
+    "support": "Evidence and reasoning for this score.",
+    "billing": "Evidence and reasoning for this score.",
+    "overall": "Why the final editorial score differs from or follows the component ratings."
+  },
+  "conflictsAndUnknowns": []
+}

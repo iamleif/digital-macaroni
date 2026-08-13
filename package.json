@@ -1,12 +1,20 @@
 {
   "name": "digitalmacaroni",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Independent writing about SaaS, customer experience, product design and AI.",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "tsc --noEmit",
+    "content:validate": "node scripts/validate-content.mjs",
+    "content:sync": "node --env-file-if-exists=.env.local scripts/sync-reviews-to-supabase.mjs",
+    "research:official": "python3 crawler/sync_official_sources.py",
+    "draft:review": "node --env-file-if-exists=.env.local scripts/draft-review.mjs",
+    "pipeline:reviews": "node --env-file-if-exists=.env.local scripts/process-review-queue.mjs",
+    "publish:review": "node scripts/publish-review.mjs",
+    "publish:check": "node scripts/publish-check.mjs"
   },
   "repository": {
     "type": "git",
@@ -15,14 +23,26 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/iamleif/digital-macaroni/issues"
   },
   "homepage": "https://github.com/iamleif/digital-macaroni#readme",
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "@supabase/supabase-js": "^2.112.3",
+    "gray-matter": "^4.0.3",
+    "next": "^16.0.0",
+    "next-mdx-remote": "^5.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.0",
-    "tailwindcss": "^4.3.0",
-    "vite": "^7.3.1"
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0"
   }
 }

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "recall",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-13",
+  "releaseDate": { "date": "2022-02-09", "precision": "day", "sourceId": "product-hunt-launch" },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No new hands-on test was completed.",
+      "Independent reports cover different browsers, languages, and library sizes.",
+      "The evidence does not establish long-term reliability for very large libraries.",
+      "Product Hunt feedback may lean more positive than long-term user reports."
+    ]
+  },
+  "sources": [
+    {"id":"product-hunt-launch","name":"Recall launch on Product Hunt","url":"https://www.producthunt.com/products/recall-6","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":null,"keyThemes":["Public launch","Product history"]},
+    {"id":"official-pricing","name":"Recall pricing and features","url":"https://app.getrecall.ai/pricing","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Supported content","Automatic tags","Chat","Knowledge graph"]},
+    {"id":"product-hunt-reviews","name":"Recall reviews on Product Hunt","url":"https://www.producthunt.com/products/recall-6/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":20,"keyThemes":["Saved content","Learning","Summaries","Recall"]},
+    {"id":"mozilla-reviews","name":"Recall Firefox extension reviews","url":"https://addons.mozilla.org/en-US/firefox/addon/getrecall/reviews/","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":4,"keyThemes":["Capture","Performance","Sign-in"]},
+    {"id":"reddit-thoughts","name":"Thoughts on Recall","url":"https://www.reddit.com/r/ProductivityApps/comments/1pi44pr/thoughts_on_recall/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Partial capture","Languages","Firefox","Bugs"]},
+    {"id":"reddit-quota","name":"Recall YouTube summary quota complaint","url":"https://www.reddit.com/r/OpenAI/comments/1ise7hb/youtube_ai_summary_do_not_subscribe_to/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":2,"keyThemes":["Unlimited use","Fair use","Refund"]},
+    {"id":"reddit-review","name":"Recall AI user review","url":"https://www.reddit.com/r/ProductivityApps/comments/1l5d4kd","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Podcast summaries","Knowledge graph","Value"]},
+    {"id":"productive-matters","name":"Recall AI in-depth review","url":"https://productivematters.substack.com/p/deep-dive-into-recall-ai","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":1,"keyThemes":["Automatic organization","Library chat","One-week test"]},
+    {"id":"official-requests","name":"Recall feature requests","url":"https://feedback.getrecall.ai/feature-requests","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Imports","Export","Security","Search"]}
+  ],
+  "claims": [
+    {"statement":"Recall launched publicly on February 9, 2022.","kind":"fact","status":"verified","sourceIds":["product-hunt-launch"]},
+    {"statement":"Recall is a personal AI knowledge base for saving, summarizing, organizing, searching, and chatting with articles, videos, podcasts, PDFs, and notes.","kind":"fact","status":"verified","sourceIds":["official-pricing"]},
+    {"statement":"Automatic summaries and organization reduce the work needed to turn saved material into a usable library.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt-reviews","reddit-review","productive-matters"]},
+    {"statement":"Users value links across saved material, especially the knowledge graph and whole-library chat.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt-reviews","reddit-review","productive-matters"]},
+    {"statement":"Some pages and mixed text-and-table content are captured only in part, which can weaken summaries and answers.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-thoughts"]},
+    {"statement":"Some Firefox users report extension performance and sign-in problems.","kind":"reported-pattern","status":"supported","sourceIds":["mozilla-reviews","reddit-thoughts"]},
+    {"statement":"Language handling and translation can be inconsistent.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-thoughts"]},
+    {"statement":"Marketing around unlimited summaries conflicts with one power-user report, while the company cites a fair-use limit for unusually costly automated use.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-quota","official-pricing"]}
+  ],
+  "scoreRationale": {
+    "onboarding": "Browser capture and automatic summaries make the first useful action easy, though browser-specific problems can interrupt it.",
+    "product": "Recall has a clear job and useful library-wide connections, but partial capture and language problems weaken trust in the saved record.",
+    "support": "The available conflict includes a company response and refund offer, but the independent evidence is too small to show consistently strong support.",
+    "billing": "The paid value can be good for active learners, but the conflict around unlimited use makes plan limits less clear than they should be.",
+    "overall": "Recall is useful for readers and researchers who revisit saved material. It is less convincing as a permanent knowledge archive until capture and large-library reliability improve."
+  },
+  "conflictsAndUnknowns": [
+    "Product Hunt feedback is strongly positive while a detailed paid-user account calls the product beta-like.",
+    "The meaning of unlimited summaries conflicts with one power user's experience and the company's fair-use explanation.",
+    "No new hands-on test was completed.",
+    "Long-term reliability at large library sizes is unknown."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "tally",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-13",
+  "releaseDate": { "date": "2021-03-08", "precision": "day", "sourceId": "product-hunt" },
+  "testing": { "accessedProduct": false, "plan": null, "version": null, "tasksAttempted": [], "limitations": ["No new hands-on test was completed.", "Ratings and review samples skew toward small organizations.", "The most useful criticisms concern advanced workflows, not simple forms."] },
+  "sources": [
+    {"id":"official-pricing","name":"Tally pricing","url":"https://tally.so/pricing","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Free plan","Integrations","Payments","Comparisons"]},
+    {"id":"product-hunt","name":"Tally on Product Hunt","url":"https://www.producthunt.com/products/tally","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":99,"keyThemes":["Launch date","Simple editor","Free plan","Logic","Integrations"]},
+    {"id":"g2","name":"Tally reviews on G2","url":"https://www.g2.com/products/tally-forms-tally/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":124,"keyThemes":["Ease of use","Free tier","Support","Advanced logic limits"]},
+    {"id":"capterra","name":"Tally reviews on Capterra","url":"https://www.capterra.com/p/10032029/Tally/","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":20,"keyThemes":["Survey building","Conditional logic","Form customization"]},
+    {"id":"reddit-saas","name":"Reddit discussion about why Tally succeeds","url":"https://www.reddit.com/r/SaaS/comments/16v7uzi/i_dont_get_it_how_does_something_like_tallyso/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":16,"keyThemes":["Simple editor","Free features","Notion-like workflow","Competitor tradeoffs"]},
+    {"id":"reddit-launch","name":"Tally launch discussion on Reddit","url":"https://www.reddit.com/r/TallyForms/comments/jfa2o1/meet_tally_a_new_type_of_form_builder/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":8,"keyThemes":["Beta launch","Fast form creation","User feedback"]}
+  ],
+  "claims": [
+    {"statement":"Tally launched on Product Hunt on March 8, 2021.","kind":"fact","status":"verified","sourceIds":["product-hunt"]},
+    {"statement":"Tally's official pricing page offers a free plan and describes forms, integrations, and payments.","kind":"fact","status":"verified","sourceIds":["official-pricing"]},
+    {"statement":"A clean document-like editor, generous free use, and useful integrations are repeated positive themes.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt","g2","capterra","reddit-saas"]},
+    {"statement":"Advanced logic and deep customization become more manual or limited as forms get more complex.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt","g2","reddit-saas"]}
+  ],
+  "scoreRationale": {"onboarding":"The document-like editor and direct free plan make first use unusually simple.","product":"Tally handles a broad set of normal form jobs well, but complex logic and heavy customization expose the product's limits.","support":"G2 and Product Hunt contain repeated praise for helpful support, but this review did not test support directly.","billing":"The free plan is a major part of the value. Users should still check fair-use limits before building a business-critical process.","overall":"Tally is the rare form builder that feels lighter than its category while still doing enough for most small teams."},
+  "conflictsAndUnknowns": ["Reviews are unusually positive across the major platforms.", "No new hands-on test was completed.", "Complex enterprise requirements were not independently tested."]
+}

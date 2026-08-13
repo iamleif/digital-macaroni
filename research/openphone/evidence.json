@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "openphone",
+  "legacy": true,
+  "reviewType": "legacy-editorial",
+  "researchUpdated": "2026-08-13",
+  "sources": [
+    {
+      "id": "official-homepage",
+      "name": "OpenPhone official website",
+      "url": "https://www.openphone.com",
+      "accessed": "2026-08-13",
+      "sourceType": "official"
+    }
+  ],
+  "claims": [],
+  "scoreRationale": {},
+  "conflictsAndUnknowns": ["Published before the formal evidence archive; requires a documented refresh."]
+}
