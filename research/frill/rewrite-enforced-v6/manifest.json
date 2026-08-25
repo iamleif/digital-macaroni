@@ -1,0 +1,84 @@
+{
+  "checkpointVersion": 4,
+  "slug": "frill",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "388393aac91ce6d523c6a1b9ac975612d9cf088c7d993c918e1a3c3b57036200",
+  "publicationDate": "2026-04-24",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "d376723480e7fdfbd7576c497f25a4942186df268177b5789effca34fdd24503",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "a43bb093c7f8314e5dfb5deed1f2d31eccee45f82ebcd0e566bc9477ba95260a",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.314Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "a041481184419fd40a017e0a756ea21d8dc51b3970ae8a73a81e90956de19397",
+      "predecessorSha256": "a43bb093c7f8314e5dfb5deed1f2d31eccee45f82ebcd0e566bc9477ba95260a",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.316Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.317Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.319Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.631Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.636Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T17:55:15.394Z",
+      "candidate": "attempts/005-writer_notebook-attempt-1.md",
+      "candidateSha256": "e3a7a1bc7196a014a41cde789421864ee06f8250582892aac3a09d77ff614f64"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "writer_notebook is too thin (99 words).",
+      "createdAt": "2026-08-18T17:55:21.730Z",
+      "candidate": "attempts/006-writer_notebook-attempt-2.md",
+      "candidateSha256": "9edcb800775162c4860b48e923651c3f262d4fd8087e8592b5b7072636726fa0"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.312Z",
+  "updatedAt": "2026-08-18T17:55:21.736Z"
+}

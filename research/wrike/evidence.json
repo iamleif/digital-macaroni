@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "wrike",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {"date":"2006-12-13","precision":"day","sourceId":"cnet-launch"},
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni workspace, form, proofing cycle, automation, report, mobile session, billing change, or support request was tested.",
+      "Wrike changed its plan structure in January 2026, so older price and feature accounts do not describe the current packages.",
+      "G2 and Capterra have shared ownership in 2026; TrustRadius and community discussions provide another check."
+    ]
+  },
+  "sources": [
+    {"id":"cnet-launch","name":"Wrike public beta coverage","url":"https://www.cnet.com/tech/services-and-software/wrike-harnesses-e-mail-for-collaboration/","accessed":"2026-08-13","sourceType":"launch-history","reviewCountSampled":null,"keyThemes":["Public beta","Early scope"]},
+    {"id":"features","name":"Wrike features","url":"https://www.wrike.com/features/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Projects","Requests","Proofing","Reports"]},
+    {"id":"pricing","name":"Wrike plans and pricing","url":"https://www.wrike.com/price/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Free","Team","Business","Seat groups"]},
+    {"id":"plans","name":"Types of plans in Wrike","url":"https://help.wrike.com/hc/en-us/articles/209605669-Types-of-Plans-in-Wrike","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Plan limits","Storage","Current packaging"]},
+    {"id":"g2","name":"Wrike reviews on G2","url":"https://www.g2.com/products/wrike/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":4525,"keyThemes":["Flexibility","Learning","Missing features"]},
+    {"id":"capterra","name":"Wrike reviews on Capterra","url":"https://www.capterra.com/p/76113/Wrike/reviews/","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":2600,"keyThemes":["Workflows","Adoption","Cost"]},
+    {"id":"trustradius","name":"Wrike reviews on TrustRadius","url":"https://www.trustradius.com/products/wrike","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":350,"keyThemes":["Coordination","Reports","Administration"]},
+    {"id":"reddit-price","name":"Wrike pricing discussion","url":"https://www.reddit.com/r/wrike/comments/1qu8sy4/wrikes_pricing_ruined_it_for_me/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":18,"keyThemes":["Forms","Proofing","Seat minimums","Support"]},
+    {"id":"reddit-compare","name":"Teamwork, Wrike, and Productive discussion","url":"https://www.reddit.com/r/projectmanagement/comments/1td0sfe/teamwork_v_wrike_v_productive/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":12,"keyThemes":["Depth","Complexity","AI"]},
+    {"id":"techradar","name":"Wrike hands-on review","url":"https://www.techradar.com/reviews/wrike","accessed":"2026-08-13","sourceType":"editorial-review","reviewCountSampled":1,"keyThemes":["Interface","Dashboards","Price"]}
+  ],
+  "claims": [
+    {"statement":"Wrike entered public beta on December 13, 2006.","kind":"fact","status":"verified","sourceIds":["cnet-launch"]},
+    {"statement":"Wrike combines task and project tracking with request forms, proofing, custom workflows, automation, reports, resource planning, documents, and AI features.","kind":"fact","status":"verified","sourceIds":["features","plans"]},
+    {"statement":"Free costs $0, Team is listed at $10 per user per month, and Business is $25 per user per month. Displayed paid prices are billed yearly.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"Flexible workflows, forms, reports, dashboards, and cross-team organization are the strongest repeated benefits.","kind":"reported-pattern","status":"supported","sourceIds":["g2","capterra","trustradius","reddit-price","reddit-compare"]},
+    {"statement":"Learning effort, administration, seat groups, annual billing, feature gates, and uneven support are the main repeated limits.","kind":"reported-pattern","status":"supported","sourceIds":["g2","capterra","trustradius","reddit-price","reddit-compare"]}
+  ],
+  "scoreRationale": {
+    "onboarding":"Basic task use is approachable, but a useful company-wide setup needs decisions about spaces, fields, forms, statuses, access, templates, and training.",
+    "product":"Wrike is strong when several teams need one configurable system for requests, work, review, and reporting. It is excessive for a small team that only needs a shared task list.",
+    "support":"Implementation help can matter because the product is broad. Public feedback about support and onboarding is mixed, and no request was tested.",
+    "billing":"Current entry prices are public, but annual billing, seat groups, feature gates, paid add-ons, and quoted upper plans make the real bill less simple.",
+    "overall":"Build one real request-to-completion process with ordinary users, a manager, and an outside reviewer. Buy only if it replaces other tracking and the exact seat quote remains worthwhile."
+  },
+  "conflictsAndUnknowns": [
+    "Wrike can feel intuitive for ordinary tasks and complex once a company adds its own fields, rules, reports, and access model.",
+    "Its broad feature set can replace scattered tools and create a large system that needs an owner.",
+    "Current product quality and frustration with current commercial terms can coexist.",
+    "No hands-on setup, proofing, reporting, mobile, billing, or support test was completed."
+  ]
+}

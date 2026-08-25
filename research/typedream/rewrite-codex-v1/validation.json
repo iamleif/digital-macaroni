@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "checks": {"structure": true, "source_integrity": true, "stance": true, "buyer_guidance": true, "humanizer": true, "similarity": true, "readability": true, "disclosure": true},
+  "metrics": {"grade": 5.9, "averageSentenceWords": 12, "wordCount": 758, "h2Count": 7, "sourceCount": 7, "maximumSimilarity": 0.0007, "mostSimilarSlug": "carrd", "stockHeadingCount": 1, "aggregationCount": 0},
+  "bodySha256": "e56c13c1cbcb43dd2d0c1afe958508fcd2e280af4ac7313974996c294a32f0fa"
+}

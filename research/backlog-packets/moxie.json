@@ -1,0 +1,286 @@
+{
+  "findings": [
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "finding_type": "fact",
+      "id": 142,
+      "prevalence": "common",
+      "product_id": 85,
+      "source_ids": [],
+      "summary": "The product lineage launched publicly as Hectic FreelancerOS on June 21, 2022, before the later Moxie name.",
+      "updated_at": "2026-08-13T18:05:33.181682+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "finding_type": "praise",
+      "id": 143,
+      "prevalence": "common",
+      "product_id": 85,
+      "source_ids": [],
+      "summary": "The strongest recurring value is replacing separate CRM, proposal, contract, invoicing, scheduling, time-tracking, portal, and light project tools.",
+      "updated_at": "2026-08-13T18:05:33.181682+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "finding_type": "praise",
+      "id": 144,
+      "prevalence": "common",
+      "product_id": 85,
+      "source_ids": [],
+      "summary": "Freelancers repeatedly describe the core client-to-invoice workflow as intuitive and time-saving.",
+      "updated_at": "2026-08-13T18:05:33.181682+00:00"
+    },
+    {
+      "confidence": 0.86,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "finding_type": "praise",
+      "id": 145,
+      "prevalence": "common",
+      "product_id": 85,
+      "source_ids": [],
+      "summary": "Support and frequent product improvements receive repeated praise.",
+      "updated_at": "2026-08-13T18:05:33.181682+00:00"
+    },
+    {
+      "confidence": 0.83,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "finding_type": "complaint",
+      "id": 146,
+      "prevalence": "mixed",
+      "product_id": 85,
+      "source_ids": [],
+      "summary": "Project management is lighter and sometimes clunkier than dedicated tools, especially for complex team planning and automation.",
+      "updated_at": "2026-08-13T18:05:33.181682+00:00"
+    },
+    {
+      "confidence": 0.76,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "finding_type": "complaint",
+      "id": 147,
+      "prevalence": "mixed",
+      "product_id": 85,
+      "source_ids": [],
+      "summary": "Navigation, mobile polish, advanced CRM functions, packages, and automation coverage appear as narrower gaps.",
+      "updated_at": "2026-08-13T18:05:33.181682+00:00"
+    },
+    {
+      "confidence": 0.97,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "finding_type": "conflict",
+      "id": 148,
+      "prevalence": "common",
+      "product_id": 85,
+      "source_ids": [],
+      "summary": "Trustpilot and AppSumo scores are very high, but both samples have selection effects: Moxie solicits Trustpilot reviews and AppSumo reviewers are lifetime-deal buyers.",
+      "updated_at": "2026-08-13T18:05:33.181682+00:00"
+    },
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "finding_type": "unknown",
+      "id": 149,
+      "prevalence": "common",
+      "product_id": 85,
+      "source_ids": [],
+      "summary": "Digital Macaroni did not perform a new hands-on test. One external source reports six months of use and discloses affiliate links.",
+      "updated_at": "2026-08-13T18:05:33.181682+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "hands_on_test": false,
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "release_date_verified": true,
+      "researched_at": "2026-08-13T16:10:00Z",
+      "sampled_user_voices": 25,
+      "source_count": 7,
+      "third_party_hands_on_source": true
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 82,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 85,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T18:05:33.181682+00:00"
+  },
+  "product": {
+    "category": "Productivity",
+    "id": 85,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Moxie",
+    "short_description": "Small-business operations suite built for freelancers rather than enterprises.",
+    "slug": "moxie",
+    "target_publish_date": null,
+    "website_url": "https://www.withmoxie.com"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "79f3d4db0ffa90e08c243bb9af7337c9",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "excerpt": "Today, Hectic announced the launch of FreelancerOS.",
+      "id": 263,
+      "metadata": {
+        "former_name": "Hectic",
+        "launched_name": "FreelancerOS",
+        "release_date": "2022-06-21"
+      },
+      "platform": "Moxie",
+      "product_id": 85,
+      "published_at": "2022-06-21T00:00:00+00:00",
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "First-party launch record establishes exact public availability under the former Hectic name. The record must be treated as product lineage, not as proof that the Moxie brand existed that day.",
+      "title": "Hectic announces all-in-one tool for freelancers",
+      "url": "https://www.withmoxie.com/blog/we-officially-announced-the-freelanceros-platform-heres-the-press-release"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "a32b637e981d95221f78b6eb25845e37",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "excerpt": "Reviewers often praise the all-in-one workflow, support, setup, and value.",
+      "id": 264,
+      "metadata": {
+        "asks_for_reviews": true,
+        "claimed_profile": true,
+        "paid_subscription": true,
+        "review_count": 536,
+        "sampled_voices": 8
+      },
+      "platform": "Trustpilot",
+      "product_id": 85,
+      "published_at": null,
+      "rating": 4.8,
+      "source_type": "independent-review-platform",
+      "summary": "Trustpilot showed 536 reviews. The profile is claimed, paid, and says Moxie asks customers for reviews, so the high score is useful but must be disclosed as a solicited sample.",
+      "title": "Moxie Reviews",
+      "url": "https://www.trustpilot.com/review/withmoxie.com"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "1a65d6ec883c6ec808e41d8174e0e86d",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "excerpt": "Verified buyers praise value, client portals, invoicing, automation, and consolidation.",
+      "id": 265,
+      "metadata": {
+        "lifetime_deal_cohort": true,
+        "review_count": 83,
+        "sampled_voices": 6
+      },
+      "platform": "AppSumo",
+      "product_id": 85,
+      "published_at": null,
+      "rating": 4.8,
+      "source_type": "independent-review-platform",
+      "summary": "AppSumo showed 83 reviews from lifetime-deal buyers. Praise is strong, but this cohort paid under special deal terms and should not be treated as representative of monthly subscribers.",
+      "title": "Moxie Reviews",
+      "url": "https://appsumo.com/products/moxie/reviews/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "6b1b569d304b7b1fbd602e1eeb46f587",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "excerpt": "Users value time savings and breadth, while citing navigation, project management, support, and missing workflow options.",
+      "id": 266,
+      "metadata": {
+        "review_count": 4,
+        "sampled_voices": 4,
+        "thin_sample": true
+      },
+      "platform": "G2",
+      "product_id": 85,
+      "published_at": null,
+      "rating": 4.5,
+      "source_type": "independent-review-platform",
+      "summary": "G2 had only four reviews, so it supplies concrete details but not strong prevalence evidence.",
+      "title": "Moxie Reviews and Product Details",
+      "url": "https://www.g2.com/products/geoff-mina-moxie/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "8a8942812cd46632d81821da089a3f2a",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "excerpt": "Moxie covers clients, projects, proposals, contracts, invoices, time, schedules, and accounting workflows.",
+      "id": 267,
+      "metadata": {
+        "sampled_voices": 1,
+        "thin_sample": true
+      },
+      "platform": "Capterra",
+      "product_id": 85,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Capterra confirms the product scope and contains limited verified customer feedback. It is a supporting source rather than a high-volume signal.",
+      "title": "Moxie Software Review 2026",
+      "url": "https://www.capterra.com/p/10026264/Moxie/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "1163d18989d2bcc2a494255d691a72b9",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "excerpt": "Mobile reviewers praise an integrated freelancer workflow and intuitive project-to-invoice flow.",
+      "id": 268,
+      "metadata": {
+        "rating_count": 20,
+        "sampled_voices": 3
+      },
+      "platform": "Apple App Store",
+      "product_id": 85,
+      "published_at": null,
+      "rating": 4.6,
+      "source_type": "independent-review-platform",
+      "summary": "The App Store showed 20 ratings. Reviews provide mobile-specific evidence and reinforce the all-in-one workflow theme.",
+      "title": "Moxie Built for freelancers Ratings and Reviews",
+      "url": "https://apps.apple.com/us/app/moxie-built-for-freelancers/id1554217247?platform=iphone&see-all=reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "acc7adc6638a7a3f9667885b21f0062c",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:05:33.181682+00:00",
+      "excerpt": "The reviewer reports six months of real client use and calls Moxie a strong all-in-one CRM for solo freelancers.",
+      "id": 269,
+      "metadata": {
+        "affiliate_disclosure": true,
+        "hands_on_months": 6,
+        "sampled_voices": 1
+      },
+      "platform": "Client Ready Writer",
+      "product_id": 85,
+      "published_at": null,
+      "rating": 4.8,
+      "source_type": "editorial-review",
+      "summary": "A disclosed hands-on review supports the workflow and value findings. It includes affiliate links, so its commercial incentive must remain attached to the evidence.",
+      "title": "Moxie Review 2026: Six Months of Real Use",
+      "url": "https://clientreadywriter.com/reviews/moxie"
+    }
+  ]
+}

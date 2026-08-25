@@ -1,0 +1,103 @@
+{
+  "checkpointVersion": 4,
+  "slug": "openstatus",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "9d61c85283ed52ca96127b5da9f2e463d9611ef7cc8664f8c17f80530e8053d7",
+  "publicationDate": "2026-03-17",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "ccff810dd6848d18b23c809c2f811cf8f2a4f1bc21933ad868b5b4baa64bbc62",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "d0193736ab8cc43d55782ac56b87f53ea4867a523633e9f6ca200e5595534965",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.436Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "ada6a031685f1b8627f02cd9e6f9fecb1b64f79c3278b4c266350fa4e773324c",
+      "predecessorSha256": "d0193736ab8cc43d55782ac56b87f53ea4867a523633e9f6ca200e5595534965",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.439Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "d3f2277327abcde2983e8a49d7cc44b7b779857fc3c6e60d59e9785b0f1ac711",
+      "predecessorSha256": "ada6a031685f1b8627f02cd9e6f9fecb1b64f79c3278b4c266350fa4e773324c",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T18:23:47.950Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.441Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.443Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.990Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.998Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T18:23:23.952Z",
+      "candidate": "attempts/005-writer_notebook-attempt-1.md",
+      "candidateSha256": "0630f37a2fac57acd4154ee88d53cbee526b859f4101c3cc12d8bb4e6361f438"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 1,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T18:24:01.946Z",
+      "candidate": "attempts/006-argument_card-attempt-1.md",
+      "candidateSha256": "cb480ac00f7ae4cf2705d932f259f5f8bf1171a224ac38ea53dc078505ae276b"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 2,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T18:24:10.211Z",
+      "candidate": "attempts/007-argument_card-attempt-2.md",
+      "candidateSha256": "06c5342cf24f656e96b3d14423435a4bc5bbc8bfe7002ed7dab33d8d4eb9b8b9"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.435Z",
+  "updatedAt": "2026-08-18T18:24:10.216Z"
+}

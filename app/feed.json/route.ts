@@ -14,7 +14,6 @@ export function GET() {
       summary: review.description,
       content_text: entry?.body ?? review.description,
       date_published: `${review.date}T12:00:00Z`,
-      date_modified: `${review.updated}T12:00:00Z`,
       authors: [{ name: review.author, url: `${baseUrl}/about` }],
       tags: [review.category, review.reviewType].filter(Boolean),
     };

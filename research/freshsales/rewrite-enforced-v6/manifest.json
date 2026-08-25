@@ -1,0 +1,84 @@
+{
+  "checkpointVersion": 4,
+  "slug": "freshsales",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "4d4c21f43c0e8f006866d720456ae5be902548e43425a01f9c0cb14125fc5589",
+  "publicationDate": "2026-04-28",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "58f49d37d8a46c9c0180f6fd1b3291bc0adaecd59994779da594809563b20bcb",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "999b6d91a8c9629543b48f6075c2e7b6980097e615a8f225fbf259b68e2daf5b",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.304Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "75f4de46426dc77a2e0abcf17c978a4896674715a555a52dd3281de9a0bbf29b",
+      "predecessorSha256": "999b6d91a8c9629543b48f6075c2e7b6980097e615a8f225fbf259b68e2daf5b",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.306Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.307Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.309Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.607Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.613Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "writer_notebook is too thin (46 words).",
+      "createdAt": "2026-08-18T17:51:21.876Z",
+      "candidate": "attempts/005-writer_notebook-attempt-1.md",
+      "candidateSha256": "f2cc0319611e499da00dcdde20d420cbaf38eea5a8142de85fbf4ca4907f3be9"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T17:55:00.802Z",
+      "candidate": "attempts/006-writer_notebook-attempt-2.md",
+      "candidateSha256": "f3dbb3a2863ea6a25a9ac57a677213b567ff479b935db7c08b139117f0363a3e"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.302Z",
+  "updatedAt": "2026-08-18T17:55:00.805Z"
+}

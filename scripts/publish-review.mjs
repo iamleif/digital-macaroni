@@ -34,7 +34,7 @@ if (publishAt && Number.isNaN(Date.parse(publishAt))) {
 const today = new Date().toISOString().slice(0, 10);
 parsed.data.status = "published";
 parsed.data.date = parsed.data.date || today;
-parsed.data.updated = today;
+delete parsed.data.updated;
 if (publishAt) parsed.data.publishAt = publishAt;
 else delete parsed.data.publishAt;
 
@@ -66,3 +66,4 @@ if (validation.status !== 0) {
 
 process.stdout.write(validation.stdout);
 console.log(`${slug} is ready to publish${publishAt ? ` at ${publishAt}` : " now"}. Commit and deploy the validated changes.`);
+import "./lib/legacy-publisher-disabled.mjs";

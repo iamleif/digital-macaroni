@@ -1,0 +1,369 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "fact",
+      "id": 389,
+      "prevalence": "common",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Wrike combines project and task management with request forms, proofing, workflows, automation, reporting, resource planning, documents, and AI features.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.96,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "praise",
+      "id": 390,
+      "prevalence": "common",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Flexible workflows, custom fields, reports, dashboards, and cross-team organization are its most repeated strengths.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "praise",
+      "id": 391,
+      "prevalence": "common",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Request forms and guest proofing are especially valuable for creative and service teams handling client review cycles.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "praise",
+      "id": 392,
+      "prevalence": "common",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Once configured well, it can centralize complex work and replace fragmented status tracking.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.97,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "complaint",
+      "id": 393,
+      "prevalence": "common",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "The breadth creates a steep learning curve and can feel unintuitive without deliberate onboarding and administration.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "complaint",
+      "id": 394,
+      "prevalence": "common",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Rigid seat minimums, annual billing, feature gates, and upgrade pressure create strong pricing frustration for small teams.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.87,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "complaint",
+      "id": 395,
+      "prevalence": "mixed",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Mobile depth, support quality, and implementation help receive mixed feedback.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.84,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "complaint",
+      "id": 396,
+      "prevalence": "mixed",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Some capabilities still require workarounds or extra tools despite the platform’s large feature surface.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "conflict",
+      "id": 397,
+      "prevalence": "mixed",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Wrike is described as both intuitive and complex; simple task use starts quickly, while custom workflows and administration take real learning.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    },
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "finding_type": "unknown",
+      "id": 398,
+      "prevalence": "mixed",
+      "product_id": 121,
+      "source_ids": [],
+      "summary": "Plan packaging changes frequently and must be checked again before any public price or feature comparison.",
+      "updated_at": "2026-08-13T19:18:08.739605+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true
+    },
+    "created_at": "2026-08-13T19:18:08.739605+00:00",
+    "id": 115,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 121,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T19:18:08.739605+00:00"
+  },
+  "product": {
+    "category": "Project management",
+    "id": 121,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Wrike",
+    "short_description": "Work-management software for projects, requests, workflows, proofing, resource planning, reporting, and automation.",
+    "slug": "wrike",
+    "target_publish_date": null,
+    "website_url": "https://www.wrike.com"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "88e3060eb3e656bccfe77872901e320a",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "CNET describes Wrike's public beta and email-centered collaboration model.",
+      "id": 520,
+      "metadata": {
+        "bias": "technology press coverage",
+        "releaseEvidence": true,
+        "sampleSize": 1,
+        "sampleUnit": "contemporaneous news report"
+      },
+      "platform": "CNET",
+      "product_id": 121,
+      "published_at": "2006-12-13T00:00:00+00:00",
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Independent contemporaneous evidence for the original public beta date and early product scope.",
+      "title": "Wrike harnesses e-mail for collaboration",
+      "url": "https://www.cnet.com/tech/services-and-software/wrike-harnesses-e-mail-for-collaboration/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "473765f639efff5a9a4d76cd8728640b",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "Wrike documents tasks, cross-tagging, workflows, requests, proofing, reporting, resource planning, documents, automation, and AI.",
+      "id": 521,
+      "metadata": {
+        "bias": "first-party",
+        "sampleSize": 1,
+        "sampleUnit": "feature catalog"
+      },
+      "platform": "Wrike",
+      "product_id": 121,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "First-party evidence for current product breadth.",
+      "title": "Wrike features",
+      "url": "https://www.wrike.com/features/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "2549c20db387069bf4c1609537961402",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "Plan comparisons show important gates around automation, workload, integrations, and enterprise controls.",
+      "id": 522,
+      "metadata": {
+        "bias": "first-party pricing documentation",
+        "sampleSize": 1,
+        "sampleUnit": "plan matrix"
+      },
+      "platform": "Wrike",
+      "product_id": 121,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "First-party evidence for plan differences and upgrade pressure.",
+      "title": "Types of plans in Wrike",
+      "url": "https://help.wrike.com/hc/en-us/articles/209605669-Types-of-Plans-in-Wrike"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "3d389fa0394453ad984dd5f690a7e688",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "Users praise project, task, collaboration, and organization features; repeated negatives are learning curve, poor intuitiveness, complexity, and missing or limited features.",
+      "id": 523,
+      "metadata": {
+        "bias": "seller invitations and business-software buyers",
+        "sampleSize": 4525,
+        "sampleUnit": "reviews"
+      },
+      "platform": "G2",
+      "product_id": 121,
+      "published_at": null,
+      "rating": 4.2,
+      "source_type": "independent-review-platform",
+      "summary": "Large verified sample of 4,525 reviews spanning small, mid-market, and enterprise users.",
+      "title": "Wrike Reviews 2026",
+      "url": "https://www.g2.com/products/wrike/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "46ae534887fec67de79be2439280703f",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "Long-term users discuss flexible work management, adoption, configuration, and total cost.",
+      "id": 524,
+      "metadata": {
+        "bias": "review solicitation; not fully independent from G2 ownership in 2026",
+        "sampleSize": 2600,
+        "sampleUnit": "reviews"
+      },
+      "platform": "Capterra",
+      "product_id": 121,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Second large review-platform source used to challenge G2 patterns, while noting the two platforms now share ownership.",
+      "title": "Wrike verified reviews 2026",
+      "url": "https://www.capterra.com/p/76113/Wrike/reviews/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "71d7bdba337641070d4ef790e55ca5b1",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "Reviewers emphasize task tracking, cross-team coordination, reporting, and the implementation burden.",
+      "id": 525,
+      "metadata": {
+        "bias": "professional software buyers and incentivized reviews may be present",
+        "sampleSize": 350,
+        "sampleUnit": "reviews and ratings"
+      },
+      "platform": "TrustRadius",
+      "product_id": 121,
+      "published_at": null,
+      "rating": 8.7,
+      "source_type": "independent-review-platform",
+      "summary": "Independent B2B practitioner reviews adding adoption and administration detail.",
+      "title": "Wrike reviews and ratings",
+      "url": "https://www.trustradius.com/products/wrike"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "1d6609fb34e42bd87ff32f95a23018ca",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "Users praise forms, guest proofing, reports, customization, and automation but object to seat minimums, annual terms, upgrade pressure, and support variability.",
+      "id": 526,
+      "metadata": {
+        "bias": "pricing complaint anchors the thread; several long-term users counterbalance it",
+        "sampleSize": 18,
+        "sampleUnit": "thread comments"
+      },
+      "platform": "Reddit",
+      "product_id": 121,
+      "published_at": "2026-02-02T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Detailed current-customer discussion where product quality and commercial frustration coexist.",
+      "title": "Wrike's pricing ruined it for me",
+      "url": "https://www.reddit.com/r/wrike/comments/1qu8sy4/wrikes_pricing_ruined_it_for_me/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "cd56e7aa7bd916a4fd424d455162c33f",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "Practitioners describe Wrike as the most feature-dense option with strong AI integration.",
+      "id": 527,
+      "metadata": {
+        "bias": "active tool-shopping context",
+        "sampleSize": 12,
+        "sampleUnit": "thread participants"
+      },
+      "platform": "Reddit",
+      "product_id": 121,
+      "published_at": "2026-05-31T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Recent buyer comparison highlighting depth and complexity.",
+      "title": "Teamwork vs Wrike vs Productive",
+      "url": "https://www.reddit.com/r/projectmanagement/comments/1td0sfe/teamwork_v_wrike_v_productive/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "a1bc4a2e920fb9f1fe32f25f525f87e5",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "The test praises an intuitive interface and flexible dashboards but calls pricing high and notes gaps in chat, billing, and time tracking.",
+      "id": 528,
+      "metadata": {
+        "bias": "commercial publication and older test",
+        "sampleSize": 1,
+        "sampleUnit": "hands-on review"
+      },
+      "platform": "TechRadar",
+      "product_id": 121,
+      "published_at": "2020-01-15T00:00:00+00:00",
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Hands-on editorial baseline; feature details are dated and used only where current evidence agrees.",
+      "title": "Wrike review",
+      "url": "https://www.techradar.com/reviews/wrike"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "24649af1ee8ef75af86c88085a420210",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:18:08.739605+00:00",
+      "excerpt": "The review finds Wrike versatile for teams using several work methods and handling both simple and complex projects.",
+      "id": 529,
+      "metadata": {
+        "bias": "commercial publication; possible affiliate incentives",
+        "sampleSize": 1,
+        "sampleUnit": "editorial review"
+      },
+      "platform": "Forbes Advisor",
+      "product_id": 121,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Recent editorial fit assessment balancing versatility with plan and adoption concerns.",
+      "title": "Wrike review",
+      "url": "https://www.forbes.com/advisor/business/software/wrike-review/"
+    }
+  ]
+}

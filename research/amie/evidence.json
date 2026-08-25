@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "amie",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2024-01-25",
+    "precision": "day",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Product Hunt/Reddit sources blocked, limiting independent perspectives",
+      "Only 10 of 128 App Store reviews provided; potential sampling bias",
+      "No hands-on verification of claims"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Amie official website",
+      "url": "https://amie.so",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "AI meeting summarization",
+        "Integration with calendar and task tools",
+        "Notch-based recording control",
+        "Customizable summaries with private notes"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Amie release history",
+      "url": "https://www.producthunt.com/products/amie-2",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "Amie reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/amie-2/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 44,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Amie reviews on Apple App Store",
+      "url": "https://apps.apple.com/us/app/amie-todos-email-calendar/id1548277133?see-all=reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Syncing issues with task apps",
+        "Requests for iPad version and NLP",
+        "UI design praise",
+        "Google calendar dependency concerns"
+      ]
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Amie community discussion",
+      "url": "https://www.reddit.com/r/macapps/comments/1iotvpz",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-docs",
+      "name": "Amie official documentation",
+      "url": "https://help.amie.so/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-extra-audit",
+      "name": "Amie additional official source",
+      "url": "https://amie.so/changelog",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Outlook calendar sync",
+        "Gmail agent integration",
+        "Apple Reminders support",
+        "Webhook enhancements"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Summarizes meetings without bots joining calls",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Integrates with Google Calendar, Outlook, Slack, Notion, and task managers",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-extra-audit"
+      ]
+    },
+    {
+      "statement": "Users report syncing failures with Things 3 task completion",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    },
+    {
+      "statement": "Lacks natural language processing for event creation",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    },
+    {
+      "statement": "Allows private notes to guide AI summaries",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Records meetings across Zoom, Google Meet, Slack Huddles, and Teams",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Users praise UI design but request iPad/landscape support",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "negative",
+      "userContext": "Things 3 user",
+      "task": "Syncing completed tasks",
+      "whatHappened": "Completed tasks in Things app disappeared from Amie calendar",
+      "result": "Inconsistent task status between apps",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "mixed",
+      "userContext": "Calendar power user",
+      "task": "Event alert customization",
+      "whatHappened": "Attempted to set 1-day-before alerts via mobile interface",
+      "result": "Frustration with wheel-based input system",
+      "vendorResponse": "unknown",
+      "confidence": "medium"
+    },
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "GTM Lead at beam.ai",
+      "task": "Meeting follow-ups",
+      "whatHappened": "Used daily for meeting summaries and action items",
+      "result": "50% productivity increase and faster deal closures",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Notch",
+      "plainExplanation": "MacBook's screen cutout used as recording control panel",
+      "whoCares": "Mac users wanting discreet meeting controls",
+      "whenItDoesNotMatter": "Windows users or external monitor setups"
+    },
+    {
+      "term": "MCP",
+      "plainExplanation": "AI agent system connecting to external assistants",
+      "whoCares": "Teams using Claude/ChatGPT for workflow automation",
+      "whenItDoesNotMatter": "Basic note-takers without AI tool integrations"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Google Calendar users report smoother setup than Outlook/Apple users",
+    "product": "Strong AI features offset by missing fundamentals like NLP and landscape mode",
+    "support": "Limited evidence; one review noted developer responsiveness to feedback",
+    "billing": "Unclear pricing; one user reported paywalled Apple Calendar integration",
+    "overall": "Innovative core functionality hampered by integration gaps and platform limitations"
+  },
+  "conflictsAndUnknowns": [
+    "Conflicting reports: Some users praise transformative design while others cite basic feature gaps",
+    "Unknown: Current Apple Calendar integration status despite changelog claims",
+    "Unknown: Actual pricing structure across plans"
+  ]
+}

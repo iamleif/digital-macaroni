@@ -1,0 +1,47 @@
+Breakcold is worth trying when LinkedIn is part of the sales day. It brings lead activity, LinkedIn contact, email follow-up, and the sales pipeline into one place. The team gets one record for the work. Breakcold gives that job more focus than a general CRM.
+
+The hesitation is trust. A smaller group of serious reports concerns account access, renewals, refunds, support, and old lifetime deals. Those complaints do not erase the much larger positive sample. They do mean we would begin with a short plan and a small lead list.
+
+We recommend Breakcold for solo sellers and small teams that build sales through steady LinkedIn contact. We would skip it when LinkedIn is only an occasional source or when the team needs firm account rules.
+
+## LinkedIn activity becomes part of the contact record
+
+A normal CRM keeps names, company details, messages, and sales stages. Breakcold adds the activity that happens around a lead on LinkedIn.
+
+That can change the first contact. Instead of sending the same pitch to a cold list, a seller can notice a useful post and reply to the point being discussed. The later message or email stays near the same contact record.
+
+The social feed is the strongest part of Breakcold. It gives a founder or salesperson a reason to speak to a lead without pretending that a new connection is already a warm relationship. The seller still has to write something useful. Breakcold makes the moment easier to notice.
+
+This routine matters when a team checks LinkedIn every day. It matters far less when leads come from search, events, partners, or inbound forms. The focus helps only when it matches the team's work.
+
+## Email and social follow-up stay near each other
+
+Breakcold keeps email activity close to the LinkedIn work and the sales pipeline. A seller can see how the contact started, what happened next, and which lead needs a reply.
+
+That may replace part of several tools for a small team. It can reduce the tab switching between a CRM, a LinkedIn watch list, an email app, and private notes. The evidence does not support a current price, so the value has to be judged against the tools it would actually replace.
+
+Do not judge the product by a tidy sample pipeline. Add a small set of real leads and use it through several normal follow-ups. Check whether old messages stay attached to the right person. Export the contacts and history before the trial ends.
+
+The export is important because a CRM holds the memory of the sales process. A good daily feed is not enough if the team cannot recover its own records when it leaves.
+
+## The support picture depends on the problem
+
+Support gets plenty of praise in the larger positive review pool. Other buyers describe slow or missing help during account and billing problems. That difference matters because the second group needed help when access or money was already in dispute.
+
+The smaller negative set includes alleged trouble with renewals, refunds, account access, and lifetime-license rights. An AppSumo discussion also disputes whether a newer Breakcold version should be included in an older lifetime purchase.
+
+That dispute does not tell a new monthly customer what will happen. It does show why vague promises about future versions are risky. A buyer with an old deal needs the current access terms in writing. A new buyer should read the renewal and refund rules before paying.
+
+Ask support a real question during the trial. Make it specific to the account or the LinkedIn connection. A useful answer matters more than a general promise of good service.
+
+## A small start protects the sales record
+
+Breakcold's main routine is easy to test. Add a few leads, watch their activity, record LinkedIn contact, and send follow-up emails. Use the product long enough for a lead to move through more than one sales stage.
+
+Next, remove a connection and add it again, then export the lead list and contact history. Check the renewal date, account owner, plan rights, and refund terms. These less attractive tasks reveal whether Breakcold is safe to use as the team's main sales record.
+
+The evidence does not prove that access or billing trouble is common. G2's much larger sample is strongly positive, while smaller sources carry the sharpest complaints. That uneven record supports a trial, not a broad warning to avoid the product.
+
+Breakcold is a good fit when LinkedIn creates real sales conversations and the team wants those conversations beside email follow-up. It is the wrong fit when social selling is mostly a slogan or when the company needs deep reports and strict access rules.
+
+Try it with data the team can easily copy and a payment term that is easy to leave. If the daily feed saves time and the account checks are clean, Breakcold can be a useful sales CRM. If support or export fails during the test, skip it before the sales history becomes hard to move.

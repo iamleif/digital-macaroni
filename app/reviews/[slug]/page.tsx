@@ -13,7 +13,8 @@ function recommendationRank(currentSlug: string, candidateSlug: string) {
 }
 
 export function generateStaticParams() {
-  return getAllContent("review").map(({ slug }) => ({ slug }));
+  const params = getAllContent("review").map(({ slug }) => ({ slug }));
+  return params.length > 0 ? params : [{ slug: "__placeholder__" }];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -37,7 +38,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: entry.description,
       images: [{ url: image, width: 1200, height: 630, alt: `${entry.company} review by Digital Macaroni` }],
       publishedTime: `${entry.date}T12:00:00Z`,
-      modifiedTime: `${entry.updated}T12:00:00Z`,
       authors: [entry.author],
     },
     twitter: {

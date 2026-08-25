@@ -1,0 +1,359 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "fact",
+      "id": 310,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Carrd publicly launched on March 7, 2016; an earlier Product Hunt submission was only a coming-soon page.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "fact",
+      "id": 311,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Carrd deliberately focuses on responsive one-page websites rather than general-purpose sites or applications.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "praise",
+      "id": 312,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Low cost is one of Carrd’s clearest advantages, especially for people managing several simple sites.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "praise",
+      "id": 313,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Beginners can publish a clean profile, portfolio, or landing page with little setup or learning.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "praise",
+      "id": 314,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Templates and responsive defaults produce professional-looking results without design expertise.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "praise",
+      "id": 315,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "The intentionally narrow feature set keeps the editor faster and less overwhelming than larger builders.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.96,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "complaint",
+      "id": 316,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Carrd is a poor fit for true multi-page sites, content-heavy publishing, or native blogs.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "complaint",
+      "id": 317,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Single-page structure and the lack of a native CMS limit organic-search and content-scaling strategies.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.92,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "complaint",
+      "id": 318,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Application logic, complex ecommerce, and database-driven experiences require other tools or a different platform.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "finding_type": "conflict",
+      "id": 319,
+      "prevalence": "common",
+      "product_id": 112,
+      "source_ids": [],
+      "summary": "Carrd’s biggest limitation is also its product discipline: simplicity is excellent when the job is one page and constraining when the job grows beyond it.",
+      "updated_at": "2026-08-13T19:01:17.001591+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true
+    },
+    "created_at": "2026-08-13T19:01:17.001591+00:00",
+    "id": 108,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 112,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": "2026-08-13T19:01:17.001591+00:00",
+    "status": "needs_review",
+    "updated_at": "2026-08-13T19:01:17.001591+00:00"
+  },
+  "product": {
+    "category": "CMS & website builders",
+    "id": 112,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Carrd",
+    "short_description": "A focused website builder for simple, responsive one-page sites, profiles, portfolios, and landing pages.",
+    "slug": "carrd",
+    "target_publish_date": null,
+    "website_url": "https://carrd.co"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": "AJ",
+      "content_hash": "fb1f9e40b97eac594a3f6f48301b4501",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "On March 7, 2016, AJ launched Carrd via Twitter; Product Hunt featured it March 16.",
+      "id": 441,
+      "metadata": {
+        "bias": "first-party retrospective with detailed chronology",
+        "voices_sampled": 1
+      },
+      "platform": "Carrd",
+      "product_id": 112,
+      "published_at": "2017-03-31T00:00:00+00:00",
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Detailed founder history establishes the exact first public launch and distinguishes a premature coming-soon listing.",
+      "title": "Carrd: The Making Of",
+      "url": "https://themakingof.carrd.co/"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": null,
+      "content_hash": "865fb46397659e96edc832c9fcfb3f1e",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "Carrd is a focused service for fully responsive one-page sites.",
+      "id": 442,
+      "metadata": {
+        "bias": "first-party documentation",
+        "voices_sampled": 0
+      },
+      "platform": "Carrd",
+      "product_id": 112,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Authoritative current scope statement.",
+      "title": "About Carrd",
+      "url": "https://carrd.co/docs/general/about"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": null,
+      "content_hash": "6c61fe69eecf6baca8ed7523f8b27075",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "33 reviews consistently praise ease and price while noting the one-page ceiling.",
+      "id": 443,
+      "metadata": {
+        "bias": "small verified B2B review pool",
+        "review_count": 33,
+        "voices_sampled": 33
+      },
+      "platform": "G2",
+      "product_id": 112,
+      "published_at": null,
+      "rating": 4.5,
+      "source_type": "independent-review-platform",
+      "summary": "Verified review pool provides the main structured satisfaction sample.",
+      "title": "Carrd reviews",
+      "url": "https://www.g2.com/products/carrd/reviews?qs=pros-and-cons"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": null,
+      "content_hash": "57cd78b81f7692a306b09633296329c2",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "A long-time user praises simplicity and low friction, while explaining that SEO and blogs are outside Carrd’s strength.",
+      "id": 444,
+      "metadata": {
+        "bias": "enthusiast product community",
+        "voices_sampled": 15
+      },
+      "platform": "Reddit",
+      "product_id": 112,
+      "published_at": "2025-06-23T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Detailed experienced-user account defines both the appeal and the product boundary.",
+      "title": "Why Carrd is a great website builder",
+      "url": "https://www.reddit.com/r/Carrd/comments/1ligp6q/why_i_think_carrd_is_a_great_website_builder_my/"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": null,
+      "content_hash": "caab2e6aad6a4705cf9ec29f1c014880",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "Carrd is extremely inexpensive and supports multiple sites, but has no real CMS or multi-page indexing.",
+      "id": 445,
+      "metadata": {
+        "bias": "product-community expert opinion",
+        "voices_sampled": 6
+      },
+      "platform": "Reddit",
+      "product_id": 112,
+      "published_at": "2026-08-09T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Recent user assessment reinforces the focused value proposition and structural SEO limitation.",
+      "title": "What Carrd can and cannot do",
+      "url": "https://www.reddit.com/r/Carrd/comments/1vkipqu/the_truth_about_what_carrd_can_and_cant_do_my/"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": null,
+      "content_hash": "f2d2c9982e5e894994e4c3af4d11c51d",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "A high-volume builder uses Carrd’s 100-site plan because it is cheaper than other functional options.",
+      "id": 446,
+      "metadata": {
+        "bias": "single reviewer plus community discussion",
+        "voices_sampled": 12
+      },
+      "platform": "Reddit",
+      "product_id": 112,
+      "published_at": "2026-02-11T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Independent broad comparison supports Carrd’s multi-site value for simple projects.",
+      "title": "I reviewed 49 website builders",
+      "url": "https://www.reddit.com/r/nocode/comments/1r1fp33/i_reviewed_49_website_builders_not_sponsored_in/"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": null,
+      "content_hash": "cf93e89ba0797ebb4d2280c3b2f2ba4e",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "Carrd is recommended for a basic portfolio when SEO and complex features are not required.",
+      "id": 447,
+      "metadata": {
+        "bias": "recommendation thread",
+        "voices_sampled": 8
+      },
+      "platform": "Reddit",
+      "product_id": 112,
+      "published_at": "2026-04-13T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community recommendation positions Carrd correctly for beginners and simple content display.",
+      "title": "Website builder for a complete beginner",
+      "url": "https://www.reddit.com/r/website/comments/1sk89rg/what_website_builder_would_you_recommend_for_a/"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": null,
+      "content_hash": "e3fda31a7e2903061a48db74bc18a507",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "Independent history corroborates the March 7 Twitter launch and March 16 Product Hunt feature.",
+      "id": 448,
+      "metadata": {
+        "bias": "affiliate-style editorial",
+        "voices_sampled": 1
+      },
+      "platform": "Building Niche Websites",
+      "product_id": 112,
+      "published_at": "2022-04-01T00:00:00+00:00",
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Secondary chronology confirmation plus product-scope assessment.",
+      "title": "Carrd history and review",
+      "url": "https://www.buildingnichewebsites.com/carrd/"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": "Smart Branding Team",
+      "content_hash": "1deb168246574d9dc5246351ccc328b6",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "Founder interview describes the 2016 side-project launch and later growth.",
+      "id": 449,
+      "metadata": {
+        "bias": "founder interview",
+        "voices_sampled": 1
+      },
+      "platform": "Smart Branding",
+      "product_id": 112,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Independent founder interview corroborates origin and narrow product positioning.",
+      "title": "The story behind Carrd",
+      "url": "https://smartbranding.com/names-with-stories-the-story-behind-carrd-com/"
+    },
+    {
+      "accessed_at": "2026-08-13T19:01:17.001591+00:00",
+      "author_name": null,
+      "content_hash": "dc1ec00b463e297c979e59ec49ee338d",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:01:17.001591+00:00",
+      "excerpt": "Current paid plans add custom domains, forms, widgets, and site limits.",
+      "id": 450,
+      "metadata": {
+        "bias": "first-party commercial source",
+        "voices_sampled": 0
+      },
+      "platform": "Carrd",
+      "product_id": 112,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Authoritative current plan reference only.",
+      "title": "Carrd Pro plans",
+      "url": "https://carrd.co/pro"
+    }
+  ]
+}

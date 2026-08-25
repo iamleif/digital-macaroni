@@ -16,7 +16,6 @@ export function GET() {
 - URL: ${baseUrl}/reviews/${review.slug}
 - Category: ${review.category}
 - Published: ${review.date}
-- Updated: ${review.updated}
 - Author: ${review.author}
 - Review type: ${review.reviewType}
 - Overall score: ${review.score?.toFixed(1)}/10

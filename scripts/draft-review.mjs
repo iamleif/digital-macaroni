@@ -3,7 +3,7 @@ import path from "node:path";
 
 const root = process.cwd();
 const slug = process.argv[2];
-const model = process.env.DEEPINFRA_MODEL || "deepseek-ai/DeepSeek-V3";
+const model = process.env.DEEPINFRA_MODEL || "deepseek-ai/DeepSeek-R1";
 const apiKey = process.env.DEEPINFRA_API_KEY;
 
 if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
@@ -53,7 +53,13 @@ if (!evidence.releaseDate?.date || !evidence.releaseDate?.sourceId) {
   process.exit(1);
 }
 
-const systemPrompt = `You are the first-draft writer for Digital Macaroni, an independent software review publication. You write only from the supplied evidence packet and editorial brief. Facts must come only from claims marked verified or supported and their named sources. Do not add prices, features, outcomes, customer stories, or testing details. Do not claim hands-on use unless evidence.testing.accessedProduct is true. Never copy source wording. If evidence is uncertain, state the uncertainty plainly. Take a direct editorial stance supported by the score rationale. Return Markdown article body only: no frontmatter, no prefacing note, no source list, and no citations. Do not use em dashes or en dashes.`;
+const systemPrompt = `You are the first-draft writer for Digital Macaroni, an independent software review publication. Think privately, but return only the finished Markdown article body. Never output <think>, analysis, notes, a plan, frontmatter, a source list, or citations.
+
+Write only from the supplied evidence packet and editorial brief. A claim not in the packet does not belong in the article. Do not infer current pricing, missing features, performance, product behavior, or user outcomes. Do not claim hands-on use unless evidence.testing.accessedProduct is true. Never copy source wording. If evidence is uncertain, state the uncertainty plainly.
+
+This is Digital Macaroni's verdict, not a summary of the research corpus. Treat the evidence as material you have already digested. Assert the publication's conclusions in its own voice. Prefer "Lodgify's channel sync is the main risk" over "reports describe sync failures." Do not narrate sample sizes, source agreement, or the act of researching. Avoid aggregation phrases such as "reviews show", "reviews praise", "the evidence shows", "users report", "sources describe", "reports from", and "the complaints are not dominant". Use a narrow qualifier only when needed to keep a reported pattern from becoming a universal fact. The publication's judgment must drive every section, not just the verdict.
+
+This is a review, not a product summary. Open with a direct thesis. Name the evidence conflict that decides the verdict. Explain why it changes the buyer's decision. Every paragraph must state a judgment, explain its buyer impact, or make the recommendation more specific. Do not use generic experience language such as "should feel", "likely to feel", "can be a good fit", or generic product-use instructions. Keep method disclosure out of the article body unless an evidence limit changes the recommendation. Do not use em dashes or en dashes.`;
 
 const userPrompt = `Write a 700 to 1,000 word first draft for ${queueItem.product}, a ${queueItem.category} product. Follow this editorial brief exactly:\n\n${brief}\n\nEvidence packet (the release date is private and must never appear in the article):\n\n${JSON.stringify(evidence, null, 2)}`;
 
@@ -70,7 +76,8 @@ const response = await fetch("https://api.deepinfra.com/v1/openai/chat/completio
       { role: "user", content: userPrompt },
     ],
     temperature: 0.45,
-    max_tokens: 2_200,
+    max_tokens: 4_000,
+    reasoning_effort: "high",
   }),
 });
 
@@ -81,7 +88,9 @@ if (!response.ok) {
   process.exit(1);
 }
 
-const draft = payload?.choices?.[0]?.message?.content?.trim();
+const draft = payload?.choices?.[0]?.message?.content
+  ?.replace(/<think>[\s\S]*?<\/think>\s*/i, "")
+  .trim();
 if (!draft) {
   console.error("DeepInfra returned no draft text.");
   process.exit(1);

@@ -1,0 +1,241 @@
+{
+  "findings": [
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "finding_type": "fact",
+      "id": 127,
+      "prevalence": "common",
+      "product_id": 84,
+      "source_ids": [],
+      "summary": "Missive was publicly launched by May 19, 2017. The date is private and used only as a publication guardrail.",
+      "updated_at": "2026-08-13T17:51:50.560376+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "finding_type": "praise",
+      "id": 128,
+      "prevalence": "common",
+      "product_id": 84,
+      "source_ids": [],
+      "summary": "Real-time collaboration inside email threads, assignment and internal comments reduce duplicate replies and lost context.",
+      "updated_at": "2026-08-13T17:51:50.560376+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "finding_type": "praise",
+      "id": 129,
+      "prevalence": "common",
+      "product_id": 84,
+      "source_ids": [],
+      "summary": "Users value the clean cross-platform interface, multi-account support and powerful rules.",
+      "updated_at": "2026-08-13T17:51:50.560376+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "finding_type": "complaint",
+      "id": 130,
+      "prevalence": "common",
+      "product_id": 84,
+      "source_ids": [],
+      "summary": "Search quality and speed are repeated pain points, especially with older messages or non-major email providers.",
+      "updated_at": "2026-08-13T17:51:50.560376+00:00"
+    },
+    {
+      "confidence": 0.85,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "finding_type": "complaint",
+      "id": 131,
+      "prevalence": "mixed",
+      "product_id": 84,
+      "source_ids": [],
+      "summary": "Feature depth creates a learning curve, and mobile read-state, icons, notifications and shared-inbox configuration can cause friction.",
+      "updated_at": "2026-08-13T17:51:50.560376+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "finding_type": "unknown",
+      "id": 132,
+      "prevalence": "common",
+      "product_id": 84,
+      "source_ids": [],
+      "summary": "No Digital Macaroni hands-on test was performed. Search behavior can depend on the underlying email provider and should not be stated as universal.",
+      "updated_at": "2026-08-13T17:51:50.560376+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": "2026-08-13T17:51:50.560376+00:00",
+    "config": {
+      "hands_on_test": false,
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "release_date_verified": true,
+      "researched_at": "2026-08-13T17:51:50.560376+00:00",
+      "sampled_user_voices": 828,
+      "source_count": 6
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 81,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 84,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T17:51:50.560376+00:00"
+  },
+  "product": {
+    "category": "Productivity",
+    "id": 84,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Missive",
+    "short_description": "Independent team inbox with a loyal niche and deep daily workflow.",
+    "slug": "missive",
+    "target_publish_date": null,
+    "website_url": "https://missiveapp.com"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T17:51:50.560376+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "excerpt": null,
+      "id": 235,
+      "metadata": {
+        "evidence_role": "release-date-and-user-feedback",
+        "launch_date": "2017-05-19",
+        "rating": 4.6,
+        "review_count": 11,
+        "sampled_user_voices": 11
+      },
+      "platform": "Product Hunt",
+      "product_id": 84,
+      "published_at": null,
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "The earliest verified Missive launch was May 19, 2017. Product Hunt reports 11 reviews at 4.6. Users praise collaboration, cross-platform reliability and rules; complaints include search and notification bugs.",
+      "title": "Missive launch history and reviews",
+      "url": "https://www.producthunt.com/products/missive"
+    },
+    {
+      "accessed_at": "2026-08-13T17:51:50.560376+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "excerpt": null,
+      "id": 236,
+      "metadata": {
+        "evidence_role": "product-scope"
+      },
+      "platform": "Missive",
+      "product_id": 84,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official scope covers shared inboxes, internal chat, tasks, rules and multiple communication channels for teams.",
+      "title": "Missive official website",
+      "url": "https://missiveapp.com/"
+    },
+    {
+      "accessed_at": "2026-08-13T17:51:50.560376+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "excerpt": null,
+      "id": 237,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "rating": 4.7,
+        "review_count": 812,
+        "sampled_user_voices": 812
+      },
+      "platform": "G2",
+      "product_id": 84,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "G2 reports 812 reviews at 4.7. Collaboration, centralized communication, assignment and comments are strong positives; search, missing features and the learning curve are common drawbacks.",
+      "title": "Missive reviews on G2",
+      "url": "https://www.g2.com/products/missive/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T17:51:50.560376+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "excerpt": null,
+      "id": 238,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "sample_size_note": "visible-review-sampled",
+        "sampled_user_voices": 1
+      },
+      "platform": "Capterra",
+      "product_id": 84,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Capterra hosts verified long-term user reviews covering shared inbox collaboration, pricing, support and day-to-day email management.",
+      "title": "Missive reviews on Capterra",
+      "url": "https://www.capterra.com/p/152884/Missive/reviews/"
+    },
+    {
+      "accessed_at": "2026-08-13T17:51:50.560376+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "excerpt": null,
+      "id": 239,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "sample_size_note": "small-visible-sample",
+        "sampled_user_voices": 1
+      },
+      "platform": "Trustpilot",
+      "product_id": 84,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Trustpilot provides a separate customer-service review surface for Missive with a high displayed TrustScore but a small visible sample.",
+      "title": "Missive reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/missiveapp.com"
+    },
+    {
+      "accessed_at": "2026-08-13T17:51:50.560376+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:51:50.560376+00:00",
+      "excerpt": null,
+      "id": 240,
+      "metadata": {
+        "evidence_role": "community-perspective",
+        "sampled_user_voices": 2
+      },
+      "platform": "Reddit",
+      "product_id": 84,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "A multi-inbox user praises fast UX, rules, multi-account support and useful AI after comparing many email clients. The missing open-tracking feature is the main stated gap.",
+      "title": "Detailed Missive user comparison on Reddit",
+      "url": "https://www.reddit.com/r/Missive/comments/1rxwdy8/after_trying_basically_every_email_client_missive/"
+    }
+  ]
+}

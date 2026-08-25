@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "umami",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {"date": "2020-08-18", "precision": "day", "sourceId": "launch"},
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni install, traffic comparison, event test, backup restore, billing test, or support request was completed.",
+      "Formal review-platform samples are small and the community material favors technically confident self-hosters.",
+      "Cookie-free tracking does not settle every privacy or consent question for every website."
+    ]
+  },
+  "sources": [
+    {"id":"launch","name":"Founder launch post","url":"https://www.reddit.com/r/reactjs/comments/ibrd14","accessed":"2026-08-13","sourceType":"launch-history","reviewCountSampled":null,"keyThemes":["Public release","Purpose"]},
+    {"id":"docs","name":"Umami documentation","url":"https://docs.umami.is/docs","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Privacy","Self-hosting","Reports","Events"]},
+    {"id":"cloud-faq","name":"Umami Cloud FAQ","url":"https://docs.umami.is/docs/cloud/faq","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Hobby plan","Trial","Usage","Export"]},
+    {"id":"github","name":"Umami source repository","url":"https://github.com/umami-software/umami","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Open source","Deployment","Issues"]},
+    {"id":"g2","name":"Umami reviews on G2","url":"https://www.g2.com/products/umami/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":6,"keyThemes":["Ease","Privacy","Events"]},
+    {"id":"product-hunt","name":"Umami reviews on Product Hunt","url":"https://www.producthunt.com/products/umami/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":11,"keyThemes":["Simplicity","Privacy","Launch bias"]},
+    {"id":"reddit-comparison","name":"Self-hosted analytics comparison","url":"https://www.reddit.com/r/selfhosted/comments/1h0fle4/selfhosted_analytics_comparing_umami_plausible/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":72,"keyThemes":["Docker","Resources","Administration"]},
+    {"id":"reddit-choice","name":"Plausible or Umami discussion","url":"https://www.reddit.com/r/selfhosted/comments/18yrxs3/selfhosted_analytics_plausible_or_umami/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":30,"keyThemes":["Simplicity","Reporting depth"]},
+    {"id":"reddit-production","name":"Umami in production discussion","url":"https://www.reddit.com/r/microsaas/comments/1v4v0at/has_anyone_here_used_umami_analytics_in_production/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":6,"keyThemes":["Production use","Maintenance","API docs"]},
+    {"id":"loopwerk","name":"Umami versus Plausible hands-on comparison","url":"https://www.loopwerk.io/articles/2026/umami-vs-plausible/","accessed":"2026-08-13","sourceType":"editorial-review","reviewCountSampled":1,"keyThemes":["Control","Self-hosting","Reports"]}
+  ],
+  "claims": [
+    {"statement":"Umami was publicly open-sourced on August 18, 2020.","kind":"fact","status":"verified","sourceIds":["launch"]},
+    {"statement":"Umami is an open-source web analytics product that can be self-hosted or used through Umami Cloud.","kind":"fact","status":"verified","sourceIds":["docs","github"]},
+    {"statement":"The tracker is under 2KB and Umami does not use cookies, fingerprint visitors, or collect personal data in its standard setup.","kind":"fact","status":"verified","sourceIds":["docs"]},
+    {"statement":"The Cloud Hobby plan is free, paid plans have a 14-day trial, usage includes page hits and custom event data, and cloud data can be exported.","kind":"fact","status":"verified","sourceIds":["cloud-faq"]},
+    {"statement":"A clean dashboard, data ownership, low resource use, and manageable Docker deployment are the main positive patterns.","kind":"reported-pattern","status":"supported","sourceIds":["g2","product-hunt","reddit-comparison","reddit-choice","reddit-production","loopwerk"]},
+    {"statement":"Reporting depth, self-hosting work, and uneven advanced documentation are the main limits.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-comparison","reddit-choice","reddit-production","loopwerk"]}
+  ],
+  "scoreRationale": {
+    "onboarding":"Cloud setup is simple and the dashboard is approachable. Self-hosting is manageable for a technical user but still requires a database and production setup.",
+    "product":"Umami handles ordinary website traffic and events well while staying private and easy to read. It is too shallow for teams that need detailed product behavior or complex attribution.",
+    "support":"The open-source community and documentation cover the basics, but advanced API guidance receives mixed feedback and no support request was tested.",
+    "billing":"The cloud Hobby plan is free and self-hosting has no software license fee. Paid cloud usage and the real cost of operating a server need checking before commitment.",
+    "overall":"Run Umami beside the current analytics setup and compare it with real signups or sales. Self-hosters must also prove backup, restore, upgrade, and monitoring before relying on it."
+  },
+  "conflictsAndUnknowns": [
+    "The simple dashboard is easier to use and leaves less room for detailed product analysis.",
+    "Self-hosting gives the owner control and makes that owner responsible for uptime, security, upgrades, and recovery.",
+    "Cookie-free tracking reduces invasive collection but does not provide universal legal clearance.",
+    "No hands-on install, count comparison, event test, restore, billing, or support test was completed."
+  ]
+}

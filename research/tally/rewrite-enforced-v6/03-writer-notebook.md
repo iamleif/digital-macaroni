@@ -1,0 +1,11 @@
+Tally is a no-code form builder that aims to simplify data collection for small teams. Its appeal lies in its clean interface, generous free tier, and integration capabilities. However, its limitations in handling complex logic and customization become apparent as users scale. This notebook is for buyers considering Tally and for readers who want to understand its strengths and weaknesses without assuming prior knowledge of form builders.
+
+Tally's free plan allows unlimited forms and submissions, including features like payments, signatures, and file uploads. This is a major selling point, especially for teams that don't need advanced functionality. The product's onboarding process is straightforward, with a document-like editor that makes form creation feel intuitive. These features are consistently praised across multiple sources, including Product Hunt and G2.
+
+Despite its strengths, Tally's handling of advanced logic and deep customization is limited. Users report that these capabilities become more manual or constrained as forms grow in complexity. This suggests that while Tally is suitable for basic use cases, it may not be the best choice for teams with more demanding requirements.
+
+Pricing is another area of interest. Tally's pricing page lists European regional prices, such as €20 for the Pro plan, while the U.S. help center shows a different price. This discrepancy means buyers should check their local pricing page before making a decision. The free plan's generous limits are a significant part of its value, but users should also be aware of fair-use policies that may apply depending on their usage.
+
+Support is generally praised, with multiple sources highlighting its responsiveness. However, this review did not test support directly, so the quality of assistance remains an area to consider. Overall, Tally is a strong option for small teams looking for a simple, effective form builder. Its limitations in handling complex workflows make it less suitable for enterprise needs that require deep customization and advanced logic.
+
+In summary, Tally is a good fit for users who need a no-code form builder that feels light and intuitive. It may not be the best choice for those with more complex requirements, but its simplicity and free tier make it a compelling option for many small teams.

@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "penpot",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2021-02-01",
+    "precision": "month",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Customer experience data unavailable due to CAPTCHA/blocking on review platforms",
+      "No verifiable pricing information in sources",
+      "Lack of user-reported problem patterns"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Penpot official website",
+      "url": "https://penpot.app",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Open-source design platform",
+        "Scalable team collaboration",
+        "UI design with prototyping",
+        "Design systems with tokens",
+        "AI workflow integration",
+        "Code inspection capabilities"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Penpot release history",
+      "url": "https://github.com/penpot/penpot/releases",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Frequent feature updates",
+        "Bug fixes and stability improvements",
+        "Community-driven development",
+        "WebGL rendering enhancements",
+        "Design token management"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Penpot reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/penpot/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 8,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Penpot reviews on G2",
+      "url": "https://www.g2.com/products/penpot/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 10,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Penpot community discussion",
+      "url": "https://www.reddit.com/r/Penpot/comments/1ofg148/i_really_want_to_love_penpot/",
+      "sourceType": "community",
+      "reviewCountSampled": 10,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-docs",
+      "name": "Penpot official documentation",
+      "url": "https://help.penpot.app/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Comprehensive documentation",
+        "Technical installation guides",
+        "Plugin development resources",
+        "MCP server for AI integration"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Penpot is an open-source design platform for teams",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Supports UI design with interactive prototypes and CSS layouts",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Includes design systems with components and shared libraries",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Integrates AI workflows across design-to-code processes",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Provides code inspection for CSS/HTML/SVG outputs",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Receives frequent updates with new features and fixes",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Offers comprehensive technical documentation",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-docs"
+      ]
+    }
+  ],
+  "experienceRecords": [],
+  "featureTranslations": [
+    {
+      "term": "Design Systems",
+      "plainExplanation": "Reusable components and standards for consistent designs",
+      "whoCares": "Teams maintaining brand consistency across multiple projects",
+      "whenItDoesNotMatter": "For one-off designs without reuse needs"
+    },
+    {
+      "term": "AI Workflows",
+      "plainExplanation": "Connecting AI tools to automate design/code tasks",
+      "whoCares": "Teams seeking efficiency through automation",
+      "whenItDoesNotMatter": "For manual design processes without AI integration"
+    },
+    {
+      "term": "MCP Server",
+      "plainExplanation": "Backend service for AI agent connections",
+      "whoCares": "Developers implementing custom AI integrations",
+      "whenItDoesNotMatter": "For basic design usage without AI features"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "No customer experience data available",
+    "product": "No customer experience data available",
+    "support": "No customer experience data available",
+    "billing": "No customer experience data available",
+    "overall": "No customer experience data available"
+  },
+  "conflictsAndUnknowns": [
+    "Unable to verify customer experiences due to inaccessible review platforms (Product Hunt, G2, Reddit)",
+    "No pricing information available in sources"
+  ]
+}

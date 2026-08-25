@@ -1,0 +1,358 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "fact",
+      "id": 399,
+      "prevalence": "common",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "Planable brings content planning, previews, comments, approvals, scheduling, engagement, and reporting into client or team workspaces.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    },
+    {
+      "confidence": 0.96,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "praise",
+      "id": 400,
+      "prevalence": "common",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "Visual previews and simple client approvals are the strongest and most repeated reasons agencies choose it.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "praise",
+      "id": 401,
+      "prevalence": "common",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "The familiar interface lowers friction for clients and nontechnical stakeholders.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    },
+    {
+      "confidence": 0.93,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "praise",
+      "id": 402,
+      "prevalence": "common",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "Calendars, multiple views, centralized feedback, and clear status improve coordination across several brands or clients.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "complaint",
+      "id": 403,
+      "prevalence": "common",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "Workspace pricing, post limits, plan gates, and paid analytics or engagement add-ons can become expensive.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    },
+    {
+      "confidence": 0.88,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "complaint",
+      "id": 404,
+      "prevalence": "mixed",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "Social network disconnects, scheduling issues, and platform-specific publishing limitations appear in otherwise positive reviews.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "complaint",
+      "id": 405,
+      "prevalence": "mixed",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "Analytics, inbox, listening, and broader social-management depth may trail tools built as full suites.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    },
+    {
+      "confidence": 0.97,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "conflict",
+      "id": 406,
+      "prevalence": "mixed",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "Planable is highly polished for content review and approval, but that focus is also why it may not replace every social media tool.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    },
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "finding_type": "unknown",
+      "id": 407,
+      "prevalence": "mixed",
+      "product_id": 122,
+      "source_ids": [],
+      "summary": "Exact supported post types, platform API limits, and add-on packaging change often and require a fresh check before publication.",
+      "updated_at": "2026-08-13T19:19:16.692921+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true
+    },
+    "created_at": "2026-08-13T19:19:16.692921+00:00",
+    "id": 116,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 122,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T19:19:16.692921+00:00"
+  },
+  "product": {
+    "category": "Social media",
+    "id": 122,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Planable",
+    "short_description": "Collaboration-first social content software for planning, previews, comments, approvals, scheduling, engagement, and reporting.",
+    "slug": "planable",
+    "target_publish_date": null,
+    "website_url": "https://planable.io"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "752066c9628e99cf66c33937f9f66273",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "Planable launched October 4, 2017; reviewers praise planning, approvals, collaboration, and interface quality.",
+      "id": 530,
+      "metadata": {
+        "bias": "launch community and early adopters",
+        "releaseEvidence": true,
+        "sampleSize": 8,
+        "sampleUnit": "reviews"
+      },
+      "platform": "Product Hunt",
+      "product_id": 122,
+      "published_at": "2017-10-04T00:00:00+00:00",
+      "rating": 4.9,
+      "source_type": "launch-history",
+      "summary": "Exact public launch evidence plus a small favorable launch-community review set.",
+      "title": "Planable launches and reviews",
+      "url": "https://www.producthunt.com/products/planable"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "c7def8a4c3e54b1a3f97686f81ff8130",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "Documentation covers collaboration, approvals, social channels, creating and scheduling, views, mobile, analytics, and inbox work.",
+      "id": 531,
+      "metadata": {
+        "bias": "first-party documentation",
+        "sampleSize": 100,
+        "sampleUnit": "help articles reviewed"
+      },
+      "platform": "Planable",
+      "product_id": 122,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "First-party evidence for current scope and supported workflows.",
+      "title": "Planable Help Center",
+      "url": "https://help.planable.io/hc/en-us"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "099357268de46a9a6c39d099b3e4841c",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "Planable prices by workspace with post, page, approval, storage, and analytics or engagement add-on limits.",
+      "id": 532,
+      "metadata": {
+        "bias": "first-party pricing documentation",
+        "sampleSize": 1,
+        "sampleUnit": "pricing matrix"
+      },
+      "platform": "Planable",
+      "product_id": 122,
+      "published_at": "2026-04-08T00:00:00+00:00",
+      "rating": null,
+      "source_type": "official",
+      "summary": "Current first-party plan evidence; pricing must be rechecked at publication.",
+      "title": "Planable pricing questions",
+      "url": "https://help.planable.io/hc/en-us/articles/21715370520092-Questions-on-pricing"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "64cfae367864b0af7660fe06b595222e",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "Users praise ease, scheduling, calendar views, client collaboration, and centralization; complaints center on price, plan limits, scheduling issues, and platform limits.",
+      "id": 533,
+      "metadata": {
+        "bias": "seller invitations and agency/small-business concentration",
+        "sampleSize": 1033,
+        "sampleUnit": "reviews"
+      },
+      "platform": "G2",
+      "product_id": 122,
+      "published_at": null,
+      "rating": 4.6,
+      "source_type": "independent-review-platform",
+      "summary": "Large verified sample of 1,033 reviews, overwhelmingly from small businesses.",
+      "title": "Planable Reviews 2026",
+      "url": "https://www.g2.com/products/planable/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "32ef5d403981545699b43cffbcbe6238",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "Users discuss daily scheduling, client review, interface quality, integrations, and price.",
+      "id": 534,
+      "metadata": {
+        "bias": "review solicitation; no longer ownership-independent from G2",
+        "sampleSize": 350,
+        "sampleUnit": "reviews"
+      },
+      "platform": "Capterra",
+      "product_id": 122,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Second major review-platform source used with the caveat that G2 and Capterra share ownership in 2026.",
+      "title": "Planable verified reviews 2026",
+      "url": "https://www.capterra.com/p/171744/Planable/reviews/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "406b169c21f3e761738ae2cb8fb83874",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "Reviewers value feed, calendar, grid, list, and shared external-review views.",
+      "id": 535,
+      "metadata": {
+        "bias": "very small professional reviewer sample",
+        "sampleSize": 6,
+        "sampleUnit": "reviews and ratings"
+      },
+      "platform": "TrustRadius",
+      "product_id": 122,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Small B2B counter-sample focused on collaboration and stakeholder access.",
+      "title": "Planable reviews and ratings",
+      "url": "https://www.trustradius.com/products/planable"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "3c532537c38978a92c27d1b57dccb1dd",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "Users like the content preview and approval experience but describe pricing frustration and switches to alternatives.",
+      "id": 536,
+      "metadata": {
+        "bias": "price-sensitive social-media managers",
+        "sampleSize": 15,
+        "sampleUnit": "thread comments"
+      },
+      "platform": "Reddit",
+      "product_id": 122,
+      "published_at": "2025-06-17T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Practitioner discussion that makes the price-value tradeoff concrete.",
+      "title": "Cheaper Planable alternatives",
+      "url": "https://www.reddit.com/r/buhaydigital/comments/1ld9wy6/for_smms_any_cheaper_planable_alternative/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "a32684dda2a2c81543af589fbf11457e",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "A user relies on Planable for client content calendars and post-by-post approvals; others compare Vista Social and competing workflows.",
+      "id": 537,
+      "metadata": {
+        "bias": "agency and client-approval use cases dominate",
+        "sampleSize": 20,
+        "sampleUnit": "thread participants"
+      },
+      "platform": "Reddit",
+      "product_id": 122,
+      "published_at": "2025-07-23T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Direct target-user discussion validating approval as the core job.",
+      "title": "Platforms for social content client approvals",
+      "url": "https://www.reddit.com/r/DigitalMarketing/comments/1m7dkv8/what_platform_do_you_use_for_client_approvals_on/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "6ab5b16952411821e5725d201c43294c",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "Users call Planable polished for approval workflows but distinguish it from broader suites with stronger inbox, listening, and analytics tools.",
+      "id": 538,
+      "metadata": {
+        "bias": "alternative-shopping context and vendor promotion may be present",
+        "sampleSize": 12,
+        "sampleUnit": "thread comments"
+      },
+      "platform": "Reddit",
+      "product_id": 122,
+      "published_at": "2026-06-23T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Recent comparative evidence defining what the product is and is not best at.",
+      "title": "Best Planable alternative?",
+      "url": "https://www.reddit.com/r/SocialMediaSchedulers/comments/1ua2znm/best_planable_alternative/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "fb7c011bd3eacd6ba213aac5fc5be8ef",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:19:16.692921+00:00",
+      "excerpt": "The review says the familiar social-feed interface makes onboarding clients and nontechnical stakeholders easier.",
+      "id": 539,
+      "metadata": {
+        "bias": "commercial comparison site; possible referral incentives",
+        "sampleSize": 1,
+        "sampleUnit": "editorial review"
+      },
+      "platform": "ToolIndex",
+      "product_id": 122,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Editorial usability assessment with commercial-site caveat.",
+      "title": "Planable review 2025",
+      "url": "https://toolindex.io/tool/planable"
+    }
+  ]
+}

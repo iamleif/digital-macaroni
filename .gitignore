@@ -2,7 +2,10 @@ node_modules
 .DS_Store
 dist
 .next
+.open-next
+.wrangler
 .vercel
+worker-configuration.d.ts
 *.tsbuildinfo
 __pycache__/
 *.py[cod]

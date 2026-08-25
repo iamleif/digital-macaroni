@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "freshbooks",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2003-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "No accessible customer reviews or verified ratings",
+      "Lack of independent usage experiences",
+      "No pricing details beyond promotional offers",
+      "Insufficient data on actual feature implementation",
+      "Community insights unavailable due to access blocks"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "FreshBooks official website",
+      "url": "https://www.freshbooks.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "All-in-one small business software",
+        "Collaboration features",
+        "Time-saving claims",
+        "Global user base",
+        "App integration ecosystem"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "FreshBooks release history",
+      "url": "https://www.freshbooks.com/about",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Company mission statement",
+        "Leadership information",
+        "Diversity commitment",
+        "Historical founding context"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "FreshBooks reviews on G2",
+      "url": "https://www.g2.com/products/freshbooks/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 970,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "FreshBooks reviews on Capterra",
+      "url": "https://www.capterra.com/p/143789/FreshBooks/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "FreshBooks reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/www.freshbooks.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "FreshBooks community discussion",
+      "url": "https://www.reddit.com/r/Bookkeeping/comments/18q3jeo",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "FreshBooks offers all-in-one small business software",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Users report time savings using FreshBooks",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "FreshBooks enables collaboration with clients, teams, and accountants",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "FreshBooks integrates with over 100 apps",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "FreshBooks claims users save up to 553 hours annually",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "FreshBooks serves users in over 160 countries",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    }
+  ],
+  "experienceRecords": [],
+  "featureTranslations": [
+    {
+      "term": "All-in-one small business software",
+      "plainExplanation": "Combined tools for accounting, invoicing, and business management",
+      "whoCares": "Small business owners seeking consolidated solutions",
+      "whenItDoesNotMatter": "For enterprises needing specialized modular systems"
+    },
+    {
+      "term": "Collaborate with clients, team, and accountant",
+      "plainExplanation": "Shared access for multiple stakeholders to financial data",
+      "whoCares": "Businesses with external accountants or distributed teams",
+      "whenItDoesNotMatter": "Solo operators without collaborators"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Insufficient data",
+    "product": "Insufficient data",
+    "support": "Insufficient data",
+    "billing": "Insufficient data",
+    "overall": "Insufficient data"
+  },
+  "conflictsAndUnknowns": [
+    "Third-party review sources inaccessible (G2, Capterra, Trustpilot)",
+    "Community discussion sources blocked",
+    "Actual customer sentiment patterns unknown",
+    "Verification of time/money savings claims unavailable"
+  ]
+}

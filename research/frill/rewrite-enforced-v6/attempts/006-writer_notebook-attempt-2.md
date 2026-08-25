@@ -1,0 +1,3 @@
+{
+  "content": "The private writer's notebook for Frill is intended for a buyer or reader who is seeking a customer feedback and communication tool. This person is likely a business owner or team lead looking to gather insights from users, manage product ideas, and share updates efficiently. They may be in a startup, small business, or mid-sized company that needs a centralized platform to streamline feedback and announcements. The notebook is structured to help the reader understand the product’s capabilities, limitations, and the context in which it performs best, without making claims that are not supported by available data."
+}

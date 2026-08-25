@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "testimonial-to",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {"date":"2020-12-22","precision":"day","sourceId":"launch"},
+  "testing": {"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni collection, recording, import, embed, analytics, export, billing, or support test was completed.","Claims that testimonials raise conversion cannot be generalized from vendor examples or individual customer accounts."]},
+  "sources": [
+    {"id":"launch","name":"Testimonial launches","url":"https://www.producthunt.com/products/testimonial","accessed":"2026-08-13","sourceType":"launch-history","reviewCountSampled":null,"keyThemes":["Launch","Video collection"]},
+    {"id":"pricing","name":"Testimonial pricing","url":"https://testimonial.to/pricing/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Free","Starter","Ultimate","Spaces"]},
+    {"id":"help","name":"Introduction to Testimonial","url":"https://help.testimonial.to/en/articles/8115178-introduction-to-testimonial-to","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Collection","Embeds","Spaces"]},
+    {"id":"g2","name":"Testimonial reviews on G2","url":"https://www.g2.com/products/testimonial/reviews?qs=pros-and-cons","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":14,"keyThemes":["Ease","Collection","Customization","Price"]},
+    {"id":"product-hunt-reviews","name":"Testimonial reviews on Product Hunt","url":"https://www.producthunt.com/products/testimonial/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":10,"keyThemes":["Setup","Wall of Love","Embeds","Support"]},
+    {"id":"reddit-tools","name":"Testimonial tool discussion","url":"https://www.reddit.com/r/Entrepreneur/comments/1mx2nn0/whats_a_good_tool_to_collect_testimonials/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Access","Alternatives"]},
+    {"id":"reddit-price","name":"Testimonial pricing discussion","url":"https://www.reddit.com/r/micro_saas/comments/1swqamt/built_a_lightweight_testimonial_tool_after/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Small projects","Price"]}
+  ],
+  "claims": [
+    {"statement":"Testimonial launched publicly on December 22, 2020.","kind":"fact","status":"verified","sourceIds":["launch"]},
+    {"statement":"Testimonial collects text and video submissions on hosted pages and publishes approved items through links and embeds.","kind":"fact","status":"verified","sourceIds":["help","pricing"]},
+    {"statement":"Fast setup, simple collection, imports, and no-code embeds are the main positive patterns.","kind":"reported-pattern","status":"supported","sourceIds":["g2","product-hunt-reviews"]},
+    {"statement":"Customization, video caps, branding, creator access, paid spaces, and price are meaningful limits.","kind":"reported-pattern","status":"supported","sourceIds":["g2","reddit-price","pricing"]},
+    {"statement":"Free includes ten text and two video testimonials. Starter is $25 monthly billed yearly. Ultimate is $50 monthly per space billed yearly. Ultimate Plus is $95 monthly per space billed yearly.","kind":"fact","status":"verified","sourceIds":["pricing"]}
+  ],
+  "scoreRationale": {"onboarding":"A collection page and first embed appear quick; the real test is whether customers can submit without help and consent remains clear.","product":"Useful for collecting, approving, organizing, and reusing proof without custom development; visual control and maintenance still need testing.","support":"Public support praise exists, but no request was tested.","billing":"Free is enough to prove the route, while unlimited video and multiple spaces become expensive quickly.","overall":"Ask ten real customers, review every permission and claim, embed the approved proof, change one item, remove one item, and compare the result with a simple form plus manual page."},
+  "conflictsAndUnknowns": ["An easy request can increase submissions and can produce vague praise.","Imports centralize proof and do not automatically preserve permission to reuse it elsewhere.","A Wall of Love is quick to publish and may be less persuasive than proof beside the relevant claim.","No hands-on collection, consent, embed, analytics, billing, or support test was completed."]
+}

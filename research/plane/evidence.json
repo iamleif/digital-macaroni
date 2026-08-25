@@ -1,0 +1,32 @@
+{
+  "schemaVersion":1,
+  "productSlug":"plane",
+  "legacy":false,
+  "reviewType":"research-based",
+  "researchStarted":"2026-08-13",
+  "researchUpdated":"2026-08-14",
+  "releaseDate":{"date":"2023-01-16","precision":"day","sourceId":"launch"},
+  "testing":{"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on project, migration, mobile, self-hosting, upgrade, backup, restore, export, or support test was completed.","Cloud and self-hosted feature packaging may differ and must be checked for the selected deployment.","Repository popularity shows attention and activity, not customer satisfaction or deployment reliability."]},
+  "sources":[
+    {"id":"launch","name":"Introducing Plane","url":"https://plane.so/blog/introducing-plane-simple-extensible-open-source-project-management-tool","accessed":"2026-08-13","sourceType":"launch-history","reviewCountSampled":null,"keyThemes":["Release","Cloud","Docker"]},
+    {"id":"pricing","name":"Plane pricing","url":"https://plane.so/pricing","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Free","Pro","Business","Self-hosted"]},
+    {"id":"g2","name":"Plane reviews on G2","url":"https://www.g2.com/products/plane-so/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":15,"keyThemes":["Interface","Ease","Customization"]},
+    {"id":"product-hunt","name":"Plane reviews on Product Hunt","url":"https://www.producthunt.com/products/planehq?launch=planehq","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":17,"keyThemes":["Deployment","Modern interface","Jira alternative"]},
+    {"id":"github","name":"Plane repository on GitHub","url":"https://github.com/makeplane/plane","accessed":"2026-08-13","sourceType":"code-community","reviewCountSampled":null,"keyThemes":["Releases","Issues","Security fixes"]},
+    {"id":"reddit-early","name":"Plane self-hosting discussion","url":"https://www.reddit.com/r/selfhosted/comments/13z5xr4/plane_the_open_source_project_management_tool/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":null,"keyThemes":["Docker","Login","Open source","Pricing"]},
+    {"id":"reddit-price","name":"Plane pricing and alternatives discussion","url":"https://www.reddit.com/r/selfhosted/comments/1ve5cg1/anyone_found_a_good_planeso_alternative_their/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":null,"keyThemes":["Feature gates","Seat minimum","Self-hosting"]},
+    {"id":"reddit-use","name":"Small-team project discussion","url":"https://www.reddit.com/r/SideProject/comments/1n1vs80","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Interface","API","Customization"]},
+    {"id":"doolpa","name":"Plane independent review","url":"https://doolpa.com/article/plane","accessed":"2026-08-13","sourceType":"affiliate-editorial-review","reviewCountSampled":1,"keyThemes":["Speed","Wiki","Reporting","Mobile"]}
+  ],
+  "claims":[
+    {"statement":"Plane was introduced publicly with cloud access and self-hosting instructions on January 16, 2023.","kind":"fact","status":"verified","sourceIds":["launch"]},
+    {"statement":"Plane combines work items, cycles, modules, views, timelines, pages, wikis, intake, projects, estimates, and integrations.","kind":"fact","status":"verified","sourceIds":["pricing","launch"]},
+    {"statement":"Cloud Free supports up to 12 users. At the displayed annual rate, Pro costs $6 per seat monthly and Business costs $13, with a two-week paid-plan trial.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"Pro adds custom work types and fields, wiki, time tracking, templates, dashboards, team spaces, integrations, and 1,000 AI credits per seat. Business adds recurring work, intake forms and email, customers, project templates, and advanced dashboards.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"A clean, fast interface and broad project features without a heavy Jira-style setup are the strongest positive themes.","kind":"reported-pattern","status":"supported","sourceIds":["g2","product-hunt","reddit-use","doolpa"]},
+    {"statement":"Reporting, mobile polish, integrations, and customization can trail mature products.","kind":"reported-pattern","status":"supported","sourceIds":["g2","reddit-use","doolpa"]},
+    {"statement":"Self-hosting setup, upgrades, login, backups, paid gates, and commercial pricing boundaries are repeated concerns.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-early","reddit-price","github"]}
+  ],
+  "scoreRationale":{"onboarding":"A clean interface lowers the first hurdle; a real project with intake, dependencies, recurring work, reporting, and mobile changes proves whether the workflow is deep enough.","product":"A broad and modern project system with cloud and self-hosted choices, though advanced controls still depend on plan and maturity.","support":"Formal samples are positive but small, and no deadline-sensitive support request was tested.","billing":"Cloud annual prices are low, while self-hosted commercial features and enterprise controls require careful feature and seat quotes.","overall":"Plane is worth testing as a simpler project system, especially when deployment control matters. Treat self-hosting as a separate infrastructure project and prove upgrade plus restore before migrating."},
+  "conflictsAndUnknowns":["The clean starting experience does not prove advanced reporting or large-team control.","Self-hosting gives data control and makes the buyer responsible for availability, upgrades, and recovery.","Open-source core access does not make every commercial feature free.","No migration, project cycle, mobile, self-host, backup, upgrade, export, or support test was completed."]
+}

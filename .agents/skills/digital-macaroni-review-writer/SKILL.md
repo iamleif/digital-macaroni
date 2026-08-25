@@ -59,6 +59,8 @@ Use ordinary judgments: “useful,” “limited,” “gets the job done,” �
 
 Use “we” only for a real Digital Macaroni opinion or recommendation. Do not sprinkle it through the article to perform authority.
 
+Keep the frontmatter `verdict` and `cardVerdict` identical, eight or nine words long, and no more than 64 characters. This is the large review-page headline, so it must state one clear judgment rather than summarize the full article.
+
 Sections should answer normal reader concerns. Headings may be plain statements such as “The website builder is useful if you need one” and “Calendar problems are the main concern.” Do not build the article around the company's pricing tiers or feature categories.
 
 ## Protect authenticity

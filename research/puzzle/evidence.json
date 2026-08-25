@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "puzzle",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2023-03-21",
+    "precision": "day",
+    "sourceId": "product-hunt"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on migration, transaction, reconciliation, close, report, tax, export, billing, or support test was completed.",
+      "This review does not provide accounting, tax, audit, or legal advice.",
+      "Independent review coverage is thin for software that holds the general ledger and produces financial statements.",
+      "Automated categorization and AI output require human review under the company's accounting policy."
+    ]
+  },
+  "sources": [
+    {
+      "id": "product-hunt",
+      "name": "Puzzle launches and reviews",
+      "url": "https://www.producthunt.com/products/puzzle",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 33,
+      "keyThemes": [
+        "Launch",
+        "Runway",
+        "Automation",
+        "Support"
+      ]
+    },
+    {
+      "id": "help",
+      "name": "Puzzle Help Center",
+      "url": "https://help.puzzle.io/en/",
+      "accessed": "2026-08-13",
+      "sourceType": "official-documentation",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Integrations",
+        "Close",
+        "Reconciliation",
+        "Migration"
+      ]
+    },
+    {
+      "id": "pricing",
+      "name": "Puzzle pricing",
+      "url": "https://puzzle.io/pricing",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Starter",
+        "Core",
+        "Complete",
+        "Scale",
+        "Guarantee"
+      ]
+    },
+    {
+      "id": "reddit-experience",
+      "name": "Puzzle and Digits experience discussion",
+      "url": "https://www.reddit.com/r/smallbusiness/comments/1e7dt5n/anyone_have_experience_using_puzzle_or_digits/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 8,
+      "keyThemes": [
+        "Usability",
+        "Thin evidence"
+      ]
+    },
+    {
+      "id": "reddit-bookkeeping",
+      "name": "Puzzle bookkeeping discussion",
+      "url": "https://www.reddit.com/r/smallbusiness/comments/1oej1fd/puzzleio_for_bookkeeping/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 12,
+      "keyThemes": [
+        "Interface",
+        "Accounting gaps"
+      ]
+    },
+    {
+      "id": "reddit-startup",
+      "name": "Pre-seed startup accounting discussion",
+      "url": "https://www.reddit.com/r/ycombinator/comments/1el8vsu/how_should_a_preseed_startup_venture_backed_do_accounting/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 20,
+      "keyThemes": [
+        "Startup fit",
+        "Accountant"
+      ]
+    },
+    {
+      "id": "beancount",
+      "name": "Puzzle public feedback analysis",
+      "url": "https://beancount.io/blog/2025/07/27/puzzle-io-user-feedback-analysis",
+      "accessed": "2026-08-13",
+      "sourceType": "editorial-aggregation",
+      "reviewCountSampled": 40,
+      "keyThemes": [
+        "Founder praise",
+        "Accountant caution"
+      ]
+    },
+    {
+      "id": "tofu",
+      "name": "Puzzle review by Tofu",
+      "url": "https://www.gotofu.com/blog/puzzle-io-review",
+      "accessed": "2026-08-13",
+      "sourceType": "competitor-editorial-review",
+      "reviewCountSampled": 20,
+      "keyThemes": [
+        "AI errors",
+        "Overrides",
+        "Reporting"
+      ]
+    },
+    {
+      "id": "khetanca",
+      "name": "Puzzle accounting comparison",
+      "url": "https://khetanca.com/blog-8-puzzle-vs-zoho-quickbooks.html",
+      "accessed": "2026-08-13",
+      "sourceType": "practitioner-editorial-review",
+      "reviewCountSampled": 1,
+      "keyThemes": [
+        "SaaS",
+        "Deferred revenue",
+        "Revenue recognition"
+      ]
+    },
+    {
+      "id": "capterra",
+      "name": "Puzzle listing on Capterra",
+      "url": "https://www.capterra.com/p/10028909/Puzzle/",
+      "accessed": "2026-08-14",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 0,
+      "keyThemes": [
+        "Feature listing",
+        "Pricing",
+        "Review coverage limit"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Puzzle launched publicly on March 21, 2023.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "product-hunt"
+      ]
+    },
+    {
+      "statement": "Puzzle includes a general ledger, transaction categorization, account reconciliation, journal entries, period locks, cash and accrual books, statements, founder metrics, revenue recognition, and migration tools.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "help",
+        "pricing"
+      ]
+    },
+    {
+      "statement": "The displayed standard yearly rates are $25 monthly for Starter, $60 for Core, $100 for Complete, and $300 for Scale. Monthly list rates are $30, $72, $120, and $360.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "The 14-day trial provides Complete access. Current introductory discounts and a close-time guarantee have detailed conditions.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "A clear founder view of cash, burn, runway, revenue, and statements is the strongest positive theme.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "product-hunt",
+        "reddit-experience",
+        "reddit-startup",
+        "beancount"
+      ]
+    },
+    {
+      "statement": "Connections to startup banks, cards, payment, payroll, and equity systems can reduce copying and close work.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "product-hunt",
+        "help",
+        "khetanca"
+      ]
+    },
+    {
+      "statement": "Accounting controls, reporting depth, correction workflows, and automated category accuracy draw mixed criticism from experienced users.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reddit-bookkeeping",
+        "beancount",
+        "tofu",
+        "khetanca"
+      ]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Connecting startup accounts can produce a fast founder dashboard; correctness requires historical migration, reconciliation, policies, journals, locks, and accountant review.",
+    "product": "Promising for an early-stage single-entity startup with modern connections and straightforward books; less proven for complex entities or firm workflows.",
+    "support": "Launch and founder samples praise help, but no urgent close or tax request was tested.",
+    "billing": "Entry tiers are reasonable, while Complete is the first plan with revenue recognition and richer accuracy work; introductory discounts and guarantee terms need careful reading.",
+    "overall": "Puzzle is worth testing when a startup wants clearer books and a shorter close. Do not switch the ledger until an accountant closes and reconciles two real months, including ugly edge cases and full exports."
+  },
+  "conflictsAndUnknowns": [
+    "A founder dashboard can be easy to read while the underlying categories or timing remain wrong.",
+    "AI can reduce touch work and still require review of exceptions and policy choices.",
+    "The strongest praise comes from founder-heavy and launch samples, while accountant evidence is thinner and more cautious.",
+    "No migration, close, tax, report, export, billing, or support test was completed."
+  ]
+}

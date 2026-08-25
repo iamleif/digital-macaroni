@@ -1,0 +1,4 @@
+interface:
+  display_name: "Digital Macaroni Humanizer"
+  short_description: "Edit reviews into natural human prose"
+  default_prompt: "Use $digital-macaroni-humanizer to edit this review for natural syntax and human cadence."

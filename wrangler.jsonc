@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "digital-macaroni",
+  "account_id": "cad35e9e19121012045ba51f5fdd1409",
+  "compatibility_date": "2026-08-14",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    {
+      "pattern": "digitalmacaroni.io",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.digitalmacaroni.io",
+      "custom_domain": true
+    }
+  ],
+  "observability": {
+    "enabled": false
+  }
+}

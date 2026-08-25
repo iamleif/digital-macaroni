@@ -1,55 +1,32 @@
 {
-  "schemaVersion": 1,
-  "productSlug": "recall",
-  "legacy": false,
-  "reviewType": "research-based",
-  "researchStarted": "2026-08-13",
-  "researchUpdated": "2026-08-13",
-  "releaseDate": { "date": "2022-02-09", "precision": "day", "sourceId": "product-hunt-launch" },
-  "testing": {
-    "accessedProduct": false,
-    "plan": null,
-    "version": null,
-    "tasksAttempted": [],
-    "limitations": [
-      "No new hands-on test was completed.",
-      "Independent reports cover different browsers, languages, and library sizes.",
-      "The evidence does not establish long-term reliability for very large libraries.",
-      "Product Hunt feedback may lean more positive than long-term user reports."
-    ]
-  },
-  "sources": [
-    {"id":"product-hunt-launch","name":"Recall launch on Product Hunt","url":"https://www.producthunt.com/products/recall-6","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":null,"keyThemes":["Public launch","Product history"]},
-    {"id":"official-pricing","name":"Recall pricing and features","url":"https://app.getrecall.ai/pricing","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Supported content","Automatic tags","Chat","Knowledge graph"]},
-    {"id":"product-hunt-reviews","name":"Recall reviews on Product Hunt","url":"https://www.producthunt.com/products/recall-6/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":20,"keyThemes":["Saved content","Learning","Summaries","Recall"]},
-    {"id":"mozilla-reviews","name":"Recall Firefox extension reviews","url":"https://addons.mozilla.org/en-US/firefox/addon/getrecall/reviews/","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":4,"keyThemes":["Capture","Performance","Sign-in"]},
-    {"id":"reddit-thoughts","name":"Thoughts on Recall","url":"https://www.reddit.com/r/ProductivityApps/comments/1pi44pr/thoughts_on_recall/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Partial capture","Languages","Firefox","Bugs"]},
-    {"id":"reddit-quota","name":"Recall YouTube summary quota complaint","url":"https://www.reddit.com/r/OpenAI/comments/1ise7hb/youtube_ai_summary_do_not_subscribe_to/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":2,"keyThemes":["Unlimited use","Fair use","Refund"]},
-    {"id":"reddit-review","name":"Recall AI user review","url":"https://www.reddit.com/r/ProductivityApps/comments/1l5d4kd","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Podcast summaries","Knowledge graph","Value"]},
-    {"id":"productive-matters","name":"Recall AI in-depth review","url":"https://productivematters.substack.com/p/deep-dive-into-recall-ai","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":1,"keyThemes":["Automatic organization","Library chat","One-week test"]},
-    {"id":"official-requests","name":"Recall feature requests","url":"https://feedback.getrecall.ai/feature-requests","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Imports","Export","Security","Search"]}
+  "schemaVersion":1,
+  "productSlug":"recall",
+  "legacy":false,
+  "reviewType":"research-based",
+  "researchStarted":"2026-08-13",
+  "researchUpdated":"2026-08-14",
+  "releaseDate":{"date":"2022-02-09","precision":"day","sourceId":"product-hunt"},
+  "testing":{"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on capture, summary, chat, graph, review, export, browser, mobile, billing, or support test was completed.","Long-term reliability at a large library size is not established by the available evidence.","AI summaries and answers can omit, distort, or invent details and must be checked against the saved source."]},
+  "sources":[
+    {"id":"product-hunt","name":"Recall launches","url":"https://www.producthunt.com/products/recall-6","accessed":"2026-08-13","sourceType":"launch-history","reviewCountSampled":null,"keyThemes":["Launch","Summaries","Learning"]},
+    {"id":"product-hunt-reviews","name":"Recall reviews on Product Hunt","url":"https://www.producthunt.com/products/recall-6/reviews","accessed":"2026-08-14","sourceType":"independent-review-platform","reviewCountSampled":42,"keyThemes":["Summaries","Organization","Knowledge graph","Learning"]},
+    {"id":"pricing","name":"Recall pricing","url":"https://www.recall.it/pricing","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Free","Plus","Max","Fair use"]},
+    {"id":"mozilla","name":"Recall Firefox extension reviews","url":"https://addons.mozilla.org/en-US/firefox/addon/getrecall/reviews/","accessed":"2026-08-14","sourceType":"independent-review-platform","reviewCountSampled":25,"keyThemes":["Capture","Performance","Sign-in"]},
+    {"id":"reddit-review","name":"Paid user's thoughts on Recall","url":"https://www.reddit.com/r/ProductivityApps/comments/1pi44pr/thoughts_on_recall/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Partial capture","Languages","Firefox","Bugs"]},
+    {"id":"reddit-quota","name":"Recall summary fair-use dispute","url":"https://www.reddit.com/r/OpenAI/comments/1ise7hb/youtube_ai_summary_do_not_subscribe_to/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Unlimited","Fair use","Refund"]},
+    {"id":"reddit-praise","name":"Recall product review","url":"https://www.reddit.com/r/ProductivityApps/comments/1l5d4kd","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":1,"keyThemes":["Podcasts","Graph","Value"]},
+    {"id":"editorial","name":"One-week Recall review","url":"https://productivematters.substack.com/p/deep-dive-into-recall-ai","accessed":"2026-08-13","sourceType":"editorial-review","reviewCountSampled":1,"keyThemes":["Organization","Library chat","Short test"]},
+    {"id":"feedback","name":"Recall feature requests","url":"https://feedback.getrecall.ai/feature-requests","accessed":"2026-08-13","sourceType":"official-feedback-board","reviewCountSampled":null,"keyThemes":["Imports","Export","Security","Search"]}
   ],
-  "claims": [
-    {"statement":"Recall launched publicly on February 9, 2022.","kind":"fact","status":"verified","sourceIds":["product-hunt-launch"]},
-    {"statement":"Recall is a personal AI knowledge base for saving, summarizing, organizing, searching, and chatting with articles, videos, podcasts, PDFs, and notes.","kind":"fact","status":"verified","sourceIds":["official-pricing"]},
-    {"statement":"Automatic summaries and organization reduce the work needed to turn saved material into a usable library.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt-reviews","reddit-review","productive-matters"]},
-    {"statement":"Users value links across saved material, especially the knowledge graph and whole-library chat.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt-reviews","reddit-review","productive-matters"]},
-    {"statement":"Some pages and mixed text-and-table content are captured only in part, which can weaken summaries and answers.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-thoughts"]},
-    {"statement":"Some Firefox users report extension performance and sign-in problems.","kind":"reported-pattern","status":"supported","sourceIds":["mozilla-reviews","reddit-thoughts"]},
-    {"statement":"Language handling and translation can be inconsistent.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-thoughts"]},
-    {"statement":"Marketing around unlimited summaries conflicts with one power-user report, while the company cites a fair-use limit for unusually costly automated use.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-quota","official-pricing"]}
+  "claims":[
+    {"statement":"Recall launched publicly on February 9, 2022.","kind":"fact","status":"verified","sourceIds":["product-hunt"]},
+    {"statement":"Recall saves and summarizes articles, videos, podcasts, PDFs, and notes, then adds tags, links, chat, quizzes, and spaced review.","kind":"fact","status":"verified","sourceIds":["pricing","product-hunt"]},
+    {"statement":"Free includes unlimited saved content and notes plus ten AI summaries per month. Plus costs $10 per month billed yearly. Max costs $38 per month billed yearly.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"Plus adds unlimited typical-use summaries, automatic tags, library chat, text-to-speech, automatic graph links, quizzes, and bulk imports. Max adds model choice, bulk AI actions, and onboarding.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"Automatic summaries, organization, browser capture, knowledge connections, and whole-library chat are the strongest positive themes.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt-reviews","reddit-praise","editorial"]},
+    {"statement":"Partial capture, mixed text and table handling, Firefox performance, and language behavior are meaningful concerns.","kind":"reported-pattern","status":"supported","sourceIds":["mozilla","reddit-review"]},
+    {"statement":"Unlimited paid summaries are subject to a fair-use policy for unusually high activity.","kind":"fact","status":"verified","sourceIds":["pricing","reddit-quota"]}
   ],
-  "scoreRationale": {
-    "onboarding": "Browser capture and automatic summaries make the first useful action easy, though browser-specific problems can interrupt it.",
-    "product": "Recall has a clear job and useful library-wide connections, but partial capture and language problems weaken trust in the saved record.",
-    "support": "The available conflict includes a company response and refund offer, but the independent evidence is too small to show consistently strong support.",
-    "billing": "The paid value can be good for active learners, but the conflict around unlimited use makes plan limits less clear than they should be.",
-    "overall": "Recall is useful for readers and researchers who revisit saved material. It is less convincing as a permanent knowledge archive until capture and large-library reliability improve."
-  },
-  "conflictsAndUnknowns": [
-    "Product Hunt feedback is strongly positive while a detailed paid-user account calls the product beta-like.",
-    "The meaning of unlimited summaries conflicts with one power user's experience and the company's fair-use explanation.",
-    "No new hands-on test was completed.",
-    "Long-term reliability at large library sizes is unknown."
-  ]
+  "scoreRationale":{"onboarding":"Saving and summarizing the first page is quick; value requires complete capture, source-linked answers, retrieval weeks later, and a usable export.","product":"Strong for a personal read-later and learning library that connects material; not a source of truth when capture or summary is incomplete.","support":"Public support evidence is mixed and thin, with a reported refund in a fair-use dispute; no request was tested.","billing":"Plus has a clear yearly rate for normal personal use, while Max and the fair-use boundary matter for bulk power users.","overall":"Recall is worth testing when saved material is actually reused. Build a varied 50-item library, verify the source behind every useful answer, return after two weeks, and export before committing."},
+  "conflictsAndUnknowns":["Automatic organization reduces filing work and can create links that are only loosely relevant.","Whole-library chat saves search time and can answer from a partial or wrong capture.","Unlimited language means normal use under a fair-use policy, not unlimited automated bulk work.","No capture, summary, chat, language, export, large-library, billing, or support test was completed."]
 }

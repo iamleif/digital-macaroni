@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "paddle",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2012-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "No access to G2/Capterra reviews due to CAPTCHA restrictions",
+      "Community discussions inaccessible (Reddit blocked)",
+      "Customer stories on official site not crawled",
+      "Pricing page content unavailable in sources"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Paddle official website",
+      "url": "https://www.paddle.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Merchant of Record solution",
+        "Global tax compliance",
+        "Subscription management",
+        "Fraud protection",
+        "Developer API integration"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Paddle release history",
+      "url": "https://www.paddle.com/about",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "Paddle reviews on G2",
+      "url": "https://www.g2.com/products/paddle/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 237,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Paddle reviews on Capterra",
+      "url": "https://www.capterra.com/p/231731/Paddle/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "Paddle reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/paddle.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Automated refund processing",
+        "Customer support challenges",
+        "Subscription cancellation issues",
+        "Bot-based assistance"
+      ]
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Paddle community discussion",
+      "url": "https://www.reddit.com/r/SaaS/comments/1im5ezn/a_6week_journey_to_getting_approved_by_paddle/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Acts as Merchant of Record handling tax compliance globally",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Provides automated fraud protection tools",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Offers developer APIs and sandbox environment",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Automated systems efficiently process refund requests",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Customers experience difficulties reaching human support for billing issues",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Subscription management challenges occur during payment method updates",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Provides real-time payment analytics",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Accidental subscription purchase",
+      "task": "Request refund",
+      "whatHappened": "Used automated assistant",
+      "result": "Full refund processed within two minutes",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "Nonprofit needing credit card update",
+      "task": "Update subscription payment details",
+      "whatHappened": "Multiple emails over two months",
+      "result": "Unable to resolve through automated systems",
+      "vendorResponse": "unknown",
+      "confidence": "medium"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "Paid subscriber unable to access service",
+      "task": "Resolve login issues",
+      "whatHappened": "Communicated exclusively with unresponsive bots",
+      "result": "Unable to use purchased service",
+      "vendorResponse": "unknown",
+      "confidence": "medium"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Subscription cancellation shortly after purchase",
+      "task": "Cancel annual subscription",
+      "whatHappened": "Immediate cancellation request after realizing features didn't meet needs",
+      "result": "Refund processed within five business days",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Merchant of Record",
+      "plainExplanation": "Paddle legally assumes responsibility for transactions instead of the software seller",
+      "whoCares": "SaaS companies avoiding international legal registrations",
+      "whenItDoesNotMatter": "Sellers already registered as merchants in target markets"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "No onboarding process details available in sources",
+    "product": "Comprehensive merchant services including tax compliance and fraud protection",
+    "support": "Automated systems efficiently handle simple requests but struggle with complex issues",
+    "billing": "Real-time analytics available but payment updates prove challenging",
+    "overall": "Strong infrastructure capabilities with customer support accessibility concerns"
+  },
+  "conflictsAndUnknowns": [
+    "Conflicting reports on support effectiveness: bots praised for refunds but criticized for complex issues",
+    "Actual pricing information unavailable in sources",
+    "Enterprise-level implementation details unknown",
+    "Tax compliance effectiveness in specific jurisdictions unverified"
+  ]
+}

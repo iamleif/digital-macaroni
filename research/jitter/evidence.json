@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "jitter",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {"date": "2021-02-09", "precision": "day", "sourceId": "official-launch"},
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Most scored feedback comes from Product Hunt.",
+      "The current pricing page exposed plan features but not numeric paid prices in the research response."
+    ]
+  },
+  "sources": [
+    {"id":"official-launch","name":"Jitter public beta announcement","url":"https://jitter.video/changelog/2021-02-09-jitter-is-now-in-public-beta/","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Public beta date","Browser motion design"]},
+    {"id":"official-product","name":"Jitter product page","url":"https://jitter.video/product/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Figma import","Animation controls","Templates","Export formats"]},
+    {"id":"official-pricing","name":"Jitter pricing","url":"https://jitter.video/pricing/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Free plan","Pro","Max","Ultra","Export limits","Annual discount"]},
+    {"id":"product-hunt","name":"Jitter reviews on Product Hunt","url":"https://www.producthunt.com/products/jitter","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":48,"keyThemes":["Browser workflow","Figma handoff","Templates","Ease of use"]},
+    {"id":"trustpilot","name":"Jitter reviews on Trustpilot","url":"https://www.trustpilot.com/review/jitter.video","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":3,"keyThemes":["Design animation","Small sample"]},
+    {"id":"reddit-output","name":"Motion Design community critique of Jitter output","url":"https://www.reddit.com/r/MotionDesign/comments/1hw09to/just_made_this_marketing_video_using_jitter_how/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":4,"keyThemes":["Real output","Pacing","Sound","Editing judgment"]},
+    {"id":"reddit-figma","name":"Figma and Jitter workflow discussion","url":"https://www.reddit.com/r/FigmaDesign/comments/1v85mfe/do_people_think_figma_motion_is_actually_useful/","accessed":"2026-08-14","sourceType":"community","reviewCountSampled":8,"keyThemes":["Fast Figma handoff","Text animation","Simple motion","Professional-tool limits"]}
+  ],
+  "claims": [
+    {"statement":"Jitter imports editable Figma designs and provides templates, presets, a visual timeline, collaboration, and video, GIF, and Lottie exports.","kind":"fact","status":"verified","sourceIds":["official-product","official-pricing"]},
+    {"statement":"The Free plan allows unlimited drafts, three workspace files, and 720p 30fps exports with a Jitter watermark.","kind":"fact","status":"verified","sourceIds":["official-pricing"]},
+    {"statement":"Pro removes the watermark and adds unlimited files, 1080p 60fps, ProRes, and WebM. Max adds 4K 120fps, transparent export, and frame-by-frame export. Ultra mainly raises AI capacity.","kind":"fact","status":"verified","sourceIds":["official-pricing"]},
+    {"statement":"Quick browser use, familiar design controls, Figma import, and presets are repeated strengths.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt","trustpilot","reddit-figma"]},
+    {"statement":"The software can make simple motion easier, but the quality of a finished marketing video still depends on design, timing, sound, and editing judgment.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-output","reddit-figma"]}
+  ],
+  "scoreRationale": {
+    "onboarding":"The browser, free plan, templates, and familiar controls make the first animation approachable.",
+    "product":"Jitter is strong for text, logo, product-screen, and social animations, but it is not a complete replacement for deeper motion and video tools.",
+    "support":"Public evidence is too thin for a strong support judgment.",
+    "billing":"The free plan is useful for testing. Paid tiers are easy to compare by output need, but current numeric prices should be checked live.",
+    "overall":"Jitter is useful when a designer needs to make existing visual work move without learning a full professional animation package."
+  },
+  "conflictsAndUnknowns": [
+    "Product Hunt feedback is strongly positive, but evidence from other review platforms is thin.",
+    "A simple tool can speed production without giving a beginner good animation judgment.",
+    "No hands-on workflow or export test was completed."
+  ]
+}

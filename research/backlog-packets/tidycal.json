@@ -1,0 +1,268 @@
+{
+  "findings": [
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "finding_type": "fact",
+      "id": 25,
+      "prevalence": "common",
+      "product_id": 96,
+      "source_ids": [],
+      "summary": "TidyCal has a dated Product Hunt release record from August 18, 2021. Its release date is private editorial data.",
+      "updated_at": "2026-08-13T16:26:54.170826+00:00"
+    },
+    {
+      "confidence": 0.85,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "finding_type": "praise",
+      "id": 26,
+      "prevalence": "common",
+      "product_id": 96,
+      "source_ids": [],
+      "summary": "Low lifetime cost, simple setup, calendar syncing, and basic booking links are the strongest repeated themes.",
+      "updated_at": "2026-08-13T16:26:54.170826+00:00"
+    },
+    {
+      "confidence": 0.75,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "finding_type": "praise",
+      "id": 27,
+      "prevalence": "common",
+      "product_id": 96,
+      "source_ids": [],
+      "summary": "It is a good fit for solo operators and small teams that do not need a large scheduling suite.",
+      "updated_at": "2026-08-13T16:26:54.170826+00:00"
+    },
+    {
+      "confidence": 0.75,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "finding_type": "complaint",
+      "id": 28,
+      "prevalence": "mixed",
+      "product_id": 96,
+      "source_ids": [],
+      "summary": "Customization, advanced team scheduling, integration reliability, and booking failures are the key limits in public feedback.",
+      "updated_at": "2026-08-13T16:26:54.170826+00:00"
+    },
+    {
+      "confidence": 0.85,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "finding_type": "unknown",
+      "id": 29,
+      "prevalence": "common",
+      "product_id": 96,
+      "source_ids": [],
+      "summary": "No new hands-on test has been completed. The release record is for TidyCal 2.0 and should be treated as the verified public version date in the research package.",
+      "updated_at": "2026-08-13T16:26:54.170826+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": "2026-08-13T16:26:54.170826+00:00",
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "researchBrief": "research/ARTICLE_BRIEF.md"
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 93,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 96,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": "2026-08-13T16:26:54.170826+00:00",
+    "status": "needs_review",
+    "updated_at": "2026-08-13T16:26:54.170826+00:00"
+  },
+  "product": {
+    "category": "Scheduling",
+    "id": 96,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "TidyCal",
+    "short_description": "Affordable scheduling product aimed at small teams and solo operators.",
+    "slug": "tidycal",
+    "target_publish_date": null,
+    "website_url": "https://tidycal.com"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T16:26:54.170826+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "excerpt": null,
+      "id": 116,
+      "metadata": {
+        "keyThemes": [
+          "Launch date",
+          "Booking links",
+          "Scheduling"
+        ]
+      },
+      "platform": "Product Hunt",
+      "product_id": 96,
+      "published_at": null,
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Public launch history and user review context.",
+      "title": "TidyCal on Product Hunt",
+      "url": "https://www.producthunt.com/products/tidycal/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:54.170826+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "excerpt": null,
+      "id": 117,
+      "metadata": {
+        "keyThemes": [
+          "Booking pages",
+          "Calendar sync",
+          "Meeting polls"
+        ]
+      },
+      "platform": "TidyCal",
+      "product_id": 96,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official product information.",
+      "title": "TidyCal official site",
+      "url": "https://tidycal.com/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:54.170826+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "excerpt": null,
+      "id": 118,
+      "metadata": {
+        "keyThemes": [
+          "Value",
+          "Setup",
+          "Calendar limits",
+          "Customization"
+        ],
+        "reviewCountSampled": 24
+      },
+      "platform": "G2",
+      "product_id": 96,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Independent review sample.",
+      "title": "TidyCal reviews on G2",
+      "url": "https://www.g2.com/products/tidycal/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:54.170826+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "excerpt": null,
+      "id": 119,
+      "metadata": {
+        "keyThemes": [
+          "Scheduling",
+          "Value",
+          "Small business"
+        ],
+        "reviewCountSampled": 41
+      },
+      "platform": "Capterra",
+      "product_id": 96,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Independent review platform sample.",
+      "title": "TidyCal reviews on Capterra",
+      "url": "https://www.capterra.com/p/250843/TidyCal/reviews/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:54.170826+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "excerpt": null,
+      "id": 120,
+      "metadata": {
+        "keyThemes": [
+          "Lifetime price",
+          "Scheduling",
+          "Customer support"
+        ],
+        "reviewCountSampled": 154
+      },
+      "platform": "Trustpilot",
+      "product_id": 96,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Independent review sample.",
+      "title": "TidyCal reviews on Trustpilot",
+      "url": "https://uk.trustpilot.com/review/tidycal.com"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:54.170826+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "excerpt": null,
+      "id": 121,
+      "metadata": {
+        "keyThemes": [
+          "Google integration",
+          "Bugs",
+          "Scheduling reliability"
+        ],
+        "reviewCountSampled": 8
+      },
+      "platform": "Reddit",
+      "product_id": 96,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community report on integration reliability.",
+      "title": "TidyCal Google integration discussion on Reddit",
+      "url": "https://www.reddit.com/r/appsumo/comments/1q5ukcg/whats_up_with_tidycals_google_integration/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:54.170826+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:54.170826+00:00",
+      "excerpt": null,
+      "id": 122,
+      "metadata": {
+        "keyThemes": [
+          "Customization",
+          "Booking failures",
+          "Lead qualification"
+        ],
+        "reviewCountSampled": 6
+      },
+      "platform": "Reddit",
+      "product_id": 96,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community report on customization limits and booking failures.",
+      "title": "TidyCal limitations discussion on Reddit",
+      "url": "https://www.reddit.com/r/appsumo/comments/1scnruf/is_tidycal_broken_or_am_i/"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "checkpointVersion": 4,
+  "slug": "better-stack",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "bc306a2366e46fd676af57f0bd802a390c537ad03c118d9de8f6893cb468cfb8",
+  "publicationDate": "2026-07-14",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "340a0ce033ab73b2fcc029f5c88e9884f71e0de2cda0c6e14258a9a0829f626e",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "6a5a2ebf249d2350d2a9dff1c44cadf8bc9b95fd3fb57bb7e215383ba4086ca7",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.108Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "9a646185ffec5f27890462b3038d5ad849d471c79178e5bf344e7b9121e47687",
+      "predecessorSha256": "6a5a2ebf249d2350d2a9dff1c44cadf8bc9b95fd3fb57bb7e215383ba4086ca7",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.111Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "4ce399ad15e31f62588a0a95a6f601057cbd2cf3dcff67572aae2de33ff6ac23",
+      "predecessorSha256": "9a646185ffec5f27890462b3038d5ad849d471c79178e5bf344e7b9121e47687",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T12:09:51.247Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.112Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.114Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T12:09:01.541Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "26bfb89b1e1afcedcd81a1dcec96dd2aebbddae5921a8d56cd611bfb6b1ab613"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 1,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T12:10:14.302Z",
+      "candidate": "attempts/004-argument_card-attempt-1.md",
+      "candidateSha256": "0edbcfaae03cd099154e23e8d9a180c01596077edcdbf8af85684304291b2935"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 2,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T12:10:32.981Z",
+      "candidate": "attempts/005-argument_card-attempt-2.md",
+      "candidateSha256": "70d502b41fcdc22b23e0b7f1789749f65fdcae675b523d484972b1b74ac1bdd3"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 1,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T13:04:26.158Z",
+      "candidate": "attempts/006-argument_card-attempt-1.md",
+      "candidateSha256": "fc4cece6a02b9533dd50555c4c4efc2397cf5f49fc8cb8d53e6f0e36935f4c85"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 2,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T13:04:45.611Z",
+      "candidate": "attempts/007-argument_card-attempt-2.md",
+      "candidateSha256": "99ce91bb7d17ed9b1e124c3182f5f15c2f39bf8730542277decd5295526042e5"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.107Z",
+  "updatedAt": "2026-08-18T13:04:45.613Z"
+}

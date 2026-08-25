@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "checks": {
+    "structure": true,
+    "source_integrity": true,
+    "stance": true,
+    "buyer_guidance": true,
+    "humanizer": true,
+    "similarity": true,
+    "readability": true,
+    "disclosure": true
+  },
+  "metrics": {
+    "grade": 6.9,
+    "averageSentenceWords": 12.4,
+    "wordCount": 843,
+    "h2Count": 6,
+    "sourceCount": 6,
+    "maximumSimilarity": 0.0006,
+    "mostSimilarSlug": "typedream",
+    "humanizerAudit": {
+      "passed": true,
+      "sha256": "7df1e3088ffbd460cf2ccdfef6cc835223d7f886ef563914592d6c37498d2370",
+      "metrics": {
+        "words": 814,
+        "paragraphs": 24,
+        "articleWordRate": 0.086,
+        "negativeParallelisms": 0
+      },
+      "failures": [],
+      "warnings": []
+    },
+    "stockHeadingCount": 2,
+    "aggregationCount": 1
+  },
+  "bodySha256": "7df1e3088ffbd460cf2ccdfef6cc835223d7f886ef563914592d6c37498d2370"
+}

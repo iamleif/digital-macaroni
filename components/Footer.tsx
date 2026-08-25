@@ -19,6 +19,7 @@ export function Footer() {
           <Link href="/how-it-works">How it works</Link>
           <Link href="/submit">Submit your software</Link>
           <Link href="/about">About</Link>
+          <Link href="/privacy">Privacy</Link>
           <a href="mailto:hello@digitalmacaroni.io">Email</a>
           <span>© {new Date().getFullYear()} Digital Macaroni</span>
         </div>

@@ -1,0 +1,358 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "fact",
+      "id": 370,
+      "prevalence": "common",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "Puzzle is accounting software for startups that combines a general ledger, automated categorization, reconciliation, revenue recognition, financial statements, and founder metrics.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    },
+    {
+      "confidence": 0.93,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "praise",
+      "id": 371,
+      "prevalence": "common",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "Founders repeatedly praise the clean interface and plain view of cash, burn, runway, revenue, and financial statements.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "praise",
+      "id": 372,
+      "prevalence": "common",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "Integrations with startup banking, payments, payroll, and equity systems reduce spreadsheet and month-end work.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "praise",
+      "id": 373,
+      "prevalence": "common",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "Automation and startup-specific reports make accounting easier to approach for operators without deep finance training.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    },
+    {
+      "confidence": 0.88,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "complaint",
+      "id": 374,
+      "prevalence": "mixed",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "Accountants and power users report missing controls, limited reporting, or workflows that feel less mature than established ledgers.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    },
+    {
+      "confidence": 0.87,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "complaint",
+      "id": 375,
+      "prevalence": "mixed",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "Incorrect automated categorization can require human review, and some users find corrections or overrides frustrating.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "complaint",
+      "id": 376,
+      "prevalence": "common",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "Public independent review coverage is thin relative to the responsibility and risk involved in accounting software.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "conflict",
+      "id": 377,
+      "prevalence": "mixed",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "Puzzle appears strongest for early-stage startup operators and less clearly proven for accounting firms or complex businesses.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    },
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "finding_type": "unknown",
+      "id": 378,
+      "prevalence": "mixed",
+      "product_id": 119,
+      "source_ids": [],
+      "summary": "No research-only review should imply tax or accounting correctness without validating the company configuration and an accountant’s review process.",
+      "updated_at": "2026-08-13T19:15:24.846998+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true
+    },
+    "created_at": "2026-08-13T19:15:24.846998+00:00",
+    "id": 113,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 119,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T19:15:24.846998+00:00"
+  },
+  "product": {
+    "category": "Accounting & finance",
+    "id": 119,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Puzzle",
+    "short_description": "AI-assisted accounting software built around startup books, real-time financials, revenue recognition, and founder metrics.",
+    "slug": "puzzle",
+    "target_publish_date": null,
+    "website_url": "https://puzzle.io"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "25840d53fa0041457690c4d2435e97bf",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "Puzzle launched publicly on March 21, 2023; reviewers praise real-time burn, runway, automation, clear reports, and support.",
+      "id": 501,
+      "metadata": {
+        "bias": "launch community, founders, investors, and early users; negative coverage is weak",
+        "releaseEvidence": true,
+        "sampleSize": 33,
+        "sampleUnit": "reviews"
+      },
+      "platform": "Product Hunt",
+      "product_id": 119,
+      "published_at": "2023-03-21T00:00:00+00:00",
+      "rating": 5,
+      "source_type": "launch-history",
+      "summary": "Exact launch evidence plus 33 highly positive founder-heavy reviews.",
+      "title": "Puzzle launches and reviews",
+      "url": "https://www.producthunt.com/products/puzzle"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "12c843c2cca34187f635dadae939a709",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "The help center documents integrations, categorization, reconciliation, revenue recognition, AI close, migration, and partner workflows.",
+      "id": 502,
+      "metadata": {
+        "bias": "first-party documentation",
+        "sampleSize": 145,
+        "sampleUnit": "help articles across collections"
+      },
+      "platform": "Puzzle",
+      "product_id": 119,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "First-party evidence for current product scope and operating model.",
+      "title": "Puzzle Help Center",
+      "url": "https://help.puzzle.io/en/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "6465812b31e1f3c219b413a5ea98e054",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "Users can reconcile accounts, modify the chart of accounts, inspect the general ledger, enter journals, lock periods, and review suggested transaction categories.",
+      "id": 503,
+      "metadata": {
+        "bias": "first-party",
+        "sampleSize": 1,
+        "sampleUnit": "feature walkthrough"
+      },
+      "platform": "Puzzle",
+      "product_id": 119,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Detailed first-party evidence that the product includes real accounting controls beyond dashboards.",
+      "title": "Summary of Puzzle by page",
+      "url": "https://help.puzzle.io/en/articles/6987040-summary-of-puzzle-by-page"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "1f88d96e1ee981a565b169b32d656992",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "Users trade limited but strongly positive experiences and explicitly note the small public review footprint.",
+      "id": 504,
+      "metadata": {
+        "bias": "small-business early adopters; very small sample",
+        "sampleSize": 8,
+        "sampleUnit": "thread participants"
+      },
+      "platform": "Reddit",
+      "product_id": 119,
+      "published_at": "2024-07-20T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Small practitioner thread that supports usability praise but warns against overconfidence.",
+      "title": "Experience using Puzzle or Digits accounting software",
+      "url": "https://www.reddit.com/r/smallbusiness/comments/1e7dt5n/anyone_have_experience_using_puzzle_or_digits/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "be3c20f3e2e6516b4433966458e67e7c",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "Users praise the interface and modern-stack connections but report basic accounting gaps that can hold back power users.",
+      "id": 505,
+      "metadata": {
+        "bias": "small-business and bookkeeping practitioners",
+        "sampleSize": 12,
+        "sampleUnit": "thread participants"
+      },
+      "platform": "Reddit",
+      "product_id": 119,
+      "published_at": "2025-10-24T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Mixed practitioner evidence on design strength versus accounting maturity.",
+      "title": "Puzzle.io for bookkeeping?",
+      "url": "https://www.reddit.com/r/smallbusiness/comments/1oej1fd/puzzleio_for_bookkeeping/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "e3eadf5343ea04416dda039567e9fadc",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "A startup operator calls Puzzle a strong fit for a venture-backed pre-seed company.",
+      "id": 506,
+      "metadata": {
+        "bias": "venture-backed startup audience",
+        "sampleSize": 20,
+        "sampleUnit": "thread comments"
+      },
+      "platform": "Reddit",
+      "product_id": 119,
+      "published_at": "2024-08-07T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Target-customer recommendation, balanced against discussion of accountants and service options.",
+      "title": "How should a pre-seed startup do accounting?",
+      "url": "https://www.reddit.com/r/ycombinator/comments/1el8vsu/how_should_a_preseed_startup_venture_backed_do_accounting/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "399994b4ef8a520a33ab158c68b39840",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "The synthesis finds enthusiasm among founders and more caution from accounting professionals.",
+      "id": 507,
+      "metadata": {
+        "bias": "editorial aggregation; underlying samples vary",
+        "sampleSize": 40,
+        "sampleUnit": "public feedback items summarized"
+      },
+      "platform": "Beancount.io",
+      "product_id": 119,
+      "published_at": "2025-07-27T00:00:00+00:00",
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Multi-source review analysis spanning G2, Reddit, and social discussion; used as synthesis rather than a substitute for primary voices.",
+      "title": "Puzzle.io user feedback analysis",
+      "url": "https://beancount.io/blog/2025/07/27/puzzle-io-user-feedback-analysis"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "4b32c8047d711f853814e8dcff584979",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "The review praises founder dashboards and startup integrations but reports AI errors, difficult overrides, lag, missing features, and limited reporting.",
+      "id": 508,
+      "metadata": {
+        "bias": "direct competitor; negative framing likely",
+        "sampleSize": 20,
+        "sampleUnit": "public feedback summarized"
+      },
+      "platform": "Tofu",
+      "product_id": 119,
+      "published_at": "2026-02-01T00:00:00+00:00",
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Detailed critical counterpoint from a competing accounting-software company; factual claims require independent corroboration.",
+      "title": "Puzzle.io Review 2026",
+      "url": "https://www.gotofu.com/blog/puzzle-io-review"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "9ede2595ed752eb9fe09b7c372b9acd0",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "A practitioner says Puzzle fits SaaS companies with deferred revenue and automated revenue-recognition needs.",
+      "id": 509,
+      "metadata": {
+        "bias": "single practitioner and client workflow",
+        "sampleSize": 1,
+        "sampleUnit": "hands-on client comparison"
+      },
+      "platform": "Khetanca",
+      "product_id": 119,
+      "published_at": "2026-07-01T00:00:00+00:00",
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Recent hands-on accounting comparison with a defined SaaS use case.",
+      "title": "Puzzle vs Zoho Books vs QuickBooks",
+      "url": "https://khetanca.com/blog-8-puzzle-vs-zoho-quickbooks.html"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "22050476b3d40016cbbc83083106e0d0",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:15:24.846998+00:00",
+      "excerpt": "The comparison places Puzzle in the AI-native ledger category but notes that alternatives may better support firms, controllers, or service-heavy buyers.",
+      "id": 510,
+      "metadata": {
+        "bias": "commercial comparison site; possible affiliate incentives",
+        "sampleSize": 6,
+        "sampleUnit": "compared products"
+      },
+      "platform": "Digital Merchant",
+      "product_id": 119,
+      "published_at": "2025-12-01T00:00:00+00:00",
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Competitive context showing that product fit depends on who owns the close and whether buyers want software or a finance service.",
+      "title": "Puzzle accounting alternatives",
+      "url": "https://thedigitalmerchant.com/puzzle-accounting-alternatives/"
+    }
+  ]
+}

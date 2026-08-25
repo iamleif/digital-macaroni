@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checks": {
+    "structure": true,
+    "source_integrity": true,
+    "stance": true,
+    "buyer_guidance": true,
+    "humanizer": true,
+    "similarity": true,
+    "readability": true,
+    "disclosure": true
+  },
+  "metrics": {
+    "grade": 7.4,
+    "averageSentenceWords": 11.9,
+    "wordCount": 819,
+    "h2Count": 7,
+    "sourceCount": 6,
+    "maximumSimilarity": 0.0012,
+    "mostSimilarSlug": "senja",
+    "stockHeadingCount": 1,
+    "aggregationCount": 0
+  },
+  "bodySha256": "607b64fd9c35de39f5af319b23cc0f3a6675f76b4c42834e8cd63bd39e04e7b6"
+}

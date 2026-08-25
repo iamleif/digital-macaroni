@@ -1,0 +1,238 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "finding_type": "fact",
+      "id": 65,
+      "prevalence": "common",
+      "product_id": 62,
+      "source_ids": [],
+      "summary": "Frill launched on May 6, 2021. The date is private and used only as a publication guardrail.",
+      "updated_at": "2026-08-13T17:40:25.550667+00:00"
+    },
+    {
+      "confidence": 0.89,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "finding_type": "praise",
+      "id": 66,
+      "prevalence": "common",
+      "product_id": 62,
+      "source_ids": [],
+      "summary": "Users consistently praise Frill for a clean, easy feedback board that combines ideas, voting, roadmaps and announcements.",
+      "updated_at": "2026-08-13T17:40:25.550667+00:00"
+    },
+    {
+      "confidence": 0.82,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "finding_type": "praise",
+      "id": 67,
+      "prevalence": "common",
+      "product_id": 62,
+      "source_ids": [],
+      "summary": "Quick setup, responsive support and useful embedding and integration options are recurring strengths.",
+      "updated_at": "2026-08-13T17:40:25.550667+00:00"
+    },
+    {
+      "confidence": 0.7,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "finding_type": "complaint",
+      "id": 68,
+      "prevalence": "minority",
+      "product_id": 62,
+      "source_ids": [],
+      "summary": "Missing features and integrations appear in the evidence, though negative detail is limited.",
+      "updated_at": "2026-08-13T17:40:25.550667+00:00"
+    },
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "finding_type": "conflict",
+      "id": 69,
+      "prevalence": "isolated",
+      "product_id": 62,
+      "source_ids": [],
+      "summary": "The archived AppSumo page displays conflicting review-count information and must not be used to calculate sentiment or volume.",
+      "updated_at": "2026-08-13T17:40:25.550667+00:00"
+    },
+    {
+      "confidence": 0.96,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "finding_type": "unknown",
+      "id": 70,
+      "prevalence": "common",
+      "product_id": 62,
+      "source_ids": [],
+      "summary": "No hands-on test was performed, and independent community discussion outside formal review surfaces is sparse.",
+      "updated_at": "2026-08-13T17:40:25.550667+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": "2026-08-13T17:40:25.550667+00:00",
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "release_date_private": true,
+      "research_only": true,
+      "sampled_user_voices": 34,
+      "source_count": 6
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 59,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 62,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T17:40:25.550667+00:00"
+  },
+  "product": {
+    "category": "Customer support",
+    "id": 62,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Frill",
+    "short_description": "Mid-sized customer-feedback tool that competes with better-known products.",
+    "slug": "frill",
+    "target_publish_date": null,
+    "website_url": "https://frill.co"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T17:40:25.550667+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "excerpt": null,
+      "id": 174,
+      "metadata": {
+        "evidence_role": "release-date-and-user-feedback",
+        "launch_date": "2021-05-06",
+        "rating": 5,
+        "review_count": 10,
+        "sampled_user_voices": 10
+      },
+      "platform": "Product Hunt",
+      "product_id": 62,
+      "published_at": null,
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Frill launched May 6, 2021. Ten Product Hunt reviews praise its polished feedback board, roadmap, widgets and integrations.",
+      "title": "Frill Product Hunt launch history and reviews",
+      "url": "https://www.producthunt.com/products/frill"
+    },
+    {
+      "accessed_at": "2026-08-13T17:40:25.550667+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "excerpt": null,
+      "id": 175,
+      "metadata": {
+        "evidence_role": "product-scope"
+      },
+      "platform": "Frill",
+      "product_id": 62,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official scope: collect ideas, prioritize feedback, publish a roadmap and announce updates.",
+      "title": "Frill official website",
+      "url": "https://frill.co/"
+    },
+    {
+      "accessed_at": "2026-08-13T17:40:25.550667+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "excerpt": null,
+      "id": 176,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "rating": 4.9,
+        "review_count": 24,
+        "sampled_user_voices": 24
+      },
+      "platform": "G2",
+      "product_id": 62,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "G2 shows 24 reviews at 4.9. Clean UI, ease of use and responsive support recur; missing features and integrations are the main caveats.",
+      "title": "Frill reviews on G2",
+      "url": "https://www.g2.com/products/frill/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T17:40:25.550667+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "excerpt": null,
+      "id": 177,
+      "metadata": {
+        "evidence_role": "independent-product-profile",
+        "sampled_user_voices": 0
+      },
+      "platform": "Capterra",
+      "product_id": 62,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Capterra provides an independent product profile and alternatives context, but visible review detail is limited.",
+      "title": "Frill profile on Capterra",
+      "url": "https://www.capterra.com/p/231258/Frill/"
+    },
+    {
+      "accessed_at": "2026-08-13T17:40:25.550667+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "excerpt": null,
+      "id": 178,
+      "metadata": {
+        "data_conflict": "header_says_70_reviews_rendered_section_says_none",
+        "evidence_role": "marketplace-history",
+        "sampled_user_voices": 0
+      },
+      "platform": "AppSumo",
+      "product_id": 62,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "The archived listing says 70 reviews near the product header while its currently rendered review section says none. This contradiction must not be used as a score signal.",
+      "title": "Frill historical AppSumo listing",
+      "url": "https://appsumo.com/products/frill/"
+    },
+    {
+      "accessed_at": "2026-08-13T17:40:25.550667+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:40:25.550667+00:00",
+      "excerpt": null,
+      "id": 179,
+      "metadata": {
+        "evidence_role": "secondary-review-context"
+      },
+      "platform": "FiveTaco",
+      "product_id": 62,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Secondary lifetime-deal review coverage describes Frill as well designed and well built.",
+      "title": "Frill review record on FiveTaco",
+      "url": "https://fivetaco.com/products/frill/reviews"
+    }
+  ]
+}

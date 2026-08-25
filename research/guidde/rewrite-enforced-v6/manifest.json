@@ -1,0 +1,149 @@
+{
+  "checkpointVersion": 4,
+  "slug": "guidde",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "749f91ef424cc41a2d499986a065813109d73b7a45447b08a3234f0aab579896",
+  "publicationDate": "2026-04-17",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "1b2da1a6be60cd1a9396823f9e560f6b81f9c64c476e726ba064a791b7cf3b19",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "77f4e47e4078f148853410b585fde0299e0f245748a1fcca034fb94e37e6ade6",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.328Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "50df26b9a16516bf5f7fc5f3d2d65d2c22956b791e5790be6687106138442337",
+      "predecessorSha256": "77f4e47e4078f148853410b585fde0299e0f245748a1fcca034fb94e37e6ade6",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.331Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "af16498abeedd2bc2f4cbbf40f451e342eaf6e4b524c0c81f8cc438f22958322",
+      "predecessorSha256": "50df26b9a16516bf5f7fc5f3d2d65d2c22956b791e5790be6687106138442337",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T17:58:52.659Z"
+    },
+    "argument_card": {
+      "file": "04-argument-card.md",
+      "sha256": "af997e397f3a83249d019f4687c6c7c9904e58854f8020feb9df82c507970759",
+      "predecessorSha256": "af16498abeedd2bc2f4cbbf40f451e342eaf6e4b524c0c81f8cc438f22958322",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T17:59:22.497Z"
+    },
+    "spoken_brief": {
+      "file": "05-spoken-brief.md",
+      "sha256": "906fa3ab079d1071d22c70dd4b354456a58067d9af77ca66bf0a15a4fe9518d8",
+      "predecessorSha256": "af997e397f3a83249d019f4687c6c7c9904e58854f8020feb9df82c507970759",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T17:59:43.080Z"
+    },
+    "raw_draft": {
+      "file": "06-raw-draft.md",
+      "sha256": "6e9cd871011bc059b9a16ef883b94b4181710d6fd7c2c6b2623f14119a36f293",
+      "predecessorSha256": "906fa3ab079d1071d22c70dd4b354456a58067d9af77ca66bf0a15a4fe9518d8",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T18:01:38.859Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.332Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.334Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.654Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.665Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T17:58:21.871Z",
+      "candidate": "attempts/005-writer_notebook-attempt-1.md",
+      "candidateSha256": "e4b5a07b3a6385ac8bb99083c912eee3e7395bec5f5a5028c7d67008161f97d9"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 1,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T17:59:09.249Z",
+      "candidate": "attempts/006-argument_card-attempt-1.md",
+      "candidateSha256": "5f8bca649b17851c1a85b06e5ba18175e5867d5f5705a8e24483427f4a8dc208"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 1,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T18:00:47.009Z",
+      "candidate": "attempts/007-raw_draft-attempt-1.md",
+      "candidateSha256": "14f67f94cdeadf9bf6d40ad894ce94b49faa80b658013c14ac9ff294f9afadd3"
+    },
+    {
+      "stage": "copy_edit",
+      "attempt": 1,
+      "message": "copy_edit is too short (123 words).",
+      "createdAt": "2026-08-18T18:02:04.833Z",
+      "candidate": "attempts/008-copy_edit-attempt-1.md",
+      "candidateSha256": "82cdb7f2c203d073e2e6fe44f8e68f89ff6bb2d76962bb073b61353bb6da78bf"
+    },
+    {
+      "stage": "copy_edit",
+      "attempt": 2,
+      "message": "copy_edit is too short (694 words).",
+      "createdAt": "2026-08-18T18:02:58.290Z",
+      "candidate": "attempts/009-copy_edit-attempt-2.md",
+      "candidateSha256": "e76490798f668274200bf3d4bcc9a3085c3daa2ff82e7ff4ee36f5c02851f26f"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.322Z",
+  "updatedAt": "2026-08-18T18:02:58.301Z"
+}

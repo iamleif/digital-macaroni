@@ -26,9 +26,6 @@ export function SoftwareSubmissionForm() {
       "Why it is worth reviewing:",
       value(formData, "reason"),
       "",
-      "Pricing and review access:",
-      value(formData, "access") || "Not provided",
-      "",
       "Anything else:",
       value(formData, "notes") || "Not provided",
     ].join("\n");
@@ -84,15 +81,6 @@ export function SoftwareSubmissionForm() {
           rows={5}
           placeholder="What does it do, who is it for, and what makes it worth a closer look?"
           required
-        />
-      </label>
-
-      <label>
-        <span>Pricing and review access</span>
-        <textarea
-          name="access"
-          rows={3}
-          placeholder="Share the price, trial details, or whether you can provide a review account."
         />
       </label>
 

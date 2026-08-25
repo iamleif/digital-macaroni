@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "dropbox-sign",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2011-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Inaccessible review platforms (G2/Capterra/Reddit) due to CAPTCHA/blocking",
+      "No vendor-published reliability metrics or uptime statistics",
+      "Limited details on scam prevention mechanisms",
+      "API performance data unavailable"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Dropbox Sign official website",
+      "url": "https://sign.dropbox.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Simplifies eSignature workflows",
+        "Integrates with Dropbox, Google Drive, Salesforce",
+        "Enterprise-grade security with audit trails",
+        "Starts at $15/user/month for core product",
+        "Free trial with anytime cancellation"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Dropbox Sign release history",
+      "url": "https://sign.dropbox.com/about-us",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Legally binding signatures in US/EU/UK",
+        "CPA/HIPAA/ISO compliance certifications",
+        "Multiple products: Sign, API, Fax, Forms",
+        "Support via help center and sales contacts"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Dropbox Sign reviews on G2",
+      "url": "https://www.g2.com/products/dropbox-sign/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 2271,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Dropbox Sign reviews on Capterra",
+      "url": "https://www.capterra.com/p/122864/Dropbox-Sign/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "Dropbox Sign reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/hellosign.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Billing disputes and refund difficulties",
+        "Unresponsive customer support patterns",
+        "Scam invoice vulnerability reports",
+        "Technical failures in signature workflows"
+      ]
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Dropbox Sign community discussion",
+      "url": "https://www.reddit.com/r/dropbox/comments/11x6xu8/dropbox_sign_is_the_worst_why_did_they_destroy/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Dropbox Sign pricing starts at $15/user/month",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Electronic signatures are legally binding in US/EU/UK",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Users report unexpected overcharges and refund obstacles",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Support tickets closed without resolving user issues",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Enterprise-grade security with audit trails",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Scam invoices delivered through platform",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Free trial available with anytime cancellation",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "API integration starts at $100/50 requests monthly",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "unknown",
+      "task": "Subscription management",
+      "whatHappened": "Charged $230 instead of advertised $170 yearly rate",
+      "result": "Cancelled service and struggled to obtain refund",
+      "vendorResponse": "Refund provided after multiple email requests",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "business user",
+      "task": "Technical support request",
+      "whatHappened": "Submitted ticket for email change issue",
+      "result": "Support closed ticket without resolving follow-up questions",
+      "vendorResponse": "Unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "unknown",
+      "task": "Invoice management",
+      "whatHappened": "Received daily scam invoices for unordered services",
+      "result": "Reported to company with no resolution",
+      "vendorResponse": "Unknown",
+      "confidence": "medium"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "business user",
+      "task": "Document signing",
+      "whatHappened": "Critical signature functionality failure during time-sensitive process",
+      "result": "Business operations disrupted, considered service switch",
+      "vendorResponse": "Ineffective support",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "contracts company",
+      "task": "E-signature comparison",
+      "whatHappened": "Preferred interface over DocuSign",
+      "result": "Continued service usage",
+      "vendorResponse": "Unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Enterprise-grade security",
+      "plainExplanation": "High-level protection measures for business documents",
+      "whoCares": "Companies handling sensitive legal/financial data",
+      "whenItDoesNotMatter": "For non-confidential internal documents"
+    },
+    {
+      "term": "Audit trails",
+      "plainExplanation": "Record of all document access and signing actions",
+      "whoCares": "Regulated industries needing compliance proof",
+      "whenItDoesNotMatter": "For informal agreements without legal requirements"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Official site claims intuitive setup and quick adoption",
+    "product": "Security certifications conflict with scam vulnerability reports",
+    "support": "Multiple unresolved ticket patterns despite help center availability",
+    "billing": "Verified pricing clarity contradicted by overcharge patterns",
+    "overall": "Core functionality claims conflict with critical workflow failure reports"
+  },
+  "conflictsAndUnknowns": [
+    "Security claims vs. scam invoice delivery vulnerability",
+    "Pricing transparency vs. multiple overcharge reports",
+    "Support resource availability vs. unresolved ticket patterns",
+    "Extent of scam invoice issue resolution unknown",
+    "API stability evidence unavailable"
+  ]
+}

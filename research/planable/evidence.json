@@ -1,0 +1,32 @@
+{
+  "schemaVersion":1,
+  "productSlug":"planable",
+  "legacy":false,
+  "reviewType":"research-based",
+  "researchStarted":"2026-08-13",
+  "researchUpdated":"2026-08-14",
+  "releaseDate":{"date":"2017-10-04","precision":"day","sourceId":"product-hunt"},
+  "testing":{"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on draft, approval, publishing, disconnection, analytics, inbox, billing, or support test was completed.","Social-network APIs and supported post formats change often and must be tested with the buyer's actual channels.","G2 and Capterra are not ownership-independent from each other in 2026."]},
+  "sources":[
+    {"id":"product-hunt","name":"Planable launches and reviews","url":"https://www.producthunt.com/products/planable","accessed":"2026-08-13","sourceType":"launch-history","reviewCountSampled":8,"keyThemes":["Launch","Planning","Approval"]},
+    {"id":"help","name":"Planable Help Center","url":"https://help.planable.io/hc/en-us","accessed":"2026-08-13","sourceType":"official-documentation","reviewCountSampled":null,"keyThemes":["Channels","Approvals","Publishing","Analytics"]},
+    {"id":"pricing","name":"Planable pricing","url":"https://planable.io/pricing/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Workspace","Posts","Pages","Add-ons"]},
+    {"id":"g2","name":"Planable reviews on G2","url":"https://www.g2.com/products/planable/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":1033,"keyThemes":["Ease","Scheduling","Clients","Price"]},
+    {"id":"capterra","name":"Planable reviews on Capterra","url":"https://www.capterra.com/p/171744/Planable/reviews/","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":350,"keyThemes":["Daily scheduling","Approval","Price"]},
+    {"id":"trustradius","name":"Planable reviews on TrustRadius","url":"https://www.trustradius.com/products/planable","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":6,"keyThemes":["Views","External review"]},
+    {"id":"reddit-price","name":"Planable alternatives discussion","url":"https://www.reddit.com/r/buhaydigital/comments/1ld9wy6/for_smms_any_cheaper_planable_alternative/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":15,"keyThemes":["Approval","Price","Switching"]},
+    {"id":"reddit-approval","name":"Client approval tools discussion","url":"https://www.reddit.com/r/DigitalMarketing/comments/1m7dkv8/what_platform_do_you_use_for_client_approvals_on/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":20,"keyThemes":["Calendars","Post approval","Agencies"]},
+    {"id":"reddit-suite","name":"Planable alternatives and suite depth","url":"https://www.reddit.com/r/SocialMediaSchedulers/comments/1ua2znm/best_planable_alternative/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":12,"keyThemes":["Polish","Inbox","Listening","Analytics"]}
+  ],
+  "claims":[
+    {"statement":"Planable launched publicly on October 4, 2017.","kind":"fact","status":"verified","sourceIds":["product-hunt"]},
+    {"statement":"Planable combines content drafts, social previews, calendars, comments, approvals, scheduling, an optional inbox, and optional analytics in separate workspaces for brands or clients.","kind":"fact","status":"verified","sourceIds":["help","pricing"]},
+    {"statement":"Basic costs $33 per workspace monthly and includes 60 posts, four social pages, unlimited users, and optional approvals. Pro costs $49 and includes 150 posts, ten pages, required approvals, grid view, and a public API.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"The first 50 posts are free with no time limit or card. Analytics costs $14 per workspace monthly or $12 at the displayed annual rate; the inbox costs $9 monthly or $7.50 at the annual rate.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"Accurate-looking previews, central comments, and simple client approval are the strongest repeated reasons to choose Planable.","kind":"reported-pattern","status":"supported","sourceIds":["g2","capterra","trustradius","reddit-approval"]},
+    {"statement":"Workspace prices, post and page limits, add-ons, connection trouble, and network-specific publishing limits are repeated concerns.","kind":"reported-pattern","status":"supported","sourceIds":["g2","capterra","reddit-price","help"]},
+    {"statement":"Inbox, listening, and analytics are less complete than some broad social-management suites.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-suite","g2","capterra"]}
+  ],
+  "scoreRationale":{"onboarding":"A client can understand the preview quickly; a real approval chain and every required post format must still be tested.","product":"Excellent at the draft-to-approval route, with scheduling and lighter management tools around it.","support":"Large positive review samples support the workflow, but no urgent publishing request was tested.","billing":"Unlimited users help, while charging by client or brand workspace and then adding analytics or inbox can make agency cost rise quickly.","overall":"Planable is worth paying for when it ends approval through email, chat, and screenshots. Run one live campaign from draft to published post and count every comment or correction that escapes the workspace."},
+  "conflictsAndUnknowns":["Its focused approval experience is the main strength and why it may not replace a full social suite.","A polished preview can still differ from the final network post because platform APIs control publishing.","Unlimited users do not make workspaces, post limits, analytics, or inbox free.","No draft, approval, publish, reconnection, reporting, inbox, or support test was completed."]
+}

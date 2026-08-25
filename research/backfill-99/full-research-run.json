@@ -1,0 +1,31 @@
+{
+  "completed": 4,
+  "existing": 0,
+  "blocked": [],
+  "results": [
+    {
+      "slug": "postiz",
+      "status": "completed",
+      "sources": 7,
+      "claims": 7
+    },
+    {
+      "slug": "amie",
+      "status": "completed",
+      "sources": 7,
+      "claims": 7
+    },
+    {
+      "slug": "testsprite",
+      "status": "completed",
+      "sources": 8,
+      "claims": 7
+    },
+    {
+      "slug": "base44",
+      "status": "completed",
+      "sources": 8,
+      "claims": 7
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "checkpointVersion": 4,
+  "slug": "weweb",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "14b1b46e439cd53c9f84b556e568282ebafc1b42bbe0ee53fccce66410cfe65d",
+  "publicationDate": "2026-01-27",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "232290083c8d3d62cb93dc780292d342408772545af1009dd2c03c47ad90de69",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "a956ee0eef89c7b4350c2fda06590d858ca2b41b61261d0f59faf62ba1f194c4",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.750Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "4e58b023d23ae42f457314693802888bd4b82676cbe3b12ec61b7f910929703c",
+      "predecessorSha256": "a956ee0eef89c7b4350c2fda06590d858ca2b41b61261d0f59faf62ba1f194c4",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.752Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "fe4665a88d810bc3596b1a4b737d5c9a9088f373002b221487c699791db0170d",
+      "predecessorSha256": "4e58b023d23ae42f457314693802888bd4b82676cbe3b12ec61b7f910929703c",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T19:25:30.810Z"
+    },
+    "argument_card": {
+      "file": "04-argument-card.md",
+      "sha256": "5d9a5af1c334f8d9cc606767f1236daa6fd3f7ac3d36ea75bd18c9d29b428153",
+      "predecessorSha256": "fe4665a88d810bc3596b1a4b737d5c9a9088f373002b221487c699791db0170d",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T19:25:44.983Z"
+    },
+    "spoken_brief": {
+      "file": "05-spoken-brief.md",
+      "sha256": "15126ae4860e72464d84bf8af7256ecd36bec3c6891bead5350089e6ee9ecb01",
+      "predecessorSha256": "5d9a5af1c334f8d9cc606767f1236daa6fd3f7ac3d36ea75bd18c9d29b428153",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T19:26:08.393Z"
+    },
+    "raw_draft": {
+      "file": "06-raw-draft.md",
+      "sha256": "40e295852e29555deec3da4d2e8cc846831c749e97833870c3ef5e6e78adc10f",
+      "predecessorSha256": "15126ae4860e72464d84bf8af7256ecd36bec3c6891bead5350089e6ee9ecb01",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T19:27:28.393Z"
+    },
+    "copy_edit": {
+      "file": "07-copy-edit.md",
+      "sha256": "a9f53bb8e8baa0cfb521e4201bac0344ab99e727088c14a346f3e3eb75af41c6",
+      "predecessorSha256": "40e295852e29555deec3da4d2e8cc846831c749e97833870c3ef5e6e78adc10f",
+      "metadata": {
+        "title": "WeWeb: A No-Code Platform for Developers and Designers Who Want More Control",
+        "description": "WeWeb is a no-code platform that offers a powerful visual builder for creating web applications, but it requires technical knowledge for full functionality.",
+        "verdict": "Flexible app building that still requires technical judgment.",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T19:29:37.870Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.754Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.756Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:08.584Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:08.597Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 1,
+      "message": "raw_draft is too short (150 words).",
+      "createdAt": "2026-08-18T19:26:29.324Z",
+      "candidate": "attempts/005-raw_draft-attempt-1.md",
+      "candidateSha256": "ade7cc450ef1b2ae9a603440c341ca4dc4030ead723433488bb6d04a5d6490cb"
+    },
+    {
+      "stage": "copy_edit",
+      "attempt": 1,
+      "message": "copy_edit is too short (656 words).",
+      "createdAt": "2026-08-18T19:28:35.745Z",
+      "candidate": "attempts/006-copy_edit-attempt-1.md",
+      "candidateSha256": "758e09941cef99c22c5940d77d07cf0dd8c9e4ec86889844730beedffbed644b"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 1,
+      "message": "{\n  \"checks\": {\n    \"structure\": true,\n    \"source_integrity\": true,\n    \"stance\": false,\n    \"buyer_guidance\": false,\n    \"humanizer\": false,\n    \"similarity\": true,\n    \"readability\": false,\n    \"disclosure\": true\n  },\n  \"metrics\": {\n    \"grade\": 12,\n    \"averageSentenceWords\": 21.8,\n    \"wordCount\": 741,\n    \"h2Count\": 3,\n    \"sourceCount\": 8,\n    \"maximumSimilarity\": 0.0007,\n    \"mostSimilarSlug\": \"saner-ai\",\n    \"humanizerAudit\": {\n      \"passed\": false,\n      \"sha256\": \"957bb89230e538b4402c319a0aaeaf06b3677950c2090822ec89a1c182cceaa7\",\n      \"metrics\": {\n        \"words\": 713,\n        \"paragraphs\": 6,\n        \"articleWordRate\": 0.0799,\n        \"negativeParallelisms\": 0\n      },\n      \"failures\": [\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 1,\n          \"message\": \"Paragraph 1 contains 4 contrast markers and reads mechanically balanced.\"\n        },\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 5,\n          \"message\": \"Paragraph 5 contains 4 contrast markers and reads mechanically balanced.\"\n        },\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 6,\n          \"message\": \"Paragraph 6 contains 4 contrast markers and reads mechanically balanced.\"\n        }\n      ],\n      \"warnings\": []\n    },\n    \"stockHeadingCount\": 0,\n    \"aggregationCount\": 2\n  },\n  \"oldBodySimilarity\": 0.0014124293785310734\n}",
+      "createdAt": "2026-08-18T19:30:54.320Z",
+      "candidate": "attempts/007-humanized_draft-attempt-1.md",
+      "candidateSha256": "7fd36789b84a58a4c7aefa80d715c700496dcf465e43b31758eadab88e917177"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 2,
+      "message": "{\n  \"checks\": {\n    \"structure\": true,\n    \"source_integrity\": true,\n    \"stance\": false,\n    \"buyer_guidance\": false,\n    \"humanizer\": false,\n    \"similarity\": true,\n    \"readability\": false,\n    \"disclosure\": true\n  },\n  \"metrics\": {\n    \"grade\": 12.1,\n    \"averageSentenceWords\": 21.8,\n    \"wordCount\": 741,\n    \"h2Count\": 4,\n    \"sourceCount\": 8,\n    \"maximumSimilarity\": 0.0007,\n    \"mostSimilarSlug\": \"saner-ai\",\n    \"humanizerAudit\": {\n      \"passed\": false,\n      \"sha256\": \"e59330d19f3c1faebfe5a5c50abffa9663553bb5900df8663a8ad3d96682f55f\",\n      \"metrics\": {\n        \"words\": 706,\n        \"paragraphs\": 6,\n        \"articleWordRate\": 0.0793,\n        \"negativeParallelisms\": 0\n      },\n      \"failures\": [\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 1,\n          \"message\": \"Paragraph 1 contains 4 contrast markers and reads mechanically balanced.\"\n        },\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 5,\n          \"message\": \"Paragraph 5 contains 4 contrast markers and reads mechanically balanced.\"\n        },\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 6,\n          \"message\": \"Paragraph 6 contains 4 contrast markers and reads mechanically balanced.\"\n        }\n      ],\n      \"warnings\": []\n    },\n    \"stockHeadingCount\": 0,\n    \"aggregationCount\": 1\n  },\n  \"oldBodySimilarity\": 0.0014316392269148174\n}",
+      "createdAt": "2026-08-18T19:32:01.097Z",
+      "candidate": "attempts/008-humanized_draft-attempt-2.md",
+      "candidateSha256": "5804dbbf5f691d6e3544290b65f390ebaf9d068d2d75b173923ec1c8af6351f0"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.749Z",
+  "updatedAt": "2026-08-18T19:32:01.105Z"
+}

@@ -1,0 +1,154 @@
+{
+  "checkpointVersion": 4,
+  "slug": "twenty",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "4e5175ba102a5e9bd22e9182d7cca4bc1fad47f601bd42a1bb23f5bb1b514690",
+  "publicationDate": "2026-04-14",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "9bbcd3c244304d2bdf297ca82bcd4d3bd2324d77d65c420fe8b22fdbfc96878e",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "7cddd79cff2f59d9b393d011c3fe4acf3dcacae8c6931448524ee1ab2939c116",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.671Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "b5a34f63af9b8a7d2e1af3914071050558dfd2cf14e17062cb074cb63d174a78",
+      "predecessorSha256": "7cddd79cff2f59d9b393d011c3fe4acf3dcacae8c6931448524ee1ab2939c116",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.674Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "d41ca5974d295ca93865cb8f99b46c0207f344251f86ace7e29c69dda1511246",
+      "predecessorSha256": "b5a34f63af9b8a7d2e1af3914071050558dfd2cf14e17062cb074cb63d174a78",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T18:57:06.621Z"
+    },
+    "argument_card": {
+      "file": "04-argument-card.md",
+      "sha256": "70f1ca37d8841e1b5fa1a31edb005784e77fa956f21ba716e5d4a9fb4ace65c7",
+      "predecessorSha256": "d41ca5974d295ca93865cb8f99b46c0207f344251f86ace7e29c69dda1511246",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T18:57:25.743Z"
+    },
+    "spoken_brief": {
+      "file": "05-spoken-brief.md",
+      "sha256": "8dc1af48f94592df5ae8a8fef215c345c1b01431f35cacc49fbd7ec44e09ab20",
+      "predecessorSha256": "70f1ca37d8841e1b5fa1a31edb005784e77fa956f21ba716e5d4a9fb4ace65c7",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T18:57:46.639Z"
+    },
+    "raw_draft": {
+      "file": "06-raw-draft.md",
+      "sha256": "ec0c7bfd5c36ee0594d45475e838cb5bf95132ec5539b89293aa3440fd82b631",
+      "predecessorSha256": "8dc1af48f94592df5ae8a8fef215c345c1b01431f35cacc49fbd7ec44e09ab20",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T18:58:55.166Z"
+    },
+    "copy_edit": {
+      "file": "07-copy-edit.md",
+      "sha256": "9ad5cd4754ac4dd9d9af77e0af9bbedd3200e02af482fd027ebea865a72956df",
+      "predecessorSha256": "ec0c7bfd5c36ee0594d45475e838cb5bf95132ec5539b89293aa3440fd82b631",
+      "metadata": {
+        "title": "Twenty: A Powerful Open-Source CRM for Tech-Savvy Teams",
+        "description": "Twenty offers a flexible, customizable CRM platform built on open-source principles, but its self-hosted model and operational complexity make it better suited for teams with in-house technical resources than for users seeking a turnkey solution.",
+        "verdict": "A strong open CRM with demanding maintenance work.",
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T19:00:11.150Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.675Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.677Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:07.153Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:07.161Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T18:56:56.845Z",
+      "candidate": "attempts/005-writer_notebook-attempt-1.md",
+      "candidateSha256": "a38ec9beb6a10cbc14d7b672a52c6541c8d73676baba6b47a95c9404d0946279"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 1,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T18:57:16.801Z",
+      "candidate": "attempts/006-argument_card-attempt-1.md",
+      "candidateSha256": "53223c40f9c7f2c4949aa3c6be05fe70e9c7447abf2d1568a956f2bba5c37cb4"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 1,
+      "message": "humanized_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T19:01:30.583Z",
+      "candidate": "attempts/007-humanized_draft-attempt-1.md",
+      "candidateSha256": "584b6a173cdb2ea12b8329f03dbb194cdf19a7400635fe3b918382a086e9bbeb"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 2,
+      "message": "{\n  \"checks\": {\n    \"structure\": true,\n    \"source_integrity\": true,\n    \"stance\": false,\n    \"buyer_guidance\": false,\n    \"humanizer\": false,\n    \"similarity\": true,\n    \"readability\": false,\n    \"disclosure\": true\n  },\n  \"metrics\": {\n    \"grade\": 13.7,\n    \"averageSentenceWords\": 21.3,\n    \"wordCount\": 917,\n    \"h2Count\": 3,\n    \"sourceCount\": 7,\n    \"maximumSimilarity\": 0,\n    \"mostSimilarSlug\": null,\n    \"humanizerAudit\": {\n      \"passed\": false,\n      \"sha256\": \"61214f0b72bd96d14053cc1f147f4a0f454e1b5c2209dd4907e421c8926b0cf2\",\n      \"metrics\": {\n        \"words\": 885,\n        \"paragraphs\": 8,\n        \"articleWordRate\": 0.0791,\n        \"negativeParallelisms\": 1\n      },\n      \"failures\": [\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 1,\n          \"message\": \"Paragraph 1 contains 4 contrast markers and reads mechanically balanced.\"\n        }\n      ],\n      \"warnings\": []\n    },\n    \"stockHeadingCount\": 0,\n    \"aggregationCount\": 1\n  },\n  \"oldBodySimilarity\": 0\n}",
+      "createdAt": "2026-08-18T19:02:34.874Z",
+      "candidate": "attempts/008-humanized_draft-attempt-2.md",
+      "candidateSha256": "c6d1fca61a1fc32af7258eae47926740578930382bf2adfa3e5664ea66c39cde"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.670Z",
+  "updatedAt": "2026-08-18T19:02:34.879Z"
+}

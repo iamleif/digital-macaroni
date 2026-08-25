@@ -1,0 +1,258 @@
+{
+  "checkpointVersion": 4,
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "model": "qwen3:8b",
+  "sync": false,
+  "results": [],
+  "failures": [
+    {
+      "slug": "akiflow",
+      "error": "raw_draft failed after 2 attempts: raw_draft must contain three to six H2 headings."
+    },
+    {
+      "slug": "allo",
+      "error": "raw_draft failed after 2 attempts: raw_draft is too short (695 words)."
+    },
+    {
+      "slug": "better-stack",
+      "error": "argument_card failed after 2 attempts: Argument card has no editorial thesis or decision."
+    },
+    {
+      "slug": "breakcold",
+      "error": "raw_draft failed after 2 attempts: raw_draft must contain three to six H2 headings."
+    },
+    {
+      "slug": "carrd",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "claap",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "companyhub-crm",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "deftform",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "documenso",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "dorik",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "dub",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "encharge",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "fathom-analytics",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "featurebase",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "fibery",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "fillout",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "folk",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "formbricks",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "freshsales",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "frill",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "guidde",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "jitter",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "lemon-squeezy",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "linear",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "lodgify",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "missive",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "morgen",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "moxie",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "noloco",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "openphone",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "openstatus",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "outrank",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "pipedream",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "pirsch-analytics",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "planable",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "plane",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "plausible-analytics",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "posthog",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "publer",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "puzzle",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "recall",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "salesflare",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "saner-ai",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "screen-studio",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "senja",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "supademo",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "tally",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "tella",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "testimonial-to",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "tidycal",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "trigger-dev",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "twenty",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "typedream",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "typingmind",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "umami",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "unkey",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "vista-social",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "voicenotes",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "wave",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "weweb",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "wispr-flow",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    },
+    {
+      "slug": "wrike",
+      "error": "writer_notebook failed after 2 attempts: connect ECONNREFUSED 127.0.0.1:11434"
+    }
+  ],
+  "updatedAt": "2026-08-18T12:18:08.666Z"
+}

@@ -1,0 +1,392 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "fact",
+      "id": 268,
+      "prevalence": "common",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "Lemon Squeezy publicly launched on July 26, 2021 after a private beta.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "fact",
+      "id": 269,
+      "prevalence": "common",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "It operates as a merchant of record for digital products and software, combining payments with subscriptions, licensing, and tax handling.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "praise",
+      "id": 270,
+      "prevalence": "common",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "Small software teams value offloading global sales-tax and VAT work.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "praise",
+      "id": 271,
+      "prevalence": "common",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "The bundled checkout, subscriptions, and licensing tools can reduce the amount of custom commerce infrastructure a founder must build.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.84,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "praise",
+      "id": 272,
+      "prevalence": "mixed",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "For some founders outside Stripe-supported countries, Lemon Squeezy provides a practical route to accept international payments.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.92,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "complaint",
+      "id": 273,
+      "prevalence": "common",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "Opaque store approval and risk-review decisions are a recurring seller complaint.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "complaint",
+      "id": 274,
+      "prevalence": "common",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "Payout holds, moved payout dates, and weak status communication recur across recent independent reports.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "complaint",
+      "id": 275,
+      "prevalence": "common",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "Slow or absent support responses are the most consistent current operational complaint.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.85,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "complaint",
+      "id": 276,
+      "prevalence": "mixed",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "Fees can be materially higher than direct payment processing, particularly when extra payout or international costs apply.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.97,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "conflict",
+      "id": 277,
+      "prevalence": "common",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "Product Hunt sentiment is strongly positive while Trustpilot and recent Reddit sentiment are sharply negative; the gap likely reflects different user roles, eras, and moments in the seller lifecycle.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    },
+    {
+      "confidence": 0.92,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "finding_type": "unknown",
+      "id": 278,
+      "prevalence": "mixed",
+      "product_id": 108,
+      "source_ids": [],
+      "summary": "The long-term relationship between Lemon Squeezy and Stripe Managed Payments is not yet clear enough to infer future product support or migration terms.",
+      "updated_at": "2026-08-13T18:41:05.149231+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true
+    },
+    "created_at": "2026-08-13T18:41:05.149231+00:00",
+    "id": 104,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 108,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": "2026-08-13T18:41:05.149231+00:00",
+    "status": "needs_review",
+    "updated_at": "2026-08-13T18:41:05.149231+00:00"
+  },
+  "product": {
+    "category": "E-commerce",
+    "id": 108,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Lemon Squeezy",
+    "short_description": "A merchant-of-record platform for selling software and digital products with payments, subscriptions, licensing, and tax handling.",
+    "slug": "lemon-squeezy",
+    "target_publish_date": null,
+    "website_url": "https://www.lemonsqueezy.com"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": "JR Farr",
+      "content_hash": "edb3fd5b8f93e77efd41678c304ae8a6",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "After months of private beta testing, Lemon Squeezy officially launched to the public.",
+      "id": 400,
+      "metadata": {
+        "bias": "first-party launch announcement",
+        "voices_sampled": 1
+      },
+      "platform": "Lemon Squeezy",
+      "product_id": 108,
+      "published_at": "2021-07-26T00:00:00+00:00",
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Authoritative exact-date evidence and original product scope: digital downloads, subscriptions, licensing, tax, discounts, and email.",
+      "title": "Lemon Squeezy is here",
+      "url": "https://www.lemonsqueezy.com/blog/public-launch"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "83c4386a6a604a6b34213e0e23367e4d",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "The launch added roughly 1,000 stores and ranked second on Product Hunt.",
+      "id": 401,
+      "metadata": {
+        "bias": "first-party promotional recap",
+        "voices_sampled": 0
+      },
+      "platform": "Lemon Squeezy",
+      "product_id": 108,
+      "published_at": "2021-07-30T00:00:00+00:00",
+      "rating": null,
+      "source_type": "official",
+      "summary": "First-party launch recap corroborates public uptake and early positioning but is promotional.",
+      "title": "Launching a next-level platform for digital creators",
+      "url": "https://www.lemonsqueezy.com/blog/after-the-launch"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "d943140df0f8e05e25331a52f8c5fdaa",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "75 reviews describe strong tax and setup value alongside payment and support complaints.",
+      "id": 402,
+      "metadata": {
+        "bias": "maker-heavy launch community; vendor supporters overrepresented",
+        "review_count": 75,
+        "voices_sampled": 75
+      },
+      "platform": "Product Hunt",
+      "product_id": 108,
+      "published_at": null,
+      "rating": 4.8,
+      "source_type": "independent-review-platform",
+      "summary": "Large maker-oriented review pool. Positive themes are tax compliance, subscriptions, licenses, and low setup burden; negative reports focus on payments, support, and reliability.",
+      "title": "Lemon Squeezy reviews",
+      "url": "https://www.producthunt.com/products/lemon-squeezy/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "f5536a9179558e2efe3f7ff230522977",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "Recent customer reports emphasize unanswered support, inaccessible purchases, approval problems, and account issues.",
+      "id": 403,
+      "metadata": {
+        "bias": "open complaint channel; dissatisfied users overrepresented",
+        "voices_sampled": 20
+      },
+      "platform": "Trustpilot",
+      "product_id": 108,
+      "published_at": null,
+      "rating": 1.2,
+      "source_type": "independent-review-platform",
+      "summary": "Complaint-heavy open review pool is useful for failure modes but likely overrepresents customers with unresolved incidents.",
+      "title": "Lemon Squeezy customer service reviews",
+      "url": "https://www.trustpilot.com/review/lemonsqueezy.com"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "48a57a9f844043a153be96f03b3f32e3",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "G2 reports zero accepted reviews and cannot provide buying insight.",
+      "id": 404,
+      "metadata": {
+        "bias": "absence of data",
+        "review_count": 0,
+        "voices_sampled": 0
+      },
+      "platform": "G2",
+      "product_id": 108,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Important absence signal: no usable verified G2 sample, so conclusions cannot borrow G2 credibility.",
+      "title": "Lemon Squeezy reviews on G2",
+      "url": "https://www.g2.com/products/lemon-squeezy/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "6fc46bf0383a44fc254c04f67a8c8564",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "A non-US founder reports that the service works well without a local company and supports regular payouts.",
+      "id": 405,
+      "metadata": {
+        "bias": "small self-selected founder sample",
+        "voices_sampled": 7
+      },
+      "platform": "Reddit",
+      "product_id": 108,
+      "published_at": "2024-08-04T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Positive community counterweight showing why the merchant-of-record model can unlock sales for founders without direct Stripe access.",
+      "title": "Experience with Lemon Squeezy as a payment processor",
+      "url": "https://www.reddit.com/r/SaaS/comments/1ejj6xe/your_experience_with_lemon_squeezy_as_payment/"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "47c46e62f612c751b8336bda680840f0",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "Founders compare merchant-of-record fees, payout costs, support, and operational tradeoffs.",
+      "id": 406,
+      "metadata": {
+        "bias": "self-selected SaaS founders; competitor anecdotes",
+        "voices_sampled": 10
+      },
+      "platform": "Reddit",
+      "product_id": 108,
+      "published_at": "2023-05-21T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Mixed comparison thread suggests Lemon Squeezy is easy to start but can be more expensive and less predictable than alternatives.",
+      "title": "Paddle versus Lemon Squeezy experiences",
+      "url": "https://www.reddit.com/r/SaaS/comments/13noyxv/paddle_vs_lemon_squeezy_experiences/"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "1811bfc5db05a47c772f69076e25b71f",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "A seller describes opaque rejection criteria, no useful appeal, test-mode bugs, and slow support.",
+      "id": 407,
+      "metadata": {
+        "bias": "complaint thread; one primary incident",
+        "voices_sampled": 5
+      },
+      "platform": "Reddit",
+      "product_id": 108,
+      "published_at": "2025-08-08T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Detailed negative onboarding account; it is one-sided, but its themes recur independently elsewhere.",
+      "title": "Avoid Lemon Squeezy at all costs",
+      "url": "https://www.reddit.com/r/SaaS/comments/1mkuc2x/avoid_lemon_squeezy_at_all_costs_their_review/"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "78e2f36cc313c6d0e4a0ceec383c828f",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "Multiple sellers report moved payout dates, partial releases, and slow or missing support replies.",
+      "id": 408,
+      "metadata": {
+        "bias": "support-seeking complaint thread",
+        "voices_sampled": 6
+      },
+      "platform": "Reddit",
+      "product_id": 108,
+      "published_at": "2026-06-01T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Recent multi-person evidence that payout review and communication can be unpredictable, especially for first payouts.",
+      "title": "First payout date keeps getting pushed back",
+      "url": "https://www.reddit.com/r/SaaS/comments/1ttwbkn/my_first_payout_lemonsqueezy_date_keeps_getting/"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "b072888b814099ab66fb0b7e92815ec8",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "Users question support quality and report switching to alternatives after the Stripe acquisition.",
+      "id": 409,
+      "metadata": {
+        "bias": "brand subreddit with complaint concentration",
+        "voices_sampled": 5
+      },
+      "platform": "Reddit",
+      "product_id": 108,
+      "published_at": "2026-05-09T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Recent sentiment indicates acquisition-related uncertainty and perceived product stagnation; claims are experiential, not audited.",
+      "title": "Is Lemon Squeezy even worth it?",
+      "url": "https://www.reddit.com/r/lemonsqueezy/comments/1t7ywnr/is_lemon_squeezy_even_worth_it/"
+    },
+    {
+      "accessed_at": "2026-08-13T18:41:05.149231+00:00",
+      "author_name": null,
+      "content_hash": "389fc2a716e98347ce4c1d131310b0ed",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:41:05.149231+00:00",
+      "excerpt": "The company describes the Stripe acquisition and a future Stripe Managed Payments product.",
+      "id": 410,
+      "metadata": {
+        "bias": "first-party acquisition update",
+        "voices_sampled": 0
+      },
+      "platform": "Lemon Squeezy",
+      "product_id": 108,
+      "published_at": "2025-04-29T00:00:00+00:00",
+      "rating": null,
+      "source_type": "official",
+      "summary": "Authoritative for ownership and roadmap context, but not proof of service quality or migration outcomes.",
+      "title": "Stripe and Lemon Squeezy update",
+      "url": "https://www.lemonsqueezy.com/blog/stripe-lemon-squeezy-update-2025"
+    }
+  ]
+}

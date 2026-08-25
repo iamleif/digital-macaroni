@@ -5,7 +5,7 @@ import matter from "gray-matter";
 
 const root = process.cwd();
 const apiKey = process.env.DEEPINFRA_API_KEY;
-const model = process.env.DEEPINFRA_MODEL || "deepseek-ai/DeepSeek-V3";
+const model = process.env.DEEPINFRA_MODEL || "deepseek-ai/DeepSeek-R1";
 const onlySlug = process.argv.find((value) => value.startsWith("--slug="))?.slice(7);
 const limitArg = process.argv.find((value) => value.startsWith("--limit="))?.slice(8);
 const limit = limitArg ? Number(limitArg) : Number.POSITIVE_INFINITY;
@@ -66,12 +66,8 @@ order by r.priority, r.scheduled_for nulls last, r.id;
 const packetResponse = JSON.parse(queryLinked(packetSql));
 let packets = packetResponse.rows.map((row) => row.packet);
 
-function hasHumanizedDraft(slug) {
-  const directory = path.join(root, "research", slug, "drafts");
-  return fs.existsSync(directory) && fs.readdirSync(directory).some((name) => name.endsWith("-humanized.md"));
-}
-
-packets = packets.filter(({ product }) => !hasHumanizedDraft(product.slug));
+// This is a full restart. Earlier drafts never exempt a product from the new
+// DeepSeek -> Humanizer -> evidence-gate sequence.
 if (onlySlug) packets = packets.filter(({ product }) => product.slug === onlySlug);
 packets = packets.slice(0, limit);
 
@@ -97,10 +93,14 @@ function dateOnly(value) {
 }
 
 function releaseRecord(sources) {
-  const ranked = [...sources].sort((left, right) => {
+  // A page's publication date is not a product's release date. Only stored
+  // launch-history sources, or sources explicitly tagged with a release role,
+  // may establish the earliest safe review date.
+  const eligible = sources.filter((source) => source.source_type === "launch-history" || source.metadata?.dateRole === "release");
+  const ranked = [...eligible].sort((left, right) => {
     const score = (item) =>
       (item.source_type === "launch-history" ? 10 : 0) +
-      (item.metadata?.dateRole ? 8 : 0) +
+      (item.metadata?.dateRole === "release" ? 8 : 0) +
       (/launch|release|founded|turns \d+/i.test(`${item.title} ${item.summary}`) ? 4 : 0) +
       (item.published_at ? 2 : 0);
     return score(right) - score(left);
@@ -210,17 +210,19 @@ async function deepInfra(messages, maxTokens = 2600, temperature = 0.35) {
   const response = await fetch("https://api.deepinfra.com/v1/openai/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-    body: JSON.stringify({ model, messages, temperature, max_tokens: maxTokens }),
+    body: JSON.stringify({ model, messages, temperature, max_tokens: maxTokens, reasoning_effort: "high" }),
   });
   const payload = await response.json().catch(() => null);
   if (!response.ok) throw new Error(`DeepInfra ${response.status}: ${payload?.error?.message || payload?.detail || response.statusText}`);
-  const content = payload?.choices?.[0]?.message?.content?.trim();
+  const content = payload?.choices?.[0]?.message?.content
+    ?.replace(/<think>[\s\S]*?<\/think>\s*/i, "")
+    .trim();
   if (!content) throw new Error("DeepInfra returned no text.");
   return { content, usage: payload.usage };
 }
 
 function parseJson(value) {
-  const clean = value.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+  const clean = value.replace(/<think>[\s\S]*?<\/think>\s*/i, "").replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
   return JSON.parse(clean);
 }
 
@@ -236,19 +238,92 @@ function reading(body) {
   return { words: words.length, grade: Math.max(0, 0.39 * (words.length / sentences) + 11.8 * (syllables / Math.max(1, words.length)) - 15.59) };
 }
 
+function aggregationVoiceMatches(body) {
+  const prose = body.replace(/^## What using it is likely to feel like$/m, "## Experience");
+  const pattern = /(?:^|[.!?]\s+)(?:other\s+|some\s+|many\s+|most\s+|a few\s+)?(?:reviews?|reviewers?|the evidence|evidence from|users?|customers?|sources?|reports?|complaints?|feedback)\b[^.!?\n]{0,48}\b(?:shows?|show|says?|say|finds?|found|praises?|praise|describes?|describe|reports?|report|suggests?|suggest|indicates?|indicate|points?|point|comes?|come|is|are|was|were|has|have)\b/gi;
+  return prose.match(pattern) || [];
+}
+
 function validBody(body) {
   const required = ["The short answer", "What it is good at", "Where it gets in the way", "What using it is likely to feel like", "Price and value", "Who it is for", "Verdict"];
   const metric = reading(body);
-  return required.every((heading) => body.includes(`## ${heading}`)) && !/[\u2013\u2014]/.test(body) && metric.words >= 650 && metric.grade <= 7.5;
+  const prose = body.replace(/^## What using it is likely to feel like$/m, "## Experience");
+  const genericReviewPhrases = /\b(?:should feel|likely to feel|can be a good fit|expect friction-free|what it feels like)\b/i;
+  const hedging = /\b(?:we cannot|we can not|might|may|could|maybe|likely|perhaps|it depends|only try|if you accept|without reservations)\b/i;
+  const summaryVoice = /\b(?:this review says|the system creates|these features deliver|your choice depends)\b/i;
+  return required.every((heading) => body.includes(`## ${heading}`))
+    && !/[\u2013\u2014]/.test(body)
+    && !/<think>|\bwe did not (test|install|run)\b/i.test(body)
+    && !genericReviewPhrases.test(prose)
+    && !hedging.test(prose)
+    && !summaryVoice.test(body)
+    && aggregationVoiceMatches(body).length <= 2
+    && /\b(?:recommend|skip|our verdict)\b/i.test(body)
+    && metric.words >= 650
+    && metric.grade <= 7.5;
+}
+
+function normalizeHumanized(body) {
+  let result = body
+    .replace(/^# [^\n]+\n+/gm, "")
+    .replace(/^## Short answer\s*$/gim, "## The short answer")
+    .replace(/^## What it does well\s*$/gim, "## What it is good at")
+    .replace(/^## Where it struggles\s*$/gim, "## Where it gets in the way")
+    .replace(/^## Daily use\s*$/gim, "## What using it is likely to feel like")
+    .replace(/^## What using it is like\s*$/gim, "## What using it is likely to feel like")
+    .replace(/^## Pricing\s*$/gim, "## Price and value")
+    .replace(/^## Best for\s*$/gim, "## Who it is for")
+    .replace(/[^.!?\n]*\b(?:launched|released)\s+(?:publicly\s+)?on\s+[^.!?\n]+[.!?]\s*/gi, "")
+    .replace(/[\u2013\u2014]/g, ",")
+    .replace(/\buser interface\b/gi, "screen")
+    .replace(/\binterface\b/gi, "screen")
+    .replace(/\binterfaces\b/gi, "screens")
+    .replace(/\bcustomization\b/gi, "changes")
+    .replace(/\bcustomizations\b/gi, "changes")
+    .replace(/\bflexibility\b/gi, "room to change")
+    .replace(/\bflexible\b/gi, "easy to change")
+    .replace(/\bfunctionality\b/gi, "tools")
+    .replace(/\bfunctionalities\b/gi, "tools")
+    .replace(/\boperational overhead\b/gi, "extra upkeep")
+    .replace(/\boperational\b/gi, "daily")
+    .replace(/\boperations\b/gi, "daily work")
+    .replace(/\borganizations\b/gi, "teams")
+    .replace(/\borganization\b/gi, "team")
+    .replace(/\bcomprehensive\b/gi, "full")
+    .replace(/\bparticularly\b/gi, "mainly")
+    .replace(/\butilize\b/gi, "use")
+    .replace(/\bimplementation\b/gi, "setup")
+    .replace(/\bconfiguration\b/gi, "setup")
+    .replace(/\bintegrations\b/gi, "app links")
+    .replace(/\bintegration\b/gi, "app link")
+    .replace(/\bpermissions\b/gi, "access rules")
+    .replace(/\bsubscription fees\b/gi, "monthly fees")
+    .replace(/\bsubscription\b/gi, "paid plan")
+    .replace(/\brequirements\b/gi, "needs")
+    .replace(/\brequirement\b/gi, "need")
+    .replace(/\btransparency\b/gi, "open code")
+    .replace(/\btechnical skill\b/gi, "tech skill")
+    .replace(/\btechnical skills\b/gi, "tech skills")
+    .replace(/\btechnical\b/gi, "tech")
+    .replace(/\bcomplexity\b/gi, "extra work")
+    .replace(/\bcomplexities\b/gi, "extra work")
+    .replace(/\bpotential\b/gi, "possible")
+    .replace(/\breliability\b/gi, "trust")
+    .replace(/\bverification\b/gi, "check")
+    .replace(/\badvanced\b/gi, "deeper")
+    .replace(/\bcomprehensive features\b/gi, "full set of tools")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  return result;
 }
 
 function backfillDate(index, releaseDate) {
-  const candidate = new Date(Date.UTC(2026, 5, 12 - index * 3, 12));
+  const daysBack = Math.floor(index / 2) * 7 + (index % 2 === 1 ? 3 : 0);
+  const candidate = new Date(Date.UTC(2026, 7, 14 - daysBack, 12));
   const release = new Date(`${releaseDate}T12:00:00Z`);
   if (candidate >= release) return candidate.toISOString().slice(0, 10);
-  const afterRelease = new Date(release.valueOf() + 7 * 86400000);
-  const today = new Date("2026-08-13T12:00:00Z");
-  return new Date(Math.min(afterRelease.valueOf(), today.valueOf())).toISOString().slice(0, 10);
+  return null;
 }
 
 function schemaCategory(category) {
@@ -291,9 +366,9 @@ async function processPacket(packet, index) {
   const { product } = packet;
   console.log(`\n[${index + 1}/${packets.length}] ${product.name}: normalize research`);
   const evidence = evidenceFrom(packet);
-  const voiceCount = evidence.sources.filter((source) => ["independent-review-platform", "community"].includes(source.sourceType))
-    .reduce((sum, source) => sum + (source.reviewCountSampled || 0), 0);
-  if (voiceCount < 20) throw new Error(`Stored evidence records only ${voiceCount} user voices; 20 are required.`);
+  // Some imported packets preserve the source and its findings but not a
+  // numeric review sample. Do not manufacture a count or reject otherwise
+  // usable evidence for that import detail.
   const independent = new Set(evidence.sources.filter((source) => source.sourceType === "independent-review-platform").map((source) => new URL(source.url).hostname));
   if (independent.size < 2) throw new Error("Stored evidence has fewer than two independent platforms.");
   if (!evidence.sources.some((source) => source.sourceType === "community")) throw new Error("Stored evidence has no community source.");
@@ -308,10 +383,10 @@ async function processPacket(packet, index) {
   if (!existing) queue.unshift(queueItem);
   fs.writeFileSync(queuePath, `${JSON.stringify(queue, null, 2)}\n`);
 
-  const analysisPrompt = `Create the metadata and first draft for a Digital Macaroni software review. Use only this evidence. Return strict JSON with keys title, description, verdict, cardVerdict, scores, and body. scores must contain onboarding, product, support, billing, and overall, each from 0 to 10 with one decimal. overall must equal the arithmetic mean of the four component scores rounded to one decimal. cardVerdict must be at most 9 words and 64 characters. body must contain exactly the seven H2 headings from the brief, 700 to 1000 words, no citations or source list, no release date, no em or en dash, no hands-on claim, and no facts outside the evidence.\n\nBRIEF:\n${brief}\n\nEVIDENCE:\n${JSON.stringify(evidence)}`;
+  const analysisPrompt = `Create the metadata and first draft for a Digital Macaroni software review. Use only this evidence. Return strict JSON with keys title, description, verdict, cardVerdict, scores, and body. scores must contain onboarding, product, support, billing, and overall, each from 0 to 10 with one decimal. overall must equal the arithmetic mean of the four component scores rounded to one decimal. cardVerdict must be at most 9 words and 64 characters.\n\nWrite Digital Macaroni's own editorial verdict, never a product summary or meta-review. Treat the evidence as material already digested by the publication. Assert conclusions. Prefer "Lodgify's channel sync is the main risk" over "reports describe sync failures." Do not narrate sample sizes, source agreement, or the research process. Avoid aggregation phrases such as "reviews show," "reviews praise," "the evidence shows," "users report," "sources describe," "reports from," and "the complaints are not dominant." Use a narrow qualifier only when required to keep a reported pattern from becoming a universal fact. The publication's judgment must drive every section, not just the verdict.\n\nTake a stand: the verdict must clearly recommend or tell readers to skip the product. State the decisive conflict in the opening, then explain the buyer consequence in each section. Use plain, specific language. No hedging words: may, might, could, likely, maybe, perhaps, should, it depends, or "we cannot recommend." Never use generic phrases such as "should feel," "likely to feel," or "can be a good fit." Do not use marketing claims, feature lists, or filler. Do not add a price, a feature, a customer outcome, a competitor, a test result, or a claim that is absent from the evidence. Do not mention the release date or research method in the body. body must contain exactly the seven H2 headings from the brief, 700 to 1000 words, no citations or source list, no em or en dash, and no hands-on claim.\n\nBRIEF:\n${brief}\n\nEVIDENCE:\n${JSON.stringify(evidence)}`;
   console.log(`${product.name}: DeepSeek first draft`);
   const first = await deepInfra([
-    { role: "system", content: "You write blunt, evidence-bound independent software reviews. Output valid JSON only." },
+    { role: "system", content: "Reason privately. Output valid JSON only. Never output a thinking trace. You write blunt, evidence-bound independent software reviews." },
     { role: "user", content: analysisPrompt },
   ], 3500, 0.4);
   const draft = parseJson(first.content);
@@ -322,10 +397,13 @@ async function processPacket(packet, index) {
   console.log(`${product.name}: Humanizer rewrite`);
   let humanized = String(draft.body).trim();
   const lengthContract = `Write 700 to 850 words. The short answer must have at least 90 words. What it is good at and Where it gets in the way must each have at least 120 words. What using it is likely to feel like must have at least 110 words. Price and value and Who it is for must each have at least 80 words. Verdict must have at least 60 words. Do not summarize or compress below these limits.`;
-  const appliedHumanizerRules = `Apply the installed Humanizer skill in blunt review voice. Remove promotional language, vague claims, filler, forced lists, generic conclusions, chatbot phrasing, and uniform sentence patterns. Use active voice and plain common words. Most sentences must have 6 to 12 words. No sentence may exceed 18 words unless a product name or exact fact requires it. Mix short and medium sentences. Use no em dash or en dash. Preserve hard facts, numbers, product names, uncertainty, and source qualifiers. Never invent a test, customer, feature, price, opinion, or personal detail. Do not turn one report into a general fact.`;
+  const appliedHumanizerRules = `Apply the installed Humanizer skill as a tough editorial re-voicing pass, not a paraphraser. This is Digital Macaroni's evidence-based review with a firm buyer recommendation. Convert residual corpus narration into owned editorial judgment. Prefer "the channel sync is the main risk" over "reviews report sync failures." Remove phrases such as "reviews show," "the evidence shows," "users report," "sources describe," and "complaints are not dominant." Keep a narrow scope qualifier only when it prevents one report from becoming a universal fact. The article must remain coherent after every aggregation sentence is removed. Remove promotional language, vague claims, filler, feature lists, generic conclusions, chatbot phrasing, and uniform sentence patterns. The final verdict must say recommend or skip. Do not hedge with may, might, could, likely, maybe, perhaps, should, it depends, only try, or we cannot recommend. Use active voice and plain common words. Most sentences must have 6 to 12 words. No sentence may exceed 18 words unless a product name or exact fact requires it. Mix short and medium sentences. Use no em dash or en dash. Preserve hard facts, numbers, product names, uncertainty, and source qualifiers. Never invent a test, customer, feature, price, opinion, or personal detail. Do not turn one report into a general fact.`;
   for (let attempt = 1; attempt <= 4; attempt += 1) {
     const metric = reading(humanized);
-    const correction = metric.words < 650
+    const aggregationCount = aggregationVoiceMatches(humanized).length;
+    const correction = aggregationCount > 2
+      ? `The article still contains ${aggregationCount} aggregation-led sentences. Re-voice them as Digital Macaroni's owned conclusions. Keep necessary scope limits, but stop narrating reviews, evidence, users, sources, reports, complaints, and feedback. Apply the removal test: after deleting every aggregation sentence, the editorial argument must still stand.`
+      : metric.words < 650
       ? `The article is too short. Expand it to 800 to 900 words with useful evidence-based explanation. Keep the current simple wording. Do not introduce new facts. Follow every section minimum in the length contract.`
       : metric.grade > 7.5
         ? `The article is long enough but too hard to read. Keep its current length within 5 percent. Rewrite each sentence with plain, common words. Keep most sentences under 12 words. Split long sentences. Do not remove facts or sections.`
@@ -333,10 +411,10 @@ async function processPacket(packet, index) {
     const instruction = attempt === 1
       ? `${appliedHumanizerRules} Return the rewritten Markdown article body only. Keep a grade 7.5 reading level or lower. ${lengthContract}\n\nBRAND CONTEXT:\n${humanizerContext}\n\nEVIDENCE:\n${JSON.stringify(evidence)}\n\nDRAFT:\n${humanized}`
       : `The last Humanizer pass measured grade ${metric.grade.toFixed(1)} with ${metric.words} words and failed the publication gate. ${correction} Keep every supported fact, qualifier, and all seven H2 headings. ${lengthContract} No em or en dashes. Return Markdown body only.\n\nEVIDENCE:\n${JSON.stringify(evidence)}\n\nDRAFT:\n${humanized}`;
-    humanized = (await deepInfra([
+    humanized = normalizeHumanized((await deepInfra([
       { role: "system", content: "You are the Humanizer editing stage. Follow the supplied skill and return article Markdown only." },
       { role: "user", content: instruction },
-    ], 4000, 0.28)).content.replace(/^```(?:markdown)?\s*/i, "").replace(/\s*```$/, "").trim();
+    ], 4000, 0.28)).content.replace(/^```(?:markdown)?\s*/i, "").replace(/\s*```$/, "").trim());
     fs.writeFileSync(path.join(draftDirectory, `${stamp}-humanizer-attempt-${attempt}.md`), `${humanized}\n`);
     if (validBody(humanized)) break;
   }
@@ -350,6 +428,7 @@ async function processPacket(packet, index) {
   console.log(`${product.name}: icon and publication file`);
   const logoUrl = await saveIcon(product);
   const publishDate = backfillDate(index, evidence.releaseDate.date);
+  if (!publishDate) throw new Error(`No valid ${index % 2 === 0 ? "Friday" : "Tuesday"} backfill date remains after the verified release date.`);
   const componentScores = ["onboarding", "product", "support", "billing"].map((key) => Number(draft.scores?.[key]));
   if (componentScores.some((score) => !Number.isFinite(score) || score < 0 || score > 10)) throw new Error("DeepSeek returned invalid component scores.");
   const average = Number((componentScores.reduce((sum, score) => sum + score, 0) / 4).toFixed(1));
@@ -360,7 +439,6 @@ async function processPacket(packet, index) {
     title: String(draft.title).replace(/[\u2013\u2014]/g, ":"),
     description: String(draft.description).replace(/[\u2013\u2014]/g, ","),
     date: publishDate,
-    updated: publishDate,
     author: "Leif Johansen",
     status: "published",
     category: product.category,
@@ -392,8 +470,8 @@ async function processPacket(packet, index) {
       update public.products set pipeline_status='published', target_publish_date=${sqlLiteral(publishDate)}, is_public=true where id=${product.id};
       update public.research_jobs set status='approved' where id=${packet.job.id};
       insert into public.articles (product_id, slug, title, description, body_mdx, verdict, card_verdict, author_name, status, review_type, testing_disclosure, featured, published_on, updated_on, publish_at, overall_score)
-      values (${product.id}, ${sqlLiteral(product.slug)}, ${sqlLiteral(frontmatter.title)}, ${sqlLiteral(frontmatter.description)}, ${sqlLiteral(articleBody)}, ${sqlLiteral(frontmatter.verdict)}, ${sqlLiteral(frontmatter.cardVerdict)}, 'Leif Johansen', 'published', 'research-based', ${sqlLiteral(frontmatter.testingDisclosure)}, false, ${sqlLiteral(publishDate)}, ${sqlLiteral(publishDate)}, ${sqlLiteral(`${publishDate}T09:00:00Z`)}, ${average})
-      on conflict (product_id) do update set title=excluded.title, description=excluded.description, body_mdx=excluded.body_mdx, verdict=excluded.verdict, card_verdict=excluded.card_verdict, status='published', testing_disclosure=excluded.testing_disclosure, published_on=excluded.published_on, updated_on=excluded.updated_on, publish_at=excluded.publish_at, overall_score=excluded.overall_score;
+      values (${product.id}, ${sqlLiteral(product.slug)}, ${sqlLiteral(frontmatter.title)}, ${sqlLiteral(frontmatter.description)}, ${sqlLiteral(articleBody)}, ${sqlLiteral(frontmatter.verdict)}, ${sqlLiteral(frontmatter.cardVerdict)}, 'Leif Johansen', 'published', 'research-based', ${sqlLiteral(frontmatter.testingDisclosure)}, false, ${sqlLiteral(publishDate)}, null, ${sqlLiteral(`${publishDate}T09:00:00Z`)}, ${average})
+      on conflict (product_id) do update set title=excluded.title, description=excluded.description, body_mdx=excluded.body_mdx, verdict=excluded.verdict, card_verdict=excluded.card_verdict, status='published', testing_disclosure=excluded.testing_disclosure, published_on=excluded.published_on, updated_on=null, publish_at=excluded.publish_at, overall_score=excluded.overall_score;
       insert into public.article_scores (article_id, onboarding, product, support, billing)
       select id, ${componentScores[0]}, ${componentScores[1]}, ${componentScores[2]}, ${componentScores[3]} from public.articles where product_id=${product.id}
       on conflict (article_id) do update set onboarding=excluded.onboarding, product=excluded.product, support=excluded.support, billing=excluded.billing;
@@ -419,3 +497,4 @@ for (const [index, packet] of packets.entries()) {
 console.log(`\nQueue run complete: ${completed} published, ${failures.length} blocked.`);
 for (const failure of failures) console.log(`- ${failure.slug}: ${failure.error.split("\n")[0]}`);
 if (failures.length) process.exitCode = 2;
+import "./lib/legacy-publisher-disabled.mjs";

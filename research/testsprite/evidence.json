@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "testsprite",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2024-05-17",
+    "precision": "day",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Independent review platforms (G2, Trustpilot, ProductHunt) inaccessible due to security blocks",
+      "Single detailed customer experience available",
+      "Pricing information unverified through official channels",
+      "No access to support interaction documentation"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "TestSprite official website",
+      "url": "https://www.testsprite.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Agentic testing for AI-native teams",
+        "Live app verification instead of mocks",
+        "Auto-healing for UI test maintenance",
+        "Terminal/IDE integration for coding agents",
+        "Growing test suite with code changes"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "TestSprite release history",
+      "url": "https://www.producthunt.com/products/testsprite",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "TestSprite reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/testsprite/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 5,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "TestSprite reviews on G2",
+      "url": "https://www.g2.com/products/testsprite/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "TestSprite reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/testsprite.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "TestSprite community discussion",
+      "url": "https://dev.to/yanto_666/testsprite-review-ai-powered-integration-testing-for-modern-web-apps-53gh",
+      "sourceType": "community",
+      "reviewCountSampled": 87,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Auto-generated readable test cases",
+        "Auto-heal reduces UI test breakage",
+        "Locale handling gaps in date/time formats",
+        "False positives from brittle assertions",
+        "CI/CD pipeline integration support"
+      ]
+    },
+    {
+      "id": "official-docs",
+      "name": "TestSprite official documentation",
+      "url": "https://docs.testsprite.com/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Spec-driven testing from PRDs/docs",
+        "Feature map creation from specifications",
+        "Natural language test refinement",
+        "UI and API testing unification",
+        "Scheduled test execution"
+      ]
+    },
+    {
+      "id": "official-extra-audit",
+      "name": "TestSprite additional official source",
+      "url": "https://www.testsprite.com/docs",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "TestSprite verifies features against live applications rather than mocks",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Automatically heals UI tests when page elements change",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Generates readable test cases in plain English describing actions and assertions",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "community-seed-1"
+      ]
+    },
+    {
+      "statement": "Reduces UI test failure rates after changes from approximately 30% to under 5%",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "community-seed-1"
+      ]
+    },
+    {
+      "statement": "Causes false positive failures due to locale-specific date formats without configuration",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "community-seed-1"
+      ]
+    },
+    {
+      "statement": "Provides GitHub Actions and Jenkins integrations for CI/CD pipelines",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-docs",
+        "community-seed-1"
+      ]
+    },
+    {
+      "statement": "Generates test plans from product specifications combined with observed app behavior",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-docs"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "community-seed-1",
+      "sentiment": "positive",
+      "userContext": "Mid-size SaaS project with global markets",
+      "task": "Locale handling testing for non-English markets",
+      "whatHappened": "Tested form fields with UK date format (30/04/2026) while TestSprite used US format (04/30/2026)",
+      "result": "False validation error flagged as bug",
+      "vendorResponse": "Locale configuration available but not prominently documented",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Auto-Heal",
+      "plainExplanation": "Automatically updates test scripts when UI elements change position or properties",
+      "whoCares": "Teams with frequent UI iterations avoiding test maintenance",
+      "whenItDoesNotMatter": "For static applications with infrequent interface changes"
+    },
+    {
+      "term": "Spec-Driven Testing",
+      "plainExplanation": "Generates tests from product requirement documents rather than only code analysis",
+      "whoCares": "Teams wanting requirement-coverage metrics and behavior-driven testing",
+      "whenItDoesNotMatter": "When working without formal product specifications"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Reported as straightforward with first results in ~10 minutes (official-site) and 20 minutes for test generation (community-seed-1)",
+    "product": "Strong on automated test maintenance and live verification but shows gaps in locale handling and brittle assertions",
+    "support": "Undocumented locale configuration noted, with workarounds requiring API doc research",
+    "billing": "Free tier mentioned but not officially confirmed; paid plan existence noted without specifics",
+    "overall": "Effective for test maintenance reduction with limitations in internationalization support"
+  },
+  "conflictsAndUnknowns": [
+    "Conflicting regression rates: Official-site claims 12-25% agent regression while community-seed-1 reports 30% test failure rate pre-TestSprite",
+    "Unknown pricing structure beyond community-reported free tier",
+    "Unverified support responsiveness beyond documentation gaps"
+  ]
+}

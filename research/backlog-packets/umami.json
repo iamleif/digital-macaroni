@@ -1,0 +1,380 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "fact",
+      "id": 331,
+      "prevalence": "common",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "Umami is an open-source, privacy-focused web analytics product available as self-hosted software and a managed cloud service.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "fact",
+      "id": 332,
+      "prevalence": "common",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "The founder publicly open-sourced Umami on August 18, 2020.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "praise",
+      "id": 333,
+      "prevalence": "common",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "A clean dashboard and plain language make traffic data much easier to understand than GA4 for basic website analysis.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "praise",
+      "id": 334,
+      "prevalence": "common",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "Self-hosting, data ownership, cookie-free tracking, and a lightweight script are the strongest repeated reasons users choose it.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "praise",
+      "id": 335,
+      "prevalence": "common",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "Docker deployment and ongoing maintenance are repeatedly described as manageable for technically comfortable users.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.88,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "praise",
+      "id": 336,
+      "prevalence": "common",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "Users report low resource use and reliable performance for small and medium websites.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "complaint",
+      "id": 337,
+      "prevalence": "common",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "The reporting can feel too shallow for teams that need advanced product analytics, complex funnels, cohorts, or deep attribution.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.92,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "complaint",
+      "id": 338,
+      "prevalence": "common",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "Self-hosting still transfers database, upgrades, backups, and incident responsibility to the customer.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.82,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "complaint",
+      "id": 339,
+      "prevalence": "mixed",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "API and advanced-feature documentation receives mixed feedback, especially when users move beyond basic traffic reports.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.96,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "conflict",
+      "id": 340,
+      "prevalence": "mixed",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "The same simplicity is a major benefit for small teams and a major limitation for teams with complex analytics needs.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "finding_type": "unknown",
+      "id": 341,
+      "prevalence": "mixed",
+      "product_id": 115,
+      "source_ids": [],
+      "summary": "Privacy and consent obligations still depend on configuration, jurisdiction, and any other tracking on the site; cookie-free should not be presented as universal legal clearance.",
+      "updated_at": "2026-08-13T19:09:57.197522+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true
+    },
+    "created_at": "2026-08-13T19:09:57.197522+00:00",
+    "id": 109,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 115,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T19:09:57.197522+00:00"
+  },
+  "product": {
+    "category": "Analytics & business intelligence",
+    "id": 115,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Umami",
+    "short_description": "Open-source, privacy-focused web analytics with cloud and self-hosted options.",
+    "slug": "umami",
+    "target_publish_date": null,
+    "website_url": "https://umami.is"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": "Mike Cao",
+      "content_hash": "c75e61386f79bd58f5907248ced50ea9",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "The founder says he created Umami for himself and open-sourced it for everyone to use.",
+      "id": 461,
+      "metadata": {
+        "bias": "founder launch post with enthusiastic early-adopter audience",
+        "releaseEvidence": true,
+        "sampleSize": 1314,
+        "sampleUnit": "post votes plus discussion"
+      },
+      "platform": "Reddit",
+      "product_id": 115,
+      "published_at": "2020-08-18T00:00:00+00:00",
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Primary launch evidence plus an early technical discussion about the stack, scaling, deployment, privacy, and roadmap.",
+      "title": "I created an open-source alternative to Google Analytics using React, Redux and Next.js",
+      "url": "https://www.reddit.com/r/reactjs/comments/ibrd14"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "aca86772d4388d22321838681fccea45",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "Umami describes itself as an open-source web analytics platform that respects user privacy.",
+      "id": 462,
+      "metadata": {
+        "bias": "first-party product documentation",
+        "sampleSize": 1,
+        "sampleUnit": "official documentation set"
+      },
+      "platform": "Umami",
+      "product_id": 115,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official evidence for current positioning, deployment, tracking, events, reports, and API behavior.",
+      "title": "Umami documentation",
+      "url": "https://docs.umami.is/docs"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "59dbc64b365db2c27298f752b2e11b52",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "The public repository contains the self-hosted product, setup instructions, issue history, and releases.",
+      "id": 463,
+      "metadata": {
+        "bias": "technical and self-hosting users are overrepresented",
+        "sampleSize": 100,
+        "sampleUnit": "recent issues and discussions reviewed"
+      },
+      "platform": "GitHub",
+      "product_id": 115,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "First-party evidence for open-source availability, deployment requirements, development activity, and user-reported technical issues.",
+      "title": "umami-software/umami",
+      "url": "https://github.com/umami-software/umami"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "c0aa97169667ba2bbf03571f97e294fd",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "Reviewers describe analytics in a straightforward way and highlight privacy, real-time data, events, and self-hosting.",
+      "id": 464,
+      "metadata": {
+        "bias": "small B2B review sample; platform solicitation and reviewer selection may apply",
+        "sampleSize": 6,
+        "sampleUnit": "available reviews and snippets"
+      },
+      "platform": "G2",
+      "product_id": 115,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Independent review-platform evidence. Useful for recurring usability themes, but the available review pool is small.",
+      "title": "Umami Reviews 2026: Details, Pricing, and Features",
+      "url": "https://www.g2.com/products/umami/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "98a40a18775184ec8b3b0bbf2b3e8976",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "The product has a very positive but small Product Hunt review set.",
+      "id": 465,
+      "metadata": {
+        "bias": "launch community with founder and early-adopter participation",
+        "sampleSize": 11,
+        "sampleUnit": "reviews"
+      },
+      "platform": "Product Hunt",
+      "product_id": 115,
+      "published_at": null,
+      "rating": 5,
+      "source_type": "independent-review-platform",
+      "summary": "Launch-community sentiment is strongly positive around simplicity and privacy. Founder and early-adopter participation makes the sample unusually favorable.",
+      "title": "Umami reviews",
+      "url": "https://www.producthunt.com/products/umami/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "c402a48f09a1c9ad116cd1476f84e682",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "A self-hoster chose Umami after comparing setup and administration, while commenters added experience from running several analytics tools.",
+      "id": 466,
+      "metadata": {
+        "bias": "technically confident self-hosters are overrepresented",
+        "sampleSize": 72,
+        "sampleUnit": "post votes and discussion"
+      },
+      "platform": "Reddit",
+      "product_id": 115,
+      "published_at": "2024-11-26T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Detailed community comparison emphasizing easy Docker deployment, data access, resource use, and differences from Plausible and Matomo.",
+      "title": "Self-hosted analytics: comparing Umami, Plausible and Matomo",
+      "url": "https://www.reddit.com/r/selfhosted/comments/1h0fle4/selfhosted_analytics_comparing_umami_plausible/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "a71aae32bc9eb05f1e2573f539b8cf56",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "Users compare the two products on simplicity, database choices, hosting effort, and the depth of reporting.",
+      "id": 467,
+      "metadata": {
+        "bias": "self-hosting audience; not representative of managed-cloud buyers",
+        "sampleSize": 30,
+        "sampleUnit": "thread participants and votes"
+      },
+      "platform": "Reddit",
+      "product_id": 115,
+      "published_at": "2024-01-05T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community evidence showing that simplicity is both Umami’s main advantage and a possible limitation.",
+      "title": "Self-hosted analytics: Plausible or Umami?",
+      "url": "https://www.reddit.com/r/selfhosted/comments/18yrxs3/selfhosted_analytics_plausible_or_umami/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": "Vincent Voyer",
+      "content_hash": "b3040f36f7617cbe2119ec9ad0c08b16",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "Early adopters discuss deploying Umami shortly after its public release.",
+      "id": 468,
+      "metadata": {
+        "bias": "developer audience and early-stage product expectations",
+        "sampleSize": 20,
+        "sampleUnit": "article reactions and comments"
+      },
+      "platform": "DEV Community",
+      "product_id": 115,
+      "published_at": "2020-08-20T00:00:00+00:00",
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Contemporaneous independent evidence that the open-source product was usable and attracting deployment interest immediately after launch.",
+      "title": "Self-hosted analytics with Umami on Vercel",
+      "url": "https://dev.to/vvo/self-hosted-analytics-with-umami-on-vercel-55ma/comments"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "0be3e70759b0a853a1d14debd30efff9",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "The author switched after comparing managed and self-hosted use, highlighting the full self-hosted product and practical control.",
+      "id": 469,
+      "metadata": {
+        "bias": "single technically skilled user",
+        "sampleSize": 1,
+        "sampleUnit": "independent hands-on comparison"
+      },
+      "platform": "Loopwerk",
+      "product_id": 115,
+      "published_at": "2026-02-18T00:00:00+00:00",
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Recent hands-on comparison supporting Umami’s value for technical users while noting that another product may present reports more simply.",
+      "title": "Umami vs Plausible: why I switched",
+      "url": "https://www.loopwerk.io/articles/2026/umami-vs-plausible/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "8eb8aecd5f071924893d24f07192a381",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:09:57.197522+00:00",
+      "excerpt": "Production users report simple deployment, low maintenance, low resource use, and a clean dashboard; they also flag shallower analysis and uneven API documentation.",
+      "id": 470,
+      "metadata": {
+        "bias": "small recent community sample; self-hosters overrepresented",
+        "sampleSize": 6,
+        "sampleUnit": "thread participants"
+      },
+      "platform": "Reddit",
+      "product_id": 115,
+      "published_at": "2026-07-23T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Recent production-use evidence that confirms the product works well for basic analytics but may not replace deeper product analytics tools.",
+      "title": "Has anyone here used Umami Analytics in production?",
+      "url": "https://www.reddit.com/r/microsaas/comments/1v4v0at/has_anyone_here_used_umami_analytics_in_production/"
+    }
+  ]
+}

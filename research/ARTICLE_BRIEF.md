@@ -37,7 +37,7 @@ Our job is simple: help a reader decide whether a piece of software is worth the
 - Do not use empty experience language such as "should feel," "likely to feel," "can be a good fit," or generic steps that could describe any product.
 - Keep research-method disclosure in the review metadata. Mention an evidence limit in the article only when that limit changes the recommendation.
 - Explain what the product is, who it helps, where it falls short, and who should skip it.
-- Keep the card verdict to eight or nine words. It must be clear at a glance.
+- Keep both the review headline (`verdict`) and card verdict to eight or nine words and no more than 64 characters. Use the same sentence for both so the judgment stays consistent and the page layout remains stable.
 - Explain unfamiliar product terms through what actually happens. Write "a booking on Airbnb should block the same dates on Vrbo" before using "calendar sync." Skip the jargon if the reader does not need it.
 - Keep private planning labels out of the article. Do not write "buyer fit," "decision rule," "value proposition," "the case is weaker," "earns its place," "operational complexity," or similar analyst language.
 - Explain each important feature in normal terms: what it lets someone do, who needs it, whether it works well enough, its main limit, and when it will not matter.

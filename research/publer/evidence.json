@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "publer",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2012-11-22",
+    "precision": "range",
+    "sourceId": "official-story"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Social-network publishing rules change frequently.",
+      "Community endorsements with founder or affiliate participation were discounted.",
+      "The displayed total changes with account count, team members, and billing period."
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-pricing",
+      "name": "Publer plan and pricing guide",
+      "url": "https://publer.com/help/en/article/what-are-publers-plans-and-pricing-15h4yqh/",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Free",
+        "Professional",
+        "Business",
+        "Account pricing"
+      ]
+    },
+    {
+      "id": "official-networks",
+      "name": "Publer supported networks",
+      "url": "https://publer.com/help/en/article/npoun1/",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Supported networks",
+        "Free limits",
+        "X restriction"
+      ]
+    },
+    {
+      "id": "official-post-types",
+      "name": "Publer post types and limits",
+      "url": "https://publer.com/help/en/article/1687rte/",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Direct publishing",
+        "Reminders",
+        "Network limits"
+      ]
+    },
+    {
+      "id": "official-story",
+      "name": "The Publer story",
+      "url": "https://publer.com/blog/the-publer-story-from-0-to-3m-arr/",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Product history"
+      ]
+    },
+    {
+      "id": "product-hunt",
+      "name": "Publer on Product Hunt",
+      "url": "https://www.producthunt.com/products/publer",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 55,
+      "keyThemes": [
+        "Scheduling",
+        "Support",
+        "Price"
+      ]
+    },
+    {
+      "id": "g2",
+      "name": "Publer reviews on G2",
+      "url": "https://www.g2.com/products/publer/reviews",
+      "accessed": "2026-08-14",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 500,
+      "keyThemes": [
+        "Calendar",
+        "Bulk scheduling",
+        "Analytics",
+        "Permissions",
+        "Mobile"
+      ]
+    },
+    {
+      "id": "capterra",
+      "name": "Publer reviews on Capterra",
+      "url": "https://www.capterra.com/p/177145/Publer/reviews/",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 20,
+      "keyThemes": [
+        "Approvals",
+        "Ease",
+        "Support"
+      ]
+    },
+    {
+      "id": "gartner",
+      "name": "Publer on Gartner Peer Insights",
+      "url": "https://www.gartner.com/reviews/product/publer",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 5,
+      "keyThemes": [
+        "Professional use"
+      ]
+    },
+    {
+      "id": "reddit-one",
+      "name": "Social media scheduler discussion on Reddit",
+      "url": "https://www.reddit.com/r/marketing/comments/11xlfqm/social_media_post_scheduler/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 15,
+      "keyThemes": [
+        "Category comparison",
+        "Promotional participation"
+      ]
+    },
+    {
+      "id": "app-store",
+      "name": "Publer on the Apple App Store",
+      "url": "https://apps.apple.com/us/app/publer-social-media-tools/id1571680865",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 5,
+      "keyThemes": [
+        "Mobile availability"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Publer schedules content for Facebook, Instagram, X, LinkedIn, Pinterest, Google Business, YouTube, WordPress, TikTok, Telegram, Mastodon, Threads, and Bluesky.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-networks"
+      ]
+    },
+    {
+      "statement": "Free supports three social accounts, ten scheduled posts at a time per account, and 24 hours of post history. X requires a paid plan.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-networks",
+        "official-pricing"
+      ]
+    },
+    {
+      "statement": "Professional starts at $5 monthly and Business at $10, but the total changes with social accounts, members, and billing period.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-pricing"
+      ]
+    },
+    {
+      "statement": "A clean calendar, broad network support, bulk scheduling, and repeated-post tools are dominant strengths.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "g2",
+        "product-hunt",
+        "capterra",
+        "gartner"
+      ]
+    },
+    {
+      "statement": "Reporting is often described as less capable than publishing, while agency permissions and approvals can be limited.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "g2",
+        "capterra"
+      ]
+    },
+    {
+      "statement": "Some post types require a phone reminder or have network-specific restrictions imposed by the social network.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-post-types"
+      ]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Connecting a few profiles and filling a calendar is straightforward, though every network has its own limits.",
+    "product": "Scheduling and repeated-content tools are strong. Reporting, permissions, and mobile depth are less convincing for a larger agency.",
+    "support": "Responsive support is a common positive theme, but it was not tested directly.",
+    "billing": "The entry price is low, but the total must be calculated from the real number of profiles and teammates.",
+    "overall": "Publer is a good publishing tool for creators and small teams that schedule in batches. Teams buying for deep reports or strict approvals should look harder."
+  },
+  "conflictsAndUnknowns": [
+    "Public ratings are exceptionally positive, but some community mentions are promotional.",
+    "No scheduled posts were published in a hands-on test.",
+    "Network APIs and supported post types can change after research."
+  ]
+}

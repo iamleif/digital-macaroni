@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "openstatus",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2023-07-31",
+    "precision": "day",
+    "sourceId": "launch"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on monitor, alert, incident, status-page, self-hosting, or support test was completed.",
+      "Independent long-term customer coverage is too thin for a fine-grained reliability claim.",
+      "Repository stars and forks show developer attention, not customer satisfaction."
+    ]
+  },
+  "sources": [
+    {
+      "id": "launch",
+      "name": "The first 48 hours of OpenStatus",
+      "url": "https://www.openstatus.dev/blog/the-first-48-hours",
+      "accessed": "2026-08-13",
+      "sourceType": "launch-history",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Release date",
+        "Early adoption"
+      ]
+    },
+    {
+      "id": "pricing",
+      "name": "OpenStatus pricing",
+      "url": "https://www.openstatus.dev/pricing",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Hobby",
+        "Starter",
+        "Pro",
+        "Scale",
+        "Add-ons"
+      ]
+    },
+    {
+      "id": "docs",
+      "name": "OpenStatus documentation",
+      "url": "https://www.openstatus.dev/docs",
+      "accessed": "2026-08-14",
+      "sourceType": "official-documentation",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Monitoring",
+        "Status pages",
+        "Notifications",
+        "Self-hosting"
+      ]
+    },
+    {
+      "id": "github",
+      "name": "OpenStatus repository on GitHub",
+      "url": "https://github.com/openstatusHQ/openstatus",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 10,
+      "keyThemes": [
+        "AGPL-3.0",
+        "Stars",
+        "Forks",
+        "Activity"
+      ]
+    },
+    {
+      "id": "hacker-news",
+      "name": "Show HN: OpenStatus",
+      "url": "https://news.ycombinator.com/item?id=37740870",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 10,
+      "keyThemes": [
+        "Positioning",
+        "Competition",
+        "Technical questions"
+      ]
+    },
+    {
+      "id": "product-hunt",
+      "name": "OpenStatus on Product Hunt",
+      "url": "https://www.producthunt.com/products/openstatus-2",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 2,
+      "keyThemes": [
+        "Open source",
+        "Launch"
+      ]
+    },
+    {
+      "id": "trustpilot",
+      "name": "OpenStatus reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/openstatus.dev",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 1,
+      "keyThemes": [
+        "Open source",
+        "Team"
+      ]
+    },
+    {
+      "id": "customers",
+      "name": "OpenStatus customer showcase",
+      "url": "https://www.producthunt.com/products/openstatus-2/customers",
+      "accessed": "2026-08-13",
+      "sourceType": "vendor-adjacent-showcase",
+      "reviewCountSampled": 1,
+      "keyThemes": [
+        "Feedback",
+        "Contribution"
+      ]
+    },
+    {
+      "id": "alternativeto",
+      "name": "OpenStatus on AlternativeTo",
+      "url": "https://alternativeto.net/software/openstatus/about/",
+      "accessed": "2026-08-13",
+      "sourceType": "directory",
+      "reviewCountSampled": 0,
+      "keyThemes": [
+        "Category",
+        "Open source",
+        "Alternatives"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "OpenStatus became publicly available on July 31, 2023.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "launch"
+      ]
+    },
+    {
+      "statement": "OpenStatus combines checks of websites and services with public status pages, incident updates, subscribers, and several alert channels.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing",
+        "docs"
+      ]
+    },
+    {
+      "statement": "The Hobby plan includes one monitor and one status page with three components at a minimum ten-minute check interval.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "Starter costs $30 monthly or $300 yearly, Pro costs $100 monthly or $1,000 yearly, and Scale costs $500 monthly or $5,000 yearly.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "Open source code, self-hosting, monitoring and status pages in one product, and developer tooling are the clearest differentiators.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "github",
+        "hacker-news",
+        "product-hunt",
+        "trustpilot"
+      ]
+    },
+    {
+      "statement": "The repository has attracted thousands of stars and hundreds of forks, showing substantial developer attention for the project's size.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "github"
+      ]
+    },
+    {
+      "statement": "The formal customer-review sample is too small to support a broad claim about long-term reliability or support quality.",
+      "kind": "evidence-limit",
+      "status": "verified",
+      "sourceIds": [
+        "product-hunt",
+        "trustpilot",
+        "customers"
+      ]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Creating a green monitor is easy to demonstrate; useful setup requires forced failures, alert checks, customer wording, ownership, and recovery.",
+    "product": "Monitoring and status pages fit together well, especially for technical teams that want code-based configuration or self-hosting.",
+    "support": "The public satisfaction sample is too thin, and no urgent incident request was tested.",
+    "billing": "Starter is clear for a small public service, while advanced identity, white-labeling, and extra pages can make the bill much larger.",
+    "overall": "OpenStatus is worth testing for a technical team that wants monitoring and customer communication together. Break a disposable endpoint and keep it only if detection, paging, incident updates, and recovery all work."
+  },
+  "conflictsAndUnknowns": [
+    "Open-source popularity does not prove hosted-service reliability.",
+    "Self-hosting gives control but makes the team responsible for operating the monitor that watches its other systems.",
+    "Historical infrastructure trouble explains early development but is not a current defect claim.",
+    "No monitor, false-alert, incident, subscriber, private-location, self-hosting, export, or support test was completed."
+  ]
+}

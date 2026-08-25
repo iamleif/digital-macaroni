@@ -1,0 +1,49 @@
+CompanyHub CRM is worth trying when a small sales team has records that do not fit a normal contact and deal. A property firm may need buildings and units. A training business may need courses and enrollments. CompanyHub can keep those items beside the customer and the sale.
+
+That flexibility is the reason to choose it. A team that only needs contacts, deals, email, and reminders can find a cleaner CRM with more connections. We recommend CompanyHub when one real spreadsheet needs to become part of the sales record.
+
+## Custom records solve a specific spreadsheet problem
+
+Most CRMs let a team add fields to a contact or deal. CompanyHub can create a new kind of record and link it to the rest of the business.
+
+A property can belong to an owner and appear beside a deal. A payment can belong to a customer. Reports can use those links instead of making someone join several spreadsheets by hand.
+
+This is useful when the special record affects sales every week. It is unnecessary when the team only wants another place to store background notes. Each custom record needs a clear owner and a reason to exist.
+
+Start with one record type. Import real examples, link them to contacts, and build the report the manager already uses. Do not add a second type until the first one has replaced part of the old spreadsheet.
+
+The freedom can create clutter. Ten half-used tables are worse than one spreadsheet the team understands. CompanyHub works only when the setup reflects a real job.
+
+## Follow-up is more important than polish
+
+A salesperson needs to see promised calls and late replies at the start of the day. CompanyHub puts follow-up work near the deal and customer history.
+
+The interface gets praise for being easy, while some customers describe it as dated or unfinished. Those views can coexist. A plain screen may still be clear enough for daily work.
+
+The team has to be willing to use it. Give several salespeople real access during the trial. Ask them to add a lead, schedule a follow-up, update a deal, and find the next task. If they return to private notes, the custom setup has not helped.
+
+CompanyHub also has access rules for records and fields. A manager can hide a margin or commission field while leaving the rest of the deal visible. Test those rules with ordinary user accounts before importing sensitive data.
+
+## Email history arrives in batches
+
+CompanyHub can connect Google, Office 365, Exchange, and accounts that support IMAP. It can pull the last six months of mail when a contact is added.
+
+New email is not shown at once. CompanyHub says the sync runs every few hours. A message sent from the CRM goes out right away, but it may not appear in the contact history until the next sync.
+
+That is acceptable when the CRM needs a useful record of past contact. It is frustrating when a salesperson expects the contact page to behave like a live inbox.
+
+Connect the team's real mail service during the trial. Send one message from CompanyHub and one from the normal mail app. Reply from the customer side, then note when each item appears. Make sure another salesperson sees the correct history.
+
+Open tracking is only a hint. Mail apps can block the hidden image used for tracking, and security tools may open it before a person does. Do not treat one tracked open as proof that a lead read the offer.
+
+## The starting price is reasonable
+
+CompanyHub offers a 14-day trial without a card. Productivity was listed at $21 per user monthly or $15 with annual billing. It included one sales pipeline, email sync for one account per user, booking, bulk mail, and access controls.
+
+Higher plans add automation and more sales tools. The final cost may also include setup help or outside services. Get a written total after the team knows which features it needs.
+
+The entry price is fair for a small CRM with custom records. The product is poor value when the team never uses that flexibility or needs a large market of polished integrations.
+
+We would skip CompanyHub if contacts and deals cover the whole sales process. We would also leave if the email delay causes confusion or a critical connection fails.
+
+The final test is simple. Build one custom record, connect it to a real deal, hide one sensitive field, and produce the weekly report. Let the team work from that setup for several days. If the spreadsheet stays closed, CompanyHub has done its job.

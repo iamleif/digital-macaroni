@@ -1,0 +1,3 @@
+# Trigger.dev spoken review brief
+
+Trigger.dev runs background work written in TypeScript. It records each run, retries failures, pauses long waits without charging for idle time, and shows logs and history. That is useful when an order, report, import, or AI task outlives a normal web request. It is not useful if retries can charge the customer twice. Move one reversible job first. Send the same event twice, crash it after a real side effect, force a rate limit, wait through a deploy, cancel, replay, and compare the final database state. Price the exact machine seconds and run count. Keep it only if recovery is safer than the current queue.

@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "cal-com",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2021-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "No access to pricing details despite linked page",
+      "Community discussions and other review platforms blocked/unavailable",
+      "Self-hosted version experiences not represented",
+      "Sample skew toward extreme experiences (very positive/negative)"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Cal.com official website",
+      "url": "https://cal.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Customizable scheduling software",
+        "Calendar integration and availability settings",
+        "Built-in video conferencing (Cal Video)",
+        "Automated reminders and notifications",
+        "Free for individual users"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Cal.com release history",
+      "url": "https://www.producthunt.com/products/cal-com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "Cal.com reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/cal-com/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 85,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Cal.com reviews on G2",
+      "url": "https://www.g2.com/products/cal-com/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "Cal.com reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/cal.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Polarized support experiences",
+        "Timezone selection issues",
+        "Notification timing problems",
+        "Open-source integration capabilities",
+        "Bug reports in UI functionality"
+      ]
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Cal.com community discussion",
+      "url": "https://www.reddit.com/r/selfhosted/comments/1bvn4vw/anyone_use_calcom_selfhosted_for_scheduling_and/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Cal.com offers customizable scheduling for individuals and businesses",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Built-in Cal Video conferencing is available",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Some users report positive support experiences with timely resolutions",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Some users report support no-shows and unresponsiveness during critical issues",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Timezone selection causes confusion for international users",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Automated reminders sometimes deliver at incorrect times",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Open-source architecture enables third-party integrations",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "UI bugs may occur when modifying booking limits",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "Business needing Meta Ads integration",
+      "task": "Setting up tracking connections",
+      "whatHappened": "Scheduled 5 support calls; support no-showed to 4 after initial troubleshooting",
+      "result": "Core functionality remained unresolved",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Business migrating email systems",
+      "task": "Domain verification and calendar setup",
+      "whatHappened": "Support quickly resolved mailbox verification issue",
+      "result": "Successful migration with maintained workflow separation",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "User in Dubai",
+      "task": "Timezone configuration",
+      "whatHappened": "Couldn't find UAE timezone initially; app reset when minimized",
+      "result": "Frustration due to unclear interface",
+      "vendorResponse": "Clarified timezone availability under Asia/Dubai",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "Paying customer",
+      "task": "Resolving core feature failure",
+      "whatHappened": "No response to multiple support requests over days",
+      "result": "Business operations fully blocked",
+      "vendorResponse": "Requested account details for escalation",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Developer integrating with API",
+      "task": "Building custom scheduling integration",
+      "whatHappened": "Contributed integration via pull request",
+      "result": "Smooth implementation with maintainer support",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Cal Video",
+      "plainExplanation": "Built-in video meeting tool",
+      "whoCares": "Users wanting all-in-one scheduling without external apps",
+      "whenItDoesNotMatter": "When using Zoom/Teams integrations instead"
+    },
+    {
+      "term": "Privacy first",
+      "plainExplanation": "Data protection design priority",
+      "whoCares": "Healthcare/businesses handling sensitive information",
+      "whenItDoesNotMatter": "For casual non-confidential scheduling"
+    },
+    {
+      "term": "Time-slot intervals",
+      "plainExplanation": "Gaps between scheduled events",
+      "whoCares": "High-volume schedulers preventing back-to-back fatigue",
+      "whenItDoesNotMatter": "For sparse bookings with natural breaks"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Mixed experiences: Some report quick setup help while others encounter initial configuration confusion",
+    "product": "Feature-rich but inconsistent reliability: Core scheduling works but timezone handling and notifications show flaws",
+    "support": "Highly polarized: Resolves critical issues promptly for some while others experience complete communication breakdowns",
+    "billing": "No verifiable information in sources",
+    "overall": "Strong feature foundation undermined by inconsistent support and reliability issues"
+  },
+  "conflictsAndUnknowns": [
+    "Extreme variance in support quality (responsive vs. non-responsive)",
+    "Actual pricing structure unknown despite official pricing page link",
+    "Timezone implementation conflicts: Official IANA standards vs. user expectations",
+    "Effectiveness of AI support versus human intervention"
+  ]
+}

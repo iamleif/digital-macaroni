@@ -1,0 +1,33 @@
+{
+  "schemaVersion":1,
+  "productSlug":"formbricks",
+  "legacy":false,
+  "reviewType":"research-based",
+  "researchStarted":"2026-08-13",
+  "researchUpdated":"2026-08-14",
+  "releaseDate":{"date":"2023-10-31","precision":"day","sourceId":"timeline"},
+  "testing":{"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on survey, targeting, cloud, self-hosting, upgrade, or support test was completed.","Public ratings come from small and favorable samples.","Privacy and compliance depend on the full deployment, survey content, access controls, and applicable law."]},
+  "sources":[
+    {"id":"timeline","name":"Formbricks community timeline","url":"https://formbricks.com/community","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Launch","History"]},
+    {"id":"pricing","name":"Formbricks cloud pricing","url":"https://formbricks.com/pricing","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Hobby","Pro","Scale","Trial"]},
+    {"id":"license","name":"Formbricks self-host license documentation","url":"https://formbricks.com/docs/self-hosting/advanced/license","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["AGPL","Community","Enterprise","Feature gates"]},
+    {"id":"self-host","name":"Formbricks self-hosting overview","url":"https://formbricks.com/docs/self-hosting/overview","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Requirements","Maintenance","Support"]},
+    {"id":"product-hunt","name":"Formbricks reviews on Product Hunt","url":"https://www.producthunt.com/products/formbricks","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":23,"keyThemes":["Setup","Open source","Privacy","Customization"]},
+    {"id":"g2","name":"Formbricks reviews on G2","url":"https://www.g2.com/products/formbricks/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":15,"keyThemes":["Customization","Self-hosting","Support","Cost"]},
+    {"id":"trustpilot","name":"Formbricks reviews on Trustpilot","url":"https://www.trustpilot.com/review/formbricks.com","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":2,"keyThemes":["Feature gates","Branding"]},
+    {"id":"github","name":"Formbricks GitHub repository","url":"https://github.com/formbricks/formbricks","accessed":"2026-08-13","sourceType":"open-source-repository","reviewCountSampled":null,"keyThemes":["Code","Issues","Releases"]},
+    {"id":"reddit-host","name":"Formbricks self-hosting discussion","url":"https://www.reddit.com/r/selfhosted/comments/1uf9nle/any_tips_on_selfhosting_a_survey_platform/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":12,"keyThemes":["Deployment","API","Tradeoffs"]},
+    {"id":"reddit-license","name":"Open-core discussion on Reddit","url":"https://www.reddit.com/r/selfhosted/comments/1ge7s07/there_is_an_opensource_alternative_to_almost_any/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":30,"keyThemes":["Licensing expectations","Enterprise layer"]}
+  ],
+  "claims":[
+    {"statement":"Formbricks recorded its public Product Hunt launch on October 31, 2023.","kind":"fact","status":"verified","sourceIds":["timeline","product-hunt"]},
+    {"statement":"Formbricks supports link, website, email, and in-product surveys through cloud and self-hosted deployments.","kind":"fact","status":"verified","sourceIds":["pricing","self-host"]},
+    {"statement":"Cloud Hobby is free for 250 responses monthly. Pro costs $74 monthly billed yearly for 2,000 responses, and Scale costs $325 for 5,000. The Pro trial lasts 14 days.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"The self-hosted core is AGPLv3 and includes unlimited surveys, responses, and users, while branding removal, roles, segments, advanced feedback, audit logs, SSO, spam protection, and other controls require the Enterprise Edition.","kind":"fact","status":"verified","sourceIds":["license"]},
+    {"statement":"Privacy control, self-hosting, open code, a clean builder, targeting, customization, APIs, and integrations are the main positive themes.","kind":"reported-pattern","status":"supported","sourceIds":["product-hunt","g2","reddit-host"]},
+    {"statement":"Advanced integrations and self-hosted changes can require more technical skill than the survey builder suggests.","kind":"reported-pattern","status":"supported","sourceIds":["g2","github","reddit-host"]},
+    {"statement":"Open-core feature gates and branding limits frustrate some self-hosters who expected all capabilities in the community edition.","kind":"reported-pattern","status":"supported","sourceIds":["trustpilot","reddit-license","license"]}
+  ],
+  "scoreRationale":{"onboarding":"Cloud surveys should be approachable; self-hosting adds infrastructure, email, updates, backups, and monitoring.","product":"Strong developer-friendly surveys and targeting, but not every large experience-management workflow is equally mature.","support":"Positive pattern in small samples; community support differs from paid support.","billing":"Cloud jumps sharply from free to Pro, while free self-hosting has real operating cost and paid feature gates.","overall":"Formbricks is compelling when in-product surveys or data control matter. Choose cloud and self-hosting as separate decisions and prove targeting plus response handling before rollout."},
+  "conflictsAndUnknowns":["Self-hosting is described as easy by some technical users and difficult by others.","Open source core is real, while several organizational controls remain paid enterprise features.","No respondent flow, targeting, identity, upgrade, backup, report, export, or support test was completed."]
+}

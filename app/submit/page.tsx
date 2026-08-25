@@ -29,7 +29,7 @@ export default function SubmitPage() {
           <ol>
             <li><span>01</span><p><strong>A real product.</strong> Something people can use today.</p></li>
             <li><span>02</span><p><strong>A clear point of view.</strong> A product solving a specific problem for specific people.</p></li>
-            <li><span>03</span><p><strong>Enough access.</strong> We need to experience the product, support, and billing honestly.</p></li>
+            <li><span>03</span><p><strong>Useful context.</strong> Tell us your relationship to the software and why it belongs on our review list.</p></li>
           </ol>
         </aside>
         <SoftwareSubmissionForm />

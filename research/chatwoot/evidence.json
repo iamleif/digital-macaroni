@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "chatwoot",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2017-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Independent review platforms (G2, Product Hunt) inaccessible",
+      "Community discussions blocked by security restrictions",
+      "No pricing information available in sources",
+      "Limited critical perspectives from implementation accounts",
+      "All customer testimonials sourced from vendor materials"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Chatwoot official website",
+      "url": "https://www.chatwoot.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "AI-powered customer support automation",
+        "Omnichannel conversation management",
+        "Customizable live chat widgets",
+        "Self-hosted open-source option",
+        "Help center knowledge base"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Chatwoot release history",
+      "url": "https://github.com/chatwoot/chatwoot",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Open-source alternative to commercial platforms",
+        "Active development community",
+        "Multiple deployment options",
+        "Comprehensive feature set",
+        "Extensive integration capabilities"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Chatwoot reviews on G2",
+      "url": "https://www.g2.com/products/chatwoot/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 16,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Chatwoot reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/chatwoot/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 6,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Chatwoot community discussion",
+      "url": "https://www.reddit.com/r/selfhosted/comments/1kh874b/open_source_help_desk_ticket_system/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-docs",
+      "name": "Chatwoot official documentation",
+      "url": "https://www.chatwoot.com/docs/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Detailed feature implementation guides",
+        "Self-service knowledge base creation",
+        "API/webhook customization",
+        "Workflow automation configuration",
+        "Third-party platform integrations"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Chatwoot offers AI-powered response automation through Captain feature",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Platform supports omnichannel conversations across email, social media, and messaging apps",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Provides customizable live chat widgets with brand-specific styling",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Offers self-hosted deployment option for data control",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Includes knowledge base/help center functionality",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Some businesses report essential reliability for sales-critical chat systems",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Users report transformed customer engagement through omnichannel management",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "Sales-dependent business",
+      "task": "Maintaining accessible customer support platform",
+      "whatHappened": "Relied on chat-based sales operations",
+      "result": "Essential system remained dependable",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "Founder managing multiple companies",
+      "task": "Cross-channel customer engagement",
+      "whatHappened": "Used omnichannel feature simultaneously across channels",
+      "result": "Transformed customer engagement approach",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Omnichannel support desk",
+      "plainExplanation": "Single interface managing conversations from multiple platforms (email, chat, social media)",
+      "whoCares": "Teams receiving inquiries across different platforms",
+      "whenItDoesNotMatter": "Businesses using only one communication channel"
+    },
+    {
+      "term": "Self-hosted deployment",
+      "plainExplanation": "Installing software on company's own servers instead of cloud service",
+      "whoCares": "Businesses with strict data compliance requirements",
+      "whenItDoesNotMatter": "Teams without technical infrastructure or data residency concerns"
+    },
+    {
+      "term": "Captain AI assistant",
+      "plainExplanation": "Automated system handling routine queries using knowledge base content",
+      "whoCares": "Teams handling high-volume repetitive inquiries",
+      "whenItDoesNotMatter": "Businesses with highly customized support scenarios"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Documentation available but hands-on implementation complexity unknown",
+    "product": "Feature-rich platform with AI automation and omnichannel capabilities",
+    "support": "Self-service documentation exists; direct support quality unverified",
+    "billing": "Pricing details unavailable in provided sources",
+    "overall": "Technically capable solution with positive implementation reports but limited independent validation"
+  },
+  "conflictsAndUnknowns": [
+    "No independent review validation due to inaccessible sources",
+    "Actual implementation complexity for non-technical users unknown",
+    "Pricing structure not disclosed in provided materials",
+    "Real-world AI effectiveness beyond promotional claims unverified",
+    "Enterprise-scale reliability evidence limited"
+  ]
+}

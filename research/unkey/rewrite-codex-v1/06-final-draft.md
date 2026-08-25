@@ -1,0 +1,63 @@
+A small internal API can keep a few hashed keys in its own database. Unkey starts making sense when those keys belong to customers and control something they pay for.
+
+It can issue and revoke keys, apply permissions, enforce limits, track use, and stop a bad request before it reaches the app. Unkey can also deploy the API and put its gateway in front of it.
+
+I recommend Unkey for a team selling API access or protecting several public services. Skip it while the key system remains one small table and a few clear checks.
+
+## Customer keys create product work
+
+The first key is simple. Later, a customer wants separate production and test keys. Another customer needs read access without permission to make changes.
+
+Sales adds plans with different monthly limits. Support needs to explain a blocked request. Security wants quick revocation and an audit trail, while finance needs usage records.
+
+Those jobs turn a database row into a product. Unkey puts the identity, rights, limits, and use of each key in one system. That can save a developer team from maintaining several home-built parts.
+
+## Test every refusal
+
+Create a safe test key and use it once. Revoke it, then repeat the request. Do the same with an expired key and a key that has used its full allowance.
+
+Send a burst that crosses the rate limit. Check which calls pass, which fail, and what the customer sees. The reply should explain the limit without leaking private details.
+
+Create read and write permissions, then try a write with the read-only key. Stop the trial if it works. A key service earns trust by saying no at the right time.
+
+## Duplicate and leaked keys need a route
+
+Make two keys for the same customer and label their purpose. Rotate one without breaking the other. Copy a leaked test key, revoke it, and confirm every region stops accepting it.
+
+Unkey hashes keys with SHA-256 instead of storing the original secret in plain text. That protects the stored form, but the buyer still needs safe creation, display, delivery, logging, and rotation.
+
+Keep only the details support needs. Decide who may create, view, revoke, or change a key. Export an activity record and check whether it answers a real customer dispute.
+
+## Plan for an Unkey outage
+
+Every protected request may depend on Unkey. The team must decide what happens when verification is slow or unavailable.
+
+Failing closed blocks requests when the key service cannot answer. That protects the API and can create an outage. Failing open keeps traffic moving and may allow an invalid request.
+
+Choose the rule for each service before launch. Add timeouts, alerts, and a runbook. Test the route from the regions where customers call the API, then compare latency with the old checks.
+
+## The newer design needs a fresh test
+
+Unkey replaced its first serverless design after describing latency, cache, local development, and operating problems. The newer system uses stateful Go servers.
+
+That rewrite makes old measurements poor evidence for the current product. It also shows why a fresh regional and load test matters. Run normal traffic, a burst, a deploy, and a partial failure against the current version.
+
+Open source code helps a technical team inspect changes and plan an exit. It does not make self-hosting easy. A private install still needs a database, networking, updates, monitoring, backups, and incident ownership.
+
+## Price the real traffic
+
+During research, Starter began at $5 monthly, Pro at $25, and Business at $50. Each plan included matching usage credit.
+
+Compute, storage, data transfer, and active keys can add charges. Put a normal month and the busiest month into the calculator. Include retries, attacks, development traffic, and regional use.
+
+Set a budget and an alert, then learn whether either one stops spend or only sends a notice. Compare the first real test bill with the estimate before moving all customers.
+
+## Who should choose Unkey?
+
+Choose Unkey when customers need separate keys, rights, limits, revocation, and usage records across one or more public APIs. It is strongest when that work would otherwise become a permanent internal product.
+
+Skip it for a small private app with a handful of keys and no customer billing. Another network service adds cost and another failure point without removing enough work.
+
+Digital Macaroni did not deploy Unkey, measure latency, run load, inspect a bill, self-host, or contact support. Formal review history is very small, and the broader deployment product is younger than key management.
+
+Keep Unkey when every refusal works, the outage rule is acceptable, and the usage bill matches the model. Add it when the key system has clearly outgrown the app database.

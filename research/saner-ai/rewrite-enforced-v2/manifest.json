@@ -1,0 +1,144 @@
+{
+  "checkpointVersion": 2,
+  "slug": "saner-ai",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "243dec0c916537600c453e5c54db1378b440b43b57a1b823f42b8f7f7a017c54",
+  "publicationDate": "2026-05-22",
+  "reviewWriterSha256": "9eb3a0fbf0bc59f904f352f1acba7c533070a08854d814de52b8116949bffd1b",
+  "humanizerSha256": "3ab0b57fdcd4d4d2f9eceffd14353f4e6b2871524961940aa34cd85f8a2f2b58",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "b3a25008069046c6a9bb7ebbf84ea14b98d378c358fe7e6de32de81e14cfaa68",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T10:32:33.416Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "68ae3ca851f3db1b5dcf2cab45f25aab2d41704e80760f6bcf95df8a9a70baf8",
+      "predecessorSha256": "b3a25008069046c6a9bb7ebbf84ea14b98d378c358fe7e6de32de81e14cfaa68",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T10:32:33.418Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "c449838e425cf6c7b9387b9fa507e1d5985af3620f1051ea2891e52a4ecc59fc",
+      "predecessorSha256": "68ae3ca851f3db1b5dcf2cab45f25aab2d41704e80760f6bcf95df8a9a70baf8",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 3
+      },
+      "completedAt": "2026-08-18T10:34:13.784Z"
+    },
+    "argument_card": {
+      "file": "04-argument-card.md",
+      "sha256": "504aa97d1b60eb64ab8aba9b1f37ef9808a8acbd881b00db340c7de88ee8afeb",
+      "predecessorSha256": "c449838e425cf6c7b9387b9fa507e1d5985af3620f1051ea2891e52a4ecc59fc",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T10:34:28.539Z"
+    },
+    "spoken_brief": {
+      "file": "05-spoken-brief.md",
+      "sha256": "f979aaaf9c1e700c0e6397b883e23674273555dac46c05a8d1a31ebc5530db4c",
+      "predecessorSha256": "504aa97d1b60eb64ab8aba9b1f37ef9808a8acbd881b00db340c7de88ee8afeb",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T10:34:54.040Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T10:33:19.658Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "61acaeabe966632aa6f20f5f98da45f4d26c1bd1bed1364aa95c289ee97091a9"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T10:33:46.470Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "5362567111e78557e034e97780bb3346840a51e3f03d2f3d8baa5ad5fed3e8f8"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 1,
+      "message": "raw_draft is too short (134 words).",
+      "createdAt": "2026-08-18T10:35:24.879Z",
+      "candidate": "attempts/003-raw_draft-attempt-1.md",
+      "candidateSha256": "22912d9116d1ee6864f6b132d4353e00d4b7857d97cb012dfe19892cd871f5b8"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 2,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T10:36:54.465Z",
+      "candidate": "attempts/004-raw_draft-attempt-2.md",
+      "candidateSha256": "dd0a364a458e8ebad8f4f25acac0569847f12c6241aea6e8fe3d983812820a32"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 3,
+      "message": "raw_draft contains an em dash or en dash.",
+      "createdAt": "2026-08-18T10:38:22.560Z",
+      "candidate": "attempts/005-raw_draft-attempt-3.md",
+      "candidateSha256": "86a5d28e04fa1f14243f1d7b84814c078be6eb0836e576b2aad2be8c173fab8d"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 4,
+      "message": "raw_draft contains an em dash or en dash.",
+      "createdAt": "2026-08-18T10:39:56.253Z",
+      "candidate": "attempts/006-raw_draft-attempt-4.md",
+      "candidateSha256": "28b4695b11f212678d9393c84facbe85a0e953dd5de883a81b0e9b6b704dcc62"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 1,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T10:41:54.938Z",
+      "candidate": "attempts/007-raw_draft-attempt-1.md",
+      "candidateSha256": "b6cbb3a60c71c5231f7b6d767c16a0696f0407ed13d03a00f3d35ab5fd767b64"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 2,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T10:43:23.210Z",
+      "candidate": "attempts/008-raw_draft-attempt-2.md",
+      "candidateSha256": "77415e063ca3542562f65679f6ccb13a73d635919cee938bfc2ab084c7742ac6"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 3,
+      "message": "raw_draft is too short (447 words).",
+      "createdAt": "2026-08-18T10:44:00.169Z",
+      "candidate": "attempts/009-raw_draft-attempt-3.md",
+      "candidateSha256": "5f64faf518c00372ba001a9eec0049f2f6aa080c44d252029620f2306b197667"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 4,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T10:45:17.226Z",
+      "candidate": "attempts/010-raw_draft-attempt-4.md",
+      "candidateSha256": "f73b97cf31d7e747d00c5a2964895115435c3f6dd6c55d2c6c838526dd6c77e4"
+    }
+  ],
+  "createdAt": "2026-08-18T10:32:33.414Z",
+  "updatedAt": "2026-08-18T10:45:17.233Z"
+}

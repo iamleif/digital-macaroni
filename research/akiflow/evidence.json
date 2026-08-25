@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "akiflow",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {"date":"2021-06-03","precision":"day","sourceId":"product-hunt"},
+  "testing": {"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on test was completed.","Recent changelogs show continuing fixes to calendar and task integrations.","Mobile quality has changed over time, so older complaints may not match the current app."]},
+  "sources": [
+    {"id":"official-pricing","name":"Akiflow pricing","url":"https://akiflow.com/pricing","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Seven-day trial","Monthly price","Annual price"]},
+    {"id":"official-integrations","name":"Akiflow integrations","url":"https://product.akiflow.com/en/help/collections/1999346-integrations","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Calendars","Email","Task apps","Work apps"]},
+    {"id":"official-inbox","name":"Akiflow inbox guide","url":"https://product.akiflow.com/help/articles/5284502-your-inbox","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Import","Capture","Planning"]},
+    {"id":"official-mobile","name":"Akiflow mobile guide","url":"https://product.akiflow.com/en/help/articles/3431876-mobile-app","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Mobile planning","Capture","Notifications","Integration setup"]},
+    {"id":"official-changelog","name":"Akiflow changelog","url":"https://product.akiflow.com/changelog","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Sync fixes","Mobile fixes","Integration fixes"]},
+    {"id":"product-hunt","name":"Akiflow on Product Hunt","url":"https://www.producthunt.com/products/akiflow?launch=akiflow","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":18,"keyThemes":["Launch","Calendar","Tasks"]},
+    {"id":"g2","name":"Akiflow reviews on G2","url":"https://www.g2.com/products/akiflow/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":96,"keyThemes":["Ease","Scheduling","Integrations","Mobile"]},
+    {"id":"capterra","name":"Akiflow reviews on Capterra","url":"https://www.capterra.com/p/232035/Akiflow/reviews/","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":106,"keyThemes":["Time blocks","Support","Missing features"]},
+    {"id":"trustpilot","name":"Akiflow reviews on Trustpilot","url":"https://www.trustpilot.com/review/akiflow.com","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":215,"keyThemes":["Consolidation","Support","Bugs","Installation"]},
+    {"id":"reddit-one","name":"Akiflow review on Reddit","url":"https://www.reddit.com/r/ProductivityApps/comments/1md184r/my_unfiltered_review_of_akiflow/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":8,"keyThemes":["Bugs","Price","Maturity"]},
+    {"id":"reddit-two","name":"Akiflow planning discussion on Reddit","url":"https://www.reddit.com/r/ProductivityApps/comments/1hvestq/todoist_vs_akiflow_is_akiflow_worth_the_shift_to/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":12,"keyThemes":["Daily planning","Time blocks","Price"]}
+  ],
+  "claims": [
+    {"statement":"Akiflow launched publicly on June 3, 2021.","kind":"fact","status":"verified","sourceIds":["product-hunt"]},
+    {"statement":"Akiflow imports tasks from email, messaging, project, and task apps into one inbox, then lets the user place them on a calendar.","kind":"fact","status":"verified","sourceIds":["official-integrations","official-inbox"]},
+    {"statement":"Pro costs $34 monthly or $19 per month billed yearly after a seven-day trial.","kind":"fact","status":"verified","sourceIds":["official-pricing"]},
+    {"statement":"Combining tasks and calendars for daily time blocking is the strongest repeated benefit.","kind":"reported-pattern","status":"supported","sourceIds":["g2","capterra","trustpilot","reddit-two"]},
+    {"statement":"Keyboard speed and responsive support are common strengths, while price, mobile gaps, missing integrations, and bugs are recurring limits.","kind":"reported-pattern","status":"supported","sourceIds":["g2","capterra","trustpilot","reddit-one"]},
+    {"statement":"Recent official updates include fixes for calendar sync, Gmail settings, and Asana, ClickUp, Microsoft To Do, and Todoist connections.","kind":"fact","status":"verified","sourceIds":["official-changelog"]}
+  ],
+  "scoreRationale": {"onboarding":"The planning method is clear, but importing several task sources without noise takes care.","product":"Desktop planning and quick capture are strong. Sync bugs and a smaller mobile experience can break trust.","support":"Support is commonly praised, though it was not tested directly.","billing":"The single plan is easy to understand but expensive for a personal planner.","overall":"Akiflow is worth its price only for someone who plans work on a calendar most days and needs tasks pulled from several places."},
+  "conflictsAndUnknowns": ["Older mobile complaints may not reflect the current app.","Recent integration fixes confirm active maintenance but also show that sync problems still occur.","No hands-on import, completion, or rescheduling test was completed."]
+}

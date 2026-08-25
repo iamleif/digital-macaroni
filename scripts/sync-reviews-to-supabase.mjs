@@ -96,7 +96,7 @@ for (const file of fs.readdirSync(reviewDirectory).filter((name) => name.endsWit
     testing_disclosure: data.testingDisclosure,
     featured: Boolean(data.featured),
     published_on: isPublished ? data.date : null,
-    updated_on: data.updated,
+    updated_on: null,
     publish_at: isPublished ? `${data.date}T00:00:00Z` : null,
     overall_score: data.score,
     readability_grade: reading.grade,
@@ -181,3 +181,4 @@ for (const file of fs.readdirSync(reviewDirectory).filter((name) => name.endsWit
 }
 
 console.log(`Synced ${synced} review${synced === 1 ? "" : "s"} to Supabase.`);
+import "./lib/legacy-publisher-disabled.mjs";

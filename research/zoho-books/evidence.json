@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "zoho-books",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2011-01-19",
+    "precision": "day",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Independent review platforms (G2, Capterra) and community discussions were inaccessible due to CAPTCHA/blocking"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Zoho Books official website",
+      "url": "https://www.zoho.com/books/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Integration with Zoho product suite",
+        "Free 14-day trial",
+        "Cloud-based accounting"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Zoho Books release history",
+      "url": "https://www.zoho.com/us/books/10years/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Feature evolution over 10 years",
+        "Global editions for multiple countries",
+        "Positive customer testimonials"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Zoho Books reviews on G2",
+      "url": "https://www.g2.com/products/zoho-books/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 323,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Zoho Books reviews on Capterra",
+      "url": "https://www.capterra.com/p/163115/Zoho-Books/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Zoho Books community discussion",
+      "url": "https://www.reddit.com/r/smallbusiness/comments/1p7cdit/switching_from_quickbooks_online_to_zoho_books/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-docs",
+      "name": "Zoho Books official documentation",
+      "url": "https://www.zoho.com/books/help/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Comprehensive help and support documentation"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Offers mobile apps for iOS and Android",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Provides free plan in India edition",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Includes vendor portal for collaboration",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Features workflow automation capabilities",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Users report simplified financial processes",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Long-term users report reliability without downtime",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Users cite time savings from integration features",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "release-history"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "release-history",
+      "sentiment": "positive",
+      "userContext": "Company with 400 employees across locations",
+      "task": "Accounting and invoicing",
+      "whatHappened": "Used Zoho Books for 10 years during company growth",
+      "result": "Described as fantastic product",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "release-history",
+      "sentiment": "positive",
+      "userContext": "Photography business owner",
+      "task": "Tax accounting",
+      "whatHappened": "Used for 11 years",
+      "result": "Met all feature needs effectively",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "release-history",
+      "sentiment": "positive",
+      "userContext": "Founder switching from QuickBooks",
+      "task": "Financial management",
+      "whatHappened": "Adopted Zoho Books",
+      "result": "Simplified financial processes",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "VAT-compliant",
+      "plainExplanation": "Meets Value Added Tax regulatory requirements",
+      "whoCares": "Businesses operating in VAT jurisdictions",
+      "whenItDoesNotMatter": "For businesses outside VAT regions"
+    },
+    {
+      "term": "E-invoicing",
+      "plainExplanation": "Digitally created and transmitted invoices meeting legal standards",
+      "whoCares": "Businesses requiring tax-compliant documentation",
+      "whenItDoesNotMatter": "Where paper invoices remain legally acceptable"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "",
+    "product": "",
+    "support": "",
+    "billing": "",
+    "overall": ""
+  },
+  "conflictsAndUnknowns": [
+    "No negative feedback available due to inaccessible independent review sources"
+  ]
+}

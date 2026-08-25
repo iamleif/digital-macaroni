@@ -1,0 +1,146 @@
+{
+  "checkpointVersion": 4,
+  "slug": "akiflow",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "1e39a2a788c54ed74624ca0c1ba5f3d21ef36427add870a490385cc2b5c0b899",
+  "publicationDate": "2026-08-14",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "36058789cc83cd47950dcf875fe082c42411da81663fc0e042eb6bf996648d9b",
+  "pipelineSha256": "0ed04d92fb3c8e12be238831b0be23eb7f609a6d83edcf2c8a56f69bc421dcb0",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "5df4dbb5107b9d013d0aceab563b4041cc289c1e4cf3fc1c545a3a3f95393bab",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:14:49.538Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "abf2621a292ac7707a76d3f6bd084e4d27a1224b079a24cf1a517dbafe71949f",
+      "predecessorSha256": "5df4dbb5107b9d013d0aceab563b4041cc289c1e4cf3fc1c545a3a3f95393bab",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:14:49.540Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "ab60485e122502ec4e11dddceea3da8af72c01d0a114ed2c67daabc9040dc142",
+      "predecessorSha256": "abf2621a292ac7707a76d3f6bd084e4d27a1224b079a24cf1a517dbafe71949f",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T11:15:15.572Z"
+    },
+    "argument_card": {
+      "file": "04-argument-card.md",
+      "sha256": "92c371cfe0f76c87d939bec41be81bb4a666957067a08af0fdd596566bf1788d",
+      "predecessorSha256": "ab60485e122502ec4e11dddceea3da8af72c01d0a114ed2c67daabc9040dc142",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T11:15:28.296Z"
+    },
+    "spoken_brief": {
+      "file": "05-spoken-brief.md",
+      "sha256": "3fca78ad112039c6fe5a2d1a494fbaac8770cc57637920507707bcd2108b5f90",
+      "predecessorSha256": "92c371cfe0f76c87d939bec41be81bb4a666957067a08af0fdd596566bf1788d",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T11:15:56.746Z"
+    },
+    "raw_draft": {
+      "file": "06-raw-draft.md",
+      "sha256": "91b096f3ab2c6c4ecfe67da988defaea50f49a0f30c3960bf30dee0242fedd70",
+      "predecessorSha256": "3fca78ad112039c6fe5a2d1a494fbaac8770cc57637920507707bcd2108b5f90",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T11:18:13.001Z"
+    },
+    "copy_edit": {
+      "file": "07-copy-edit.md",
+      "sha256": "ecb89bf347417b32fa7899736c095ebe8f52d428ed36c42886289df8bc9b4ad2",
+      "predecessorSha256": "91b096f3ab2c6c4ecfe67da988defaea50f49a0f30c3960bf30dee0242fedd70",
+      "metadata": {
+        "title": "Akiflow: A Calendar-Centric Task Manager with Strong Integration and Limited Mobile Support",
+        "description": "Akiflow is a productivity tool that blends calendar-based planning with task consolidation, making it ideal for users who rely on calendar integration and multiple task sources, though its mobile experience and price may be drawbacks.",
+        "verdict": "Excellent daily planning, but too expensive for casual use.",
+        "model": "qwen3:8b",
+        "attempt": 3
+      },
+      "completedAt": "2026-08-18T11:21:55.064Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "raw_draft",
+      "attempt": 1,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T11:17:10.066Z",
+      "candidate": "attempts/001-raw_draft-attempt-1.md",
+      "candidateSha256": "cf4399834f939550ea931cded35f676b65a6e67b69572b90e6402fccaffb9147"
+    },
+    {
+      "stage": "copy_edit",
+      "attempt": 1,
+      "message": "Copy edit did not materially edit the raw draft.",
+      "createdAt": "2026-08-18T11:19:37.878Z",
+      "candidate": "attempts/002-copy_edit-attempt-1.md",
+      "candidateSha256": "5d138cb71b6c7d1d6533fa259678c142c38996b5c29d2fee8ee5008241c16594"
+    },
+    {
+      "stage": "copy_edit",
+      "attempt": 2,
+      "message": "Copy edit did not materially edit the raw draft.",
+      "createdAt": "2026-08-18T11:20:44.103Z",
+      "candidate": "attempts/003-copy_edit-attempt-2.md",
+      "candidateSha256": "c34fd3d7d489bf502042ab04c6282b06aad58eed6bbab84d06ba5b0120769bb4"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 1,
+      "message": "humanized_draft is too short (219 words).",
+      "createdAt": "2026-08-18T11:22:44.234Z",
+      "candidate": "attempts/004-humanized_draft-attempt-1.md",
+      "candidateSha256": "badf750464b2b2d80290da43851f85e98da25e4973b366c1fd46244c3e1a95bd"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 2,
+      "message": "Unterminated string in JSON at position 14110 (line 3 column 12833)",
+      "createdAt": "2026-08-18T11:25:33.900Z",
+      "candidate": "attempts/005-humanized_draft-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 3,
+      "message": "Unterminated string in JSON at position 12722 (line 3 column 11381)",
+      "createdAt": "2026-08-18T11:29:55.780Z",
+      "candidate": "attempts/006-humanized_draft-attempt-3.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 4,
+      "message": "Unterminated string in JSON at position 14424 (line 3 column 13083)",
+      "createdAt": "2026-08-18T11:37:06.308Z",
+      "candidate": "attempts/007-humanized_draft-attempt-4.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    }
+  ],
+  "createdAt": "2026-08-18T11:14:49.537Z",
+  "updatedAt": "2026-08-18T11:37:06.311Z"
+}

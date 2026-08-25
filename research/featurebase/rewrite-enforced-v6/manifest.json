@@ -1,0 +1,162 @@
+{
+  "checkpointVersion": 4,
+  "slug": "featurebase",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "e0fc93d3a4d4a64cb8040fb1f7c986ba5c69ec542af8a2a3dc728ec77979d751",
+  "publicationDate": "2026-05-26",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "0f504341d4cfc9dfc3b67ccf2e2f5838b30be1e6ece180682f021ec858315518",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "ccf30d4d37cc47843ba540fdb729727c68bb25dbdc177100bc3814024bdd427c",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.252Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "46d9e192955c66174d5c9dffc67b7aa22374d6da641aa5aa7243d0254525d6f1",
+      "predecessorSha256": "ccf30d4d37cc47843ba540fdb729727c68bb25dbdc177100bc3814024bdd427c",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.254Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "daca21dd7b8a1b996977091a3abcbedc04d2006fcc0869eaa23362f1ba9b421b",
+      "predecessorSha256": "46d9e192955c66174d5c9dffc67b7aa22374d6da641aa5aa7243d0254525d6f1",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T14:38:35.879Z"
+    },
+    "argument_card": {
+      "file": "04-argument-card.md",
+      "sha256": "caf5f91e38ff04fca493f2ffb4fd395bbadd0a8f383009c8abf768a31cc1ceee",
+      "predecessorSha256": "daca21dd7b8a1b996977091a3abcbedc04d2006fcc0869eaa23362f1ba9b421b",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T14:38:53.584Z"
+    },
+    "spoken_brief": {
+      "file": "05-spoken-brief.md",
+      "sha256": "6267fa4fbe7956016787b6abd9d9af45a291376dd2c10a3e93998b0d8351c452",
+      "predecessorSha256": "caf5f91e38ff04fca493f2ffb4fd395bbadd0a8f383009c8abf768a31cc1ceee",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T14:39:29.640Z"
+    },
+    "raw_draft": {
+      "file": "06-raw-draft.md",
+      "sha256": "6089cf1b11f267eb1799d5a734551542a7e2c62bb47249eedfd2ba9e45e9fbe6",
+      "predecessorSha256": "6267fa4fbe7956016787b6abd9d9af45a291376dd2c10a3e93998b0d8351c452",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T14:42:39.008Z"
+    },
+    "copy_edit": {
+      "file": "07-copy-edit.md",
+      "sha256": "768fb732149d6367beffc017cdaed9d506f44b0525bb0712dd494e9bedecc83a",
+      "predecessorSha256": "6089cf1b11f267eb1799d5a734551542a7e2c62bb47249eedfd2ba9e45e9fbe6",
+      "metadata": {
+        "title": "Featurebase: A Streamlined Support and Feedback Tool with AI Limitations",
+        "description": "Featurebase offers a clean, integrated platform for managing customer feedback and support, but its AI support agent has notable limitations that may affect its effectiveness for certain teams.",
+        "verdict": "Customer requests become clear decisions and useful updates.",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T14:45:52.057Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.256Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.258Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.477Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.486Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T14:38:16.039Z",
+      "candidate": "attempts/005-writer_notebook-attempt-1.md",
+      "candidateSha256": "63df74dfe95390f8cc9cdfa33353665f257fc8e884000e51bd24db11325dcce2"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 1,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T14:41:02.738Z",
+      "candidate": "attempts/006-raw_draft-attempt-1.md",
+      "candidateSha256": "a441c0b386d9671c001f2a583081f198f0584822a5bf90126351d7732057c17d"
+    },
+    {
+      "stage": "copy_edit",
+      "attempt": 1,
+      "message": "copy_edit must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T14:44:31.855Z",
+      "candidate": "attempts/007-copy_edit-attempt-1.md",
+      "candidateSha256": "0db5cdca06a594ca03691d9cf8b06e0c26e2682ecc1fcd73d33514eadff8f0fc"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 1,
+      "message": "humanized_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T14:59:56.405Z",
+      "candidate": "attempts/008-humanized_draft-attempt-1.md",
+      "candidateSha256": "91c1d72046ae5b284a3d995126c3539aafb29ba59fb0bd3e8157d75aec23e02e"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 2,
+      "message": "humanized_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T16:02:19.717Z",
+      "candidate": "attempts/009-humanized_draft-attempt-2.md",
+      "candidateSha256": "d05ca3d48387c86deacd77c620a99298ceca19c7f2949b07c524c953cf65b95d"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.251Z",
+  "updatedAt": "2026-08-18T16:02:20.074Z"
+}

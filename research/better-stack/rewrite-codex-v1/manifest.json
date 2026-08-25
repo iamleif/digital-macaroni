@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runName": "rewrite-codex-v1",
+  "slug": "better-stack",
+  "writer": "codex-assistant",
+  "status": "complete",
+  "publicationDate": "2026-07-14",
+  "evidenceSha256": "340a0ce033ab73b2fcc029f5c88e9884f71e0de2cda0c6e14258a9a0829f626e",
+  "finalBodySha256": "b41c30dc772509106be7aa704c36b9cf60064d5cc4c43a3b88401bc619e57572",
+  "artifacts": {
+    "writerNotebook": {"file":"01-writer-notebook.md","fileSha256":"efd3f95938616dc1a7a7d16410c874dac2e37cc9c5b9ca524700658b03257380"},
+    "argumentCard": {"file":"02-argument-card.md","fileSha256":"a872e6c66659872b5b93d1b4714273eb2890bc550e7772acc71ab550fed36594"},
+    "spokenReviewBrief": {"file":"03-spoken-review-brief.md","fileSha256":"9b074cb78cde146db9a21a1bbec0f310f3f2f23a2a10b96006bb6641de0d1b0b"},
+    "rawDraft": {"file":"04-raw-draft.md","fileSha256":"b1ff8494b478ed4eb604ef1d2e6bd733106a052d617570679f74c8da3f4dd5b4"},
+    "copyEditedDraft": {"file":"05-copy-edited-draft.md","fileSha256":"d29021a79282973dfbe28d44d76216134f641daad41fb06595566e4204530d36"},
+    "finalDraft": {"file":"06-final-draft.md","fileSha256":"d29021a79282973dfbe28d44d76216134f641daad41fb06595566e4204530d36"},
+    "humanizerReport": {"file":"07-humanizer-report.md","fileSha256":"c69c19f17c849a172bae569c69ef2092f7a06827d11b26dcbea03f5bda690835"},
+    "validation": {"file":"validation.json","fileSha256":"38705471693d98d5ad88288c0b1aea458427a4bdc175bf6105286ed6271a470b"}
+  },
+  "completedAt": "2026-08-25T04:52:20Z"
+}

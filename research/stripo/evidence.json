@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "stripo",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2017-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Official site provided only cookie policy details - no feature documentation",
+      "Key review platforms (Capterra/G2) inaccessible during research",
+      "Community discussions blocked by security protocols"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Stripo official website",
+      "url": "https://stripo.email",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Free email template builder",
+        "Drag-and-drop HTML editor",
+        "Cookie usage for site functionality"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Stripo release history",
+      "url": "https://stripo.email/about-us/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Cookie usage documentation",
+        "Privacy policy reference"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Stripo reviews on Capterra",
+      "url": "https://www.capterra.com/p/163981/Stripo-email/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 101,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Stripo reviews on G2",
+      "url": "https://www.g2.com/products/stripo-email/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "Stripo reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/stripo.email",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Nonprofit usage success",
+        "Template flexibility",
+        "Collaboration features",
+        "Billing dispute"
+      ]
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Stripo community discussion",
+      "url": "https://www.reddit.com/r/Emailmarketing/comments/1ay0qo6",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Stripo offers a free email template builder with drag-and-drop HTML editing",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Nonprofit organizations successfully use Stripo for professional communications",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Users report extensive template libraries enabling polished newsletter creation",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Teams value collaboration features for streamlined email production",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Automatic subscription renewals occur per terms of service",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Some users report billing disputes regarding plan upgrades",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Reusable content modules save design time",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Nonprofit organization (Canine Concierge Corporation)",
+      "task": "Creating monthly digital publication",
+      "whatHappened": "Used Stripo for newsletter design",
+      "result": "Achieved polished, visually engaging communications",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "University program",
+      "task": "Distributing campus newsletters",
+      "whatHappened": "Utilized templates for student communications",
+      "result": "Created dynamic newsletters efficiently",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Marketing agency",
+      "task": "Client email projects",
+      "whatHappened": "Implemented AMP blocks and widgets",
+      "result": "Produced interactive emails without development resources",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "Unspecified",
+      "task": "Subscription management",
+      "whatHappened": "Automatic plan upgrade with continued overcharges",
+      "result": "Partial refund after 19 months",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Drag-and-drop builder",
+      "plainExplanation": "Visual interface for assembling email components without coding",
+      "whoCares": "Marketers without technical skills",
+      "whenItDoesNotMatter": "When using pre-built templates exclusively"
+    },
+    {
+      "term": "Reusable modules",
+      "plainExplanation": "Pre-designed content blocks saved for repeated use",
+      "whoCares": "Teams maintaining brand consistency",
+      "whenItDoesNotMatter": "For one-time email campaigns"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "No data in sources",
+    "product": "Multiple reports of efficient template-based design",
+    "support": "Responsive to nonprofit needs; addressed billing dispute",
+    "billing": "Transparent renewal terms but one reported overcharge incident",
+    "overall": "Strong template functionality with isolated billing concerns"
+  },
+  "conflictsAndUnknowns": [
+    "Billing practices conflict: Vendor states automatic renewals follow terms while user reports unexpected charges",
+    "Pricing details unavailable beyond free tier mention",
+    "Feature limitations unknown beyond described capabilities"
+  ]
+}

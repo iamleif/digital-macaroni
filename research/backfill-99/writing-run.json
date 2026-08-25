@@ -1,0 +1,16 @@
+{
+  "results": [
+    {
+      "slug": "wave",
+      "status": "blocked",
+      "error": "fetch failed"
+    }
+  ],
+  "blocked": [
+    {
+      "slug": "wave",
+      "status": "blocked",
+      "error": "fetch failed"
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "moxie",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2022-06-21",
+    "precision": "day",
+    "sourceId": "launch"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on client, proposal, contract, payment, project, mobile, export, or support test was completed.",
+      "The launch date belongs to the product lineage under the Hectic FreelancerOS name, not the later Moxie brand.",
+      "Moxie asks customers for Trustpilot reviews, and the AppSumo sample comes from lifetime-deal buyers.",
+      "One six-month external review contains affiliate links."
+    ]
+  },
+  "sources": [
+    {
+      "id": "launch",
+      "name": "Hectic announces FreelancerOS",
+      "url": "https://www.withmoxie.com/blog/we-officially-announced-the-freelanceros-platform-heres-the-press-release",
+      "accessed": "2026-08-13",
+      "sourceType": "launch-history",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Product lineage",
+        "Launch"
+      ]
+    },
+    {
+      "id": "pricing",
+      "name": "Moxie pricing",
+      "url": "https://www.withmoxie.com/pricing",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Starter",
+        "Pro",
+        "Teams",
+        "Trial"
+      ]
+    },
+    {
+      "id": "trustpilot",
+      "name": "Moxie reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/withmoxie.com",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 536,
+      "keyThemes": [
+        "All in one",
+        "Support",
+        "Setup",
+        "Value",
+        "Solicited reviews"
+      ]
+    },
+    {
+      "id": "appsumo",
+      "name": "Moxie reviews on AppSumo",
+      "url": "https://appsumo.com/products/moxie/reviews/",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 83,
+      "keyThemes": [
+        "Value",
+        "Client portal",
+        "Invoicing",
+        "Lifetime-deal cohort"
+      ]
+    },
+    {
+      "id": "g2",
+      "name": "Moxie reviews on G2",
+      "url": "https://www.g2.com/products/geoff-mina-moxie/reviews",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 4,
+      "keyThemes": [
+        "Time saving",
+        "Navigation",
+        "Project management",
+        "Workflow gaps"
+      ]
+    },
+    {
+      "id": "capterra",
+      "name": "Moxie on Capterra",
+      "url": "https://www.capterra.com/p/10026264/Moxie/",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 1,
+      "keyThemes": [
+        "Clients",
+        "Projects",
+        "Contracts",
+        "Invoices"
+      ]
+    },
+    {
+      "id": "app-store",
+      "name": "Moxie iPhone ratings and reviews",
+      "url": "https://apps.apple.com/us/app/moxie-built-for-freelancers/id1554217247?platform=iphone&see-all=reviews",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-app-store",
+      "reviewCountSampled": 20,
+      "keyThemes": [
+        "Mobile",
+        "Integrated workflow",
+        "Ease"
+      ]
+    },
+    {
+      "id": "client-ready-writer",
+      "name": "Moxie review after six months of use",
+      "url": "https://clientreadywriter.com/reviews/moxie",
+      "accessed": "2026-08-13",
+      "sourceType": "affiliate-editorial-review",
+      "reviewCountSampled": 1,
+      "keyThemes": [
+        "Six-month use",
+        "Solo freelancer",
+        "Affiliate disclosure"
+      ]
+    },
+    {
+      "id": "reddit-freelance",
+      "name": "Freelance client management discussion on Reddit",
+      "url": "https://www.reddit.com/r/graphic_design/comments/1o3foez/need_recommendation_for_freelance_client/",
+      "accessed": "2026-08-14",
+      "sourceType": "community",
+      "reviewCountSampled": 4,
+      "keyThemes": [
+        "Client portal",
+        "Contracts",
+        "Freelance workflow"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "The product lineage launched as Hectic FreelancerOS on June 21, 2022, before adopting the Moxie name.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "launch"
+      ]
+    },
+    {
+      "statement": "Moxie combines client records, sales leads, proposals, contracts, invoices, payment tools, time tracking, scheduling, calendars, forms, projects, and basic accounting.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing",
+        "capterra"
+      ]
+    },
+    {
+      "statement": "Starter costs $12 monthly or $10 per month billed yearly. Pro costs $25 monthly or $20 per month billed yearly. Teams costs $40 monthly or $385 yearly and includes up to five team members.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "Moxie offers a 14-day trial. Pro adds a white-labeled client portal, workflow automation, phone line, API connections, QuickBooks, and unlimited project collaborators.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "Replacing several separate freelancer tools with one client-to-invoice workflow is the strongest positive theme.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "trustpilot",
+        "appsumo",
+        "g2",
+        "app-store",
+        "client-ready-writer"
+      ]
+    },
+    {
+      "statement": "Freelancers commonly describe the basic workflow as intuitive and time-saving, with frequent praise for support and product updates.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "trustpilot",
+        "appsumo",
+        "g2",
+        "app-store"
+      ]
+    },
+    {
+      "statement": "Project planning is lighter than a dedicated project tool, while navigation, mobile polish, advanced sales tracking, packages, and automation have narrower complaints.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "g2",
+        "appsumo",
+        "app-store",
+        "client-ready-writer"
+      ]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "The broad workflow can remove setup across several apps, but templates, payment rules, contracts, taxes, and client access need a full dry run.",
+    "product": "Strong for a solo service business moving a client from inquiry to invoice; lighter for complex project and agency planning.",
+    "support": "Support receives repeated praise, though Digital Macaroni did not test a deadline-sensitive request.",
+    "billing": "Starter is inexpensive for the breadth. Pro is likely the practical plan when the client portal, automation, API, or collaborators matter.",
+    "overall": "Moxie is worth testing when it can replace several small tools. Run one client through the entire job and count every spreadsheet, manual copy, and outside app that remains."
+  },
+  "conflictsAndUnknowns": [
+    "The strongest ratings come from a solicited Trustpilot sample and discounted lifetime-deal buyers.",
+    "Broad feature coverage is the main strength and also the reason some areas are lighter than dedicated tools.",
+    "A solo workflow can be simple while team capacity and project dependencies still fall short.",
+    "No hands-on client, contract, payment, mobile, export, cancellation, or support test was completed."
+  ]
+}

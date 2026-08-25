@@ -23,6 +23,7 @@ const validQueueStatuses = new Set(["queued", "researching", "draft", "ready", "
 const errors = [];
 const warnings = [];
 const reviews = [];
+const publicationDates = new Map();
 
 const taxonomySource = fs.readFileSync(taxonomyPath, "utf8");
 const taxonomyMatch = taxonomySource.match(/REVIEW_CATEGORIES\s*=\s*\[([\s\S]*?)\]\s*as const/);
@@ -95,6 +96,12 @@ function similarity(left, right) {
   return overlap / (left.size + right.size - overlap);
 }
 
+function aggregationVoiceMatches(body) {
+  const prose = body.replace(/^## What using it is likely to feel like$/m, "## Experience");
+  const pattern = /(?:^|[.!?]\s+)(?:other\s+|some\s+|many\s+|most\s+|a few\s+)?(?:reviews?|reviewers?|the evidence|evidence from|users?|customers?|sources?|reports?|complaints?|feedback)\b[^.!?\n]{0,48}\b(?:shows?|show|says?|say|finds?|found|praises?|praise|describes?|describe|reports?|report|suggests?|suggest|indicates?|indicate|points?|point|comes?|come|is|are|was|were|has|have)\b/gi;
+  return prose.match(pattern) || [];
+}
+
 let queue = [];
 try {
   queue = JSON.parse(fs.readFileSync(queuePath, "utf8"));
@@ -130,17 +137,26 @@ for (const file of reviewFiles) {
   if (!validStatuses.has(data.status)) issue(errors, slug, `status must be draft or published`);
   if (!validReviewTypes.has(data.reviewType)) issue(errors, slug, `reviewType must be hands-on, research-based, or legacy-editorial`);
   if (!validReviewCategories.has(data.category)) issue(errors, slug, `category must use the shared review taxonomy`);
+  const verdictWords = words(data.verdict ?? "").length;
+  if (verdictWords < 8 || verdictWords > 9) issue(errors, slug, `verdict headline must be 8 or 9 words (found ${verdictWords})`);
   const cardVerdictWords = words(data.cardVerdict ?? "").length;
-  if (cardVerdictWords > 9) issue(errors, slug, `cardVerdict must be 9 words or fewer (found ${cardVerdictWords})`);
+  if (cardVerdictWords < 8 || cardVerdictWords > 9) issue(errors, slug, `cardVerdict must be 8 or 9 words (found ${cardVerdictWords})`);
   if ((data.cardVerdict ?? "").length > 64) issue(errors, slug, "cardVerdict must be 64 characters or fewer");
   if (!isUrl(data.productUrl)) issue(errors, slug, "needs a valid productUrl");
   if (!validSchemaCategories.has(data.schemaCategory)) {
     issue(errors, slug, "schemaCategory must use a Google-supported SoftwareApplication category");
   }
   if (!isDate(data.date)) issue(errors, slug, "date must use YYYY-MM-DD");
-  if (!isDate(data.updated)) issue(errors, slug, "updated must use YYYY-MM-DD");
-  if (isDate(data.date) && isDate(data.updated) && data.updated < data.date) issue(errors, slug, "updated cannot be earlier than date");
+  if (Object.hasOwn(data, "updated")) issue(errors, slug, "updated must be removed; reviews expose only their original publication date");
+  if (data.status === "published" && isDate(data.date)) {
+    const weekday = new Date(`${data.date}T12:00:00Z`).getUTCDay();
+    if (![2, 5].includes(weekday)) issue(errors, slug, "published date must fall on Tuesday or Friday");
+    const existingSlug = publicationDates.get(data.date);
+    if (existingSlug) issue(errors, slug, `published date is already used by ${existingSlug}`);
+    else publicationDates.set(data.date, slug);
+  }
   if (data.publishAt && Number.isNaN(Date.parse(data.publishAt))) issue(errors, slug, "publishAt must be a valid ISO date/time");
+  if (data.publishAt && isDate(data.date) && data.publishAt.slice(0, 10) !== data.date) issue(errors, slug, "publishAt must use the publication date");
   if (typeof data.score !== "number" || data.score < 0 || data.score > 10) issue(errors, slug, "overall score must be between 0 and 10");
 
   for (const scoreName of requiredScores) {
@@ -255,6 +271,15 @@ for (const file of reviewFiles) {
     issue(errors, slug, "em dashes and en dashes are not allowed in published review copy or metadata");
   }
   const reading = readability(parsed.content);
+  if (data.reviewType === "research-based" && !data.legacyResearch) {
+    const aggregationCount = aggregationVoiceMatches(parsed.content).length;
+    if (aggregationCount > 2) {
+      issue(errors, slug, `reads like source aggregation (${aggregationCount} aggregation-led sentences; maximum is 2)`);
+    }
+    if (!/\b(?:recommend|skip|our verdict)\b/i.test(parsed.content)) {
+      issue(errors, slug, "needs an owned editorial recommendation in the article body");
+    }
+  }
   if (wordCount < 450) issue(warnings, slug, `article body is only ${wordCount} words`);
   const readabilityIssues = [];
   if (reading.grade > 7.5) readabilityIssues.push(`reading level is grade ${reading.grade.toFixed(1)}; target grade 6 and maximum grade 7.5`);

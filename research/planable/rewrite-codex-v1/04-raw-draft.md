@@ -1,0 +1,65 @@
+Planable puts a social post, its preview, comments, approval, and publish date in one workspace. That is a strong answer to a common agency mess. The writer sends a document, the client marks a screenshot, and someone approves an old version in chat.
+
+The product is built around that review route. It also schedules posts and offers analytics and an inbox as extras. Those wider tools are useful, though they are not as deep as a broad social suite.
+
+I recommend Planable for agencies and marketing teams that lose time chasing client approval. It earns the fee only when feedback leaves email and chat. Solo publishers and teams led by social listening should skip it.
+
+## The approval route is the product
+
+A workspace normally holds one client, brand, or location. It contains connected pages, a calendar, drafts, campaigns, people, and approval rules. Writers can prepare versions for several networks and show clients a close preview of each post.
+
+Basic allows optional approval. Pro can require approval before a post goes live. Enterprise adds several approval stages for teams that need a writer, manager, client, or legal reviewer to act in order.
+
+Feed, calendar, grid, and list views give each person a useful angle. A client can inspect an Instagram grid. A publisher can see next week's slots. An account manager can find every post waiting for a decision.
+
+Large review samples repeatedly praise the clear previews, central comments, calendar, and easy client access. That evidence makes Planable's core job credible. It does not prove that your clients will stop replying in chat.
+
+## Give the trial to your hardest client
+
+Invite the least technical person who approves content. Give them a real week with text, images, video, links, tags, and every network that matters. Ask them to reject one draft, change another, and approve a third.
+
+Now edit the approved post. The new version should clearly need a fresh decision. Test a private note about price or legal risk, then invite someone with the wrong role. Check what each person can see and publish.
+
+At the end, ask which posts need attention and which version will go live. Count every correction sent through email, chat, screenshots, or documents. The count should fall close to zero. Planable cannot centralize feedback the team keeps accepting elsewhere.
+
+## A preview is still a promise
+
+Social networks control their own publishing rules. Formats, tags, music, collaboration options, and account types can change. Some posts may need a last step in the native app.
+
+Publish a test for each format the client buys. Compare the live text, crop, video cover, tags, link, first comment, thumbnail, and time with the approved preview. Keep a checklist for any manual work.
+
+Disconnect one account during the trial. Password changes and expired tokens happen in real work. Planable should warn the right person before the slot passes. Reconnect it and check every queued post.
+
+Reviews mention connection trouble and channel limits inside an otherwise positive picture. Test the actual formats instead of trusting a row of channel logos.
+
+## The wider social tools are lighter
+
+Planable offers analytics and a social inbox as paid extras. The inbox gathers comments and direct messages. Analytics covers page and post results, audience data, reports, and suggested times.
+
+That may be enough for a team focused on publishing and normal replies. It is a weaker fit for broad social listening, high-volume support, or advanced reporting. Listening tools can find public mentions without a direct tag. Larger inbox products offer deeper routing and service controls.
+
+Route a busy day of real messages through the inbox. Build the monthly report already promised to the client. If another service is still needed, include both products in the cost.
+
+## Workspace pricing changes the agency math
+
+When our evidence was collected, the first 50 posts were free without a card or time limit. Basic cost $33 per workspace each month. It included 60 posts, four social pages, unlimited users, and optional approvals.
+
+Pro cost $49 per workspace. It included 150 posts, ten pages, required approval, grid view, an API, and more version history. Analytics cost another $14 monthly, while the inbox cost $9. Annual prices shown on the page were lower.
+
+A workspace is usually one client, brand, or location. Unlimited users help because client reviewers do not add seat charges. Five Pro clients still mean five subscriptions, or $245 each month before add-ons and tax.
+
+List every client and the plan each one needs. Add analytics, inbox, extra pages, and likely post volume. Decide whether the agency absorbs the cost or passes it through. Check current prices before buying.
+
+## The evidence is broad but not complete
+
+Our evidence included 1,033 G2 reviews and 350 Capterra reviews. Ease, previews, and approval appear often enough to carry weight. Cost, plan limits, publishing trouble, and limited suite depth also repeat.
+
+G2 and Capterra share ownership, so they are not two fully separate markets. TrustRadius and community threads add smaller outside samples. We did not create a workspace, publish a post, or contact support.
+
+## Who gets enough value from Planable?
+
+Planable is a strong choice for an agency whose main problem is client review. It fits work where several people must see the same post and record a clear decision before publishing.
+
+Run one live campaign with the hardest approver. Change an approved post, test private notes, publish every needed format, and disconnect an account. Build the real report and use the inbox on a busy day.
+
+Then count every comment that escaped the workspace. Price every client and add-on. Keep Planable when outside feedback disappears and the live post matches the version the client approved. If screenshots still win, the workflow has not changed.

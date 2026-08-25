@@ -1,0 +1,154 @@
+{
+  "checkpointVersion": 4,
+  "slug": "encharge",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "c4b193f50408ea11f832e620c9e1e846e7c6b21b5be5e511b20d7d5c941d2646",
+  "publicationDate": "2026-06-05",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "7be2eb6f58bef444ad41ace43b77ab1ba7a83dc6a0af55ac82c31b430fe896f9",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "b534b122aa4d93bae51192c06299dc5370db8ddbb4a8ec7fce3329c262678fd0",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.235Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "7b1eae635e42c2ef894f8873ebe34173e8956c14dfcd78547d69518806d9be88",
+      "predecessorSha256": "b534b122aa4d93bae51192c06299dc5370db8ddbb4a8ec7fce3329c262678fd0",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.237Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "72816df84181424f6eb450fa190e705d64f00f645b1eec53ae6d85487bdb6fdd",
+      "predecessorSha256": "7b1eae635e42c2ef894f8873ebe34173e8956c14dfcd78547d69518806d9be88",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T14:20:32.133Z"
+    },
+    "argument_card": {
+      "file": "04-argument-card.md",
+      "sha256": "92bde04e3abe24b04bf8a14057f12e780efcefcae64bc004df07b09711f2e8dd",
+      "predecessorSha256": "72816df84181424f6eb450fa190e705d64f00f645b1eec53ae6d85487bdb6fdd",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T14:20:59.889Z"
+    },
+    "spoken_brief": {
+      "file": "05-spoken-brief.md",
+      "sha256": "d64a0047f868b9160e4006f4b1752fabf3ac476919db51448af7f0a2547786c1",
+      "predecessorSha256": "92bde04e3abe24b04bf8a14057f12e780efcefcae64bc004df07b09711f2e8dd",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T14:22:00.839Z"
+    },
+    "raw_draft": {
+      "file": "06-raw-draft.md",
+      "sha256": "ecf842a001d1683f39c9c996133229a3f32b6d16cb68ddcfcae41acba3b3b03b",
+      "predecessorSha256": "d64a0047f868b9160e4006f4b1752fabf3ac476919db51448af7f0a2547786c1",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T14:26:36.208Z"
+    },
+    "copy_edit": {
+      "file": "07-copy-edit.md",
+      "sha256": "8d3f428631c5f169ffcb1e4c47b3265bccf9580317f73ddf48b6677efbc69f6e",
+      "predecessorSha256": "ecf842a001d1683f39c9c996133229a3f32b6d16cb68ddcfcae41acba3b3b03b",
+      "metadata": {
+        "title": "Encharge: A Powerful Email Automation Tool for Event-Driven Campaigns",
+        "description": "Encharge is best suited for businesses that need to send event-triggered emails, offering a strong visual flow builder and integrations, but its high cost and limited templates make it less ideal for simpler use cases.",
+        "verdict": "Clear email automation that depends on clean customer data.",
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T14:29:25.195Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.238Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.240Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.434Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:05.441Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T14:20:06.359Z",
+      "candidate": "attempts/005-writer_notebook-attempt-1.md",
+      "candidateSha256": "4429636458c1621e4b4193483d7490fdf84f76bc7183f39bb3094a093b681ef8"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 1,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T14:24:23.595Z",
+      "candidate": "attempts/006-raw_draft-attempt-1.md",
+      "candidateSha256": "5aa03249cce8944d19816848d0689cb532f9d673146dc4cb567db7ecbf931cf2"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 1,
+      "message": "humanized_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T14:32:23.154Z",
+      "candidate": "attempts/007-humanized_draft-attempt-1.md",
+      "candidateSha256": "2cecc328b73ae7a141c119d2c581aaf009c0a714ca79fc3f9b97f616ca1fb319"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 2,
+      "message": "{\n  \"checks\": {\n    \"structure\": true,\n    \"source_integrity\": true,\n    \"stance\": false,\n    \"buyer_guidance\": true,\n    \"humanizer\": false,\n    \"similarity\": true,\n    \"readability\": false,\n    \"disclosure\": true\n  },\n  \"metrics\": {\n    \"grade\": 11.8,\n    \"averageSentenceWords\": 22.4,\n    \"wordCount\": 828,\n    \"h2Count\": 3,\n    \"sourceCount\": 8,\n    \"maximumSimilarity\": 0.0007,\n    \"mostSimilarSlug\": \"wave\",\n    \"humanizerAudit\": {\n      \"passed\": false,\n      \"sha256\": \"e36c2ad4cef2db2e063f404b1eb2de987e2d4efaac9e3d48169041f95dd178da\",\n      \"metrics\": {\n        \"words\": 799,\n        \"paragraphs\": 9,\n        \"articleWordRate\": 0.0663,\n        \"negativeParallelisms\": 1\n      },\n      \"failures\": [\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 1,\n          \"message\": \"Paragraph 1 contains 4 contrast markers and reads mechanically balanced.\"\n        }\n      ],\n      \"warnings\": []\n    },\n    \"stockHeadingCount\": 0,\n    \"aggregationCount\": 0\n  },\n  \"oldBodySimilarity\": 0.0011883541295306002\n}",
+      "createdAt": "2026-08-18T14:34:42.031Z",
+      "candidate": "attempts/008-humanized_draft-attempt-2.md",
+      "candidateSha256": "1cc5a035194e6bb3cd50cb33e15846d0fab0ab86bfd2494261f4d313f21e11a3"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.234Z",
+  "updatedAt": "2026-08-18T14:34:42.034Z"
+}

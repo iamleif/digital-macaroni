@@ -1,0 +1,223 @@
+{
+  "findings": [
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "finding_type": "fact",
+      "id": 35,
+      "prevalence": "common",
+      "product_id": 99,
+      "source_ids": [],
+      "summary": "Screen Studio launched on November 9, 2022. The date is private and used only as a publication guardrail.",
+      "updated_at": "2026-08-13T16:36:15.512614+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "finding_type": "praise",
+      "id": 36,
+      "prevalence": "common",
+      "product_id": 99,
+      "source_ids": [],
+      "summary": "Users repeatedly say Screen Studio makes a screen recording look polished quickly through automatic zoom, cursor effects and simple editing.",
+      "updated_at": "2026-08-13T16:36:15.512614+00:00"
+    },
+    {
+      "confidence": 0.86,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "finding_type": "praise",
+      "id": 37,
+      "prevalence": "common",
+      "product_id": 99,
+      "source_ids": [],
+      "summary": "The workflow appears especially useful for product demos, tutorials and short software walkthroughs.",
+      "updated_at": "2026-08-13T16:36:15.512614+00:00"
+    },
+    {
+      "confidence": 0.79,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "finding_type": "complaint",
+      "id": 38,
+      "prevalence": "mixed",
+      "product_id": 99,
+      "source_ids": [],
+      "summary": "Users and independent coverage point to Mac-only availability, price, large files or uploads, and limits in audio, annotation and trimming tools.",
+      "updated_at": "2026-08-13T16:36:15.512614+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "finding_type": "unknown",
+      "id": 39,
+      "prevalence": "common",
+      "product_id": 99,
+      "source_ids": [],
+      "summary": "No hands-on test was performed. The visible G2 sample was limited, so Product Hunt and community feedback should not be treated as a substitute for direct testing.",
+      "updated_at": "2026-08-13T16:36:15.512614+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": "2026-08-13T16:36:15.512614+00:00",
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "release_date_private": true,
+      "research_only": true,
+      "sampled_user_voices": 185,
+      "source_count": 6
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 96,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 99,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T16:36:15.512614+00:00"
+  },
+  "product": {
+    "category": "Video & audio",
+    "id": 99,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Screen Studio",
+    "short_description": "Independent screen recorder with a clear design-led promise.",
+    "slug": "screen-studio",
+    "target_publish_date": null,
+    "website_url": "https://screen.studio"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T16:36:15.512614+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "excerpt": null,
+      "id": 137,
+      "metadata": {
+        "evidence_role": "release-date-and-user-feedback",
+        "launch_date": "2022-11-09",
+        "sampled_user_voices": 178
+      },
+      "platform": "Product Hunt",
+      "product_id": 99,
+      "published_at": null,
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Original launch is dated November 9, 2022. Product Hunt reports 178 reviews with recurring praise for polished recordings, auto zoom and built-in editing; complaints include Mac-only availability, price, large files and missing editing controls.",
+      "title": "Screen Studio Product Hunt record",
+      "url": "https://www.producthunt.com/products/screen-studio?embed=true&launch=screen-studio-3-0"
+    },
+    {
+      "accessed_at": "2026-08-13T16:36:15.512614+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "excerpt": null,
+      "id": 138,
+      "metadata": {
+        "evidence_role": "product-scope"
+      },
+      "platform": "Screen Studio",
+      "product_id": 99,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official scope: a macOS screen recording app focused on automatically polished recording output.",
+      "title": "Screen Studio official website",
+      "url": "https://screen.studio/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:36:15.512614+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "excerpt": null,
+      "id": 139,
+      "metadata": {
+        "evidence_role": "independent-review-platform",
+        "sample_size_note": "limited-visible-sample",
+        "sampled_user_voices": 3
+      },
+      "platform": "G2",
+      "product_id": 99,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "G2 describes Screen Studio as reducing the work needed to produce polished recordings, especially for creators and software teams.",
+      "title": "Screen Studio reviews on G2",
+      "url": "https://www.g2.com/products/screen-studio/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T16:36:15.512614+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "excerpt": null,
+      "id": 140,
+      "metadata": {
+        "evidence_role": "community-perspective",
+        "sampled_user_voices": 2
+      },
+      "platform": "Reddit",
+      "product_id": 99,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "Independent discussion presents Screen Studio as polished but Mac-only and expensive for some buyers.",
+      "title": "Reddit discussion of a Screen Studio alternative",
+      "url": "https://www.reddit.com/r/SideProject/comments/1q3lb4u/launched_on_product_hunt_but_kind_of_nervous/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:36:15.512614+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "excerpt": null,
+      "id": 141,
+      "metadata": {
+        "evidence_role": "editorial-context"
+      },
+      "platform": "Doolpa",
+      "product_id": 99,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Independent editorial review identifies automatic zoom, cursor effects and smooth output as strengths, with recurring limits around annotation, trimming and subscription pricing.",
+      "title": "Screen Studio editorial review",
+      "url": "https://doolpa.com/article/screen-studio"
+    },
+    {
+      "accessed_at": "2026-08-13T16:36:15.512614+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:36:15.512614+00:00",
+      "excerpt": null,
+      "id": 142,
+      "metadata": {
+        "evidence_role": "editorial-and-user-feedback",
+        "sampled_user_voices": 2
+      },
+      "platform": "Hunted Space",
+      "product_id": 99,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Third-party launch overview preserves user comments that praise polished output and asks for capabilities such as recording pause controls.",
+      "title": "Screen Studio 3.0 Product Hunt launch overview",
+      "url": "https://www.hunted.space/product/screen-studio/launches/screen-studio-3-0"
+    }
+  ]
+}

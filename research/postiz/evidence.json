@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "postiz",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2024-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Independent review platforms (G2/Product Hunt) inaccessible due to CAPTCHA requirements",
+      "No verifiable customer success metrics beyond official testimonials",
+      "Pricing details absent from available sources",
+      "Limited community feedback (single discussion thread)"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Postiz official website",
+      "url": "https://postiz.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Supports scheduling to 30+ social networks",
+        "Offers AI content generation via multiple agents",
+        "Includes visual calendar for post management",
+        "Provides automation tools (auto-post/like/comment)",
+        "Offers 7-day free trial"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Postiz release history",
+      "url": "https://www.producthunt.com/products/postiz",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "Postiz reviews on G2",
+      "url": "https://www.g2.com/products/postiz/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 48,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Postiz reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/postiz/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 10,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Postiz community discussion",
+      "url": "https://forum.cloudron.io/topic/14925/is-postiz-ready-for-primetime/3",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Self-hosting requires significant resources",
+        "OIDC authentication limitations",
+        "Workspace management challenges",
+        "Multi-domain deployment inefficiencies"
+      ]
+    },
+    {
+      "id": "official-docs",
+      "name": "Postiz official documentation",
+      "url": "https://docs.postiz.com/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Manages 34 social platforms",
+        "Supports CLI/MCP for terminal/AI integration",
+        "Provides public API/SDK for custom integrations",
+        "Documentation split for cloud/self-hosted users"
+      ]
+    },
+    {
+      "id": "official-extra-audit",
+      "name": "Postiz additional official source",
+      "url": "https://github.com/gitroomhq/postiz-app",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Open-source AGPL-3.0 licensed",
+        "Integrates with automation tools (n8n/Make/Zapier)",
+        "Offers NodeJS SDK and CLI agent",
+        "Includes team collaboration features"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Supports scheduling to 30+ social media platforms",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Provides AI content generation via multiple agents (Claude/ChatGPT/OpenClaw)",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-extra-audit"
+      ]
+    },
+    {
+      "statement": "Self-hosted deployment requires significant resources (4GB disk + 1GB RAM per instance)",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "community-seed-1"
+      ]
+    },
+    {
+      "statement": "Offers public API and SDK for custom integrations",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-docs",
+        "official-extra-audit"
+      ]
+    },
+    {
+      "statement": "OIDC authentication creates workspace management limitations",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "community-seed-1"
+      ]
+    },
+    {
+      "statement": "Includes automation features (auto-actions based on milestones)",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Multi-domain deployment is resource-intensive and administratively challenging",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "community-seed-1"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "community-seed-1",
+      "sentiment": "negative",
+      "userContext": "Cloudron user managing multiple domains",
+      "task": "Self-hosting implementation",
+      "whatHappened": "Configured Postiz with OIDC authentication but discovered inability to invite users when registration disabled",
+      "result": "Marginal utility for multi-domain environments",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "community-seed-1",
+      "sentiment": "negative",
+      "userContext": "Self-hosting administrator",
+      "task": "Resource allocation",
+      "whatHappened": "Required separate PostgreSQL database for Temporal service in latest release",
+      "result": "Increased complexity for self-hosted deployment",
+      "vendorResponse": "unknown",
+      "confidence": "medium"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "OIDC",
+      "plainExplanation": "Authentication standard allowing single sign-on",
+      "whoCares": "System administrators managing team access",
+      "whenItDoesNotMatter": "When using individual accounts without team collaboration"
+    },
+    {
+      "term": "Agentic scheduling",
+      "plainExplanation": "AI-driven content creation and posting automation",
+      "whoCares": "Content creators seeking automated workflows",
+      "whenItDoesNotMatter": "For manual post-by-post scheduling"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Insufficient data",
+    "product": "Insufficient data",
+    "support": "Insufficient data",
+    "billing": "Insufficient data",
+    "overall": "Insufficient data"
+  },
+  "conflictsAndUnknowns": [
+    "Official claims of ease-of-use conflict with community reports of complex self-hosting",
+    "Actual user satisfaction metrics unknown due to inaccessible review platforms",
+    "Resource requirements for cloud vs self-hosted deployments undocumented"
+  ]
+}

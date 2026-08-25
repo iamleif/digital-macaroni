@@ -4,7 +4,7 @@
   "legacy": false,
   "reviewType": "research-based",
   "researchStarted": "2026-08-13",
-  "researchUpdated": "2026-08-13",
+  "researchUpdated": "2026-08-14",
   "releaseDate": {
     "date": "2024-09-30",
     "precision": "day",
@@ -45,6 +45,33 @@
       "sourceType": "official",
       "reviewCountSampled": null,
       "keyThemes": ["System-wide dictation", "Automatic editing", "Context-aware formatting", "Multilingual use"]
+    },
+    {
+      "id": "official-pricing",
+      "name": "Wispr Flow pricing",
+      "url": "https://wisprflow.ai/pricing",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Free word limits", "Pro price", "Enterprise controls", "Platform availability"]
+    },
+    {
+      "id": "official-privacy-controls",
+      "name": "Wispr Flow privacy and cloud sync controls",
+      "url": "https://docs.wisprflow.ai/articles/4709791908-understanding-privacy-mode-and-cloud-sync",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Privacy Mode", "Private Cloud Sync", "Cloud processing", "Server storage"]
+    },
+    {
+      "id": "official-context-awareness",
+      "name": "Wispr Flow Context Awareness documentation",
+      "url": "https://docs.wisprflow.ai/articles/4678293671-feature-context-awareness",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": ["Text near the cursor", "Screen OCR", "Screenshots", "Sensitive work"]
     },
     {
       "id": "g2",
@@ -97,6 +124,24 @@
       "sourceIds": ["official-website"]
     },
     {
+      "statement": "Wispr Flow Pro costs $12 per user each month. The free plan allows 2,000 words per week on desktop, 1,000 on iPhone, and unlimited dictation on Android.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["official-pricing"]
+    },
+    {
+      "statement": "Wispr Flow always processes dictation in the cloud. Privacy Mode controls model training, while Private Cloud Sync separately controls whether transcription data is stored on Wispr's servers.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["official-privacy-controls"]
+    },
+    {
+      "statement": "Context Awareness can read nearby text and app information. Its screen OCR option is off by default and only captures a screenshot when both context controls are enabled.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": ["official-context-awareness"]
+    },
+    {
       "statement": "Fast writing, strong dictation accuracy, useful cleanup, and cross-app use are repeated positive themes.",
       "kind": "reported-pattern",
       "status": "supported",
@@ -125,7 +170,7 @@
     "onboarding": "The hold-to-speak pattern and cross-app behavior are easy to understand, but setup, permissions, and platform differences add friction.",
     "product": "Users repeatedly praise speed, accuracy, and cleanup. Uneven experiences outside the Mac version keep the product score below the top tier.",
     "support": "Digital Macaroni contacted support four times over one month. Help came only after the fourth contact, after a template response repeated an already answered question, and the final follow-up was left unread.",
-    "billing": "The free tier creates a trial path, but the value depends on reliability, platform fit, resource use, and the limits of the free allowance.",
+    "billing": "The free tier creates a useful trial path. Pro is $12 per user each month, and its value depends on whether unlimited dictation replaces enough typing to become a daily habit.",
     "overall": "The four component scores average 7.55, rounded to 7.6. Strong speed and product feedback are offset by a 5.5 support experience, platform differences, and privacy concerns."
   },
   "conflictsAndUnknowns": [

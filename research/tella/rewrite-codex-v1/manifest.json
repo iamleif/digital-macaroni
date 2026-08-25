@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runName": "rewrite-codex-v1",
+  "slug": "tella",
+  "writer": "codex-assistant",
+  "status": "complete",
+  "publicationDate": "2026-05-01",
+  "evidenceSha256": "97067e8a8b8febeb71ad7c906a35cbe9d064ab1ae3b73dbcd04af22588f59bdd",
+  "finalBodySha256": "f72cb3b0b2cb0b3b1240639f98aed8b7c38a925009b5e5b3fb9d9a03c54fcc2a",
+  "artifacts": {
+    "01-writer-notebook.md": "6f0fcd8aa3f561ac8e4330a1c28e6fb8c3e759b1663a9a130107e5fc9a2b7a75",
+    "02-argument-card.md": "945d93ce1b0aa6eca1b9a3130e7d6907599da28c4975dcd3d2d49426f48243ab",
+    "03-spoken-review-brief.md": "cacdd9190c75b3852ce5691c0d7e605e758df252aeb7913e699e88a7c214dc74",
+    "04-raw-draft.md": "4e10f0045031230cd6b86d0e42408cb5e8e2ba3920fd43857d7baf76830b1f6a",
+    "05-copy-edited-draft.md": "430f305f32b60bf17c3f214ce9ef80cbbddc7d0e08b03ee275b35f26d6d8b0e9",
+    "06-final-draft.md": "f72cb3b0b2cb0b3b1240639f98aed8b7c38a925009b5e5b3fb9d9a03c54fcc2a",
+    "07-humanizer-report.md": "fc3839dee6847d201423da47d2daaec1eb76c917c0d9c1a74248a391fe718159",
+    "validation.json": "fe55dd687b1a51be1182d1bf4a3bbd4e0c4c400cfbfd2b508cadb595baf7a7aa"
+  },
+  "completedAt": "2026-08-25T07:23:46.208Z"
+}

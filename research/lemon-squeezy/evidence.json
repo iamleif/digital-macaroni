@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "lemon-squeezy",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2021-07-26",
+    "precision": "day",
+    "sourceId": "launch"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on store approval, checkout, subscription, tax, license, refund, chargeback, payout, or support test was completed.",
+      "This is not tax, legal, or financial advice; merchant-of-record duties and seller duties should be reviewed professionally.",
+      "Product Hunt favors makers and launch supporters, while Trustpilot and support-seeking Reddit threads favor unresolved incidents.",
+      "The future relationship with Stripe Managed Payments is not clear enough to predict product or migration terms."
+    ]
+  },
+  "sources": [
+    {
+      "id": "launch",
+      "name": "Lemon Squeezy public launch",
+      "url": "https://www.lemonsqueezy.com/blog/public-launch",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Launch",
+        "Scope"
+      ]
+    },
+    {
+      "id": "pricing",
+      "name": "Lemon Squeezy pricing",
+      "url": "https://www.lemonsqueezy.com/pricing",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Base fee",
+        "Merchant of record",
+        "Features"
+      ]
+    },
+    {
+      "id": "fees",
+      "name": "Lemon Squeezy fee documentation",
+      "url": "https://docs.lemonsqueezy.com/help/getting-started/fees",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "International",
+        "PayPal",
+        "Subscription",
+        "Payout",
+        "Marketing"
+      ]
+    },
+    {
+      "id": "payouts",
+      "name": "Lemon Squeezy payout documentation",
+      "url": "https://docs.lemonsqueezy.com/help/getting-started/getting-paid",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Schedule",
+        "Hold",
+        "Threshold",
+        "Currency"
+      ]
+    },
+    {
+      "id": "product-hunt",
+      "name": "Lemon Squeezy reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/lemon-squeezy/reviews",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 75,
+      "keyThemes": [
+        "Tax",
+        "Setup",
+        "Subscriptions",
+        "Licenses",
+        "Support"
+      ]
+    },
+    {
+      "id": "trustpilot",
+      "name": "Lemon Squeezy reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/lemonsqueezy.com",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 20,
+      "keyThemes": [
+        "Support",
+        "Approval",
+        "Access",
+        "Accounts"
+      ]
+    },
+    {
+      "id": "reddit-positive",
+      "name": "Lemon Squeezy payment discussion",
+      "url": "https://www.reddit.com/r/SaaS/comments/1ejj6xe/your_experience_with_lemon_squeezy_as_payment/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 7,
+      "keyThemes": [
+        "Non-US sellers",
+        "Payouts"
+      ]
+    },
+    {
+      "id": "reddit-approval",
+      "name": "Lemon Squeezy approval complaint",
+      "url": "https://www.reddit.com/r/SaaS/comments/1mkuc2x/avoid_lemon_squeezy_at_all_costs_their_review/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 5,
+      "keyThemes": [
+        "Approval",
+        "Appeal",
+        "Support"
+      ]
+    },
+    {
+      "id": "reddit-payout",
+      "name": "Lemon Squeezy payout delay discussion",
+      "url": "https://www.reddit.com/r/SaaS/comments/1ttwbkn/my_first_payout_lemonsqueezy_date_keeps_getting/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 6,
+      "keyThemes": [
+        "Moved dates",
+        "Partial release",
+        "Support"
+      ]
+    },
+    {
+      "id": "stripe-update",
+      "name": "Stripe and Lemon Squeezy update",
+      "url": "https://www.lemonsqueezy.com/blog/stripe-lemon-squeezy-update-2025",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Ownership",
+        "Managed Payments"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Lemon Squeezy publicly launched on July 26, 2021 after a private beta.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "launch"
+      ]
+    },
+    {
+      "statement": "Lemon Squeezy acts as merchant of record for digital products and software, combining checkout, subscriptions, licensing, tax collection and filing, fraud handling, and billing support.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "The base fee is 5% plus $0.50 on the total order. Additions include 1.5% for payments outside the US, 1.5% for PayPal, and 0.5% for subscriptions.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing",
+        "fees"
+      ]
+    },
+    {
+      "statement": "Payouts are created twice monthly, net sales are held for 13 days, the minimum payout is $50, and bank arrival can take one to five days after release.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "payouts"
+      ]
+    },
+    {
+      "statement": "Tax and VAT handling plus bundled checkout, subscriptions, and software licenses are the clearest positive themes.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "product-hunt",
+        "reddit-positive"
+      ]
+    },
+    {
+      "statement": "Opaque store approval and risk decisions, payout delays or moved dates, and slow or absent support recur in recent seller complaints.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "trustpilot",
+        "reddit-approval",
+        "reddit-payout"
+      ]
+    },
+    {
+      "statement": "Total fees can be much higher than direct payment processing after international, PayPal, subscription, payout, and marketing additions.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "fees"
+      ]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Product setup can be easy, but store approval and risk review happen before the platform is a reliable sales route.",
+    "product": "The merchant-of-record package removes substantial tax and billing work, especially for small global software sellers.",
+    "support": "Current complaint pattern is serious when money or account access is involved.",
+    "billing": "Base fee is simple to state but total effective cost depends on order type, buyer location, payment method, payout region, and marketing features.",
+    "overall": "Lemon Squeezy can be valuable, but a seller should not make it the only revenue route until approval, refunds, webhooks, support, and several real payouts are proven."
+  },
+  "conflictsAndUnknowns": [
+    "Maker feedback is strongly positive while recent complaint channels are sharply negative.",
+    "The service removes tax work and adds dependence on its risk and payout decisions.",
+    "No approval, checkout, webhook, refund, chargeback, license, payout, accounting, or support test was completed."
+  ]
+}

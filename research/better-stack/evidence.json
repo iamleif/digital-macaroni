@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "better-stack",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {"date":"2020-05-13","precision":"day","sourceId":"product-hunt"},
+  "testing": {"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on incident test was completed.","Pricing changes with responders, status pages, checks, data volume, and retention.","The review pool is unusually positive and may understate rare incident failures."]},
+  "sources": [
+    {"id":"official-pricing","name":"Better Stack pricing","url":"https://betterstack.com/pricing","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Free","Responders","Status pages","Telemetry","Add-ons"]},
+    {"id":"official-monitoring","name":"Better Stack monitoring setup","url":"https://betterstack.com/docs/uptime/monitoring-start/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Checks","Alerts","Escalation"]},
+    {"id":"official-status","name":"Better Stack status page updates","url":"https://betterstack.com/docs/uptime/creating-status-report-and-status-update/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Customer updates","Incidents"]},
+    {"id":"product-hunt","name":"Better Uptime launch","url":"https://www.producthunt.com/products/better-stack","accessed":"2026-08-14","sourceType":"independent-review-platform","reviewCountSampled":28,"keyThemes":["Launch date","Monitoring","Interface"]},
+    {"id":"g2","name":"Better Stack reviews on G2","url":"https://www.g2.com/products/better-stack/reviews","accessed":"2026-08-14","sourceType":"independent-review-platform","reviewCountSampled":319,"keyThemes":["Setup","Interface","Alerts","Missing features","Price","Logs"]},
+    {"id":"trustpilot","name":"Better Stack reviews on Trustpilot","url":"https://uk.trustpilot.com/review/betterstack.com","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":3,"keyThemes":["Service","Support"]},
+    {"id":"gartner","name":"Better Stack on Gartner Peer Insights","url":"https://www.gartner.com/reviews/product/better-stack","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":5,"keyThemes":["Enterprise use"]},
+    {"id":"reddit","name":"Observability tool comparison on Reddit","url":"https://www.reddit.com/r/devops/comments/1iugfm8/hyperping_vs_better_stack_vs_oneuptime_for/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":12,"keyThemes":["Long-term use","Alternatives","Cost"]},
+    {"id":"reddit-competitor","name":"Uptime stack pricing discussion on Reddit","url":"https://www.reddit.com/r/SaaS/comments/1tq39oz/i_built_an_allinone_uptime_monitoring_tool/","accessed":"2026-08-14","sourceType":"community-commercial","reviewCountSampled":8,"keyThemes":["Component pricing","Competitor interest"]}
+  ],
+  "claims": [
+    {"statement":"Better Uptime launched publicly on May 13, 2020 and later became part of Better Stack.","kind":"fact","status":"verified","sourceIds":["product-hunt"]},
+    {"statement":"Better Stack combines outside uptime checks, alerts, on-call schedules, incident work, status pages, logs, traces, metrics, errors, and session replays.","kind":"fact","status":"verified","sourceIds":["official-pricing","official-monitoring"]},
+    {"statement":"Free includes ten monitors or heartbeats, one status page, Slack and email alerts, and limited logs, traces, metrics, errors, and session replays.","kind":"fact","status":"verified","sourceIds":["official-pricing"]},
+    {"statement":"Paid incident response starts at $34 monthly or $29 per responder monthly with annual billing. Other pages, security options, subscribers, checks, ingestion, and retention can add cost.","kind":"fact","status":"verified","sourceIds":["official-pricing"]},
+    {"statement":"Quick setup, a clean interface, alerting, integrations, and the useful free plan are common strengths.","kind":"reported-pattern","status":"supported","sourceIds":["g2","product-hunt","gartner","reddit"]},
+    {"statement":"Missing features, price jumps, limits, and log-management friction are repeated complaints.","kind":"reported-pattern","status":"supported","sourceIds":["g2","reddit"]}
+  ],
+  "scoreRationale": {"onboarding":"A simple website check and email alert are easy to set up. A real on-call and data setup takes more work.","product":"The joined monitor, incident, status, and data views can speed investigation, but each part must work during a failure.","support":"Support is often praised but was not tested during a live incident.","billing":"Free is generous. Paid cost is difficult to forecast without real responder and data numbers.","overall":"Better Stack is a good place to start monitoring and a plausible tool to combine several operations jobs, provided the team tests a real alert and prices the full stack."},
+  "conflictsAndUnknowns": ["High ratings may not capture rare high-impact failures.","No real outage, alert escalation, log search, or status update was tested.","Data ingestion and retention cost cannot be judged without the team's volume."]
+}

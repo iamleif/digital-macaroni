@@ -1,0 +1,1 @@
+Outrank offers bold SEO automation, but without independent proof its reliability is uncertain. The free trial eases entry, yet vague pricing and missing support details make it a risky choice for serious SEO needs.

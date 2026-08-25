@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "calendly",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2013-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Inaccessible G2/Capterra review sources due to CAPTCHA",
+      "Blocked community discussion sources",
+      "Trustpilot sample may not represent full user spectrum",
+      "No enterprise-specific usage data"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Calendly official website",
+      "url": "https://calendly.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Automated scheduling with calendar integration",
+        "Reduces no-shows via automated reminders",
+        "Enterprise adoption by Fortune 500 companies",
+        "Free and paid tier pricing structure"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Calendly release history",
+      "url": "https://calendly.com/about",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "20+ million user adoption",
+        "G2 industry recognition for scheduling",
+        "Leadership team background",
+        "Business growth through scheduling automation"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Calendly reviews on G2",
+      "url": "https://www.g2.com/products/calendly/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 2619,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Calendly reviews on Capterra",
+      "url": "https://www.capterra.com/p/145928/Calendly/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 3901,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "Calendly reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/calendly.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Time-saving scheduling automation",
+        "Mixed technical reliability reports",
+        "Variable customer support experiences",
+        "UI/UX navigation challenges"
+      ]
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Calendly community discussion",
+      "url": "https://www.reddit.com/r/sales/comments/1r07id8/do_you_also_feel_like_sending_a_calendly_link/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Calendly connects up to six calendars for real-time availability automation",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Offers free personal use tier and paid plans starting at $10/seat/month",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Trusted by 86% of Fortune 500 companies",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Users report significant time savings from eliminating scheduling back-and-forth",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Some users experience synchronization issues affecting meeting reliability",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Customer support receives praise for quick resolutions but criticism for AI-dependent responses",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Provides over 100 third-party tool integrations",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "unknown",
+      "task": "Request UI improvement",
+      "whatHappened": "Reported minor UI issue to support",
+      "result": "Implemented requested change within weeks",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "Business user",
+      "task": "Resolve account access issue",
+      "whatHappened": "Recurring technical lockout with AI chatbot providing ineffective solutions",
+      "result": "Week-long work disruption before human resolution",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Educator",
+      "task": "Billing support request",
+      "whatHappened": "Contacted support for subscription adjustment",
+      "result": "Quick resolution with personalized exception",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "negative",
+      "userContext": "unknown",
+      "task": "Schedule appointments",
+      "whatHappened": "Booked meetings received no responses",
+      "result": "Perceived time waste",
+      "vendorResponse": "unknown",
+      "confidence": "medium"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Calendar integration",
+      "plainExplanation": "Syncs multiple calendars to show real-time availability",
+      "whoCares": "Professionals managing complex schedules",
+      "whenItDoesNotMatter": "Single-calendar users with fixed availability"
+    },
+    {
+      "term": "Automated reminders",
+      "plainExplanation": "Sends scheduled notifications before meetings",
+      "whoCares": "Those experiencing frequent no-shows",
+      "whenItDoesNotMatter": "Informal meetings where attendance isn't critical"
+    },
+    {
+      "term": "Scheduling links",
+      "plainExplanation": "Shareable URLs for others to book available slots",
+      "whoCares": "Sales teams and client-facing roles",
+      "whenItDoesNotMatter": "Internal teams with fixed meeting routines"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Official site claims free instant setup",
+    "product": "Automates scheduling but exhibits technical reliability concerns",
+    "support": "Responsive human agents contrast with ineffective AI triage",
+    "billing": "Transparent pricing with positive billing support reports",
+    "overall": "Core scheduling automation delivers value despite operational inconsistencies"
+  },
+  "conflictsAndUnknowns": [
+    "Support quality variance: exceptional human assistance vs frustrating AI interactions",
+    "Unknown frequency of synchronization issues",
+    "Unverified claims about enterprise feature effectiveness"
+  ]
+}

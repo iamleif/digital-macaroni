@@ -1,0 +1,154 @@
+{
+  "checkpointVersion": 4,
+  "slug": "typedream",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "5970e7f71c1ef5837b4dac41b69ef23b61e921a8009089b0f97061f4a5d540b0",
+  "publicationDate": "2026-07-28",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "c39a54b8d79082a92c827fd7a48d11b3f23b05e36940b6226bddc99ba15aeea4",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "5cc6323131ec45ccbdfcf8b4533c907d3edd48f2e70ca1840f0209318096f93d",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.681Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "d8db5bc30f522ebb88dd827e0b099d4ba095148fbc81ce7fd5fde6caf6262fff",
+      "predecessorSha256": "5cc6323131ec45ccbdfcf8b4533c907d3edd48f2e70ca1840f0209318096f93d",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.683Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "95cd932dca31ba3eabf6f0337301895e5d736a66d3f074cf42349d6513d659d6",
+      "predecessorSha256": "d8db5bc30f522ebb88dd827e0b099d4ba095148fbc81ce7fd5fde6caf6262fff",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T19:03:11.006Z"
+    },
+    "argument_card": {
+      "file": "04-argument-card.md",
+      "sha256": "d66cd047610f0896ca05ae157284843b799aa268469160103e2f04c6decac91d",
+      "predecessorSha256": "95cd932dca31ba3eabf6f0337301895e5d736a66d3f074cf42349d6513d659d6",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T19:03:20.239Z"
+    },
+    "spoken_brief": {
+      "file": "05-spoken-brief.md",
+      "sha256": "977dc99bdf2804e8275abfb727008701257413e3ceef5625864af3009194aa79",
+      "predecessorSha256": "d66cd047610f0896ca05ae157284843b799aa268469160103e2f04c6decac91d",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T19:03:40.985Z"
+    },
+    "raw_draft": {
+      "file": "06-raw-draft.md",
+      "sha256": "8d8d8c432dcb7b257d1fe4f8e88617e092fa48196ea94b89b34c165a6db5007b",
+      "predecessorSha256": "977dc99bdf2804e8275abfb727008701257413e3ceef5625864af3009194aa79",
+      "metadata": {
+        "model": "qwen3:8b",
+        "attempt": 2
+      },
+      "completedAt": "2026-08-18T19:05:32.533Z"
+    },
+    "copy_edit": {
+      "file": "07-copy-edit.md",
+      "sha256": "50ea6055a1a925af8902015d4b82fe233d6d2824991d38b35ca9f8c49b910c5b",
+      "predecessorSha256": "8d8d8c432dcb7b257d1fe4f8e88617e092fa48196ea94b89b34c165a6db5007b",
+      "metadata": {
+        "title": "Typedream: A Fast, Simple No-Code CMS for Basic Sites",
+        "description": "Typedream is a no-code CMS and website builder that excels in speed and simplicity, but its limited customization and advanced features make it less suitable for complex projects.",
+        "verdict": "Fast website building with limited control over complex layouts.",
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T19:06:44.800Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.685Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.687Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:07.184Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:07.192Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "Writer notebook does not identify the buyer or reader.",
+      "createdAt": "2026-08-18T19:03:02.314Z",
+      "candidate": "attempts/005-writer_notebook-attempt-1.md",
+      "candidateSha256": "ba7f02c968d363d7c83a9c1e5c2ff05f6b28449126b83b0eca1577a94f336737"
+    },
+    {
+      "stage": "raw_draft",
+      "attempt": 1,
+      "message": "raw_draft must contain three to six H2 headings.",
+      "createdAt": "2026-08-18T19:04:34.710Z",
+      "candidate": "attempts/006-raw_draft-attempt-1.md",
+      "candidateSha256": "04d855202ce3d9c8d1923b083f95839b985616089979d2d2ba4f21734b4d6c05"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 1,
+      "message": "{\n  \"checks\": {\n    \"structure\": true,\n    \"source_integrity\": true,\n    \"stance\": false,\n    \"buyer_guidance\": true,\n    \"humanizer\": false,\n    \"similarity\": true,\n    \"readability\": false,\n    \"disclosure\": true\n  },\n  \"metrics\": {\n    \"grade\": 10.8,\n    \"averageSentenceWords\": 22.2,\n    \"wordCount\": 888,\n    \"h2Count\": 3,\n    \"sourceCount\": 7,\n    \"maximumSimilarity\": 0.0008,\n    \"mostSimilarSlug\": \"morgen\",\n    \"humanizerAudit\": {\n      \"passed\": false,\n      \"sha256\": \"e6ce07dd5d336012832ccfd1d12115f6346327d33609d6e2506e8394752b5eee\",\n      \"metrics\": {\n        \"words\": 857,\n        \"paragraphs\": 6,\n        \"articleWordRate\": 0.0712,\n        \"negativeParallelisms\": 0\n      },\n      \"failures\": [\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 5,\n          \"message\": \"Paragraph 5 contains 5 contrast markers and reads mechanically balanced.\"\n        },\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 6,\n          \"message\": \"Paragraph 6 contains 4 contrast markers and reads mechanically balanced.\"\n        }\n      ],\n      \"warnings\": []\n    },\n    \"stockHeadingCount\": 0,\n    \"aggregationCount\": 1\n  },\n  \"oldBodySimilarity\": 0\n}",
+      "createdAt": "2026-08-18T19:08:02.067Z",
+      "candidate": "attempts/007-humanized_draft-attempt-1.md",
+      "candidateSha256": "38000e2895174674a35bf450f83938c92b4e8d02237d456e7f112ec1fa8c8d05"
+    },
+    {
+      "stage": "humanized_draft",
+      "attempt": 2,
+      "message": "{\n  \"checks\": {\n    \"structure\": true,\n    \"source_integrity\": true,\n    \"stance\": false,\n    \"buyer_guidance\": true,\n    \"humanizer\": false,\n    \"similarity\": true,\n    \"readability\": false,\n    \"disclosure\": true\n  },\n  \"metrics\": {\n    \"grade\": 11.1,\n    \"averageSentenceWords\": 22.8,\n    \"wordCount\": 888,\n    \"h2Count\": 3,\n    \"sourceCount\": 7,\n    \"maximumSimilarity\": 0.0008,\n    \"mostSimilarSlug\": \"morgen\",\n    \"humanizerAudit\": {\n      \"passed\": false,\n      \"sha256\": \"df224faa56b843a27d9c067eb0dce6ce38dcfd30d26546b8c9858b27ee12fc28\",\n      \"metrics\": {\n        \"words\": 859,\n        \"paragraphs\": 6,\n        \"articleWordRate\": 0.0722,\n        \"negativeParallelisms\": 0\n      },\n      \"failures\": [\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 5,\n          \"message\": \"Paragraph 5 contains 5 contrast markers and reads mechanically balanced.\"\n        },\n        {\n          \"code\": \"concession_chain\",\n          \"paragraph\": 6,\n          \"message\": \"Paragraph 6 contains 4 contrast markers and reads mechanically balanced.\"\n        }\n      ],\n      \"warnings\": []\n    },\n    \"stockHeadingCount\": 0,\n    \"aggregationCount\": 0\n  },\n  \"oldBodySimilarity\": 0\n}",
+      "createdAt": "2026-08-18T19:09:08.564Z",
+      "candidate": "attempts/008-humanized_draft-attempt-2.md",
+      "candidateSha256": "c9e50d74ab83ae3fa106792c9a604028854bb4e2e66f0cb342eedd441a8ef602"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.680Z",
+  "updatedAt": "2026-08-18T19:09:08.568Z"
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion":1,"runName":"rewrite-codex-v1","slug":"breakcold","writer":"codex-assistant","status":"complete","publicationDate":"2026-04-10",
+  "evidenceSha256":"590f56eacda748be8761a1dbbe582338bf3c3ebf51cb871229d5b700ea276d87","finalBodySha256":"70feaf2888384c833a6441584cad7f44f09108412a4799037b43eec34894c6f9",
+  "artifacts":{
+    "writerNotebook":{"file":"01-writer-notebook.md","fileSha256":"c7e39c19e65a29c0862d7c1a05c110eeb96af2433cbafe5d00a3acd84abe2406"},
+    "argumentCard":{"file":"02-argument-card.md","fileSha256":"d18208609480eb138522b070d55fc8aaf0d6acac58642baeb8fe59338125d26f"},
+    "spokenReviewBrief":{"file":"03-spoken-review-brief.md","fileSha256":"e4b9e6bb690cf6690c7a876c7a3a090dff54739d33ab12d8ec93412972b6084f"},
+    "rawDraft":{"file":"04-raw-draft.md","fileSha256":"308bbc1e53a7360bdf760ee533fd25483f0023feb62e8076eb00ab04b7742edd"},
+    "copyEditedDraft":{"file":"05-copy-edited-draft.md","fileSha256":"318238ff75dfc18418f5ef6df7c700585989a424cbdbf69372c2889a2dbe057f"},
+    "finalDraft":{"file":"06-final-draft.md","fileSha256":"611139d5d96beee4593198120df4cfb8728d452da8ca71c3e7ab60cd0be25495"},
+    "humanizerReport":{"file":"07-humanizer-report.md","fileSha256":"fb1e08ef2b4baf2b7582ff11d995f820c5af4b683fef063e5617e221d392d69f"},
+    "validation":{"file":"validation.json","fileSha256":"1518896eb92ff3925ed245563a18e475feb018fba8fe98b5bf2107744a08abfe"}
+  },"completedAt":"2026-08-25T04:57:03Z"
+}

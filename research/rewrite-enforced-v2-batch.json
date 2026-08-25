@@ -1,0 +1,13 @@
+{
+  "checkpointVersion": 2,
+  "model": "qwen3:8b",
+  "sync": false,
+  "results": [],
+  "failures": [
+    {
+      "slug": "saner-ai",
+      "error": "raw_draft failed after 4 attempts: raw_draft must contain three to six H2 headings."
+    }
+  ],
+  "updatedAt": "2026-08-18T10:45:17.236Z"
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "runName": "rewrite-codex-v1",
+  "slug": "akiflow",
+  "writer": "codex-assistant",
+  "status": "complete",
+  "publicationDate": "2026-08-14",
+  "evidenceSha256": "36058789cc83cd47950dcf875fe082c42411da81663fc0e042eb6bf996648d9b",
+  "finalBodySha256": "28c815ec1961d8b1b0a1d995eac126710b7ca417a6a8c0555d0afcf6bc9159ae",
+  "artifacts": {
+    "writerNotebook": {
+      "file": "01-writer-notebook.md",
+      "fileSha256": "688fa33db72a2092d1937a98b1edffc4ca3610fb622f249d47c2a8932aa838c3"
+    },
+    "argumentCard": {
+      "file": "02-argument-card.md",
+      "fileSha256": "958b2cbd441743fc97e9db34193f202c46248a460bbea49a9c00b0493c151b37"
+    },
+    "spokenReviewBrief": {
+      "file": "03-spoken-review-brief.md",
+      "fileSha256": "d76792ac4c9747f4a199c8f1cfc001187cd001766a2750fbceecf012026393af"
+    },
+    "rawDraft": {
+      "file": "04-raw-draft.md",
+      "fileSha256": "413603131d0b5d326d1b793747b978e54a76e948700403053d1c0c2df63cf8af"
+    },
+    "copyEditedDraft": {
+      "file": "05-copy-edited-draft.md",
+      "fileSha256": "18b1dc15a9aa031807d271192cee0d9979da74934a12cf2c22e83f9503e60c74"
+    },
+    "finalDraft": {
+      "file": "06-final-draft.md",
+      "fileSha256": "8da88fb9e6c446a3d473e302ec8a23ca13707950bc68274a1a05387a859ed376"
+    },
+    "humanizerReport": {
+      "file": "07-humanizer-report.md",
+      "fileSha256": "7ad3032aeb6c07eb7aa999226ab561f17cfd5ef9cf95019bee42a822c576daf0"
+    },
+    "validation": {
+      "file": "validation.json",
+      "fileSha256": "aff79c18f11d3ecfa1217c3ae99572dbc0abad954bf2c907b6d4e59120e9dad8"
+    }
+  },
+  "completedAt": "2026-08-25T04:19:58Z"
+}

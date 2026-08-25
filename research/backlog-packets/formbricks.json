@@ -1,0 +1,359 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "fact",
+      "id": 342,
+      "prevalence": "common",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "Formbricks combines link, website, email, and in-product surveys with cloud and self-hosted deployment options.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "praise",
+      "id": 343,
+      "prevalence": "common",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "Privacy controls, self-hosting, and open code are central reasons regulated and technically capable teams choose it.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    },
+    {
+      "confidence": 0.93,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "praise",
+      "id": 344,
+      "prevalence": "common",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "Users repeatedly praise the clean survey builder, useful targeting, customization, APIs, and integrations.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    },
+    {
+      "confidence": 0.89,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "praise",
+      "id": 345,
+      "prevalence": "common",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "Responsive support and a fast shipping pace are repeated positive themes in recent verified reviews.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    },
+    {
+      "confidence": 0.86,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "complaint",
+      "id": 346,
+      "prevalence": "mixed",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "Some advanced setups, integrations, and self-hosted changes require more technical skill than the no-code surface suggests.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "complaint",
+      "id": 347,
+      "prevalence": "mixed",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "Open-core feature gates, branding limits, and enterprise pricing can frustrate users who expect every capability in the community edition.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    },
+    {
+      "confidence": 0.88,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "complaint",
+      "id": 348,
+      "prevalence": "mixed",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "The product is not yet as deep or mature as the largest experience-management suites for every enterprise workflow.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "conflict",
+      "id": 349,
+      "prevalence": "mixed",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "Self-hosting is praised as easy by some users and described as difficult or limited by others, so infrastructure skill and feature needs materially change the experience.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "finding_type": "unknown",
+      "id": 350,
+      "prevalence": "mixed",
+      "product_id": 116,
+      "source_ids": [],
+      "summary": "The very high public ratings come from relatively small and favorable samples, so they should not be treated as proof of broad-market satisfaction.",
+      "updated_at": "2026-08-13T19:12:06.479792+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true
+    },
+    "created_at": "2026-08-13T19:12:06.479792+00:00",
+    "id": 110,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 116,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T19:12:06.479792+00:00"
+  },
+  "product": {
+    "category": "Customer support",
+    "id": 116,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Formbricks",
+    "short_description": "Open-source survey and experience-management software for websites, products, email, and self-hosted deployments.",
+    "slug": "formbricks",
+    "target_publish_date": null,
+    "website_url": "https://formbricks.com"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "91cd269afdacc9592d03b34d1bdb2f2b",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "The company timeline records its Product Hunt launch on October 31, 2023.",
+      "id": 471,
+      "metadata": {
+        "bias": "first-party launch record",
+        "releaseEvidence": true,
+        "sampleSize": 1,
+        "sampleUnit": "official timeline"
+      },
+      "platform": "Formbricks",
+      "product_id": 116,
+      "published_at": "2023-10-31T00:00:00+00:00",
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "First-party launch chronology and product-development timeline.",
+      "title": "Formbricks Community timeline",
+      "url": "https://formbricks.com/community"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "963d2b6b218629d77bf5db016e77be15",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "Reviewers praise its clean setup, open-source model, privacy, customization, and integrations.",
+      "id": 472,
+      "metadata": {
+        "bias": "launch community and early adopters; weak negative coverage",
+        "releaseEvidence": true,
+        "sampleSize": 23,
+        "sampleUnit": "reviews"
+      },
+      "platform": "Product Hunt",
+      "product_id": 116,
+      "published_at": "2023-10-31T00:00:00+00:00",
+      "rating": 5,
+      "source_type": "independent-review-platform",
+      "summary": "23 launch-community reviews; overwhelmingly positive and therefore treated as a favorable early-adopter sample.",
+      "title": "Formbricks reviews and launch",
+      "url": "https://www.producthunt.com/products/formbricks"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "51f8f1635173fb433eaac592859658c8",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "Users praise customization, integrations, privacy, self-hosting, and support; some report learning curve, difficult setup, expense, and limits.",
+      "id": 473,
+      "metadata": {
+        "bias": "small, highly positive B2B sample; seller-managed profile and invitations may shape participation",
+        "sampleSize": 15,
+        "sampleUnit": "reviews"
+      },
+      "platform": "G2",
+      "product_id": 116,
+      "published_at": null,
+      "rating": 4.8,
+      "source_type": "independent-review-platform",
+      "summary": "15 verified-review-platform accounts, mostly from small and mid-market teams, including regulated and self-hosted use.",
+      "title": "Formbricks Reviews 2026",
+      "url": "https://www.g2.com/products/formbricks/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "7be76778e0ae69011f975c1cd64e38ee",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "A critical self-hosting review objects to enterprise feature gates and branded community deployments.",
+      "id": 474,
+      "metadata": {
+        "bias": "tiny complaint-heavy sample; useful for contradiction, not prevalence",
+        "sampleSize": 2,
+        "sampleUnit": "reviews"
+      },
+      "platform": "Trustpilot",
+      "product_id": 116,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Very small negative counter-sample that prevents the strongly positive G2 and Product Hunt results from being treated as universal.",
+      "title": "Formbricks customer reviews",
+      "url": "https://www.trustpilot.com/review/formbricks.com"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "105850f8604500da949f75b89c49f634",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "The documentation covers surveys, experience management, self-hosting, APIs, and SDKs.",
+      "id": 475,
+      "metadata": {
+        "bias": "first-party product documentation",
+        "sampleSize": 1,
+        "sampleUnit": "documentation set"
+      },
+      "platform": "Formbricks",
+      "product_id": 116,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "First-party evidence for current capabilities and technical implementation.",
+      "title": "Formbricks documentation",
+      "url": "https://formbricks.com/docs/developer-docs/rest-api"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "4ef717abe7a74b88322771252a4dae42",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "The public repository exposes the community code, issues, discussions, and release activity.",
+      "id": 476,
+      "metadata": {
+        "bias": "developers and self-hosters overrepresented",
+        "sampleSize": 100,
+        "sampleUnit": "recent issues and discussions reviewed"
+      },
+      "platform": "GitHub",
+      "product_id": 116,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Technical evidence for open-source access, active development, deployment friction, and feature requests.",
+      "title": "formbricks/formbricks",
+      "url": "https://github.com/formbricks/formbricks"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "a75efc84e5cc3afda2313fefe4d0b6a2",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "Users like the direct response API and report successful publication survey use, while discussing self-hosting tradeoffs.",
+      "id": 477,
+      "metadata": {
+        "bias": "self-hosting audience; sponsor relationship disclosed in thread",
+        "sampleSize": 12,
+        "sampleUnit": "thread participants and comments"
+      },
+      "platform": "Reddit",
+      "product_id": 116,
+      "published_at": "2026-06-29T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Recent community evidence from technically confident self-hosters.",
+      "title": "Any tips on self-hosting a survey platform?",
+      "url": "https://www.reddit.com/r/selfhosted/comments/1uf9nle/any_tips_on_selfhosting_a_survey_platform/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "824c854d91d64b3b8e1e74b92aee57f3",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "Community members debate whether Formbricks and similar open-core tools meet every user’s definition of open source.",
+      "id": 478,
+      "metadata": {
+        "bias": "open-source purists and self-hosters overrepresented",
+        "sampleSize": 30,
+        "sampleUnit": "discussion participants"
+      },
+      "platform": "Reddit",
+      "product_id": 116,
+      "published_at": "2024-10-29T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Contradictory community evidence about licensing expectations and proprietary enterprise layers.",
+      "title": "There is an open-source alternative to almost any SaaS",
+      "url": "https://www.reddit.com/r/selfhosted/comments/1ge7s07/there_is_an_opensource_alternative_to_almost_any/"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "ba7be88ff8920b13bb7ce5d41a819b36",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "The review highlights behavioral targeting and setup ease while explaining the open-core price split.",
+      "id": 479,
+      "metadata": {
+        "bias": "commercial review site; possible affiliate incentives",
+        "sampleSize": 1,
+        "sampleUnit": "editorial review"
+      },
+      "platform": "Doolpa",
+      "product_id": 116,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Recent editorial synthesis used with caution because commercial-review sites may have referral incentives.",
+      "title": "Formbricks Review 2026",
+      "url": "https://doolpa.com/article/formbricks"
+    },
+    {
+      "accessed_at": "2026-08-13T00:00:00+00:00",
+      "author_name": null,
+      "content_hash": "55ba03add3a075b0498eab3f36a1041b",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T19:12:06.479792+00:00",
+      "excerpt": "The directory places Formbricks among more than 50 hosted and self-hosted survey alternatives.",
+      "id": 480,
+      "metadata": {
+        "bias": "alternative discovery platform; sparse verified usage detail",
+        "sampleSize": 50,
+        "sampleUnit": "listed alternatives and community entries"
+      },
+      "platform": "AlternativeTo",
+      "product_id": 116,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Independent directory evidence for category placement and competitive breadth, not product quality by itself.",
+      "title": "Formbricks alternatives",
+      "url": "https://alternativeto.net/software/formbricks/"
+    }
+  ]
+}

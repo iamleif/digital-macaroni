@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "signwell",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2019-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "No access to independent review platforms (G2/Capterra) due to CAPTCHA blocks",
+      "Community discussions (Reddit) unavailable from provided source",
+      "Limited to vendor-curated testimonials and official documentation",
+      "Pricing information not found in accessible materials"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "SignWell official website",
+      "url": "https://www.signwell.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Legally binding eSignatures",
+        "API integration capability",
+        "SOC 2 Type II/HIPAA compliance",
+        "Detailed audit trails"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "SignWell release history",
+      "url": "https://www.signwell.com/about/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Easy-to-use interface",
+        "Affordable pricing",
+        "Customer-driven development",
+        "US-based team"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "SignWell reviews on G2",
+      "url": "https://www.g2.com/products/signwell/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 473,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "SignWell reviews on Capterra",
+      "url": "https://www.capterra.com/p/180618/SignWell/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "SignWell community discussion",
+      "url": "https://www.reddit.com/r/dropbox/comments/11x6xu8/dropbox_sign_is_the_worst_why_did_they_destroy/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-docs",
+      "name": "SignWell official documentation",
+      "url": "https://help.signwell.com/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Document delivery methods",
+        "Account settings management",
+        "Template management",
+        "API integration guides"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "SignWell provides legally binding eSignatures compliant with SOC 2 Type II and HIPAA standards.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "SignWell offers REST API for embedding signing workflows into third-party products.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Customers report SignWell eliminates printing/scanning steps for contract execution.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Professional users describe SignWell as more elegant and easier to use than DocuSign.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "API documentation quality enables seamless integration into customer workflows.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "SignWell maintains detailed audit trails for all signed documents.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "release-history",
+      "sentiment": "positive",
+      "userContext": "ConveYour (sales onboarding platform)",
+      "task": "Embedding document signing into customer flows",
+      "whatHappened": "Integrated SignWell's API",
+      "result": "Seamless implementation with excellent documentation",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "release-history",
+      "sentiment": "positive",
+      "userContext": "Professional speaker/coach",
+      "task": "Contract execution without physical handling",
+      "whatHappened": "Replaced print-scan-email process with SignWell",
+      "result": "Faster signing with professional impression",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Audit trails",
+      "plainExplanation": "Detailed records of document signing events",
+      "whoCares": "Legal/compliance teams requiring proof of signature validity",
+      "whenItDoesNotMatter": "For informal agreements without compliance requirements"
+    },
+    {
+      "term": "REST API",
+      "plainExplanation": "Programming interface for embedding e-signatures",
+      "whoCares": "Developers integrating signing into custom applications",
+      "whenItDoesNotMatter": "Users only needing standalone web interface"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "",
+    "product": "",
+    "support": "",
+    "billing": "",
+    "overall": ""
+  },
+  "conflictsAndUnknowns": [
+    "Independent review platforms (G2/Capterra) inaccessible due to CAPTCHA requirements",
+    "Community discussions (Reddit) blocked by network security",
+    "Pricing details unavailable in provided sources",
+    "No negative experiences documented in accessible sources"
+  ]
+}

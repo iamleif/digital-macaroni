@@ -26,7 +26,6 @@ export function ArticlePage({ entry, recommendations }: { entry: ContentEntry; r
         headline: entry.title,
         description: entry.description,
         datePublished: entry.date,
-        dateModified: entry.updated,
         image: [imageUrl],
         author: { "@id": authorId },
         publisher: { "@id": organizationId },
@@ -41,7 +40,6 @@ export function ArticlePage({ entry, recommendations }: { entry: ContentEntry; r
         name: entry.title,
         reviewBody: reviewText,
         datePublished: entry.date,
-        dateModified: entry.updated,
         author: { "@id": authorId },
         publisher: { "@id": organizationId },
         itemReviewed: {
@@ -101,7 +99,6 @@ export function ArticlePage({ entry, recommendations }: { entry: ContentEntry; r
           <p>{entry.description}</p>
           <div className="review-meta">
             <time dateTime={entry.date}>{formatDate(entry.date)}</time>
-            <span>Updated {formatDate(entry.updated, "short")}</span>
             <span>By {entry.author}</span>
             <span>{entry.readingTime} min read</span>
           </div>

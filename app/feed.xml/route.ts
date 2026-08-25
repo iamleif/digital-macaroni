@@ -15,11 +15,11 @@ function xml(value: string) {
 
 export function GET() {
   const reviews = getAllContent("review");
-  const latestUpdate = reviews
-    .map((review) => review.updated)
+  const latestPublication = reviews
+    .map((review) => review.date)
     .sort((left, right) => right.localeCompare(left))[0];
-  const lastBuildDate = latestUpdate
-    ? new Date(`${latestUpdate}T12:00:00Z`).toUTCString()
+  const lastBuildDate = latestPublication
+    ? new Date(`${latestPublication}T12:00:00Z`).toUTCString()
     : new Date().toUTCString();
   const items = reviews.map((review) => {
     const entry = getContentBySlug("review", review.slug);

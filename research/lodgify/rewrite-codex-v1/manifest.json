@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runName": "rewrite-codex-v1",
+  "slug": "lodgify",
+  "writer": "codex-assistant",
+  "status": "complete",
+  "publicationDate": "2026-08-11",
+  "evidenceSha256": "3c778010ceb8ba4c00303917d5a3867920ced201efc8d60335669ffafe2b2485",
+  "finalBodySha256": "fa94f28c9f4dea12366f36148a65293f006ed56262712d998607f241b443952b",
+  "artifacts": {
+    "01-writer-notebook.md": "8102796e0a9c7ab7307d88e248301522887dc0173eb8b4b49e84a9f660da9425",
+    "02-argument-card.md": "8639429f3cc1ada1d7f0a55372e382ee53e3782591416edb2a8e27b1e6aed923",
+    "03-spoken-review-brief.md": "5c871dd1a368ad9aae29f5e885a48e4084280a9b08f715e7492f1a7bda5c115f",
+    "04-raw-draft.md": "fd12bf84552089375a5b01fd8bfed3d43266446d72f485e2ea89374833c8931a",
+    "05-copy-edited-draft.md": "fd12bf84552089375a5b01fd8bfed3d43266446d72f485e2ea89374833c8931a",
+    "06-final-draft.md": "fa94f28c9f4dea12366f36148a65293f006ed56262712d998607f241b443952b",
+    "07-humanizer-report.md": "ec47dbd8700168a25400f50dc07c59aa924a1f320ddf281a3213119e1f1af99f",
+    "validation.json": "611cd2e82dad49b01d282b06996867b8ea3998e36d2ccc4eed54eafbcdbcb029"
+  },
+  "completedAt": "2026-08-25T05:58:31.078Z"
+}

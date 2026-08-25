@@ -4,7 +4,8 @@ import { getAllContent, getContentBySlug } from "@/lib/content";
 export const dynamic = "force-static";
 
 export function generateStaticParams() {
-  return getAllContent("review").map(({ slug }) => ({ slug }));
+  const params = getAllContent("review").map(({ slug }) => ({ slug }));
+  return params.length > 0 ? params : [{ slug: "__placeholder__" }];
 }
 
 export async function GET(

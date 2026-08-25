@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "checks": {"structure": true, "source_integrity": true, "stance": true, "buyer_guidance": true, "humanizer": true, "similarity": true, "readability": true, "disclosure": true},
+  "metrics": {"grade": 7.3, "averageSentenceWords": 12.2, "wordCount": 779, "h2Count": 7, "sourceCount": 9, "maximumSimilarity": 0.0054, "mostSimilarSlug": "trigger-dev", "stockHeadingCount": 1, "aggregationCount": 0},
+  "bodySha256": "dc7d05b07f4c7604989a3d2bd61362d0409ebc7a68ef8576a23d0268b5534878"
+}

@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "dialpad",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2011-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "No accessible pricing data from official sources",
+      "G2/Capterra reviews blocked by CAPTCHA",
+      "Reddit community discussion inaccessible (403 error)",
+      "No performance metrics for AI features in real-world use"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Dialpad official website",
+      "url": "https://www.dialpad.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "AI-powered contact center",
+        "All-in-one communications platform",
+        "Enterprise-grade security",
+        "Integration with CRM tools",
+        "Autonomous AI agents"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Dialpad release history",
+      "url": "https://www.dialpad.com/about-us/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Mission to transform customer conversations",
+        "AI-native communications focus",
+        "Leadership team with tech expertise",
+        "Global customer base"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Dialpad reviews on G2",
+      "url": "https://www.g2.com/products/dialpad/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 4910,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Dialpad reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/dialpad.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Call quality and reliability",
+        "Billing disputes after cancellation",
+        "Customer support responsiveness",
+        "Contract flexibility issues"
+      ]
+    },
+    {
+      "id": "reviews-3",
+      "name": "Dialpad reviews on Capterra",
+      "url": "https://www.capterra.com/p/160606/Dialpad/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Dialpad community discussion",
+      "url": "https://www.reddit.com/r/VOIP/comments/phwui6/review_of_dialpad_from_a_new_user/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Dialpad offers AI-powered autonomous resolution for tasks like refunds and bookings",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Provides enterprise-grade security with HIPAA compliance and SOC 2 certification",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Integrates with Salesforce, Zendesk, Microsoft Teams, and Google Workspace",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Some users experience reliable call quality and intuitive interface",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    },
+    {
+      "statement": "Some users report billing continues after service cancellation",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    },
+    {
+      "statement": "Some users encounter unresponsive customer support for billing inquiries",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    },
+    {
+      "statement": "Some business users experience frequent blocking of text messages",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "positive",
+      "userContext": "Business communication",
+      "task": "Handling client calls",
+      "whatHappened": "Used Dialpad for business calls with clear quality",
+      "result": "Improved organization for client interactions",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "positive",
+      "userContext": "Sales prospecting",
+      "task": "Contacting prospects",
+      "whatHappened": "Clicked phone numbers for immediate connections with company name display",
+      "result": "Accurate call transcripts enabled better follow-ups",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "negative",
+      "userContext": "Small business owner",
+      "task": "Canceling service",
+      "whatHappened": "Confirmed cancellation but continued billing for 6 months",
+      "result": "Multiple unresolved support contacts",
+      "vendorResponse": "Apology and request for contact details via Trustpilot",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "negative",
+      "userContext": "Business user",
+      "task": "Contract inquiry",
+      "whatHappened": "Asked about service agreement end date",
+      "result": "No response after 12 days",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Agentic AI",
+      "plainExplanation": "AI that autonomously handles complex tasks without human transfer",
+      "whoCares": "Contact centers needing 24/7 customer issue resolution",
+      "whenItDoesNotMatter": "Small teams handling limited volume manually"
+    },
+    {
+      "term": "Enterprise-grade trust",
+      "plainExplanation": "Security certifications and data protection for regulated industries",
+      "whoCares": "Healthcare/finance businesses requiring HIPAA/SOC2 compliance",
+      "whenItDoesNotMatter": "Informal teams without sensitive data handling"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Conflicting reports: Official site emphasizes ease while users cite onboarding waste ($2000) and contract confusion",
+    "product": "Strong AI features per official claims; users report reliability but note message blocking issues",
+    "support": "Multiple reports of unresponsive service and missed appointments despite official values emphasizing user delight",
+    "billing": "Repeated billing-after-cancellation incidents contradict enterprise trust positioning",
+    "overall": "Advanced AI capabilities conflict with operational failures in billing and support execution"
+  },
+  "conflictsAndUnknowns": [
+    "Official 'enterprise-grade trust' claims conflict with recurring billing errors",
+    "Actual pricing undisclosed in official sources despite billing complaints",
+    "AI reliability claims lack user verification in available sources",
+    "Text message blocking frequency unknown"
+  ]
+}

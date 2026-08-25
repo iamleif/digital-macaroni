@@ -4,7 +4,7 @@
   "legacy": false,
   "reviewType": "research-based",
   "researchStarted": "2026-08-13",
-  "researchUpdated": "2026-08-13",
+  "researchUpdated": "2026-08-14",
   "releaseDate": { "date": "2024-02-25", "precision": "day", "sourceId": "reddit-public-release" },
   "testing": { "accessedProduct": false, "plan": null, "version": null, "tasksAttempted": [], "limitations": ["No new hands-on test was completed.", "Product Hunt is strongly positive while the App Store rating is materially lower.", "Trustpilot has too little visible evidence to carry meaningful weight.", "The product changes quickly and user reports cover different versions."] },
   "sources": [

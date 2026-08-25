@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1, "runName": "rewrite-codex-v1", "slug": "umami", "writer": "codex-assistant", "status": "complete", "publicationDate": "2026-07-24",
+  "evidenceSha256": "92bd69bcade5464c98444cec5d9a9c3c716033d91ec41607bbf972ec2b4d5758", "finalBodySha256": "d4f350cfc5b068f733167f3ad8782ca9bcc5251bf9c87b11d30f36d9e4afd3b1",
+  "artifacts": {"01-writer-notebook.md":"e49cfe2f88ccc8b3f3e856d9cde79061f6eef6655d43950a2111310570fa6883","02-argument-card.md":"a17309a7a2efbca285fdbf24aa94d184172d1d7ae206d6de02a6f15ef8a3f29d","03-spoken-review-brief.md":"92504c15fe461092878ed6e523ec24ca94d7bacc415ee7a3ddeb5dd92b9249a4","04-raw-draft.md":"46d3f21165505abed1b5946f0fa6d8f6fce5f4cbafe62c1548d52a5f019d4669","05-copy-edited-draft.md":"46d3f21165505abed1b5946f0fa6d8f6fce5f4cbafe62c1548d52a5f019d4669","06-final-draft.md":"d4f350cfc5b068f733167f3ad8782ca9bcc5251bf9c87b11d30f36d9e4afd3b1","07-humanizer-report.md":"71924a6ee73f15e1c7293359517aace9ab0c82d8a50c34e94053beb2b2caa5d8","validation.json":"1cfe535f359b177a2f2d8135dbafd05cf8ddbe019c9f881f04910123556ced95"},
+  "completedAt": "2026-08-25T07:42:08.443Z"
+}

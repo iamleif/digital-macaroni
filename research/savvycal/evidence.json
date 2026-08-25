@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "savvycal",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2020-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Independent review platforms inaccessible due to CAPTCHA/404 errors",
+      "Documentation source contained only category headers without substantive content",
+      "All customer experiences sourced from vendor-curated testimonials",
+      "No billing or support process details available"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "SavvyCal official website",
+      "url": "https://savvycal.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Week view scheduling interface",
+        "Calendar overlay feature",
+        "Custom branding options",
+        "Focus time protection tools",
+        "Team scheduling modes"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "SavvyCal release history",
+      "url": "https://savvycal.com/about",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "SavvyCal reviews on G2",
+      "url": "https://www.g2.com/products/savvycal/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 36,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "SavvyCal reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/savvycal/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "SavvyCal community discussion",
+      "url": "https://www.producthunt.com/products/savvycal",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-docs",
+      "name": "SavvyCal official documentation",
+      "url": "https://docs.savvycal.com/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "SavvyCal replaces traditional scheduling interfaces with a week view display",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Recipients can overlay personal calendars on scheduling links",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Users report appreciating calendar overlay for finding meeting times",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Branding customization includes colors, banners and avatars",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Custom domains enable white-labeled booking experiences",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Focus protection features include buffers, limits and time blocking",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Team scheduling offers collective, round robin and group modes",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Users report successful scheduling for hiring and large teams",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "Founder of Whereby",
+      "task": "Meeting scheduling",
+      "whatHappened": "Used calendar overlay and Chrome Extension for multiple links",
+      "result": "Found time selection convenient and link management easy",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "Co-founder of Dover",
+      "task": "Hiring and team scheduling",
+      "whatHappened": "Implemented for large team coordination",
+      "result": "Convinced it uniquely solves scheduling challenges",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Calendar Overlay",
+      "plainExplanation": "Attendees see their existing events superimposed on your availability grid",
+      "whoCares": "People scheduling with busy professionals who juggle multiple commitments",
+      "whenItDoesNotMatter": "When scheduling with individuals who maintain empty calendars or prefer manual coordination"
+    },
+    {
+      "term": "Round Robin Mode",
+      "plainExplanation": "Distributes meetings automatically among team members",
+      "whoCares": "Sales or support teams needing equitable lead distribution",
+      "whenItDoesNotMatter": "For individual schedulers or teams with specialized role-based assignments"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Insufficient data",
+    "product": "Features include visual scheduling, calendar overlay, branding controls, focus protection, and team coordination modes",
+    "support": "Insufficient data",
+    "billing": "Mentions free trial and 30-day money-back guarantee but no pricing details",
+    "overall": "Insufficient data for comprehensive assessment"
+  },
+  "conflictsAndUnknowns": [
+    "No independent review data available due to source access restrictions",
+    "All customer experiences presented are positive vendor-selected quotes",
+    "Actual pricing information unavailable in sources"
+  ]
+}

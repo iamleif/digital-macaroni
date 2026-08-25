@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "carrd",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2016-03-07",
+    "precision": "day",
+    "sourceId": "official-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on build was completed.",
+      "The independent professional-review sample is small.",
+      "Community sources include experienced Carrd enthusiasts and were balanced with broader comparisons."
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-history",
+      "name": "Carrd: The Making Of",
+      "url": "https://themakingof.carrd.co/",
+      "accessed": "2026-08-13",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Launch date",
+        "Product history"
+      ]
+    },
+    {
+      "id": "official-about",
+      "name": "About Carrd",
+      "url": "https://carrd.co/docs/general/about",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "One-page scope",
+        "Responsive sites"
+      ]
+    },
+    {
+      "id": "official-pricing",
+      "name": "Carrd Pro plans",
+      "url": "https://carrd.co/pro",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Lite",
+        "Standard",
+        "Plus",
+        "Site limits"
+      ]
+    },
+    {
+      "id": "official-sections",
+      "name": "Carrd sections guide",
+      "url": "https://carrd.co/docs/building/using-sections",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Page-like sections",
+        "Single-page structure"
+      ]
+    },
+    {
+      "id": "official-forms",
+      "name": "Carrd forms guide",
+      "url": "https://carrd.co/docs/forms",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Contact",
+        "Signup",
+        "Payment",
+        "Custom forms"
+      ]
+    },
+    {
+      "id": "g2",
+      "name": "Carrd reviews on G2",
+      "url": "https://www.g2.com/products/carrd/reviews?qs=pros-and-cons",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 33,
+      "keyThemes": [
+        "Ease",
+        "Price",
+        "Templates",
+        "Limits"
+      ]
+    },
+    {
+      "id": "reddit-one",
+      "name": "Experienced Carrd review on Reddit",
+      "url": "https://www.reddit.com/r/Carrd/comments/1ligp6q/why_i_think_carrd_is_a_great_website_builder_my/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 15,
+      "keyThemes": [
+        "Simple sites",
+        "Product limits"
+      ]
+    },
+    {
+      "id": "reddit-two",
+      "name": "Carrd limits discussion on Reddit",
+      "url": "https://www.reddit.com/r/Carrd/comments/1vkipqu/the_truth_about_what_carrd_can_and_cant_do_my/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 6,
+      "keyThemes": [
+        "SEO",
+        "One page",
+        "CMS limits"
+      ]
+    },
+    {
+      "id": "reddit-builders",
+      "name": "Website builder comparison on Reddit",
+      "url": "https://www.reddit.com/r/nocode/comments/1r1fp33/i_reviewed_49_website_builders_not_sponsored_in/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 12,
+      "keyThemes": [
+        "Multi-site value",
+        "Alternatives"
+      ]
+    },
+    {
+      "id": "reddit-beginner",
+      "name": "Beginner website builder discussion on Reddit",
+      "url": "https://www.reddit.com/r/website/comments/1sk89rg/what_website_builder_would_you_recommend_for_a/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 8,
+      "keyThemes": [
+        "Beginners",
+        "Simple sites"
+      ]
+    },
+    {
+      "id": "product-hunt",
+      "name": "Carrd reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/carrd/reviews",
+      "accessed": "2026-08-14",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 24,
+      "keyThemes": [
+        "Ease",
+        "One-page scope",
+        "Value",
+        "Limits"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Carrd publicly launched on March 7, 2016.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-history"
+      ]
+    },
+    {
+      "statement": "Carrd is deliberately built for responsive one-page sites. Sections can look like separate pages but remain parts of one page.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-about",
+        "official-sections"
+      ]
+    },
+    {
+      "statement": "Pro Lite starts at $9 yearly for three sites, Pro Standard at $19 yearly for ten sites, and Pro Plus at $49 yearly for 25 sites.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-pricing"
+      ]
+    },
+    {
+      "statement": "Pro Standard is the first plan with custom domains, forms, widgets, code embeds, analytics, and meta tags. Plus adds advanced forms and site controls.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-pricing",
+        "official-forms"
+      ]
+    },
+    {
+      "statement": "Low cost, quick setup, clean templates, and beginner-friendly editing are common strengths.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "g2",
+        "reddit-one",
+        "reddit-builders",
+        "reddit-beginner",
+        "product-hunt"
+      ]
+    },
+    {
+      "statement": "A true blog, many search pages, complex selling, databases, and app behavior are outside Carrd's natural scope.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "g2",
+        "reddit-one",
+        "reddit-two",
+        "reddit-builders",
+        "product-hunt"
+      ]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Templates and a narrow editor make a first page easy to publish.",
+    "product": "Carrd is very good at one-page sites and intentionally weak beyond them.",
+    "support": "Documentation is clear, but support was not tested directly.",
+    "billing": "Annual plans are unusually inexpensive, especially for several small sites.",
+    "overall": "Carrd is an easy recommendation when the finished site truly needs one page. Its low price should not tempt a growing content site onto the wrong structure."
+  },
+  "conflictsAndUnknowns": [
+    "Simplicity is both the main strength and main limit.",
+    "Sections can imitate navigation but do not create a normal multi-page content system.",
+    "No custom domain, form, mobile, or search-indexing test was completed."
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion":1,
+  "productSlug":"posthog",
+  "legacy":false,
+  "reviewType":"research-based",
+  "researchStarted":"2026-08-13",
+  "researchUpdated":"2026-08-14",
+  "releaseDate":{"date":"2020-02-20","precision":"day","sourceId":"launch"},
+  "testing":{"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on event, replay, flag, experiment, survey, bill, self-host, or support test was completed.","PostHog changes quickly; product limits and usage rates require a live check.","Session replay and identified events can expose sensitive data if capture, masking, access, and retention are configured poorly."]},
+  "sources":[
+    {"id":"launch","name":"Launch HN: PostHog","url":"https://news.ycombinator.com/item?id=22376732","accessed":"2026-08-13","sourceType":"launch-history","reviewCountSampled":null,"keyThemes":["Open source","Launch","Technical discussion"]},
+    {"id":"docs","name":"PostHog documentation","url":"https://posthog.com/docs","accessed":"2026-08-13","sourceType":"official-documentation","reviewCountSampled":null,"keyThemes":["Analytics","Replay","Flags","Experiments"]},
+    {"id":"pricing","name":"PostHog pricing","url":"https://posthog.com/pricing","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Free tier","Usage","Limits","Products"]},
+    {"id":"github","name":"PostHog repository","url":"https://github.com/PostHog/posthog","accessed":"2026-08-13","sourceType":"code-community","reviewCountSampled":null,"keyThemes":["Code","Issues","Self-hosting"]},
+    {"id":"g2","name":"PostHog reviews on G2","url":"https://www.g2.com/products/posthog/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":1045,"keyThemes":["Breadth","Replay","Free tier","Complexity"]},
+    {"id":"product-hunt","name":"PostHog reviews on Product Hunt","url":"https://www.producthunt.com/products/posthog","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":242,"keyThemes":["Integrated tools","Open source","Flags"]},
+    {"id":"reddit-selfhost","name":"PostHog cloud versus self-hosted discussion","url":"https://www.reddit.com/r/ProductManagement/comments/1kgz89w/posthog_selfhosted_vs_cloud/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":9,"keyThemes":["Storage","Upgrades","Operations"]},
+    {"id":"reddit-pm","name":"PostHog product manager discussion","url":"https://www.reddit.com/r/ProductManagement/comments/1544s9t/any_pm_using_posthog/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":25,"keyThemes":["Privacy","Performance","Resources"]},
+    {"id":"reddit-cost","name":"PostHog cost discussion","url":"https://www.reddit.com/r/ProductManagement/comments/1il0q8z/is_posthog_analytics_the_most_costwise_out_there/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":20,"keyThemes":["Free allowance","Scaling cost"]}
+  ],
+  "claims":[
+    {"statement":"PostHog launched publicly on February 20, 2020.","kind":"fact","status":"verified","sourceIds":["launch"]},
+    {"statement":"PostHog combines product and web analytics, session replay, feature flags, experiments, surveys, error tracking, data warehouse, pipelines, logs, and other product tools.","kind":"fact","status":"verified","sourceIds":["docs","pricing"]},
+    {"statement":"The free plan includes one project, one-year retention, unlimited people, 1 million analytics events, 5,000 replay recordings, 1 million flag requests, 100,000 exceptions, and 1,500 survey responses per month.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"Pay-as-you-go begins after each monthly free allowance, supports six projects and seven-year retention, and lets the buyer set a billing limit for each product.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"An integrated toolset, quick first setup, session replay, developer documentation, and the free tier are the strongest positive themes.","kind":"reported-pattern","status":"supported","sourceIds":["g2","product-hunt","reddit-pm"]},
+    {"statement":"The broad product surface creates a learning curve and can make dashboards dense or confusing.","kind":"reported-pattern","status":"supported","sourceIds":["g2","reddit-pm"]},
+    {"statement":"SDK bugs, replay overhead, rough edges, usage cost, and self-hosting work are meaningful limits.","kind":"reported-pattern","status":"supported","sourceIds":["g2","github","reddit-selfhost","reddit-cost"]}
+  ],
+  "scoreRationale":{"onboarding":"A snippet produces data quickly; trustworthy use needs a small event plan, identity rules, privacy masking, source reconciliation, and ownership.","product":"Very strong when analytics, replay, flags, experiments, and data share one event language; overwhelming when the team turns on everything without a decision process.","support":"Large positive sample and active engineering build confidence, though no production support case was tested.","billing":"Free allowances are unusually large and each product has separate metering, so high-volume cost needs a product-by-product model and caps.","overall":"PostHog is worth testing for a technical product team that wants one route from observed behavior to a controlled release. Ship one feature through analytics, replay, a flag, and a decision before adopting the full suite."},
+  "conflictsAndUnknowns":["PostHog is easy to install and hard to govern well.","One integrated platform can replace several bills and create one large set of settings and usage meters.","Self-hosting offers code and data control while adding a demanding analytics stack.","No instrumentation, privacy, performance, experiment, billing, self-host, or support test was completed."]
+}

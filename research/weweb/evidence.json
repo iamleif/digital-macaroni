@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "weweb",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {"date":"2021-03-18","precision":"day","sourceId":"product-hunt"},
+  "testing": {"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on test was completed.","WeWeb added native backend features in 2026, so older accounts focused only on external backends do not cover the full current product.","The live pricing calculator requires JavaScript; only official starting prices and pricing structure were used."]},
+  "sources": [
+    {"id":"product-hunt","name":"WeWeb Product Hunt launch and reviews","url":"https://www.producthunt.com/products/weweb-io?launch=weweb","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":12,"keyThemes":["Launch date","Visual builder","Web apps"]},
+    {"id":"official-pricing-context","name":"WeWeb 2025 pricing model announcement","url":"https://www.weweb.io/changelog/2025-02-13-pricing","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Seat pricing","Free publishing","Code export","Hosting"]},
+    {"id":"official-current-pricing","name":"WeWeb SaaS solution page","url":"https://www.weweb.io/solutions/saas","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["$20 starting price","Unlimited app users","Backend connections"]},
+    {"id":"official-roadmap","name":"WeWeb 2026 roadmap","url":"https://www.weweb.io/blog/our-2026-roadmap","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Native backend","Code export","External services","Environments"]},
+    {"id":"capterra","name":"WeWeb reviews on Capterra","url":"https://www.capterra.com/p/198691/WeWeb/reviews/","accessed":"2026-08-14","sourceType":"independent-review-platform","reviewCountSampled":35,"keyThemes":["Flexibility","Ease","Support","Learning"]},
+    {"id":"g2","name":"WeWeb reviews on G2","url":"https://www.g2.com/de/products/weweb-weweb/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":3,"keyThemes":["Interface","Low-code flexibility","Speed after learning"]},
+    {"id":"reddit-learning","name":"WeWeb learning-curve discussion","url":"https://www.reddit.com/r/nocode/comments/1mhuk49/weweb_might_be_nocode_but_its_definitely_not/","accessed":"2026-08-14","sourceType":"community","reviewCountSampled":5,"keyThemes":["Database","Authentication","Permissions","Responsive design","State"]},
+    {"id":"reddit-fragility","name":"WeWeb complexity and editor discussion","url":"https://www.reddit.com/r/nocode/comments/1rsln2f/nondeveloper_considering_ditching_weweb_for_a/","accessed":"2026-08-14","sourceType":"community","reviewCountSampled":3,"keyThemes":["Editor speed","AI changes","Debugging","Complex roles"]}
+  ],
+  "claims": [
+    {"statement":"WeWeb visually builds the screens and browser behavior of a web app, while allowing its own backend or outside services such as Supabase, Xano, and APIs to store data and handle server work.","kind":"fact","status":"verified","sourceIds":["official-current-pricing","official-roadmap"]},
+    {"statement":"Paid seats start at $20 monthly, pricing is per builder rather than app user, and custom domains or WeWeb hosting can add cost.","kind":"fact","status":"verified","sourceIds":["official-current-pricing","official-pricing-context"]},
+    {"statement":"Paid plans support code export, GitHub sync, and self-hosting.","kind":"fact","status":"verified","sourceIds":["official-pricing-context","official-roadmap"]},
+    {"statement":"Design freedom, outside backend connections, and code export are repeated strengths.","kind":"reported-pattern","status":"supported","sourceIds":["capterra","g2","reddit-learning"]},
+    {"statement":"Databases, sign-in, permissions, changing page data, phone layouts, and debugging create a significant learning curve even when little code is typed.","kind":"reported-pattern","status":"supported","sourceIds":["reddit-learning","reddit-fragility","capterra"]},
+    {"statement":"A detailed community account reports that WeWeb AI replaced working sign-in logic with sample data, illustrating why generated changes need review but not establishing a normal result.","kind":"reported-pattern","status":"limited","sourceIds":["reddit-fragility"]}
+  ],
+  "scoreRationale": {"onboarding":"The canvas is approachable, but a real app quickly requires technical concepts.","product":"WeWeb offers strong screen design, data connections, and an exit through code export.","support":"Review-platform support scores are positive, while community troubleshooting can still be difficult outside common paths.","billing":"The $20 seat start and unlimited app users are attractive, but backend, hosting, and more builders must be counted.","overall":"WeWeb suits a technically curious builder who wants more control than a template tool without writing every screen from scratch."},
+  "conflictsAndUnknowns": ["WeWeb is called no-code, yet reliable apps still require a developer-like understanding of data and security.","The product changed in 2026 with native backend work, so older external-backend accounts cover only one setup.","No hands-on auth, export, speed, or phone-layout test was completed."]
+}

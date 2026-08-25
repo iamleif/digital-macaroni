@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "pirsch-analytics",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2020-12-16",
+    "precision": "day",
+    "sourceId": "product-hunt"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on tracking, consent, event, funnel, import, export, billing, or support test was completed.",
+      "The independent rating sample is too small to support a broad satisfaction score.",
+      "Privacy and consent requirements depend on the implementation and applicable law; cookie-free does not automatically mean no consent is required."
+    ]
+  },
+  "sources": [
+    {
+      "id": "product-hunt",
+      "name": "Pirsch Analytics launches and reviews",
+      "url": "https://www.producthunt.com/products/pirsch-analytics",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 5,
+      "keyThemes": [
+        "Launch",
+        "Privacy",
+        "Simplicity",
+        "Filters"
+      ]
+    },
+    {
+      "id": "docs",
+      "name": "Pirsch documentation",
+      "url": "https://docs.pirsch.io/",
+      "accessed": "2026-08-13",
+      "sourceType": "official-documentation",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Browser tracking",
+        "Server tracking",
+        "Events",
+        "Funnels"
+      ]
+    },
+    {
+      "id": "pricing",
+      "name": "Pirsch pricing",
+      "url": "https://pirsch.io/pricing",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Standard",
+        "Plus",
+        "Enterprise",
+        "Usage"
+      ]
+    },
+    {
+      "id": "github",
+      "name": "Pirsch open core on GitHub",
+      "url": "https://github.com/pirsch-analytics/pirsch",
+      "accessed": "2026-08-13",
+      "sourceType": "official-code",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Open core",
+        "Visitor identifiers",
+        "Development"
+      ]
+    },
+    {
+      "id": "g2",
+      "name": "Pirsch review on G2",
+      "url": "https://www.g2.com/products/pirsch-analytics/reviews",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 1,
+      "keyThemes": [
+        "Affordability",
+        "Support",
+        "Ease"
+      ]
+    },
+    {
+      "id": "reddit-launch",
+      "name": "Pirsch privacy discussion on Reddit",
+      "url": "https://www.reddit.com/r/degoogle/comments/plkii9",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Cookie-free",
+        "Anonymization",
+        "Open core"
+      ]
+    },
+    {
+      "id": "reddit-marketing",
+      "name": "Privacy analytics discussion for marketers",
+      "url": "https://www.reddit.com/r/DigitalMarketing/comments/1ldj8gv",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 8,
+      "keyThemes": [
+        "Aggregate trends",
+        "Marketing limits"
+      ]
+    },
+    {
+      "id": "reddit-ga",
+      "name": "Moving off Google Analytics discussion",
+      "url": "https://www.reddit.com/r/degoogle/comments/1tn50zk/moving_off_google_analytics_in_2026_what_are/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 25,
+      "keyThemes": [
+        "Europe",
+        "Paid media",
+        "Attribution"
+      ]
+    },
+    {
+      "id": "comparison",
+      "name": "Pirsch versus Plausible comparison",
+      "url": "https://analytics-alternatives.com/compare/pirsch-vs-plausible/",
+      "accessed": "2026-08-13",
+      "sourceType": "editorial-review",
+      "reviewCountSampled": 1,
+      "keyThemes": [
+        "Entry price",
+        "Funnels",
+        "Ecosystem",
+        "Self-hosting"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Pirsch Analytics launched its public beta on December 16, 2020.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "product-hunt"
+      ]
+    },
+    {
+      "statement": "Pirsch is hosted in Germany and supports browser and server-side tracking, events, goals, funnels, reports, APIs, SDKs, webhooks, imports, and exports.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "docs",
+        "pricing"
+      ]
+    },
+    {
+      "statement": "At 10,000 monthly page views, Standard costs $6 per month and Plus costs $12. A 30-day trial needs no card.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "Custom events and 10% of session-extension events count toward the monthly page-view limit.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "A clean dashboard, quick setup, cookie-free tracking, developer options, and low entry price are the strongest positive themes.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "product-hunt",
+        "g2",
+        "comparison",
+        "reddit-marketing"
+      ]
+    },
+    {
+      "statement": "Complex filters, deeper analysis, and paid-media attribution can be limited compared with larger analytics products.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "product-hunt",
+        "reddit-marketing",
+        "reddit-ga",
+        "comparison"
+      ]
+    },
+    {
+      "statement": "The public repository contains the analytics core, but a supported self-hosted full product requires an Enterprise agreement.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "github",
+        "pricing",
+        "comparison"
+      ]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "A script can produce a dashboard quickly, but event definitions, consent, duplicates, bot traffic, internal visits, and source comparisons determine whether the numbers are useful.",
+    "product": "Strong for understandable aggregate traffic plus developer-controlled server events; lighter for deep behavior analysis and ad attribution.",
+    "support": "Responsive support appears in a small positive sample, but no request was tested.",
+    "billing": "Entry pricing is low and includes many sites and unlimited retention; event counting and growth across the traffic tiers need a forecast.",
+    "overall": "Pirsch is worth testing when a team wants a simpler EU-hosted traffic and conversion dashboard. Run the same week beside the current analytics tool and explain every important difference before switching."
+  },
+  "conflictsAndUnknowns": [
+    "Cookie-free tracking reduces one source of consent work but does not settle every legal or implementation question.",
+    "Server-side tracking can avoid blockers and can also count bots, retries, and private events unless designed carefully.",
+    "The open core is real, while the complete self-hosted product is not a free community deployment.",
+    "No tracking, consent, attribution, import, export, or support test was completed."
+  ]
+}

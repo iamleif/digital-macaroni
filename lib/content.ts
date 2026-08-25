@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import matter from "gray-matter";
 
 export type ContentType = "review" | "story";
@@ -18,7 +19,6 @@ export type ContentMeta = {
   title: string;
   description: string;
   date: string;
-  updated: string;
   author: string;
   status: ContentStatus;
   publishAt?: string;
@@ -35,6 +35,8 @@ export type ContentMeta = {
   scores?: Record<string, number>;
   reviewType?: ReviewType;
   testingDisclosure?: string;
+  editorialRunId?: number;
+  approvedBodySha256?: string;
   sources: ContentSource[];
   legacyResearch: boolean;
 };
@@ -59,8 +61,20 @@ function readingTime(body: string) {
   return Math.max(1, Math.ceil(words / 220));
 }
 
-function isPublished(entry: Pick<ContentMeta, "status" | "publishAt">) {
+function bodySha256(body: string) {
+  return crypto
+    .createHash("sha256")
+    .update(body.replace(/\r\n?/g, "\n").trim(), "utf8")
+    .digest("hex");
+}
+
+function isPublished(entry: ContentEntry) {
   if (entry.status !== "published") return false;
+  if (entry.type === "review") {
+    if (!Number.isSafeInteger(entry.editorialRunId) || (entry.editorialRunId ?? 0) <= 0) return false;
+    if (!/^[a-f0-9]{64}$/.test(entry.approvedBodySha256 ?? "")) return false;
+    if (entry.approvedBodySha256 !== bodySha256(entry.body)) return false;
+  }
   if (!entry.publishAt) return true;
   return new Date(entry.publishAt).getTime() <= Date.now();
 }
@@ -84,9 +98,8 @@ export function getContentBySlug(
     title: data.title,
     description: data.description,
     date: data.date,
-    updated: data.updated ?? data.date,
     author: data.author ?? "Leif Johansen",
-    status: data.status === "draft" ? "draft" : "published",
+    status: data.status === "published" ? "published" : "draft",
     publishAt: data.publishAt,
     category: data.category,
     featured: Boolean(data.featured),
@@ -100,6 +113,8 @@ export function getContentBySlug(
     scores: data.scores,
     reviewType: data.reviewType,
     testingDisclosure: data.testingDisclosure,
+    editorialRunId: typeof data.editorialRunId === "number" ? data.editorialRunId : undefined,
+    approvedBodySha256: typeof data.approvedBodySha256 === "string" ? data.approvedBodySha256 : undefined,
     sources: Array.isArray(data.sources) ? data.sources : [],
     legacyResearch: Boolean(data.legacyResearch),
     readingTime: readingTime(content),

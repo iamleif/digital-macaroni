@@ -1,0 +1,30 @@
+{
+  "schemaVersion":1,
+  "productSlug":"freshsales",
+  "legacy":false,
+  "reviewType":"research-based",
+  "researchStarted":"2026-08-13",
+  "researchUpdated":"2026-08-14",
+  "releaseDate":{"date":"2016-06-22","precision":"day","sourceId":"launch"},
+  "testing":{"accessedProduct":false,"plan":null,"version":null,"tasksAttempted":[],"limitations":["No Digital Macaroni hands-on import, pipeline, email, phone, automation, report, mobile, AI, billing, or support test was completed.","Current official pricing no longer shows the older free plan found in some research context.","Editorial hands-on accounts may contain commercial referral incentives and were not treated as our own test."]},
+  "sources":[
+    {"id":"launch","name":"Freshsales launch announcement","url":"https://ir.freshworks.com/files/doc_news/2016/06/freshdesk_launches_freshsales_crm_for_high-velocity-sales_teams.pdf","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Launch"]},
+    {"id":"pricing","name":"Freshsales pricing","url":"https://www.freshworks.com/crm/pricing/","accessed":"2026-08-14","sourceType":"official","reviewCountSampled":null,"keyThemes":["Growth","Pro","Enterprise","AI","Trial"]},
+    {"id":"docs","name":"Freshsales support center","url":"https://support.freshsales.io/support/home","accessed":"2026-08-13","sourceType":"official","reviewCountSampled":null,"keyThemes":["Records","Email","Phone","Reports","Mobile"]},
+    {"id":"g2","name":"Freshsales reviews on G2","url":"https://www.g2.com/products/freshsales/reviews","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":1192,"keyThemes":["Ease","Follow-up","Automation","Reports","Mobile"]},
+    {"id":"trustradius","name":"Freshsales reviews on TrustRadius","url":"https://www.trustradius.com/products/freshsales","accessed":"2026-08-13","sourceType":"independent-review-platform","reviewCountSampled":90,"keyThemes":["Communication","Automation","Mobile"]},
+    {"id":"reddit","name":"Freshsales eight-month review on Reddit","url":"https://www.reddit.com/r/work/comments/1tg59zy/freshsales_review_any_good_or_just_a_cheap/","accessed":"2026-08-13","sourceType":"community","reviewCountSampled":8,"keyThemes":["Price","Automation","Broken reports","Support"]},
+    {"id":"techradar","name":"Freshsales editorial hands-on review","url":"https://www.techradar.com/reviews/freshsales-crm-review","accessed":"2026-08-13","sourceType":"commercial-editorial-review","reviewCountSampled":1,"keyThemes":["Import","Duplicates","Automation","AI","Cost"]}
+  ],
+  "claims":[
+    {"statement":"Freshsales launched on June 22, 2016.","kind":"fact","status":"verified","sourceIds":["launch"]},
+    {"statement":"Freshsales combines contact and deal records, pipelines, email, phone, chat, tasks, automation, reports, mobile access, and AI sales tools.","kind":"fact","status":"verified","sourceIds":["pricing","docs"]},
+    {"statement":"Current annual prices are $9 per user monthly for Growth, $39 for Pro, and $59 for Enterprise. The trial lasts 21 days, and the current official page does not show a permanent free plan.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"The Freddy AI Agent add-on costs $49 per 100 sessions, with 500 one-time trial sessions on paid plans.","kind":"fact","status":"verified","sourceIds":["pricing"]},
+    {"statement":"An approachable interface, quick setup, centralized lead follow-up, built-in communication, and useful automation are the main positive themes.","kind":"reported-pattern","status":"supported","sourceIds":["g2","trustradius","techradar"]},
+    {"statement":"Custom reports and advanced setup can be confusing, brittle, or limited to higher plans.","kind":"reported-pattern","status":"supported","sourceIds":["g2","reddit","techradar"]},
+    {"statement":"Mobile depth and support during advanced reporting or workflow problems receive mixed feedback.","kind":"reported-pattern","status":"supported","sourceIds":["g2","trustradius","reddit"]}
+  ],
+  "scoreRationale":{"onboarding":"Standard pipeline work is approachable; dirty imports, duplicate rules, email sync, and phone setup need a real trial.","product":"Good small-business CRM value with communication built in; advanced reporting and configuration need proof.","support":"Mixed when problems involve reports or custom workflows.","billing":"Low Growth price, large jump to Pro, and separate AI and document charges complicate the full cost.","overall":"Freshsales is attractive for a standard sales team that needs calls, email, and deals together. Build the weekly report and one hard automation before choosing a plan."},
+  "conflictsAndUnknowns":["Easy standard sales work becomes harder as reports, permissions, and automation are customized.","The low Growth headline excludes several features that growing teams may need in Pro or Enterprise.","No import, call, email, automation, report, mobile, AI, billing, or support test was completed."]
+}

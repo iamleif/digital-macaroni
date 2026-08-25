@@ -28,6 +28,26 @@ MAX_ICON_BYTES = 2_097_152
 TIMEOUT_SECONDS = 20
 
 
+def load_local_environment() -> None:
+    """Load only the two crawler credentials from .env.local when needed."""
+    if os.getenv("SUPABASE_URL") and os.getenv("SUPABASE_SECRET_KEY"):
+        return
+    env_path = os.path.join(os.getcwd(), ".env.local")
+    try:
+        with open(env_path, encoding="utf-8") as handle:
+            for raw_line in handle:
+                line = raw_line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                key = key.strip()
+                if key not in {"SUPABASE_URL", "SUPABASE_SECRET_KEY"}:
+                    continue
+                os.environ.setdefault(key, value.strip().strip('"').strip("'"))
+    except FileNotFoundError:
+        return
+
+
 @dataclass(frozen=True)
 class Product:
     id: int
@@ -102,7 +122,13 @@ class SupabaseApi:
         with urlopen(request, timeout=TIMEOUT_SECONDS) as response:
             return response.read(), dict(response.headers.items())
 
-    def products(self, slug: str | None, limit: int, missing_icons_only: bool) -> list[Product]:
+    def products(
+        self,
+        slug: str | None,
+        slugs: list[str] | None,
+        limit: int,
+        missing_icons_only: bool,
+    ) -> list[Product]:
         query = {
             "select": "id,slug,name,website_url",
             "order": "target_publish_date.asc,id.asc",
@@ -110,6 +136,9 @@ class SupabaseApi:
         }
         if slug:
             query["slug"] = f"eq.{slug}"
+        elif slugs:
+            safe_slugs = [item for item in slugs if item.replace("-", "").isalnum()]
+            query["slug"] = f"in.({','.join(safe_slugs)})"
         elif missing_icons_only:
             query["logo_storage_path"] = "is.null"
         payload, _ = self._request("GET", f"/rest/v1/products?{urlencode(query)}")
@@ -288,8 +317,10 @@ def crawl_product(api: SupabaseApi, product: Product) -> tuple[str, str]:
 
 
 def main() -> int:
+    load_local_environment()
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument("--slug")
+    argument_parser.add_argument("--batch-file", help="JSON batch file containing a products array with slugs")
     argument_parser.add_argument("--limit", type=int, default=50)
     argument_parser.add_argument("--workers", type=int, default=6)
     argument_parser.add_argument("--refresh", action="store_true", help="Re-fetch products that already have an icon")
@@ -301,8 +332,13 @@ def main() -> int:
         print("Missing SUPABASE_URL or SUPABASE_SECRET_KEY.", file=sys.stderr)
         return 1
 
+    batch_slugs = None
+    if args.batch_file:
+        with open(args.batch_file, encoding="utf-8") as handle:
+            batch_slugs = [item["slug"] for item in json.load(handle).get("products", [])]
+
     api = SupabaseApi(supabase_url, supabase_secret_key)
-    products = api.products(args.slug, args.limit, missing_icons_only=not args.refresh)
+    products = api.products(args.slug, batch_slugs, args.limit, missing_icons_only=not args.refresh)
     if not products:
         print("No products found.")
         return 0

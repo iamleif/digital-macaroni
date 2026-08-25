@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runName": "rewrite-codex-v1",
+  "slug": "twenty",
+  "writer": "codex-assistant",
+  "status": "complete",
+  "publicationDate": "2026-04-14",
+  "evidenceSha256": "9bbcd3c244304d2bdf297ca82bcd4d3bd2324d77d65c420fe8b22fdbfc96878e",
+  "finalBodySha256": "d85152aeef137cbd8d382c89bfbe1c8f7c342c312586cd1421f058fd8ede19c7",
+  "artifacts": {
+    "01-writer-notebook.md": "d528fc36247e3261d5cfbc10ac9dade8b914b50bc258e1065d277b6388e2f2fb",
+    "02-argument-card.md": "40f51fd308b53f7ef6e903eec61d33ea833d25b453f0d1b5f13297db3d6d97f6",
+    "03-spoken-review-brief.md": "7f7aae7e8dfcfd3d494fedb6571e2178771ccc072bae0c7f3dce2dac7e50d4b1",
+    "04-raw-draft.md": "625c14a2e2d324a7670093044de242dc9f922d493a09318336ff368c36cae00e",
+    "05-copy-edited-draft.md": "625c14a2e2d324a7670093044de242dc9f922d493a09318336ff368c36cae00e",
+    "06-final-draft.md": "d85152aeef137cbd8d382c89bfbe1c8f7c342c312586cd1421f058fd8ede19c7",
+    "07-humanizer-report.md": "d2fd206c5f7e54b289ba33db373a3236d5ef1d73c181dcfd47aede5ccf7e4639",
+    "validation.json": "598059ec39d5576bde5354ab35df391c8312b2e76e09fe7144bbdd917e5e308f"
+  },
+  "completedAt": "2026-08-25T07:34:37.863Z"
+}

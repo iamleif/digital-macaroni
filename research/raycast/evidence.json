@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "raycast",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2020-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "All customer review platforms (Product Hunt, G2) returned CAPTCHA/blocked",
+      "Community discussions inaccessible (Reddit returned 403 error)",
+      "Pricing information completely absent from available sources",
+      "No real-world usage patterns could be documented"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Raycast official website",
+      "url": "https://www.raycast.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Productivity launcher",
+        "Keyboard-first design",
+        "AI integration",
+        "Extendable via extensions",
+        "Clipboard history feature"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Raycast release history",
+      "url": "https://www.producthunt.com/products/raycast",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "Raycast reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/raycast/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 159,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Raycast reviews on G2",
+      "url": "https://www.g2.com/products/raycast/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 16,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Raycast community discussion",
+      "url": "https://www.reddit.com/r/raycastapp/comments/1kig0tt",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-docs",
+      "name": "Raycast official documentation",
+      "url": "https://manual.raycast.com/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Cross-platform availability",
+        "Automation capabilities",
+        "AI-powered features",
+        "Cloud sync functionality",
+        "Team collaboration options"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Raycast functions as an extendable productivity launcher",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Includes clipboard history functionality",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Offers AI integration for chat and automation",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Supports cross-platform use (Mac/Windows/iOS)",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Provides automation capabilities for repetitive tasks",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Features cloud synchronization",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-docs"
+      ]
+    },
+    {
+      "statement": "Includes team collaboration features",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-docs"
+      ]
+    }
+  ],
+  "experienceRecords": [],
+  "featureTranslations": [
+    {
+      "term": "Clipboard History",
+      "plainExplanation": "Remembers previously copied items for reuse",
+      "whoCares": "Users frequently copying between applications",
+      "whenItDoesNotMatter": "Those who rarely copy multiple items sequentially"
+    },
+    {
+      "term": "AI Commands",
+      "plainExplanation": "Custom automations using artificial intelligence",
+      "whoCares": "Users handling repetitive text-based tasks",
+      "whenItDoesNotMatter": "Those with simple workflows requiring minimal automation"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Undocumented in available sources",
+    "product": "Positioned as productivity accelerator with AI integration",
+    "support": "Documentation exists but real-world support quality unknown",
+    "billing": "Mentioned but no pricing details provided",
+    "overall": "Positioned as professional-grade tool with extensibility"
+  },
+  "conflictsAndUnknowns": [
+    "No customer experience data available due to inaccessible review platforms",
+    "Actual performance claims (e.g., '99.8% crash-free') lack verification",
+    "Pricing structure completely undocumented",
+    "Real-world reliability and learning curve unknown"
+  ]
+}

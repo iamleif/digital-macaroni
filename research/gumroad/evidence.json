@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "gumroad",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2011-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Analysis relies solely on curated official testimonials and one review platform with access limitations",
+      "No verifiable data from G2/Capterra due to inaccessible content",
+      "Community discussions blocked by platform security measures",
+      "Pricing and dispute resolution processes remain undocumented in sources"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Gumroad official website",
+      "url": "https://gumroad.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Ease of starting sales",
+        "Flexible product formats",
+        "Multi-currency payments",
+        "Storefront customization",
+        "Direct bank payouts"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Gumroad release history",
+      "url": "https://gumroad.com/about",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Low-barrier entry for creators",
+        "Subscription payment options",
+        "Integration capabilities",
+        "Side-project monetization",
+        "Friday payout schedule"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Gumroad reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/gumroad.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 404,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Payout withholding issues",
+        "Unresponsive customer service",
+        "Dispute resolution problems",
+        "Account access difficulties",
+        "Automated support failures"
+      ]
+    },
+    {
+      "id": "reviews-2",
+      "name": "Gumroad reviews on G2",
+      "url": "https://www.g2.com/products/gumroad/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "Gumroad reviews on Capterra",
+      "url": "https://www.capterra.com/p/210217/Gumroad/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Gumroad community discussion",
+      "url": "https://www.reddit.com/r/Entrepreneur/comments/1gmehsp/do_you_have_experience_with_gumroad/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Gumroad supports selling video lessons, subscriptions, and various digital formats",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Sellers can accept one-time, recurring, or fixed-length payments in multiple currencies",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Payouts land directly in sellers' bank accounts every Friday",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Some sellers report withheld payouts despite account verification",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-1"
+      ]
+    },
+    {
+      "statement": "Customer service frequently relies on unhelpful automated chatbots",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-1"
+      ]
+    },
+    {
+      "statement": "Dispute resolutions may override seller refund policies",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-1"
+      ]
+    },
+    {
+      "statement": "Platform allows storefront customization or personal site integration",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site",
+        "release-history"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "Procreate brush pack seller",
+      "task": "Monetizing digital assets",
+      "whatHappened": "Launched side gig selling brushes",
+      "result": "Earned more than previous 6-figure salary within 2 years",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "Business insights seller",
+      "task": "Selling digital products",
+      "whatHappened": "Uploaded files and set prices",
+      "result": "Received automatic bank deposits every Friday",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-1",
+      "sentiment": "negative",
+      "userContext": "Verified account seller",
+      "task": "Accessing earned revenue",
+      "whatHappened": "Payouts withheld despite compliance",
+      "result": "Unresolved financial withholding",
+      "vendorResponse": "Non-existent support",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-1",
+      "sentiment": "negative",
+      "userContext": "Seller with no-refund policy",
+      "task": "Handling purchase dispute",
+      "whatHappened": "Dispute resolved in buyer's favor against stated policy",
+      "result": "Account debited without consent",
+      "vendorResponse": "Unfavorable resolution",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Sell anywhere",
+      "plainExplanation": "Option to use Gumroad's storefront or embed sales on personal websites",
+      "whoCares": "Creators wanting brand control or existing web presence",
+      "whenItDoesNotMatter": "When using Gumroad as primary storefront without customization needs"
+    },
+    {
+      "term": "Fixed-length payments",
+      "plainExplanation": "Time-bound payment arrangements (e.g., 6-month access packages)",
+      "whoCares": "Creators offering cohort-based courses or limited-duration services",
+      "whenItDoesNotMatter": "For perpetual license sales or indefinite subscriptions"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Official claims emphasize simplicity but customer reports indicate technical and support barriers",
+    "product": "Flexible selling features conflict with operational reliability issues in customer accounts",
+    "support": "Widespread reports of unresponsive service and automated systems failing to resolve issues",
+    "billing": "Verified payout schedule contrasts with pattern of withheld earnings and dispute mishandling",
+    "overall": "Fundamental conflict between advertised creator empowerment and reported financial/operational constraints"
+  },
+  "conflictsAndUnknowns": [
+    "Official claims of reliable Friday payouts directly conflict with customer reports of withheld earnings",
+    "Testimonials highlighting platform simplicity contradict recurring technical difficulties in reviews",
+    "Actual pricing structure remains undisclosed in available sources",
+    "Effectiveness of integration capabilities lacks real-user verification"
+  ]
+}

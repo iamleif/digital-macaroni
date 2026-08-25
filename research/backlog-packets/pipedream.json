@@ -1,0 +1,372 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "fact",
+      "id": 289,
+      "prevalence": "common",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Pipedream publicly launched its beta on October 16, 2019.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "fact",
+      "id": 290,
+      "prevalence": "common",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Pipedream connects APIs through event-driven workflows that combine prebuilt actions with editable code.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.93,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "praise",
+      "id": 291,
+      "prevalence": "common",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Developers repeatedly value moving from an API idea to a running workflow quickly without managing infrastructure.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.94,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "praise",
+      "id": 292,
+      "prevalence": "common",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "The ability to start with a component and then inspect or replace it with custom code is a defining strength.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "praise",
+      "id": 293,
+      "prevalence": "common",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Breadth of integrations, webhooks, scheduling, and API authentication reduces repetitive integration work.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.86,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "praise",
+      "id": 294,
+      "prevalence": "common",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Support and the developer community receive unusually consistent positive mentions.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "complaint",
+      "id": 295,
+      "prevalence": "common",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Pipedream is less approachable for nontechnical workflow owners than visual-first automation tools.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.87,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "complaint",
+      "id": 296,
+      "prevalence": "mixed",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Workflows can become difficult for business teams to review or maintain when important logic lives in scripts.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.82,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "complaint",
+      "id": 297,
+      "prevalence": "mixed",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Credit-based pricing can be harder to forecast for long-running or compute-heavy workflows.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.79,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "complaint",
+      "id": 298,
+      "prevalence": "mixed",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "Some users encounter missing niche integrations or triggers and must build them themselves.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    },
+    {
+      "confidence": 0.89,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "finding_type": "conflict",
+      "id": 299,
+      "prevalence": "mixed",
+      "product_id": 110,
+      "source_ids": [],
+      "summary": "High G2 and Product Hunt satisfaction contrasts with a low-volume negative Trustpilot profile; the open complaint sample is too small to override broader technical evidence.",
+      "updated_at": "2026-08-13T18:44:10.525536+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": null,
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true
+    },
+    "created_at": "2026-08-13T18:44:10.525536+00:00",
+    "id": 106,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 110,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": "2026-08-13T18:44:10.525536+00:00",
+    "status": "needs_review",
+    "updated_at": "2026-08-13T18:44:10.525536+00:00"
+  },
+  "product": {
+    "category": "No-code & automation",
+    "id": 110,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Pipedream",
+    "short_description": "A developer-focused integration platform for connecting APIs and running event-driven workflows with code and prebuilt components.",
+    "slug": "pipedream",
+    "target_publish_date": null,
+    "website_url": "https://pipedream.com"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": "Tod Sacerdoti",
+      "content_hash": "dab4aa4edf33db81314928066a103977",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "We are excited to launch the beta release of Pipedream.",
+      "id": 421,
+      "metadata": {
+        "bias": "first-party founder announcement",
+        "voices_sampled": 1
+      },
+      "platform": "Medium",
+      "product_id": 110,
+      "published_at": "2019-10-16T00:00:00+00:00",
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Founder-authored exact-date launch record for the first public beta.",
+      "title": "Introducing Pipedream",
+      "url": "https://sacerdoti.medium.com/introducing-pipedream-bbca9dde0dc6"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "4fa526b51b3e14f75aa099e9449a750f",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "Original launch in 2019; 25 current product reviews praise flexible API workflows and support.",
+      "id": 422,
+      "metadata": {
+        "bias": "maker and developer launch community",
+        "review_count": 25,
+        "voices_sampled": 25
+      },
+      "platform": "Product Hunt",
+      "product_id": 110,
+      "published_at": "2019-10-16T00:00:00+00:00",
+      "rating": 5,
+      "source_type": "independent-review-platform",
+      "summary": "Launch platform corroborates the date and supplies a maker-heavy review pool emphasizing speed, code access, components, and support.",
+      "title": "Pipedream launches and reviews",
+      "url": "https://www.producthunt.com/products/pipedream"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "2f6e170ce10fbd853a66b47b460174d4",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "Launched October 16, 2019 with 160 upvotes and 36 comments.",
+      "id": 423,
+      "metadata": {
+        "bias": "launch-day discussion",
+        "voices_sampled": 36
+      },
+      "platform": "Hunted Space",
+      "product_id": 110,
+      "published_at": "2019-10-16T00:00:00+00:00",
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Independent Product Hunt archive corroborates exact date and shows substantial launch-day discussion.",
+      "title": "Pipedream Product Hunt launch dashboard",
+      "url": "https://hunted.space/dashboard/pipedream/launches/pipedream-2"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "54830fefb4aefb73fde22b28ac85e6f5",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "4.6 out of 5 from 16 reviews.",
+      "id": 424,
+      "metadata": {
+        "bias": "small verified B2B review sample",
+        "review_count": 16,
+        "voices_sampled": 16
+      },
+      "platform": "G2",
+      "product_id": 110,
+      "published_at": null,
+      "rating": 4.6,
+      "source_type": "independent-review-platform",
+      "summary": "Verified pool praises integrations, ease, code flexibility, and free starting capacity; beginners can find the interface confusing.",
+      "title": "Pipedream reviews",
+      "url": "https://www.g2.com/products/pipedream/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "07c3d278469bb07d38daafeba01a057b",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "Capterra provides a small verified review sample.",
+      "id": 425,
+      "metadata": {
+        "bias": "small commercial-directory sample",
+        "review_count": 6,
+        "voices_sampled": 6
+      },
+      "platform": "Capterra",
+      "product_id": 110,
+      "published_at": null,
+      "rating": 5,
+      "source_type": "independent-review-platform",
+      "summary": "Secondary verified pool supports satisfaction but is too small to anchor findings by itself.",
+      "title": "Pipedream software reviews",
+      "url": "https://www.capterra.com/p/242217/Pipedream/"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "009577521ed0b1572ffabcf2b9d7e32e",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "Early users and founders discuss pricing, security, workflow design, and the free beta.",
+      "id": 426,
+      "metadata": {
+        "bias": "technical early-adopter community",
+        "voices_sampled": 20
+      },
+      "platform": "Hacker News",
+      "product_id": 110,
+      "published_at": "2019-10-19T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Technical launch discussion exposes early questions about business model, trust, and developer fit rather than only praise.",
+      "title": "Show HN: Pipedream",
+      "url": "https://news.ycombinator.com/item?id=21270424"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "f8690907f5071d153b94de9d16280e27",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "Open review profile has a low score but limited volume.",
+      "id": 427,
+      "metadata": {
+        "bias": "small complaint-heavy open-review sample",
+        "voices_sampled": 4
+      },
+      "platform": "Trustpilot",
+      "product_id": 110,
+      "published_at": null,
+      "rating": 2.5,
+      "source_type": "independent-review-platform",
+      "summary": "Retained as a complaint-channel counterweight; low volume and open submissions limit generalization.",
+      "title": "Pipedream customer service reviews",
+      "url": "https://www.trustpilot.com/review/pipedream.com"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "731ac047a7011c87a0239d4a9cf4f2c7",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "A non-engineer finds Pipedream powerful but code-heavy and harder for business teams to read and edit.",
+      "id": 428,
+      "metadata": {
+        "bias": "single comparison narrative in product subreddit",
+        "voices_sampled": 5
+      },
+      "platform": "Reddit",
+      "product_id": 110,
+      "published_at": "2026-02-10T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Clear fit boundary: developers gain flexibility, while nontechnical owners can perceive scripted workflows as fragile.",
+      "title": "n8n versus Pipedream from a business user view",
+      "url": "https://www.reddit.com/r/pipedream/comments/1r0urgk/n8n_vs_pipedream_from_a_business_users_pov/"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "7a9839b7f5058554750e66ed9521cd85",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "Pipedream charges credits based on compute time rather than tasks.",
+      "id": 429,
+      "metadata": {
+        "bias": "independent comparison; pricing may change",
+        "voices_sampled": 6
+      },
+      "platform": "Reddit",
+      "product_id": 110,
+      "published_at": "2023-11-26T00:00:00+00:00",
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community comparison highlights that pricing is efficient for some workflows but harder to predict for compute-heavy runs.",
+      "title": "Low-code automation pricing comparison",
+      "url": "https://www.reddit.com/r/SideProject/comments/184lzv4/ive_compared_pricing_models_of_lowcode_automation_platforms_sharing_my_insights/"
+    },
+    {
+      "accessed_at": "2026-08-13T18:44:10.525536+00:00",
+      "author_name": null,
+      "content_hash": "53c123f9e7f72510482f7beae4caf9ef",
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T18:44:10.525536+00:00",
+      "excerpt": "Current credit-based plans and free tier.",
+      "id": 430,
+      "metadata": {
+        "bias": "first-party commercial source",
+        "voices_sampled": 0
+      },
+      "platform": "Pipedream",
+      "product_id": 110,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Authoritative for present plan mechanics, not satisfaction.",
+      "title": "Pipedream pricing",
+      "url": "https://pipedream.com/pricing"
+    }
+  ]
+}

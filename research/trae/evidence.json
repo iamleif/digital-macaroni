@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "trae",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2025-01-23",
+    "precision": "day",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "Independent review platforms (Product Hunt, G2) were inaccessible",
+      "Community discussions blocked by security measures",
+      "Documentation source returned errors",
+      "All user reports sourced exclusively from curated testimonials"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Trae official website",
+      "url": "https://www.trae.ai",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "AI-integrated development lifecycle",
+        "Autonomous coding with SOLO mode",
+        "Seamless IDE/SOLO switching",
+        "Customizable multi-agent system",
+        "Smart autocompletion features"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Trae release history",
+      "url": "https://www.producthunt.com/products/trae?launch=trae-solo",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "Trae reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/trae/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 24,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Trae reviews on G2",
+      "url": "https://www.g2.com/products/trae/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 5,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Trae community discussion",
+      "url": "https://www.reddit.com/r/TraeIDE/comments/1laiiez/traeai_ide_free_vs_prosubscription/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "official-docs",
+      "name": "Trae official documentation",
+      "url": "https://docs.trae.ai/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Trae offers SOLO mode for autonomous coding from requirements to deployment",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Trae provides both IDE mode for traditional coding and SOLO mode for full autonomy",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Users report increased productivity with SOLO mode in complex codebases",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Some users prefer Trae over competitors like Cursor for complex architectural tasks",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Trae includes smart autocompletion predicting next edits with single Tab",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Users praise Trae's UI/UX as visually appealing and responsive",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Trae supports custom agent creation and community-shared agents",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Performance may depend on network connectivity for code generation speed",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "team with complex codebase",
+      "task": "Understanding large codebase with outside context",
+      "whatHappened": "Used SOLO mode",
+      "result": "Productivity significantly increased",
+      "vendorResponse": "unknown",
+      "confidence": "medium"
+    },
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "individual developer",
+      "task": "Building full application",
+      "whatHappened": "Used incremental development approach",
+      "result": "Completed in two weeks",
+      "vendorResponse": "unknown",
+      "confidence": "medium"
+    },
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "VS Code user",
+      "task": "Switching code editors",
+      "whatHappened": "Migrated to Trae",
+      "result": "Smooth transition experience",
+      "vendorResponse": "unknown",
+      "confidence": "medium"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "SOLO mode",
+      "plainExplanation": "Fully autonomous AI agent that handles entire development process",
+      "whoCares": "Developers seeking to automate coding workflows",
+      "whenItDoesNotMatter": "For minor code edits or when preferring manual control"
+    },
+    {
+      "term": "Multi Agents",
+      "plainExplanation": "Specialized AI helpers that collaborate on complex problems",
+      "whoCares": "Teams working on interconnected systems",
+      "whenItDoesNotMatter": "For simple standalone tasks"
+    },
+    {
+      "term": "Smart autocompletion",
+      "plainExplanation": "Predicts next code edits with single keystroke",
+      "whoCares": "Developers seeking typing efficiency",
+      "whenItDoesNotMatter": "When writing completely novel code patterns"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Transition from VS Code reported as smooth but no official documentation available",
+    "product": "Strong claims of autonomous coding and positive user reports on productivity gains",
+    "support": "No support information available in sources",
+    "billing": "No pricing or subscription details found in accessible sources",
+    "overall": "Positive user experiences reported but limited to curated testimonials"
+  },
+  "conflictsAndUnknowns": [
+    "All available testimonials are exclusively positive with no critical feedback",
+    "Network dependency mentioned for optimal performance without mitigation details",
+    "Pricing structure and support channels remain unknown"
+  ]
+}

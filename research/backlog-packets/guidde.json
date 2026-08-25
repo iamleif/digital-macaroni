@@ -1,0 +1,223 @@
+{
+  "findings": [
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "finding_type": "fact",
+      "id": 40,
+      "prevalence": "common",
+      "product_id": 98,
+      "source_ids": [],
+      "summary": "Guidde launched on November 14, 2022. The date is private and used only as a publication guardrail.",
+      "updated_at": "2026-08-13T16:37:06.492198+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "finding_type": "praise",
+      "id": 41,
+      "prevalence": "common",
+      "product_id": 98,
+      "source_ids": [],
+      "summary": "Users commonly say Guidde makes video guides and training material faster to create without heavy editing work.",
+      "updated_at": "2026-08-13T16:37:06.492198+00:00"
+    },
+    {
+      "confidence": 0.86,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "finding_type": "praise",
+      "id": 42,
+      "prevalence": "common",
+      "product_id": 98,
+      "source_ids": [],
+      "summary": "The simple interface, annotations and shareable output are often valued for onboarding and documentation.",
+      "updated_at": "2026-08-13T16:37:06.492198+00:00"
+    },
+    {
+      "confidence": 0.74,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "finding_type": "complaint",
+      "id": 43,
+      "prevalence": "mixed",
+      "product_id": 98,
+      "source_ids": [],
+      "summary": "Reported limits include robotic AI voiceovers, customization constraints and concern about the depth of human support.",
+      "updated_at": "2026-08-13T16:37:06.492198+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "finding_type": "unknown",
+      "id": 44,
+      "prevalence": "common",
+      "product_id": 98,
+      "source_ids": [],
+      "summary": "No hands-on test was performed. The package combines product-platform and editorial evidence but should not make unverified performance claims.",
+      "updated_at": "2026-08-13T16:37:06.492198+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": "2026-08-13T16:37:06.492198+00:00",
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "release_date_private": true,
+      "research_only": true,
+      "sampled_user_voices": 194,
+      "source_count": 6
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 95,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 98,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T16:37:06.492198+00:00"
+  },
+  "product": {
+    "category": "Video & audio",
+    "id": 98,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Guidde",
+    "short_description": "AI documentation video tool with a focused business use case.",
+    "slug": "guidde",
+    "target_publish_date": null,
+    "website_url": "https://www.guidde.com"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T16:37:06.492198+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "excerpt": null,
+      "id": 143,
+      "metadata": {
+        "evidence_role": "release-date-and-user-feedback",
+        "launch_date": "2022-11-14",
+        "sampled_user_voices": 109
+      },
+      "platform": "Product Hunt",
+      "product_id": 98,
+      "published_at": null,
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Original Guidde launch is dated November 14, 2022. Product Hunt has 109 reviews that mostly praise simple, fast video-guide creation and AI assistance.",
+      "title": "Guidde Product Hunt launch record",
+      "url": "https://www.producthunt.com/products/guidde-2?launch=guidde-video"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:06.492198+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "excerpt": null,
+      "id": 144,
+      "metadata": {
+        "evidence_role": "product-scope"
+      },
+      "platform": "Guidde",
+      "product_id": 98,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official scope: create, manage and share step-by-step video documentation.",
+      "title": "Guidde official website",
+      "url": "https://www.guidde.com/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:06.492198+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "excerpt": null,
+      "id": 145,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "rating": 4.8,
+        "review_count": 82,
+        "sampled_user_voices": 82
+      },
+      "platform": "G2",
+      "product_id": 98,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "G2 shows 82 reviews and a 4.8 out of 5 rating. Recurring praise covers ease of use and time savings. Reported limits include robotic AI voiceovers and customization constraints.",
+      "title": "Guidde reviews on G2",
+      "url": "https://www.g2.com/products/guidde/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:06.492198+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "excerpt": null,
+      "id": 146,
+      "metadata": {
+        "evidence_role": "independent-platform",
+        "sampled_user_voices": 1
+      },
+      "platform": "Chrome Web Store",
+      "product_id": 98,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Public extension-store listing provides a second independent distribution and review surface for the capture workflow.",
+      "title": "Guidde Chrome Web Store listing",
+      "url": "https://chromewebstore.google.com/detail/guidde-magically-create-v/oacmmmjedhheaijfjidilonpngccnhdl?hl=en"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:06.492198+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "excerpt": null,
+      "id": 147,
+      "metadata": {
+        "evidence_role": "editorial-context"
+      },
+      "platform": "eWeek",
+      "product_id": 98,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Independent editorial review describes Guidde as a user-friendly process documentation tool for recording and sharing workflows.",
+      "title": "eWeek Guidde review",
+      "url": "https://www.eweek.com/artificial-intelligence/guidde-review/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:06.492198+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:06.492198+00:00",
+      "excerpt": null,
+      "id": 148,
+      "metadata": {
+        "evidence_role": "editorial-context"
+      },
+      "platform": "The Digital Merchant",
+      "product_id": 98,
+      "published_at": null,
+      "rating": null,
+      "source_type": "editorial-review",
+      "summary": "Editorial review identifies easier documentation as a strength, while noting AI limits and constrained human support.",
+      "title": "The Digital Merchant Guidde review",
+      "url": "https://thedigitalmerchant.com/guidde-review/"
+    }
+  ]
+}

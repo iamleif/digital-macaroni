@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "plausible-analytics",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2019-01-24",
+    "precision": "day",
+    "sourceId": "launch"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on script, event, funnel, import, self-hosting, billing, or support test was completed.",
+      "Cookie-free analytics does not settle consent requirements for every site, jurisdiction, configuration, or other tool.",
+      "Pageview-based visit duration can understate one-page sessions unless the selected engagement tracking records later activity."
+    ]
+  },
+  "sources": [
+    {
+      "id": "launch",
+      "name": "Plausible Analytics milestones",
+      "url": "https://www.indiehackers.com/product/plausible-insights",
+      "accessed": "2026-08-13",
+      "sourceType": "launch-history",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Public beta",
+        "History"
+      ]
+    },
+    {
+      "id": "pricing",
+      "name": "Plausible plans and pricing",
+      "url": "https://plausible.io/",
+      "accessed": "2026-08-14",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Starter",
+        "Growth",
+        "Business",
+        "Trial"
+      ]
+    },
+    {
+      "id": "docs",
+      "name": "Plausible product documentation",
+      "url": "https://plausible.io/docs/your-plausible-experience",
+      "accessed": "2026-08-13",
+      "sourceType": "official-documentation",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Dashboard",
+        "Goals",
+        "Funnels",
+        "Tracking"
+      ]
+    },
+    {
+      "id": "capterra",
+      "name": "Plausible reviews on Capterra",
+      "url": "https://www.capterra.com/p/187430/Plausible-Insights/reviews/",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 8,
+      "keyThemes": [
+        "Ease",
+        "Campaigns",
+        "Usage limits",
+        "Support"
+      ]
+    },
+    {
+      "id": "g2",
+      "name": "Plausible reviews on G2",
+      "url": "https://www.g2.com/products/plausible-analytics/reviews?qs=pros-and-cons",
+      "accessed": "2026-08-13",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 4,
+      "keyThemes": [
+        "Simple",
+        "Open source",
+        "Privacy"
+      ]
+    },
+    {
+      "id": "reddit-alternatives",
+      "name": "Google Analytics alternatives discussion",
+      "url": "https://www.reddit.com/r/webdev/comments/1esuu0q/what_alternative_to_google_analytics_you_using/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 5,
+      "keyThemes": [
+        "Privacy",
+        "Self-hosting",
+        "Goals",
+        "Funnels"
+      ]
+    },
+    {
+      "id": "reddit-simple",
+      "name": "Simple analytics discussion",
+      "url": "https://www.reddit.com/r/webdev/comments/1p08e69/is_it_just_me_or_is_google_analytics_way_too/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 5,
+      "keyThemes": [
+        "Simplicity",
+        "Bare bones"
+      ]
+    },
+    {
+      "id": "reddit-duration",
+      "name": "Analytics duration discussion",
+      "url": "https://www.reddit.com/r/webdev/comments/1j3inkp/what_do_yall_use_for_analytics/",
+      "accessed": "2026-08-13",
+      "sourceType": "community",
+      "reviewCountSampled": 5,
+      "keyThemes": [
+        "One-page visits",
+        "Duration",
+        "Heartbeat"
+      ]
+    },
+    {
+      "id": "github",
+      "name": "Plausible Analytics repository",
+      "url": "https://github.com/plausible/analytics",
+      "accessed": "2026-08-13",
+      "sourceType": "code-community",
+      "reviewCountSampled": null,
+      "keyThemes": [
+        "Open source",
+        "Community edition",
+        "Deployment"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Plausible's public beta became available on January 24, 2019.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "launch"
+      ]
+    },
+    {
+      "statement": "Plausible provides aggregated cookie-free traffic, campaigns, goals, custom events, scroll depth, funnels, journeys, revenue, bot filtering, reports, and imports.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing",
+        "docs"
+      ]
+    },
+    {
+      "statement": "At up to 10,000 monthly pageviews, the displayed yearly rates are $9 per month for Starter, $14 for Growth, and $19 for Business. The cloud trial lasts 30 days without a card.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "Starter includes one site and three years of retention. Growth includes three sites and three people. Business includes ten sites and people, five years of retention, funnels, journeys, revenue attribution, an API, and consolidated views.",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "pricing"
+      ]
+    },
+    {
+      "statement": "A clear single-page dashboard, low learning curve, privacy design, and light script are the strongest positive themes.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "capterra",
+        "g2",
+        "reddit-alternatives",
+        "reddit-simple"
+      ]
+    },
+    {
+      "statement": "The same simplicity can be too limited for deep product analytics, detailed ecommerce analysis, or highly flexible exploration.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reddit-simple",
+        "capterra",
+        "g2"
+      ]
+    },
+    {
+      "statement": "Traffic-tier pricing and one-page session-duration measurement are meaningful concerns for some sites.",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "capterra",
+        "reddit-duration"
+      ]
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "The first dashboard is easy; useful setup still requires goals, campaign tags, bot and internal traffic checks, duration tests, and reconciliation with source records.",
+    "product": "Excellent for clear aggregate web analytics, but not a substitute for deep product behavior or every advertising report.",
+    "support": "Small formal samples are positive overall, with some support and limit disputes; no request was tested.",
+    "billing": "Starting annual prices are reasonable, while pageview growth can make a high-traffic simple site expensive.",
+    "overall": "Plausible is a good choice when the team needs a one-page answer about traffic and conversions. Run it beside current analytics through one campaign and prove that the simple numbers are enough."
+  },
+  "conflictsAndUnknowns": [
+    "Simple aggregate analytics improves use by removing detail and may remove detail some teams need.",
+    "Privacy design can reduce consent burden without becoming universal legal advice.",
+    "Self-hosting gives control and requires the team to operate ClickHouse, PostgreSQL, backups, upgrades, email, and availability.",
+    "No tracking, duration, campaign, import, export, self-host, billing, or support test was completed."
+  ]
+}

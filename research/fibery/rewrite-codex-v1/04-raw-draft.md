@@ -1,0 +1,57 @@
+Fibery lets a company build its own shared work system. Teams can keep customers, projects, tasks, research, documents, and goals in separate lists, then link related items together.
+
+We recommend Fibery when those links remove a real handoff between teams. A customer interview can connect to a feature request and the project that addresses it. Someone can follow the work without copying the same facts between a project tool and a research store.
+
+That flexibility creates a substantial implementation and governance cost. The team has to design its own system and keep it understandable. Fibery is excessive when a normal task list already fits the work.
+
+## Links between records are the main strength
+
+Fibery calls each list a database. One list might hold customers, while another holds projects. A relation is the link between an item in each list, such as a project tied to the customer paying for it.
+
+A product team can link interview notes to feature ideas and planned work. An agency can connect a client with projects, meeting notes, and invoices. The same item can appear in a table, board, calendar, or timeline.
+
+Documents and whiteboards can sit beside these records. Forms add new items, while rules can update a field or send data after something happens.
+
+Connected data, flexible processes, and replacing smaller tools are the strongest themes in the customer feedback. Support and steady product updates also receive broad praise.
+
+Every relation should have a defined purpose. Connecting every list because Fibery allows it will create a maze. Start with facts that people copy between tools today. Add a link only when it stops that copying or helps someone make a decision.
+
+## The team must design the workspace
+
+Fibery cannot know how a company describes its work. Someone must decide whether a product request and a feature are separate items. The team also needs rules for ownership, names, required fields, completed work, and the first view a new person sees.
+
+Templates can offer a starting point. They cannot settle these choices. The time needed to learn and shape the workspace is the most consistent complaint.
+
+One enthusiastic person can build a clever system that nobody else understands. If every change requires that person, the company has created a new dependency.
+
+Name a workspace owner and involve normal users in the design. Ask them to create, find, update, and finish real work without a guided tour. Change names they misunderstand and remove views they avoid.
+
+The team also needs a rule for changing the structure. Decide who can add lists or fields and where the design is explained. Constant unplanned changes make the workspace hard to trust.
+
+## Test the report and access rules first
+
+A task board is an easy Fibery demo. It reveals little about whether the product can handle the hard part of the company's work.
+
+Build the management report people already ask for. If the business plans staff across several projects, make the real capacity view. If clients need access, invite one as a guest and check each record they can see. Use separate accounts for the hardest privacy case.
+
+Reporting, outside sharing, permission clarity, alerts, and detailed staff planning appear as narrower weak points. Put the relevant ones at the front of the trial.
+
+Export the workspace too. Fibery can export to Markdown and CSV. Open the files and check whether records and links would still make sense outside the product. An available export may still require a lot of cleanup before a move.
+
+Skip Fibery if a key report remains awkward or normal users need the builder beside them. Flexibility has no value when the team cannot use the result on its own.
+
+## The free plan is generous for a prototype
+
+Free supported up to ten users and ten databases when the evidence was gathered. It included unlimited records, basic views, documents, formulas, rules, and one synced connection. History and monthly usage limits were lower.
+
+Standard cost €12 per paid user each month with yearly billing. It removed the database cap and added charts, whiteboards, human support, more history, higher limits, and AI credits.
+
+Pro cost €20 per paid user. It added custom apps, stronger permissions, code-based rules, unlimited history, more AI, and much higher usage limits. Enterprise cost €40 per paid user with at least 25 paid users.
+
+Observers and guests were free on paid plans. An observer could read and comment broadly. A guest worked with selected records. Limits on shared records differed by plan, so a real client setup needs a trial.
+
+Seats are only part of the plan choice. Rules, synced records, AI credits, history, and permission tools also have limits. One access rule or heavy automation need can push a small team to Pro.
+
+We recommend picking one piece of work that crosses two teams. Build it with real records, one useful rule, the hardest report, and the hardest access case. Run it for two weeks.
+
+Do not move the whole company during that trial. Fibery deserves wider use only when the links remove copying and ordinary users can work without the designer nearby. When that proof exists, the flexibility is valuable. Without it, the team is paying to invent a system it does not need.

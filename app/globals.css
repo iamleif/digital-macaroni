@@ -1,4 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500&display=swap");
+@import "@fontsource/plus-jakarta-sans/latin-400.css";
+@import "@fontsource/plus-jakarta-sans/latin-500.css";
+@import "@fontsource/plus-jakarta-sans/latin-600.css";
+@import "@fontsource/plus-jakarta-sans/latin-700.css";
+@import "@fontsource/plus-jakarta-sans/latin-800.css";
+@import "@fontsource/dm-mono/latin-400.css";
+@import "@fontsource/dm-mono/latin-500.css";
 @import "tailwindcss";
 
 :root {
@@ -11,7 +17,7 @@
   --yellow: #f7d85a;
   --yellow-soft: #fff0a5;
   --line: #191815;
-  --sans: "Bricolage Grotesque", Arial, sans-serif;
+  --sans: "Plus Jakarta Sans", Arial, sans-serif;
   --mono: "DM Mono", ui-monospace, monospace;
   --page: min(100% - 2rem, 78rem);
 }
@@ -190,7 +196,7 @@ select:focus-visible {
   font-size: clamp(3.6rem, 6.4vw, 6.4rem);
   font-weight: 800;
   line-height: 0.88;
-  letter-spacing: -0.07em;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
@@ -262,13 +268,15 @@ select:focus-visible {
 
 .latest-score-breakdown div {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
   gap: 0.7rem;
-  font: 500 0.65rem var(--mono);
+  font: 500 clamp(0.82rem, 1.05vw, 0.95rem) / 1.2 var(--mono);
   text-transform: capitalize;
 }
 
 .latest-score-breakdown strong {
+  font-size: 1.12em;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1014,175 +1022,6 @@ select:focus-visible {
   line-height: 1.45;
 }
 
-.how-page {
-  padding-top: clamp(3rem, 6vw, 5rem);
-  padding-bottom: clamp(6rem, 11vw, 10rem);
-}
-
-.how-page-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
-  gap: clamp(3rem, 8vw, 8rem);
-  align-items: end;
-  padding-bottom: clamp(4rem, 8vw, 7rem);
-}
-
-.how-page-hero h1 {
-  max-width: 10ch;
-  margin: 0;
-  font-size: clamp(4rem, 8vw, 8rem);
-  line-height: 0.86;
-  letter-spacing: -0.075em;
-  text-wrap: balance;
-}
-
-.how-page-hero p {
-  max-width: 33rem;
-  margin: 0;
-  color: var(--muted);
-  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
-  line-height: 1.5;
-  text-wrap: pretty;
-}
-
-.criteria-list {
-  padding-top: clamp(3rem, 6vw, 5rem);
-  border-top: 2px solid var(--ink);
-}
-
-.criteria-heading {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-.criteria-heading h2 {
-  margin: 0;
-  font-size: clamp(2.5rem, 5vw, 4.8rem);
-  line-height: 0.95;
-  letter-spacing: -0.055em;
-}
-
-.criteria-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.criteria-grid article {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-width: 0;
-  aspect-ratio: 1;
-  padding: clamp(1.25rem, 2.2vw, 2rem);
-  border: 2px solid var(--ink);
-  background: var(--paper);
-  box-shadow: 0.42rem 0.42rem 0 var(--ink);
-}
-
-.criteria-grid article:nth-child(2) {
-  background: var(--yellow-soft);
-}
-
-.criteria-grid article:nth-child(4) {
-  background: var(--tomato);
-  color: var(--cream);
-}
-
-.criteria-grid article > span {
-  color: var(--tomato-dark);
-  font: 500 0.68rem var(--mono);
-}
-
-.criteria-grid article:nth-child(4) > span {
-  color: var(--cream);
-}
-
-.criteria-grid h3 {
-  align-self: center;
-  margin: 0;
-  font-size: clamp(1.8rem, 3vw, 3.2rem);
-  line-height: 1;
-  letter-spacing: -0.05em;
-}
-
-.criteria-grid p {
-  margin: 0;
-  color: var(--muted);
-  font-size: clamp(0.82rem, 1.05vw, 0.95rem);
-  line-height: 1.45;
-}
-
-.criteria-grid article:nth-child(4) p {
-  color: var(--cream);
-}
-
-.score-bands {
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: clamp(3rem, 8vw, 8rem);
-  margin-top: clamp(6rem, 12vw, 11rem);
-}
-
-.score-bands header {
-  align-self: start;
-  position: sticky;
-  top: 2rem;
-}
-
-.score-bands header h2 {
-  max-width: 10ch;
-  margin: 1rem 0 1.5rem;
-  font-size: clamp(2.6rem, 5vw, 5rem);
-  line-height: 0.92;
-  letter-spacing: -0.06em;
-}
-
-.score-bands header p {
-  max-width: 32rem;
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.score-bands > div {
-  border: 2px solid var(--ink);
-  background: var(--paper);
-  box-shadow: 0.5rem 0.5rem 0 var(--ink);
-}
-
-.score-bands article {
-  display: grid;
-  grid-template-columns: 6rem 1fr;
-  gap: 0.4rem 1.5rem;
-  padding: 1.6rem;
-  border-bottom: 1.5px solid var(--ink);
-}
-
-.score-bands article:last-child {
-  border-bottom: 0;
-}
-
-.score-bands article > strong {
-  grid-row: span 2;
-  color: var(--tomato-dark);
-  font: 500 0.72rem var(--mono);
-  font-variant-numeric: tabular-nums;
-}
-
-.score-bands article h3 {
-  margin: 0;
-  font-size: 1.3rem;
-}
-
-.score-bands article p {
-  margin: 0.35rem 0 0;
-  color: var(--muted);
-  line-height: 1.45;
-}
-
 .review-page {
   padding-top: clamp(1.25rem, 2.5vw, 2.25rem);
   padding-bottom: clamp(5rem, 9vw, 8rem);
@@ -1215,7 +1054,7 @@ select:focus-visible {
   font-size: clamp(3.5rem, 7vw, 7rem);
   font-weight: 800;
   line-height: 0.88;
-  letter-spacing: -0.07em;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
@@ -1518,10 +1357,8 @@ select:focus-visible {
   .review-page-header,
   .review-content,
   .about-grid,
-  .how-page-hero,
   .submit-hero,
   .submit-layout,
-  .score-bands,
   .review-submit-cta {
     grid-template-columns: 1fr;
   }
@@ -1546,14 +1383,6 @@ select:focus-visible {
 
   .review-search {
     width: 100%;
-  }
-
-  .criteria-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .score-bands header {
-    position: static;
   }
 
   .review-content {
@@ -1638,19 +1467,6 @@ select:focus-visible {
 
   .latest-score > strong {
     font-size: 7rem;
-  }
-
-  .criteria-heading {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .criteria-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .score-bands article {
-    grid-template-columns: 5rem 1fr;
   }
 
   .form-grid,

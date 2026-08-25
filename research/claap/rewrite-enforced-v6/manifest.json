@@ -1,0 +1,95 @@
+{
+  "checkpointVersion": 4,
+  "slug": "claap",
+  "model": "qwen3:8b",
+  "sourceBodySha256": "81f8b649651d3284e1644bf272338b3b1ce7e60a79948f9698f0b2cf5e756be1",
+  "publicationDate": "2026-07-03",
+  "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+  "humanizerSha256": "b24d79588b1e4bce89663d52560782bf05b9298c933e4779a717a4044d852221",
+  "evidenceSha256": "ca7e3446219209fbaa15f3c24a4f7bc4cf3c6d822c0f93d526e596754c38de04",
+  "pipelineSha256": "cc780cee03dce164f664aada3a1c14046f4961df964ec20fc7d8d96019c72feb",
+  "status": "running",
+  "stages": {
+    "research_brief": {
+      "file": "01-research-brief.md",
+      "sha256": "fad4fc51e73b73ce531ed876ecb4dbf739906cc4fc3af532c270218a308cb93c",
+      "predecessorSha256": null,
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.139Z"
+    },
+    "source_packet": {
+      "file": "02-source-packet.md",
+      "sha256": "2757af25885045992f59dd85ec2bef00191dea90c8adf91bb766d4b49af4fd9c",
+      "predecessorSha256": "fad4fc51e73b73ce531ed876ecb4dbf739906cc4fc3af532c270218a308cb93c",
+      "metadata": {
+        "generated": "deterministic"
+      },
+      "completedAt": "2026-08-18T11:59:39.141Z"
+    },
+    "writer_notebook": {
+      "file": "03-writer-notebook.md",
+      "sha256": "1263cc9d88a5c02759fdeb7faa3b2d226374526fc923fa68e8ca23a99c098c82",
+      "predecessorSha256": "2757af25885045992f59dd85ec2bef00191dea90c8adf91bb766d4b49af4fd9c",
+      "metadata": {
+        "reviewWriterSha256": "f1ab606cd11c912a17f0e675bf6a9976cfde287ea8e26b0ea38350a91bddc76d",
+        "model": "qwen3:8b",
+        "attempt": 1
+      },
+      "completedAt": "2026-08-18T13:22:32.270Z"
+    }
+  },
+  "failures": [
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.142Z",
+      "candidate": "attempts/001-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect EPERM 127.0.0.1:11434 - Local (0.0.0.0:0)",
+      "createdAt": "2026-08-18T11:59:39.144Z",
+      "candidate": "attempts/002-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 1,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:03.257Z",
+      "candidate": "attempts/003-writer_notebook-attempt-1.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "writer_notebook",
+      "attempt": 2,
+      "message": "connect ECONNREFUSED 127.0.0.1:11434",
+      "createdAt": "2026-08-18T12:18:03.452Z",
+      "candidate": "attempts/004-writer_notebook-attempt-2.md",
+      "candidateSha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 1,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T13:23:21.223Z",
+      "candidate": "attempts/005-argument_card-attempt-1.md",
+      "candidateSha256": "d60eddb3b5b5f294e9806668540da674bb98a67362520871cdafecb4c8d63c40"
+    },
+    {
+      "stage": "argument_card",
+      "attempt": 2,
+      "message": "Argument card has no editorial thesis or decision.",
+      "createdAt": "2026-08-18T13:23:46.168Z",
+      "candidate": "attempts/006-argument_card-attempt-2.md",
+      "candidateSha256": "65ff01da88b003cecdd1666a95f882ed8488f30802b7f7fac2fb860b70370ffc"
+    }
+  ],
+  "createdAt": "2026-08-18T11:59:39.137Z",
+  "updatedAt": "2026-08-18T13:23:46.183Z"
+}

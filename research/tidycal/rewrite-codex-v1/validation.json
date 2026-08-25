@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checks": {
+    "structure": true,
+    "source_integrity": true,
+    "stance": true,
+    "buyer_guidance": true,
+    "humanizer": true,
+    "similarity": true,
+    "readability": true,
+    "disclosure": true
+  },
+  "metrics": {
+    "grade": 6.9,
+    "averageSentenceWords": 10.7,
+    "wordCount": 759,
+    "h2Count": 7,
+    "sourceCount": 6,
+    "maximumSimilarity": 0.0013,
+    "mostSimilarSlug": "tally",
+    "stockHeadingCount": 1,
+    "aggregationCount": 0
+  },
+  "bodySha256": "b04fba7f5ca573b25e046822183e5c78f1fea7ab54f69180f638950623e15c8e"
+}

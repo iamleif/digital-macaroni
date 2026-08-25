@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "youcanbookme",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2011-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "No access to G2/Capterra reviews due to CAPTCHA restrictions",
+      "Featured testimonials curated by vendor",
+      "No enterprise-scale usage patterns documented"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "YouCanBookMe official website",
+      "url": "https://youcanbook.me",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Branded booking customization",
+        "Payment integration via Stripe",
+        "Automation features",
+        "Free and paid pricing tiers"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "YouCanBookMe release history",
+      "url": "https://youcanbook.me/about-us",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Founded 2010, acquired 2025",
+        "Remote team with company values",
+        "Focus on customer experience"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "YouCanBookMe reviews on G2",
+      "url": "https://www.g2.com/products/youcanbookme/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 1934,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "YouCanBookMe reviews on Capterra",
+      "url": "https://www.capterra.com/p/142965/YouCanBookMe/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 350,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "YouCanBookMe reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/youcanbook.me",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Positive customer support experiences",
+        "Ease of use and setup",
+        "Booker-friendly interface"
+      ]
+    },
+    {
+      "id": "community-seed-1",
+      "name": "YouCanBookMe community discussion",
+      "url": "https://www.producthunt.com/products/youcanbook-me",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Offers branded booking pages with logo/color customization",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Integrates payment processing via Stripe with Apple/Google Pay",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Provides free tier with 1 calendar connection and 1 booking page",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Customers report exceptional customer service experiences",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Users describe setup process as intuitive and simple",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Bookers appreciate the scheduling interface's ease of use",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-3"
+      ]
+    },
+    {
+      "statement": "Founded in 2010 and acquired by Capacity in 2025",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Professional with customer service background",
+      "task": "Resolve billing issue",
+      "whatHappened": "Rodrigo advocated with billing department",
+      "result": "Committed to 2-year paid plan",
+      "vendorResponse": "Review shared company-wide",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Financial planner",
+      "task": "Client scheduling",
+      "whatHappened": "Clients managed bookings/cancellations independently",
+      "result": "Eliminated back-and-forth emails",
+      "vendorResponse": "Acknowledged high booking volume",
+      "confidence": "medium"
+    },
+    {
+      "sourceId": "reviews-3",
+      "sentiment": "positive",
+      "userContext": "Pre-sales prospect",
+      "task": "Platform setup consultation",
+      "whatHappened": "Becca provided patient guidance",
+      "result": "Positive implementation experience",
+      "vendorResponse": "Personalized thank-you response",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Automated Everything",
+      "plainExplanation": "System handles reminders, follow-ups, and calendar updates automatically",
+      "whoCares": "Busy professionals reducing administrative tasks",
+      "whenItDoesNotMatter": "For occasional schedulers without recurring appointments"
+    },
+    {
+      "term": "Branded booking pages",
+      "plainExplanation": "Customizable scheduling pages matching business visuals",
+      "whoCares": "Customer-facing businesses needing consistent branding",
+      "whenItDoesNotMatter": "Internal team scheduling without client interaction"
+    },
+    {
+      "term": "Calendar connections",
+      "plainExplanation": "Number of external calendars synced per account",
+      "whoCares": "Users managing multiple appointment types across calendars",
+      "whenItDoesNotMatter": "Solo practitioners with single calendar use"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Customer reviews report easy setup process",
+    "product": "Verified features include customization, payments, automations",
+    "support": "Multiple customer reports of exceptional service",
+    "billing": "Payment integration available; one billing resolution documented",
+    "overall": "Positive customer feedback aligns with core feature claims"
+  },
+  "conflictsAndUnknowns": [
+    "No negative experiences in provided reviews",
+    "Unknown: Enterprise feature performance beyond 50+ teams",
+    "Unverified: Claims about Calendly comparison limitations"
+  ]
+}

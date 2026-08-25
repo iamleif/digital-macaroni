@@ -1,0 +1,71 @@
+Saner.AI is built for people who find capture easier than organization. A messy note or spoken thought can become tasks, linked knowledge, and a place to ask questions. Email, calendar, drive, and Slack connections can bring more of the day into the same assistant.
+
+The capture idea is good. The maintenance work is too fragile. Duplicate tasks, confusing navigation, weak editing through the assistant, and changes that do not stay in sync can turn a helpful brain dump into another list to clean.
+
+I recommend Saner.AI only as an experiment for now. Use the free plan with disposable work and keep important notes somewhere else. Anyone who needs a trusted daily task system should skip it.
+
+## Brain dumps are the strongest part
+
+Saner.AI aims to remove the blank-page problem. You can enter rough thoughts before deciding where each item belongs. The assistant can pull out tasks and connect the note with other saved material.
+
+That approach matters for someone who loses an idea while trying to format it. It also helps when starting feels harder than doing the work. Positive feedback often focuses on this relief and the way scattered material appears together.
+
+Test the exact mess you normally create. Add a meeting note, personal reminder, project idea, long pasted message, and an item with no date. Check whether Saner.AI keeps the original meaning while making the next action clear.
+
+## Maintenance decides whether capture was useful
+
+Create 30 tasks and notes that are safe to lose. Give several similar names. Add due dates, links, subtasks, long notes, and a task that belongs to two topics.
+
+Now change them through every available route. Rename a task, move it, change its date, mark it complete, reopen it, and delete it. Ask the assistant to edit an existing item rather than create another one.
+
+Duplicate tasks and limits on assistant editing appear in the public accounts. If a change creates a second item, the user must decide which copy is real. That cleanup cancels much of the benefit of easy capture.
+
+## Web and mobile must agree
+
+Use the same test set on the phone and web app. Complete work on one device, then check the other. Change a date on the web and make sure the phone does not keep the old reminder.
+
+Restart both apps, work briefly without a connection, and sign back in. Search for recently changed items and older notes. A task system becomes stressful when completed work returns or a due date differs by screen.
+
+The App Store rating is much lower than the Product Hunt score. The samples are small and cover changing versions, so neither number settles the question. They do make mobile reliability a required trial.
+
+## Connected accounts increase the stakes
+
+Saner.AI lists email, calendar, drive, and Slack connections across its plans. These links can reduce copying and give the assistant more context. They also expose more private material and create more ways for duplicate tasks to appear.
+
+Start without connected accounts. Add one calendar only after basic notes and tasks stay correct. Create, move, and cancel a test event, then check what Saner.AI changes.
+
+Connect a safe email account next. Check which messages become tasks, what permission the service receives, and how access ends. Do not connect a work inbox or private drive until the team understands storage, deletion, and recovery.
+
+## Search and chat need source checks
+
+Ask Saner.AI questions with known answers from the test notes. The answer should point back to the right note and preserve dates, names, exceptions, and uncertainty.
+
+Add two notes that disagree and one task with an updated date. Ask which version is current. If the assistant blends old and new material, open the source before acting.
+
+AI retrieval can save search time. It cannot become the final authority for a deadline, promise, or private record.
+
+## Backup matters before the habit grows
+
+A personal knowledge system becomes hard to leave once it holds months of notes, tasks, links, and context. Public requests for better backup, sync, API input, and file handling show that these routes matter.
+
+Test export and account deletion before adding important work. Open the export elsewhere and check note text, task state, dates, links, attachments, and created times. Confirm whether connected data and generated summaries leave too.
+
+Keep a separate copy until a restore or useful export works. We did not test backup, export, security, deletion, or support.
+
+## The public evidence points in two directions
+
+Product Hunt showed strong approval from 17 reviews, while the App Store showed a much lower rating from 12 people. Trustpilot's five reviews are too few to change the verdict.
+
+Some people describe a useful personal assistant. Others describe bugs, duplicate tasks, confusing navigation, and incomplete basic actions. The product also changes quickly, which means old praise and old complaints may concern different versions.
+
+The free plan is the right place to settle that conflict for your own setup. Check current limits and paid terms on the live pricing page before spending money.
+
+## Who should choose Saner.AI?
+
+Saner.AI is worth trying for someone who struggles to begin because their thoughts arrive without structure. The capture step can turn a rough brain dump into something usable.
+
+It is the wrong main system for anyone who depends on precise task status across devices. We did not complete a new hands-on test, and the public evidence does not prove reliable daily maintenance.
+
+Run a disposable 30-item trial. Edit, delete, complete, reopen, and reschedule the same work through the assistant, web app, and phone. Add connections one at a time and test export.
+
+Keep Saner.AI only when every basic change stays correct without cleanup. Until then, the good capture experience is attached to a task system that is too fragile to trust.

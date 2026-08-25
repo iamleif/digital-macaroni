@@ -1,0 +1,248 @@
+{
+  "findings": [
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "finding_type": "fact",
+      "id": 45,
+      "prevalence": "common",
+      "product_id": 81,
+      "source_ids": [],
+      "summary": "Tally launched on March 8, 2021. The date is private and used only as a publication guardrail.",
+      "updated_at": "2026-08-13T16:37:55.048159+00:00"
+    },
+    {
+      "confidence": 0.92,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "finding_type": "praise",
+      "id": 46,
+      "prevalence": "common",
+      "product_id": 81,
+      "source_ids": [],
+      "summary": "Users commonly praise Tally for a simple document-style builder, quick setup, a generous free plan and useful integrations.",
+      "updated_at": "2026-08-13T16:37:55.048159+00:00"
+    },
+    {
+      "confidence": 0.84,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "finding_type": "praise",
+      "id": 47,
+      "prevalence": "common",
+      "product_id": 81,
+      "source_ids": [],
+      "summary": "Conditional logic, calculations and routing allow Tally to handle more than basic forms while staying approachable.",
+      "updated_at": "2026-08-13T16:37:55.048159+00:00"
+    },
+    {
+      "confidence": 0.77,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "finding_type": "complaint",
+      "id": 48,
+      "prevalence": "mixed",
+      "product_id": 81,
+      "source_ids": [],
+      "summary": "Advanced logic can become manual, and some users want deeper calculation, customization or routing capability.",
+      "updated_at": "2026-08-13T16:37:55.048159+00:00"
+    },
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "finding_type": "unknown",
+      "id": 49,
+      "prevalence": "common",
+      "product_id": 81,
+      "source_ids": [],
+      "summary": "No hands-on test was performed. Reported feature limits should be verified against the current plan before any later editorial work.",
+      "updated_at": "2026-08-13T16:37:55.048159+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": "2026-08-13T16:37:55.048159+00:00",
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "release_date_private": true,
+      "research_only": true,
+      "sampled_user_voices": 180,
+      "source_count": 7
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 78,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 81,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T16:37:55.048159+00:00"
+  },
+  "product": {
+    "category": "No-code & automation",
+    "id": 81,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "Tally",
+    "short_description": "Independent form product with a large enough community for broad evidence.",
+    "slug": "tally",
+    "target_publish_date": null,
+    "website_url": "https://tally.so"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T16:37:55.048159+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "excerpt": null,
+      "id": 149,
+      "metadata": {
+        "evidence_role": "release-date-and-user-feedback",
+        "launch_date": "2021-03-08",
+        "sampled_user_voices": 20
+      },
+      "platform": "Product Hunt",
+      "product_id": 81,
+      "published_at": null,
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Product Hunt records the early Tally release and collects extensive product feedback about a simple document-style form builder.",
+      "title": "Tally Product Hunt launch record",
+      "url": "https://www.producthunt.com/products/tally"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:55.048159+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "excerpt": null,
+      "id": 150,
+      "metadata": {
+        "evidence_role": "product-scope"
+      },
+      "platform": "Tally",
+      "product_id": 81,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official scope: no-code forms, surveys and submissions with conditional logic and integrations.",
+      "title": "Tally official website",
+      "url": "https://tally.so/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:55.048159+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "excerpt": null,
+      "id": 151,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "rating": 4.9,
+        "review_count": 124,
+        "sampled_user_voices": 124
+      },
+      "platform": "G2",
+      "product_id": 81,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "G2 shows 124 reviews and a 4.9 rating. Common positives are ease of use, free plan and integrations; reported limits include advanced logic and customization.",
+      "title": "Tally reviews on G2",
+      "url": "https://www.g2.com/products/tally-forms-tally/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:55.048159+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "excerpt": null,
+      "id": 152,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "rating": 4.9,
+        "review_count": 39,
+        "sampled_user_voices": 39
+      },
+      "platform": "Capterra",
+      "product_id": 81,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Capterra shows a 4.9 rating from 39 reviews and confirms the product scope and paid customization tier.",
+      "title": "Tally reviews on Capterra",
+      "url": "https://www.capterra.com/p/10032029/Tally/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:55.048159+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "excerpt": null,
+      "id": 153,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "sampled_user_voices": 5
+      },
+      "platform": "Trustpilot",
+      "product_id": 81,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Trustpilot includes unprompted user feedback, including comments on integrations and minor requested features.",
+      "title": "Tally reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/tally.so"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:55.048159+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "excerpt": null,
+      "id": 154,
+      "metadata": {
+        "evidence_role": "community-perspective",
+        "sampled_user_voices": 4
+      },
+      "platform": "Reddit",
+      "product_id": 81,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community comparison conversation provides independent buyer context for Tally versus Typeform.",
+      "title": "Reddit Tally versus Typeform discussion",
+      "url": "https://www.reddit.com/r/nocode/comments/zsm01r/tally_vs_typeform_feedbacks/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:37:55.048159+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:37:55.048159+00:00",
+      "excerpt": null,
+      "id": 155,
+      "metadata": {
+        "evidence_role": "community-perspective",
+        "sampled_user_voices": 3
+      },
+      "platform": "Reddit",
+      "product_id": 81,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community feedback notes the generous free limits, while another comparison source raises depth limits for advanced calculation and conditional logic.",
+      "title": "Reddit discussion of Tally in a form-tool comparison",
+      "url": "https://www.reddit.com/r/SaaS/comments/1rwbls9/replaced_4_tools_with_tally/"
+    }
+  ]
+}

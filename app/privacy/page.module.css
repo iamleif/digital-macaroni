@@ -1,0 +1,281 @@
+.page {
+  width: var(--page);
+  margin-inline: auto;
+  padding-bottom: clamp(6rem, 11vw, 10rem);
+}
+
+.label,
+.number {
+  font: 500 0.67rem var(--mono);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.75fr);
+  gap: clamp(3rem, 8vw, 8rem);
+  align-items: end;
+  padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+
+.hero h1 {
+  max-width: 10ch;
+  margin: 1rem 0 0;
+  font-size: clamp(4rem, 8vw, 8rem);
+  line-height: 0.84;
+  letter-spacing: -0.075em;
+  text-wrap: balance;
+}
+
+.summary {
+  padding-top: 1.4rem;
+  border-top: 2px solid var(--ink);
+}
+
+.summary p {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  line-height: 1.5;
+}
+
+.summary span {
+  display: block;
+  margin-top: 2rem;
+  font: 500 0.64rem var(--mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tracking {
+  padding-block: clamp(4.5rem, 8vw, 7rem);
+  border-top: 2px solid var(--ink);
+}
+
+.tracking > header {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.55fr) minmax(0, 1.45fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.tracking h2,
+.policyGrid h2,
+.rights h2 {
+  margin: 0;
+  font-size: clamp(2.6rem, 5vw, 5.2rem);
+  line-height: 0.91;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+
+.tracking h2 {
+  max-width: 15ch;
+}
+
+.trackerList {
+  border-top: 2px solid var(--ink);
+}
+
+.trackerList article {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(13rem, 0.65fr) minmax(19rem, 1.35fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  padding-block: clamp(2rem, 4vw, 3.5rem);
+  border-bottom: 2px solid var(--ink);
+}
+
+.number {
+  color: var(--tomato-dark);
+}
+
+.trackerName h3 {
+  margin: 0 0 0.8rem;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.trackerName p,
+.trackerDetails p,
+.policyGrid p,
+.rights p,
+.policyFooter p {
+  color: var(--muted);
+  line-height: 1.58;
+}
+
+.trackerName p,
+.trackerDetails p {
+  margin: 0;
+}
+
+.trackerDetails h4 {
+  margin: 0 0 0.45rem;
+  font: 500 0.65rem var(--mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.trackerDetails p + h4 {
+  margin-top: 1.5rem;
+}
+
+.trackerDetails a,
+.authorityLink {
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  color: var(--ink);
+  font: 500 0.67rem var(--mono);
+  text-decoration: underline;
+  text-decoration-color: var(--tomato);
+  text-underline-offset: 0.3rem;
+  text-transform: uppercase;
+}
+
+.trackerDetails a:hover,
+.authorityLink:hover,
+.rights p a:hover {
+  color: var(--tomato-dark);
+}
+
+.policyGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 0.6rem 0.6rem 0 var(--ink);
+}
+
+.policyGrid section {
+  min-height: 27rem;
+  padding: clamp(1.6rem, 4vw, 3.5rem);
+}
+
+.policyGrid section:nth-child(odd) {
+  border-right: 2px solid var(--ink);
+}
+
+.policyGrid section:nth-child(-n + 2) {
+  border-bottom: 2px solid var(--ink);
+}
+
+.policyGrid section:nth-child(2) {
+  background: var(--yellow-soft);
+}
+
+.policyGrid section:nth-child(3) {
+  background: var(--tomato);
+  color: var(--cream);
+}
+
+.policyGrid section:nth-child(3) p {
+  color: rgba(255, 247, 230, 0.82);
+}
+
+.policyGrid h2 {
+  max-width: 12ch;
+  margin: 1rem 0 2rem;
+  font-size: clamp(2.4rem, 4vw, 4.2rem);
+}
+
+.policyGrid p {
+  max-width: 36rem;
+  margin: 0 0 1.2rem;
+}
+
+.rights {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(20rem, 1.2fr);
+  gap: clamp(3rem, 9vw, 9rem);
+  padding-block: clamp(7rem, 12vw, 11rem);
+}
+
+.rights h2 {
+  max-width: 8ch;
+  margin-top: 1rem;
+}
+
+.rights p {
+  max-width: 42rem;
+  margin: 0 0 1.3rem;
+  font-size: 1.05rem;
+}
+
+.rights p a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--tomato);
+  text-underline-offset: 0.25rem;
+}
+
+.authorityLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.policyFooter {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.55fr) minmax(0, 1.45fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-top: 2.5rem;
+  border-top: 2px solid var(--ink);
+}
+
+.policyFooter p {
+  max-width: 42rem;
+  margin: 0;
+}
+
+@media (max-width: 820px) {
+  .hero,
+  .tracking > header,
+  .rights,
+  .policyFooter {
+    grid-template-columns: 1fr;
+  }
+
+  .trackerList article {
+    grid-template-columns: 2.5rem 1fr;
+  }
+
+  .trackerDetails {
+    grid-column: 2;
+  }
+
+  .policyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .policyGrid section,
+  .policyGrid section:nth-child(odd),
+  .policyGrid section:nth-child(-n + 2) {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .policyGrid section:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero h1 {
+    font-size: clamp(3.5rem, 17vw, 5.5rem);
+  }
+
+  .trackerList article {
+    grid-template-columns: 1fr;
+  }
+
+  .trackerDetails {
+    grid-column: 1;
+  }
+}

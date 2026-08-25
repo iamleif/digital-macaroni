@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runName": "rewrite-codex-v1",
+  "slug": "openphone",
+  "writer": "codex-assistant",
+  "status": "complete",
+  "publicationDate": "2026-07-10",
+  "evidenceSha256": "66df879b76887f905f4d3e54914ec5dd3f92bff2e97457b80a5ffab636ae0271",
+  "finalBodySha256": "908ed10b4232838cebf33556fe588f9ef75bdd92e86609cf3f05c48696dd109e",
+  "artifacts": {
+    "01-writer-notebook.md": "f98d7c0db4afc1817a0ee0dd022b26acfe6e3409000571ae79d5298d135db75a",
+    "02-argument-card.md": "d83c9b1bc95a110508ac534a65f92d14e73ea4e97c677a19bcd604c6781688ea",
+    "03-spoken-review-brief.md": "36f638acc3510ed0856bc02880229bde689ac3250cdd765a3c91bfb448c5be29",
+    "04-raw-draft.md": "55630828c9cc18ec7bf4f71179661db061596b34ab18c667cdca2b0166a17283",
+    "05-copy-edited-draft.md": "7832addad3da766a1293bf9940e1a367649dbb3615e914f9d773a4eba8577311",
+    "06-final-draft.md": "908ed10b4232838cebf33556fe588f9ef75bdd92e86609cf3f05c48696dd109e",
+    "07-humanizer-report.md": "506b575a6c28bbf674c91fd7ca6bd44ecf07d7daec84229f1846dc6bfaabc8b4",
+    "validation.json": "10f7558ef036c83fac87a862e2ed8da8ff43dc8ffb1e60d231ce18c6f577227b"
+  },
+  "completedAt": "2026-08-25T06:18:41.857Z"
+}

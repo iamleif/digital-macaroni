@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "kittl",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2022-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "No accessible independent review data",
+      "Single curated testimonial limits user experience insight",
+      "Actual workflow efficiency unmeasured",
+      "Feature performance claims unverified"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Kittl official website",
+      "url": "https://www.kittl.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "AI-first design platform positioning",
+        "Tiered subscription pricing structure",
+        "Integrated AI model ecosystem",
+        "Template-based design workflow",
+        "Free forever entry-level plan"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Kittl release history",
+      "url": "https://www.kittl.com/about",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "AI creative suite features",
+        "Collaborative editing capabilities",
+        "Industry-specific design templates",
+        "Vector editing tools",
+        "Content library assets"
+      ]
+    },
+    {
+      "id": "reviews-1",
+      "name": "Kittl reviews on Product Hunt",
+      "url": "https://www.producthunt.com/products/kittl/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Kittl reviews on G2",
+      "url": "https://www.g2.com/products/kittl/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 22,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-3",
+      "name": "Kittl reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/kittl.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 920,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Kittl community discussion",
+      "url": "https://www.producthunt.com/products/kittl",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Kittl offers a free forever plan with 5 projects and 200 AI tokens",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Pro plan ($19/month) provides 2,000 AI tokens monthly and 10GB storage",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Platform integrates AI models from ByteDance, Google, OpenAI and others",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Designers report reduced asset search time and Photoshop dependency",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "UX/UI designers experience accelerated idea-to-design workflow",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Provides vector editing and background removal tools",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    },
+    {
+      "statement": "Offers industry-specific templates for merch, branding and social media",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "release-history"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "official-site",
+      "sentiment": "positive",
+      "userContext": "UX/UI Designer",
+      "task": "Creating product designs",
+      "whatHappened": "Used mockups and design tools to replace asset searching and Photoshop editing",
+      "result": "Ideas came to life in single platform",
+      "vendorResponse": "unknown",
+      "confidence": "high"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "AI Tokens",
+      "plainExplanation": "Credits consumed when using AI features",
+      "whoCares": "Frequent AI tool users monitoring usage",
+      "whenItDoesNotMatter": "For manual design work without AI assistance"
+    },
+    {
+      "term": "Mockups",
+      "plainExplanation": "Pre-configured product visualizations",
+      "whoCares": "Merch designers presenting concepts",
+      "whenItDoesNotMatter": "Abstract design projects without physical products"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Free tier available with immediate access",
+    "product": "Comprehensive AI toolsets with multi-model integration",
+    "support": "Unknown - no support documentation referenced",
+    "billing": "Transparent tiered pricing with annual discounts",
+    "overall": "Strong AI-first positioning with workflow acceleration claims"
+  },
+  "conflictsAndUnknowns": [
+    "No independent verification of performance claims",
+    "Actual AI output quality unverified",
+    "Collaboration feature functionality undocumented",
+    "Real-world template customization limitations unknown"
+  ]
+}

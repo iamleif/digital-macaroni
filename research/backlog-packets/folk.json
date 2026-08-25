@@ -1,0 +1,270 @@
+{
+  "findings": [
+    {
+      "confidence": 0.95,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "finding_type": "fact",
+      "id": 20,
+      "prevalence": "common",
+      "product_id": 60,
+      "source_ids": [],
+      "summary": "folk has a dated public product-launch report from May 4, 2022. Its release date is private editorial data.",
+      "updated_at": "2026-08-13T16:26:11.336058+00:00"
+    },
+    {
+      "confidence": 0.8,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "finding_type": "praise",
+      "id": 21,
+      "prevalence": "common",
+      "product_id": 60,
+      "source_ids": [],
+      "summary": "People repeatedly value folk as a lighter CRM with contact enrichment, relationship history, and browser-based capture.",
+      "updated_at": "2026-08-13T16:26:11.336058+00:00"
+    },
+    {
+      "confidence": 0.75,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "finding_type": "praise",
+      "id": 22,
+      "prevalence": "common",
+      "product_id": 60,
+      "source_ids": [],
+      "summary": "Small teams see its simple setup and modern interface as a useful alternative to a traditional CRM.",
+      "updated_at": "2026-08-13T16:26:11.336058+00:00"
+    },
+    {
+      "confidence": 0.75,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "finding_type": "complaint",
+      "id": 23,
+      "prevalence": "mixed",
+      "product_id": 60,
+      "source_ids": [],
+      "summary": "Mobile support, analytics depth, per-seat cost, and fit for complex growing teams are recurring limits.",
+      "updated_at": "2026-08-13T16:26:11.336058+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "finding_type": "unknown",
+      "id": 24,
+      "prevalence": "common",
+      "product_id": 60,
+      "source_ids": [],
+      "summary": "No new hands-on test has been completed. Public feedback shows a mix of strong fit for small teams and weak fit for more complex workflows.",
+      "updated_at": "2026-08-13T16:26:11.336058+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": "2026-08-13T16:26:11.336058+00:00",
+    "config": {
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "researchBrief": "research/ARTICLE_BRIEF.md"
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 57,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 60,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": "2026-08-13T16:26:11.336058+00:00",
+    "status": "needs_review",
+    "updated_at": "2026-08-13T16:26:11.336058+00:00"
+  },
+  "product": {
+    "category": "CRM & sales",
+    "id": 60,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "folk",
+    "short_description": "Smaller collaborative CRM positioned away from enterprise incumbents.",
+    "slug": "folk",
+    "target_publish_date": null,
+    "website_url": "https://www.folk.app"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T16:26:11.336058+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "excerpt": null,
+      "id": 109,
+      "metadata": {
+        "keyThemes": [
+          "Public launch date",
+          "Flexible CRM",
+          "Relationship management"
+        ]
+      },
+      "platform": "TechCrunch",
+      "product_id": 60,
+      "published_at": null,
+      "rating": null,
+      "source_type": "press",
+      "summary": "Dated public launch coverage.",
+      "title": "Folk launches flexible CRM",
+      "url": "https://techcrunch.com/2022/05/04/folk-is-launching-its-flexible-crm-product/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:11.336058+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "excerpt": null,
+      "id": 110,
+      "metadata": {
+        "keyThemes": [
+          "Pipeline management",
+          "Enrichment",
+          "Integrations",
+          "Pricing"
+        ]
+      },
+      "platform": "folk",
+      "product_id": 60,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official plan and feature information.",
+      "title": "folk CRM pricing",
+      "url": "https://www.folk.app/pricing"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:11.336058+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "excerpt": null,
+      "id": 111,
+      "metadata": {
+        "keyThemes": [
+          "Simplicity",
+          "Relationship management",
+          "Missing mobile app",
+          "Support delays"
+        ],
+        "reviewCountSampled": 327
+      },
+      "platform": "G2",
+      "product_id": 60,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Large independent review sample.",
+      "title": "folk reviews on G2",
+      "url": "https://www.g2.com/products/folk-folk/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:11.336058+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "excerpt": null,
+      "id": 112,
+      "metadata": {
+        "keyThemes": [
+          "Gmail integration",
+          "Contact management",
+          "Process improvement"
+        ],
+        "reviewCountSampled": 10
+      },
+      "platform": "Capterra",
+      "product_id": 60,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Independent review platform sample.",
+      "title": "folk reviews on Capterra",
+      "url": "https://www.capterra.com/p/251534/folk/reviews/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:11.336058+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "excerpt": null,
+      "id": 113,
+      "metadata": {
+        "keyThemes": [
+          "Relationship management",
+          "Customer experience",
+          "CRM use"
+        ],
+        "reviewCountSampled": 20
+      },
+      "platform": "Trustpilot",
+      "product_id": 60,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Independent review sample.",
+      "title": "folk reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/folk.app"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:11.336058+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "excerpt": null,
+      "id": 114,
+      "metadata": {
+        "keyThemes": [
+          "Lightweight CRM",
+          "Mobile app",
+          "Analytics",
+          "Per-seat pricing"
+        ],
+        "reviewCountSampled": 7
+      },
+      "platform": "Reddit",
+      "product_id": 60,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community discussion of product limits and pricing.",
+      "title": "folk CRM buying discussion on Reddit",
+      "url": "https://www.reddit.com/r/CRM/comments/1q66si0/planning_to_purchase_folk_but_really_confused/"
+    },
+    {
+      "accessed_at": "2026-08-13T16:26:11.336058+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T16:26:11.336058+00:00",
+      "excerpt": null,
+      "id": 115,
+      "metadata": {
+        "keyThemes": [
+          "Relationship management",
+          "Limits",
+          "Alternative evaluation"
+        ],
+        "reviewCountSampled": 5
+      },
+      "platform": "Reddit",
+      "product_id": 60,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "Community discussion of fit and limitations.",
+      "title": "folk CRM discussion on Reddit",
+      "url": "https://www.reddit.com/r/CRM/comments/1maihm0/folk_seems_good_but_would_like_some_other_opinions/"
+    }
+  ]
+}

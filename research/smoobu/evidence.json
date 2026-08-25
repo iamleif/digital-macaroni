@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "smoobu",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-14",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {
+    "date": "2014-01-01",
+    "precision": "year",
+    "sourceId": "release-history"
+  },
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on test was completed.",
+      "No access to G2/Capterra reviews due to CAPTCHA requirements",
+      "Limited to English-language Trustpilot reviews only",
+      "No official pricing documentation available",
+      "No product changelog or release notes accessible"
+    ]
+  },
+  "sources": [
+    {
+      "id": "official-site",
+      "name": "Smoobu official website",
+      "url": "https://www.smoobu.com",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "All-in-one vacation rental management software",
+        "Channel manager syncs calendars to prevent double bookings",
+        "Offers 14-day free trial without credit card",
+        "Dynamic pricing tool to increase bookings/revenue",
+        "Solutions for various property types"
+      ]
+    },
+    {
+      "id": "release-history",
+      "name": "Smoobu release history",
+      "url": "https://www.smoobu.com/en/about-us/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-1",
+      "name": "Smoobu reviews on G2",
+      "url": "https://www.g2.com/products/smoobu/reviews",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 14,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "reviews-2",
+      "name": "Smoobu reviews on Trustpilot",
+      "url": "https://www.trustpilot.com/review/smoobu.com",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": 459,
+      "accessed": "2026-08-14",
+      "keyThemes": [
+        "Mixed reports on platform reliability and support",
+        "Positive experiences with setup and synchronization",
+        "Negative experiences with disruptive updates",
+        "Varied support responsiveness"
+      ]
+    },
+    {
+      "id": "reviews-3",
+      "name": "Smoobu reviews on Capterra",
+      "url": "https://www.capterra.com/p/166478/Smoobu/reviews/",
+      "sourceType": "independent-review-platform",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    },
+    {
+      "id": "community-seed-1",
+      "name": "Smoobu community discussion",
+      "url": "https://www.reddit.com/r/AirBnBHosts/comments/1n36m3n/removed/",
+      "sourceType": "community",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-14",
+      "keyThemes": []
+    }
+  ],
+  "claims": [
+    {
+      "statement": "Smoobu offers a 14-day free trial without requiring a credit card",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Smoobu provides automatic calendar synchronization across booking platforms",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "Some users experienced significant disruption during website builder updates",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    },
+    {
+      "statement": "Platform outages lasting multiple hours occurred during June 2026",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    },
+    {
+      "statement": "Direct support interactions resolved issues effectively when available",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    },
+    {
+      "statement": "Smoobu provides solutions for boutique hotels and vacation apartments",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-site"
+      ]
+    },
+    {
+      "statement": "New website builder required technical skills and caused language display issues",
+      "kind": "reported-pattern",
+      "status": "supported",
+      "sourceIds": [
+        "reviews-2"
+      ]
+    }
+  ],
+  "experienceRecords": [
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "positive",
+      "userContext": "vacation rental host",
+      "task": "Managing multi-channel bookings",
+      "whatHappened": "Used Smoobu to synchronize calendars and prices",
+      "result": "Improved operational overview and time savings",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "negative",
+      "userContext": "long-term user",
+      "task": "Maintaining rental website",
+      "whatHappened": "Forced website rebuild during peak season after update",
+      "result": "Website downtime, lost bookings, and language display errors",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "positive",
+      "userContext": "new user",
+      "task": "Initial setup and configuration",
+      "whatHappened": "Received guided setup assistance from support staff",
+      "result": "Successful property export and permission configuration",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "negative",
+      "userContext": "potential client with 50+ properties",
+      "task": "Scheduling product consultation",
+      "whatHappened": "Missed appointment with no follow-up to rescheduling requests",
+      "result": "Frustration and reconsideration of service adoption",
+      "vendorResponse": "known response",
+      "confidence": "high"
+    },
+    {
+      "sourceId": "reviews-2",
+      "sentiment": "negative",
+      "userContext": "business user",
+      "task": "Daily platform operation",
+      "whatHappened": "Experienced daily outages exceeding 10 hours",
+      "result": "Severe business disruption and slow performance",
+      "vendorResponse": "known response",
+      "confidence": "medium"
+    }
+  ],
+  "featureTranslations": [
+    {
+      "term": "Channel Manager",
+      "plainExplanation": "Automatically syncs your rental calendar across Airbnb, Booking.com etc.",
+      "whoCares": "Hosts listing on multiple platforms",
+      "whenItDoesNotMatter": "Single-platform users"
+    },
+    {
+      "term": "Dynamic Pricing",
+      "plainExplanation": "Automatically adjusts rental prices based on demand",
+      "whoCares": "Hosts wanting to maximize revenue without manual adjustments",
+      "whenItDoesNotMatter": "Hosts with fixed pricing strategies"
+    }
+  ],
+  "scoreRationale": {
+    "onboarding": "Free trial and onboarding advertised, but consultation access inconsistencies reported",
+    "product": "Core features exist but reliability concerns during updates/peak usage",
+    "support": "Effective when available, but response delays and accessibility issues noted",
+    "billing": "No verifiable pricing data in sources",
+    "overall": "Feature-complete solution with significant operational risk reports during critical periods"
+  },
+  "conflictsAndUnknowns": [
+    "Contradictory support experiences: responsive assistance vs. unanswered requests",
+    "Unknown pricing structure beyond free trial",
+    "Unclear frequency or scope of platform outages",
+    "Conflicting reports about update benefits vs. disruption severity"
+  ]
+}

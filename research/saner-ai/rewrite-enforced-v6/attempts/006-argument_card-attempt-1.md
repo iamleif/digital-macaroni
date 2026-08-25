@@ -1,0 +1,3 @@
+{
+  "content": "Saner.AI is a tool for people who need help organizing thoughts, tasks, and information, especially those with ADHD or a need for structured note-taking. It integrates notes, tasks, email, calendar, and knowledge retrieval, with a free plan offering basic features and paid tiers adding more connections. While users praise its ability to turn brain dumps into actionable tasks, reports of bugs, confusing navigation, and incomplete features suggest it is still in early development. Support is mixed, with some finding the founder helpful and others reporting slow responses. The product has a clear, human-focused goal but needs greater reliability and consistency. It is best suited for those willing to experiment and provide feedback as it evolves."
+}

@@ -1,0 +1,240 @@
+{
+  "findings": [
+    {
+      "confidence": 0.99,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "finding_type": "fact",
+      "id": 77,
+      "prevalence": "common",
+      "product_id": 79,
+      "source_ids": [],
+      "summary": "WeWeb originally launched on March 18, 2021. The date is private and used only as a publication guardrail.",
+      "updated_at": "2026-08-13T17:44:39.539788+00:00"
+    },
+    {
+      "confidence": 0.91,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "finding_type": "praise",
+      "id": 78,
+      "prevalence": "common",
+      "product_id": 79,
+      "source_ids": [],
+      "summary": "Users consistently value WeWeb for flexible frontend design, external backend connections and code export.",
+      "updated_at": "2026-08-13T17:44:39.539788+00:00"
+    },
+    {
+      "confidence": 0.85,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "finding_type": "praise",
+      "id": 79,
+      "prevalence": "common",
+      "product_id": 79,
+      "source_ids": [],
+      "summary": "Builders often see WeWeb as a stronger fit for production web apps than simpler no-code tools.",
+      "updated_at": "2026-08-13T17:44:39.539788+00:00"
+    },
+    {
+      "confidence": 0.9,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "finding_type": "complaint",
+      "id": 80,
+      "prevalence": "common",
+      "product_id": 79,
+      "source_ids": [],
+      "summary": "The learning curve is significant. Authentication, state, responsive layouts and debugging still require technical thinking.",
+      "updated_at": "2026-08-13T17:44:39.539788+00:00"
+    },
+    {
+      "confidence": 0.79,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "finding_type": "complaint",
+      "id": 81,
+      "prevalence": "mixed",
+      "product_id": 79,
+      "source_ids": [],
+      "summary": "Price, editor performance and fragile behavior outside the happy path appear in community feedback.",
+      "updated_at": "2026-08-13T17:44:39.539788+00:00"
+    },
+    {
+      "confidence": 0.98,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "finding_type": "unknown",
+      "id": 82,
+      "prevalence": "common",
+      "product_id": 79,
+      "source_ids": [],
+      "summary": "No hands-on test was performed. Product claims must remain separate from independent user evidence.",
+      "updated_at": "2026-08-13T17:44:39.539788+00:00"
+    }
+  ],
+  "job": {
+    "attempt_count": 0,
+    "completed_at": "2026-08-13T17:44:39.539788+00:00",
+    "config": {
+      "hands_on_test": false,
+      "minimumCommunitySources": 1,
+      "minimumIndependentPlatforms": 2,
+      "minimumTotalSources": 6,
+      "minimumVoiceSamples": 20,
+      "releaseDateRequired": true,
+      "release_date_verified": true,
+      "researched_at": "2026-08-13T17:44:39.539788+00:00",
+      "sampled_user_voices": 58,
+      "source_count": 6
+    },
+    "created_at": "2026-08-13T12:26:29.011319+00:00",
+    "id": 76,
+    "last_error": null,
+    "priority": 3,
+    "product_id": 79,
+    "review_type": "research-based",
+    "scheduled_for": null,
+    "started_at": null,
+    "status": "needs_review",
+    "updated_at": "2026-08-13T17:44:39.539788+00:00"
+  },
+  "product": {
+    "category": "No-code & automation",
+    "id": 79,
+    "logo_source_url": null,
+    "logo_storage_path": null,
+    "name": "WeWeb",
+    "short_description": "Specialist no-code front end with a technical but non-mainstream audience.",
+    "slug": "weweb",
+    "target_publish_date": null,
+    "website_url": "https://www.weweb.io"
+  },
+  "sources": [
+    {
+      "accessed_at": "2026-08-13T17:44:39.539788+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "excerpt": null,
+      "id": 187,
+      "metadata": {
+        "evidence_role": "release-date-and-user-feedback",
+        "launch_date": "2021-03-18",
+        "rating": 4.3,
+        "review_count": 12,
+        "sampled_user_voices": 12
+      },
+      "platform": "Product Hunt",
+      "product_id": 79,
+      "published_at": null,
+      "rating": null,
+      "source_type": "launch-history",
+      "summary": "Original WeWeb launch was March 18, 2021. Product Hunt reports a 4.3 rating based on 12 reviews and describes a powerful visual frontend builder for serious web apps.",
+      "title": "WeWeb Product Hunt launch and reviews",
+      "url": "https://www.producthunt.com/products/weweb-io?launch=weweb"
+    },
+    {
+      "accessed_at": "2026-08-13T17:44:39.539788+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "excerpt": null,
+      "id": 188,
+      "metadata": {
+        "evidence_role": "product-scope"
+      },
+      "platform": "WeWeb",
+      "product_id": 79,
+      "published_at": null,
+      "rating": null,
+      "source_type": "official",
+      "summary": "Official scope covers visual web-app building, external backends, workflows, authentication, hosting and code export.",
+      "title": "WeWeb official website",
+      "url": "https://www.weweb.io/"
+    },
+    {
+      "accessed_at": "2026-08-13T17:44:39.539788+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "excerpt": null,
+      "id": 189,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "rating": 4.8,
+        "review_count": 35,
+        "sampled_user_voices": 35
+      },
+      "platform": "Capterra",
+      "product_id": 79,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "Capterra reports 35 reviews at 4.8, with ease of use and customer service both at 4.6.",
+      "title": "WeWeb reviews on Capterra",
+      "url": "https://www.capterra.com/p/198691/WeWeb/reviews/"
+    },
+    {
+      "accessed_at": "2026-08-13T17:44:39.539788+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "excerpt": null,
+      "id": 190,
+      "metadata": {
+        "evidence_role": "independent-user-reviews",
+        "language": "German summary",
+        "sampled_user_voices": 3
+      },
+      "platform": "G2",
+      "product_id": 79,
+      "published_at": null,
+      "rating": null,
+      "source_type": "independent-review-platform",
+      "summary": "G2 review summaries praise the approachable interface, low-code flexibility and faster development after an initial learning period.",
+      "title": "WeWeb reviews on G2",
+      "url": "https://www.g2.com/de/products/weweb-weweb/reviews"
+    },
+    {
+      "accessed_at": "2026-08-13T17:44:39.539788+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "excerpt": null,
+      "id": 191,
+      "metadata": {
+        "evidence_role": "community-perspective",
+        "sampled_user_voices": 5
+      },
+      "platform": "Reddit",
+      "product_id": 79,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "Builders describe strong design control and Supabase integration, but say the product demands technical fluency in databases, authentication, state and responsive design.",
+      "title": "WeWeb learning-curve discussion on Reddit",
+      "url": "https://www.reddit.com/r/nocode/comments/1mhuk49/weweb_might_be_nocode_but_its_definitely_not/"
+    },
+    {
+      "accessed_at": "2026-08-13T17:44:39.539788+00:00",
+      "author_name": null,
+      "content_hash": null,
+      "crawl_run_id": null,
+      "created_at": "2026-08-13T17:44:39.539788+00:00",
+      "excerpt": null,
+      "id": 192,
+      "metadata": {
+        "evidence_role": "community-perspective",
+        "sampled_user_voices": 3
+      },
+      "platform": "Reddit",
+      "product_id": 79,
+      "published_at": null,
+      "rating": null,
+      "source_type": "community",
+      "summary": "A long comparison chose WeWeb for its balance of power, cost, familiar editor and code export, while noting its price and the need to match the tool to the project.",
+      "title": "No-code builder comparison on Reddit",
+      "url": "https://www.reddit.com/r/nocode/comments/1fvm63d/my_experience_with_popular-no-code-web-builders/"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+# Supademo spoken review brief
+
+Supademo records a software workflow and turns it into a guided demo that viewers click through. It is useful when the same short explanation appears in sales, onboarding, support, and training. The trouble is that dynamic screens, scrolling, modals, and quick clicks can record poorly, while every interface change creates maintenance work. Free allows one creator and five demos. Scale is $38 monthly per creator. Growth is $350 monthly for five creators. Build one difficult real demo, test it with five new people, embed it in three places, change the product, and time the repair.

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "productSlug": "morgen",
+  "legacy": false,
+  "reviewType": "research-based",
+  "researchStarted": "2026-08-13",
+  "researchUpdated": "2026-08-14",
+  "releaseDate": {"date": "2022-08-31", "precision": "day", "sourceId": "product-hunt"},
+  "testing": {
+    "accessedProduct": false,
+    "plan": null,
+    "version": null,
+    "tasksAttempted": [],
+    "limitations": [
+      "No Digital Macaroni hands-on calendar, task, scheduling, mobile, accessibility, sync, or support test was completed.",
+      "The independent review sample is smaller than the sample for the largest calendar products.",
+      "Public comments about recurring tasks and mobile quality need a real workflow test before purchase."
+    ]
+  },
+  "sources": [
+    {"id": "product-hunt", "name": "Morgen on Product Hunt", "url": "https://www.producthunt.com/products/morgen", "accessed": "2026-08-13", "sourceType": "launch-history", "reviewCountSampled": 33, "keyThemes": ["Launch date", "Calendar unification", "Task planning"]},
+    {"id": "official", "name": "Morgen official site", "url": "https://www.morgen.so/", "accessed": "2026-08-13", "sourceType": "official", "reviewCountSampled": null, "keyThemes": ["Calendars", "Tasks", "Time blocking", "Scheduling"]},
+    {"id": "pricing", "name": "Morgen pricing", "url": "https://www.morgen.so/pricing", "accessed": "2026-08-14", "sourceType": "official", "reviewCountSampled": null, "keyThemes": ["Individual", "Team", "Trial", "Integrations"]},
+    {"id": "g2", "name": "Morgen reviews on G2", "url": "https://www.g2.com/products/morgen/reviews", "accessed": "2026-08-13", "sourceType": "independent-review-platform", "reviewCountSampled": 25, "keyThemes": ["Cross-platform use", "Calendar integrations", "Speed", "Accessibility"]},
+    {"id": "capterra", "name": "Morgen reviews on Capterra", "url": "https://www.capterra.com/p/10016370/Morgen/", "accessed": "2026-08-13", "sourceType": "independent-review-platform", "reviewCountSampled": null, "keyThemes": ["Calendar hub", "Planning", "Small sample"]},
+    {"id": "trustpilot", "name": "Morgen reviews on Trustpilot", "url": "https://www.trustpilot.com/review/morgen.so", "accessed": "2026-08-13", "sourceType": "independent-review-platform", "reviewCountSampled": 12, "keyThemes": ["Multiple calendars", "Time blocking", "Value"]},
+    {"id": "reddit-tasks", "name": "Morgen task planning discussion on Reddit", "url": "https://www.reddit.com/r/productivity/comments/1d1ixcq/weekly_help_me_be_productivei_need_advice_thread/", "accessed": "2026-08-13", "sourceType": "community", "reviewCountSampled": 6, "keyThemes": ["Calendar view", "Repeating tasks", "Task reliability"]},
+    {"id": "reddit-workflow", "name": "Morgen integration and time-blocking discussion on Reddit", "url": "https://www.reddit.com/r/productivity/", "accessed": "2026-08-13", "sourceType": "community", "reviewCountSampled": 5, "keyThemes": ["Notion integration", "Time blocking", "Workflow"]}
+  ],
+  "claims": [
+    {"statement": "Morgen launched publicly on August 31, 2022.", "kind": "fact", "status": "verified", "sourceIds": ["product-hunt"]},
+    {"statement": "Morgen combines calendars, task systems, time blocking, booking links, and planning tools in apps for Windows, macOS, Linux, mobile, and the browser.", "kind": "fact", "status": "verified", "sourceIds": ["official", "pricing"]},
+    {"statement": "The Individual plan costs $30 monthly or $15 per month billed yearly. The Team plan costs $25 per seat monthly or $10 per seat monthly billed yearly, with at least two seats.", "kind": "fact", "status": "verified", "sourceIds": ["pricing"]},
+    {"statement": "The trial lasts 14 days, requires no card, and the company states a 30-day money-back guarantee.", "kind": "fact", "status": "verified", "sourceIds": ["pricing"]},
+    {"statement": "Combining several calendars and task lists in a flexible planning view is the strongest positive theme.", "kind": "reported-pattern", "status": "supported", "sourceIds": ["product-hunt", "g2", "capterra", "trustpilot"]},
+    {"statement": "Cross-platform access, including Linux, and responsive support recur as positive themes.", "kind": "reported-pattern", "status": "supported", "sourceIds": ["product-hunt", "g2"]},
+    {"statement": "Speed, mobile quality, accessibility controls, recurring task behavior, and price are meaningful limits in the sample.", "kind": "reported-pattern", "status": "supported", "sourceIds": ["g2", "trustpilot", "reddit-tasks", "reddit-workflow"]}
+  ],
+  "scoreRationale": {
+    "onboarding": "Connecting accounts is only the start; a real week reveals whether the combined view removes checking or creates more of it.",
+    "product": "The unified plan is useful for people with several calendars and task systems, but sync, recurring tasks, mobile behavior, and speed are central reliability questions.",
+    "support": "Responsive help appears in the sample, but no urgent support case was tested.",
+    "billing": "The annual price is half the monthly Individual rate, which makes a complete trial important before a yearly commitment.",
+    "overall": "Morgen is worth testing when scattered calendars and tasks make daily planning hard. Keep it only if one messy week can be planned without checking every source behind it."
+  },
+  "conflictsAndUnknowns": [
+    "A combined view can save planning time only if changes return to the source systems correctly.",
+    "Desktop and Linux access are useful while mobile quality remains a reported concern.",
+    "Automatic planning may help with a busy week, but it does not excuse stale, duplicate, or misplaced work.",
+    "No hands-on sync, recurring-task, mobile, accessibility, scheduling, or support test was completed."
+  ]
+}

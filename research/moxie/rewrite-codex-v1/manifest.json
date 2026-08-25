@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runName": "rewrite-codex-v1",
+  "slug": "moxie",
+  "writer": "codex-assistant",
+  "status": "complete",
+  "publicationDate": "2026-03-24",
+  "evidenceSha256": "6d1d4ea2a4427d45bb1192cb0f3d5d6cfb5f3ba1fa423c71d6903942577dea90",
+  "finalBodySha256": "ce1bfb2b3d8ac26efdbeb5d8b4593e88c786051e03e9219d9df62b0c3748b51c",
+  "artifacts": {
+    "01-writer-notebook.md": "fbd79f3653a459e9a6c6f15c9461973a937479ab4c2e3c39bfe825936925d58c",
+    "02-argument-card.md": "093a9a10810121dcd4afe05910a1f0671e29a51f6885ac030bc94df1e5b6d4c8",
+    "03-spoken-review-brief.md": "7fada33b170189f101c55555577a1564766c11e56e5e656e08e81c3977537023",
+    "04-raw-draft.md": "4b8ec89ef9786cef8310d7aeac61680668cdd57d8ae453789b68997519b7ee1f",
+    "05-copy-edited-draft.md": "03532c564aa6052a89374911f43938878bff1c6a546c36505b1fcfa486ab3b7b",
+    "06-final-draft.md": "ce1bfb2b3d8ac26efdbeb5d8b4593e88c786051e03e9219d9df62b0c3748b51c",
+    "07-humanizer-report.md": "30e04655c44d9c3df7399b2c6ae5fe47dd2e9b001a21a35de735fd31112ee520",
+    "validation.json": "89796728346f522cc76118f2028f83d961c712514b3817d8c69bd92340aca328"
+  },
+  "completedAt": "2026-08-25T06:10:36.980Z"
+}

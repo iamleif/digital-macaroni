@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "checks": {"structure": true, "source_integrity": true, "stance": true, "buyer_guidance": true, "humanizer": true, "similarity": true, "readability": true, "disclosure": true},
+  "metrics": {"grade": 7.2, "averageSentenceWords": 11.7, "wordCount": 704, "h2Count": 6, "sourceCount": 7, "maximumSimilarity": 0.002, "mostSimilarSlug": "tella", "stockHeadingCount": 1, "aggregationCount": 0},
+  "bodySha256": "f1baad6b5c64095d46d9c83d54c720d375a6c4a5ef687e839ae18214936fe701"
+}

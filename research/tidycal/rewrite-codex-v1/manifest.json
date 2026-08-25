@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runName": "rewrite-codex-v1",
+  "slug": "tidycal",
+  "writer": "codex-assistant",
+  "status": "complete",
+  "publicationDate": "2026-08-04",
+  "evidenceSha256": "4bfdbf27ecf23d3f2c081800407fc071fdc457a1e5a020f59589674380c4c345",
+  "finalBodySha256": "28360b2de6d39aea14dff9ce0554a07d95b624c24fe18925488bb7e6457fca7c",
+  "artifacts": {
+    "01-writer-notebook.md": "813ee85ab878af2f0b646fa99ddca0bcf4d9c17f10b5bfb2444020aef5aea8b5",
+    "02-argument-card.md": "4822375d20170c0073b9943b010b49447624e1edd876041004de350b75336a5f",
+    "03-spoken-review-brief.md": "3f284038fbb13988f79fd2bfd3b1ecf6a2b0e6017c8345b4ed6dc9d9acf10a37",
+    "04-raw-draft.md": "1e3b4ade9d133d5917d5c45d66f753c0d1f5c4866e3022cfc17ce379c3bef029",
+    "05-copy-edited-draft.md": "52e6bc4f7ab5ef34acf0e1ca1f1fa68396bb3ecb11fd6fc530ec0f21da21550c",
+    "06-final-draft.md": "28360b2de6d39aea14dff9ce0554a07d95b624c24fe18925488bb7e6457fca7c",
+    "07-humanizer-report.md": "e4240e8563f7371ce5e49c71ca8931ab388a74dfc5bcb34f71d19458383dffc1",
+    "validation.json": "463a868fa6021ba46863ca9cc6b5271486dedb09a400a018beff78b6f259653f"
+  },
+  "completedAt": "2026-08-25T07:29:19.915Z"
+}

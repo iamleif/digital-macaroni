@@ -1,0 +1,9 @@
+Claap is a video and audio tool designed for teams that want to streamline meetings, screen recordings, and collaborative feedback. The product is marketed as a way to replace traditional meetings with asynchronous video content, allowing teams to capture ideas, share updates, and add time-stamped comments. Claap’s core functions include recording meetings or short screen videos, generating transcripts and summaries, and enabling teammates to leave feedback at specific points in the recording. The tool is positioned as a time-saving solution, particularly for teams that rely on video for communication and documentation.
+
+Claap’s pricing structure is divided into three tiers: Basic, Pro, and Business. Basic includes ten created videos and 300 recorded minutes in total. Pro offers unlimited recordings, 1,000 minutes monthly, and 500 AI credits monthly. Business pricing was not clearly displayed in the public content, and confirmation would require reaching out through the signup flow or sales.
+
+Customers report that Claap’s ease of use, combined with its summary and feedback features, saves time. However, repeated complaints mention slow processing, playback delays, and difficulties managing a growing library of videos. These issues can disrupt the intended benefit of the tool, especially for larger teams.
+
+Support for Claap was not directly tested, and mentions of it are mixed. Some users suggest it is accessible, while others note that it is not a priority for the company. Billing is straightforward for the Basic tier, but the lack of clear pricing for Pro and Business plans is a limitation for potential buyers.
+
+Claap is useful when a recording replaces a meeting or simplifies follow-up. It becomes less valuable when the team merely creates another video archive. The product’s success depends on how well it integrates into existing workflows and whether its limitations are managed effectively.
