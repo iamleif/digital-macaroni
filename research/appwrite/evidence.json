@@ -161,11 +161,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "",
-    "product": "",
-    "support": "",
-    "billing": "",
-    "overall": ""
+    "onboarding": "Broad SDKs and migration guides support a workable start, but outside setup evidence was thin, supporting 7.5.",
+    "product": "Auth, databases, storage, functions, hosting, MFA, encryption, and framework SDKs provide strong depth, supporting 8.3.",
+    "support": "Documentation is broad, while independent support quality was not established, supporting 6.8.",
+    "billing": "Hosted and self-hosted options provide choice, but current price and operations detail were incomplete, supporting 7.3.",
+    "overall": "Appwrite is a broad open backend, but thin real-world evidence limits the score to 7.5."
   },
   "conflictsAndUnknowns": [
     "Actual customer experience patterns unknown due to inaccessible review platforms",

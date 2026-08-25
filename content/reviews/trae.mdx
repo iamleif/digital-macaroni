@@ -1,0 +1,103 @@
+---
+company: Trae
+title: 'Trae review: is this AI code editor worth switching to?'
+description: >-
+  Trae combines a familiar code editor with autonomous agents and low prices,
+  but weak fixes, limited context, privacy concerns, and support need testing.
+date: '2026-01-09'
+author: Leif Johansen
+status: draft
+category: Developer tools
+productUrl: 'https://www.trae.ai'
+logoUrl: /product-icons/trae.png
+schemaCategory: DeveloperApplication
+score: 7.3
+verdict: 'Strong AI coding value with reliability and privacy caveats.'
+cardVerdict: 'Strong AI coding value with reliability and privacy caveats.'
+featured: false
+reviewType: research-based
+legacyResearch: false
+testingDisclosure: >-
+  This is a research-based review. We studied official product information,
+  independent review platforms, community discussions, and independent coverage
+  where available. We did not run a hands-on test. No payment was received for
+  coverage.
+sources:
+  - name: Trae official website
+    url: 'https://www.trae.ai'
+    accessed: '2026-08-14'
+  - name: Trae pricing
+    url: 'https://www.trae.ai/pricing'
+    accessed: '2026-08-25'
+  - name: Trae official documentation
+    url: 'https://docs.trae.ai/'
+    accessed: '2026-08-14'
+  - name: Trae reviews on Product Hunt
+    url: 'https://www.producthunt.com/products/trae/reviews'
+    accessed: '2026-08-25'
+  - name: Trae reviews on G2
+    url: 'https://www.g2.com/sellers/trae'
+    accessed: '2026-08-25'
+  - name: Trae community discussion
+    url: 'https://www.reddit.com/r/TraeIDE/comments/1laiiez/traeai_ide_free_vs_prosubscription/'
+    accessed: '2026-08-14'
+scores:
+  onboarding: 8
+  product: 7.5
+  support: 5.8
+  billing: 8
+publishAt: '2026-01-09T09:00:00Z'
+---
+Trae is worth trying if you want an AI code editor for small edits and larger jobs. It does not charge top-tier prices. The editor feels familiar to someone coming from VS Code. Its SOLO mode can plan a feature, change files, run the app, and show the result.
+
+The low price is a real reason to look. It does not solve the usual problem with coding agents: they can say a bug is fixed when the broken behavior remains. Long jobs can also lose context or produce changes that need careful review.
+
+We recommend Trae for side projects and teams willing to inspect every change. Avoid putting private company code into it at first. The security team should accept Trae's data terms, and the editor should pass a test with the same kind of code.
+
+## Switching between the editor and SOLO is Trae's best idea
+
+Trae has a normal editor mode with completion and an agent beside the code. SOLO gives more of the job to the agent. A developer can start with a written request and let Trae create the first version. They can return to the editor when a hand edit or hard bug needs direct control.
+
+That change of control is useful. A blank project benefits from broad help, while a payment bug may need one careful change. G2 accounts say this split kept Trae useful after the first tests. Product Hunt comments also praise the clean screens and project awareness.
+
+<Callout>
+Trae is strongest when the developer chooses how much control to hand over for each task.
+</Callout>
+
+Smart completion handles smaller work. It predicts the next edit and accepts it with a key press. This matters during routine code changes where a full agent session would create more review work than it saves.
+
+The first trial should include both modes. Build one small feature in SOLO, then repair a known bug in the editor. Check the plan, file list, commands, and final behavior. A polished preview matters less than a clean diff another developer can understand.
+
+## Confident answers can hide unfinished fixes
+
+One Product Hunt reviewer described a repeating failure: Trae said it had fixed the problem, while the same problem remained. Another frequent user found that the agent held less context than competing tools and produced larger hallucinations on long work.
+
+These are serious limits for any code editor that can change several files. The risk rises with an old codebase. One feature may depend on rules spread across many files. A missing detail can look complete in one screen and break another part of the app.
+
+Give Trae a bug with clear steps to reproduce. Require it to run the current tests. It should also add a test for the broken behavior. Then check the result outside Trae's own preview. A claim of success without proof shows how much review the agent needs.
+
+Keep commits small. Review generated package changes and configuration files with the same care as application code. Trae can move quickly enough to make a bad change look like a large amount of progress.
+
+## Privacy and support need a company-level decision
+
+A Product Hunt account objected to Trae's terms and the amount of private data the editor may collect. The comment does not prove that Trae mishandled code. It does mean a business should read the current terms before opening a private repository.
+
+Check what code, prompts, files, and usage records can leave the device. Confirm whether that data can train models. Check how long it is kept and which company provides the service. A personal test with public code does not answer those questions for an employer.
+
+Support also has a visible warning. One organic G2 reviewer described support as very poor. The public sample is small, so one complaint cannot define the service. It does justify sending a real technical question during the trial. Judge the answer before a team depends on Trae each day.
+
+## The cheap plans make a real repository test easy
+
+Trae lists a free plan with limited use. Lite costs $3 per month, while Pro costs $10 after a seven-day trial. Pro+ is $30, and Ultra is $100. Annual billing is shown with a lower effective price.
+
+The plan table also uses a Basic Usage allowance. That makes the headline subscription price only part of the decision. A team needs to learn how much allowance its preferred models and normal tasks consume.
+
+Run the same week of work on the free or trial plan. Include completion, one medium feature, and one stubborn bug. Record when the agent slows down, loses context, or hits a limit. Pro is strong value when those jobs finish cleanly. A cheap plan still wastes money if repairs consume the time it saved.
+
+## Verdict
+
+Trae combines a familiar editor, useful completion, and a more autonomous mode at unusually low prices. Its ability to hand control back to the developer makes more sense than forcing every job through one agent.
+
+Reliability remains the deciding issue. Failed fixes and lost context can erase the time saved by fast generation. Private repositories also need a real terms and security review, while the thin support record deserves a test.
+
+Try Trae on a disposable branch of a representative project. Keep it when the diff stays understandable, the tests prove the result, and the data terms fit the work. Skip it when low price is being used to excuse weak verification or unclear privacy.

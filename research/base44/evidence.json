@@ -228,11 +228,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "",
-    "product": "",
-    "support": "",
-    "billing": "",
-    "overall": ""
+    "onboarding": "Plain-language building, a free plan, and bundled hosting make the first app approachable, supporting 8.0.",
+    "product": "Built-in data, users, payments, analytics, and automation provide useful breadth, while incomplete apps and publishing failures reduce trust, supporting 7.1.",
+    "support": "Recent support praise conflicts with unresolved publishing and build complaints, supporting a cautious 6.2.",
+    "billing": "Paid plans start at a low price, but credit use during failed attempts makes final project cost hard to predict, supporting 5.8.",
+    "overall": "Base44 can create a fast first app, but completion, export, publishing, and credit uncertainty limit the overall score to 6.8."
   },
   "conflictsAndUnknowns": [
     "Contradictory support experiences: Some report excellent assistance while others cite complete unresponsiveness",

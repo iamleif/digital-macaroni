@@ -1,0 +1,95 @@
+---
+company: Cal.com
+title: 'Cal.com review: flexible scheduling with reliability tradeoffs'
+description: >-
+  Cal.com offers customizable open-source scheduling and an API, but time-zone,
+  reminder, interface, and support complaints require careful testing.
+date: '2025-10-03'
+author: Leif Johansen
+status: draft
+category: Scheduling
+productUrl: 'https://cal.com'
+logoUrl: /product-icons/cal-com.png
+schemaCategory: BusinessApplication
+score: 6.9
+verdict: 'Flexible open scheduling with support and reliability gaps.'
+cardVerdict: 'Flexible open scheduling with support and reliability gaps.'
+featured: false
+reviewType: research-based
+legacyResearch: false
+testingDisclosure: >-
+  This is a research-based review. We studied official product information,
+  independent review platforms, and community discussions. We did not run a
+  hands-on test. No payment was received for coverage.
+sources:
+  - name: Cal.com official website
+    url: 'https://cal.com'
+    accessed: '2026-08-14'
+  - name: Cal.com reviews on G2
+    url: 'https://www.g2.com/products/cal-com/reviews'
+    accessed: '2026-08-14'
+  - name: Cal.com reviews on Trustpilot
+    url: 'https://www.trustpilot.com/review/cal.com'
+    accessed: '2026-08-14'
+scores:
+  onboarding: 7.1
+  product: 7.5
+  support: 5.9
+  billing: 7
+publishAt: '2025-10-03T09:00:00Z'
+---
+Cal.com is an open-source booking tool for people and firms that want more control than a basic link. It includes hosted booking, team options, an API, other app links, and video calls. Tech teams can also extend or host it themselves.
+
+That flexibility is appealing. Independent accounts describe time-zone confusion, reminders at the wrong time, screen bugs, and support that ranges from fast help to repeated no-shows.
+
+We recommend Cal.com for a technical team that will use its open code or API and can test the full booking path. We would choose a simpler scheduler when custom control is less important than proven support.
+
+## Open code gives technical teams more control
+
+Cal.com's open-source base lets developers inspect the project and add integrations. One developer described a smooth pull request with helpful maintainers. This can matter to a company with a scheduling need that normal links cannot meet.
+
+Self-hosting adds work. Someone must own updates, security, email delivery, video, storage, backups, and service health. The hosted product is a better fit when the team does not want that duty.
+
+<Callout>
+Cal.com's open design is valuable only when the buyer needs and can maintain that control.
+</Callout>
+
+Build one test integration before choosing the product for its API. Create, change, and cancel a booking. Check duplicate events, failed calls, access rules, and the data sent back to the app.
+
+Cal Video removes the need for a separate meeting link in simple cases. Test browser access, guest permissions, sound, camera, and what happens when a participant joins late.
+
+## Time zones and reminders need known-answer tests
+
+One user in Dubai could not first find the expected time zone and saw the app reset when minimized. Cal.com later explained that the option appeared as Asia/Dubai. Other accounts said reminders arrived at the wrong time.
+
+Time-zone names can be technical, but the guest still needs a clear local time. Test hosts and guests in several real regions, including a daylight-saving change. Check the booking page, calendar event, email, and reminder.
+
+Create a meeting near midnight and across a date boundary. Reschedule it from the guest side. A time that is correct in one screen and wrong in another is not acceptable.
+
+The team should store time in a standard form and display the guest's zone clearly. Custom integrations need the same test as the hosted page.
+
+## Support quality is too inconsistent to assume
+
+One business scheduled five support calls for a Meta Ads link and said support missed four after the first attempt. The core issue remained open. Another paying customer described days without a reply while work was blocked.
+
+Other accounts are positive. One email migration received quick help with domain verification, and the developer account praised maintainer support.
+
+The range is the warning. Open a real ticket during the trial and attend a support call. Ask about the exact integration or time-zone rule the company needs.
+
+Self-hosted users should separate community help from paid service support. Decide who handles an outage at night and what response the plan actually promises.
+
+## Flexibility does not excuse basic screen bugs
+
+Some users describe bugs when changing booking limits. Test daily caps, buffers, notice, repeating events, team routing, and removal of a host. Refresh and reopen the settings to confirm they stayed saved.
+
+Run the booking page on phone and desktop. Book, reschedule, cancel, and recover an account. The custom options matter only after the basic path is dependable.
+
+The evidence packet did not include enough verified price detail for an exact example. Compare hosted users, team tools, API needs, support, and the staff cost of self-hosting.
+
+## Verdict
+
+Cal.com offers unusual control through open code, APIs, team scheduling, and built-in video. It can be a good base for a company that needs a custom booking system.
+
+Time-zone, reminder, screen, and support accounts weaken the case for buyers who only need a reliable link. Flexibility creates more surfaces to test.
+
+Run bookings across real regions and build the one custom link that justifies Cal.com. Keep it when times stay correct and support or internal staff can own failures. Skip it when the team does not need enough control to justify the extra risk.

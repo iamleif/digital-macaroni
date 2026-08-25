@@ -176,11 +176,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "No customer experience data available",
-    "product": "No customer experience data available",
-    "support": "No customer experience data available",
-    "billing": "No customer experience data available",
-    "overall": "No customer experience data available"
+    "onboarding": "The hosted option and broad documentation lower the entry cost, though independent setup evidence is thin, supporting 7.3.",
+    "product": "UI design, prototypes, shared libraries, browser-like layouts, code inspection, and active releases provide strong depth, supporting 8.0.",
+    "support": "Documentation is broad and the open project is active, but direct support quality was not verified, supporting 7.0.",
+    "billing": "Open source and a hosted option give buyers useful choice, though current hosted price detail was missing from the packet, supporting 8.4.",
+    "overall": "Penpot is a credible open design tool for code-minded teams, but the small independent evidence sample requires a real project trial, supporting 7.7."
   },
   "conflictsAndUnknowns": [
     "Unable to verify customer experiences due to inaccessible review platforms (Product Hunt, G2, Reddit)",

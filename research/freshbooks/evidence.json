@@ -4,7 +4,7 @@
   "legacy": false,
   "reviewType": "research-based",
   "researchStarted": "2026-08-14",
-  "researchUpdated": "2026-08-14",
+  "researchUpdated": "2026-08-25",
   "releaseDate": {
     "date": "2003-01-01",
     "precision": "year",
@@ -62,6 +62,20 @@
       "reviewCountSampled": 970,
       "accessed": "2026-08-14",
       "keyThemes": []
+    },
+    {
+      "id": "official-pricing",
+      "name": "FreshBooks pricing",
+      "url": "https://www.freshbooks.com/pricing",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-25",
+      "keyThemes": [
+        "Lite supports five billable clients at $23 per month",
+        "Plus supports 50 billable clients at $43 per month",
+        "Premium removes the client cap at $70 per month",
+        "Extra team members cost $11 per person each month"
+      ]
     },
     {
       "id": "reviews-2",
@@ -157,11 +171,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "Insufficient data",
-    "product": "Insufficient data",
-    "support": "Insufficient data",
-    "billing": "Insufficient data",
-    "overall": "Insufficient data"
+    "onboarding": "Current G2 feedback repeatedly praises the clean interface, easy setup, and direct path from time tracking to an invoice, supporting an 8.6 score.",
+    "product": "FreshBooks handles invoices, time, expenses, payments, and core reports well for service firms, but reviewers flag weaker inventory, search, and report customization, supporting 8.1.",
+    "support": "Several G2 reviewers praise access to helpful human support, though Digital Macaroni did not test support directly; that mix supports 7.6.",
+    "billing": "Published regular prices are clear, but five- and 50-client caps plus $11 monthly team seats make growth expensive, supporting 6.9.",
+    "overall": "FreshBooks is a strong, approachable billing tool for freelancers and service firms, but its client caps, add-ons, and accounting limits reduce long-term value, supporting 7.8."
   },
   "conflictsAndUnknowns": [
     "Third-party review sources inaccessible (G2, Capterra, Trustpilot)",

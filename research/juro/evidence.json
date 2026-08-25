@@ -200,11 +200,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "Not described in source",
-    "product": "AI-native features for drafting, review, and analysis",
-    "support": "Claimed best support in CLM per G2",
-    "billing": "Not described in source",
-    "overall": "Positive efficiency claims from curated testimonials"
+    "onboarding": "Templates and connected intake can guide business users, but setup and migration were not independently verified, supporting 7.2.",
+    "product": "Drafting, approval, signing, storage, cited AI answers, review, and redlining provide strong contract depth, supporting 8.4.",
+    "support": "Vendor material points to strong support, but the evidence is too vendor-led for a higher score than 7.4.",
+    "billing": "No substantive public price detail was available, so a cautious 6.8 reflects quote and setup uncertainty.",
+    "overall": "Juro offers a coherent contract system and promising AI, but thin outside evidence limits the score to 7.5."
   },
   "conflictsAndUnknowns": [
     "Contract volume discrepancy: 3 million vs 2.5 million claims",

@@ -165,11 +165,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "",
-    "product": "",
-    "support": "",
-    "billing": "",
-    "overall": ""
+    "onboarding": "Hosted Ghost reduces server work and the core editor is coherent, while theme and migration effort require testing, supporting 7.6.",
+    "product": "Publishing, newsletters, memberships, paid plans, audience groups, themes, analytics, and open source provide strong depth, supporting 8.6.",
+    "support": "The hosted service and documentation provide a base, but outside support evidence was thin, supporting 7.4.",
+    "billing": "Direct subscriptions, exportable members, nonprofit ownership, and hosted or self-hosted choice provide strong value, supporting 8.4.",
+    "overall": "Ghost is a coherent independent publishing system with clear ownership tradeoffs, supporting an overall 8.0."
   },
   "conflictsAndUnknowns": [
     "Customer experience patterns unverifiable due to inaccessible review platforms",

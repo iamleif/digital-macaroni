@@ -207,11 +207,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "Insufficient data",
-    "product": "Insufficient data",
-    "support": "Insufficient data",
-    "billing": "Insufficient data",
-    "overall": "Insufficient data"
+    "onboarding": "Hosted use may be direct, while the detailed self-hosting account shows meaningful setup and identity friction, supporting 6.8.",
+    "product": "Publishing to more than 30 networks, AI, automation, API access, and open source provide strong breadth, supporting 8.0.",
+    "support": "The evidence packet did not establish consistent support quality, limiting the score to 6.5.",
+    "billing": "Open source and hosted choices provide flexibility, but infrastructure cost and current hosted prices were not fully documented, supporting 7.0.",
+    "overall": "Postiz offers broad social publishing and open control, while self-hosting complexity limits the score to 7.1."
   },
   "conflictsAndUnknowns": [
     "Official claims of ease-of-use conflict with community reports of complex self-hosting",

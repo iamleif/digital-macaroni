@@ -167,11 +167,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "Undocumented in available sources",
-    "product": "Positioned as productivity accelerator with AI integration",
-    "support": "Documentation exists but real-world support quality unknown",
-    "billing": "Mentioned but no pricing details provided",
-    "overall": "Positioned as professional-grade tool with extensibility"
+    "onboarding": "A single command box and focused daily tasks offer a clear entry path, though outside learning-curve evidence was missing, supporting 7.4.",
+    "product": "Launching, search, clipboard history, extensions, AI, sync, automation, and team tools provide strong breadth, supporting 8.5.",
+    "support": "Developer documentation exists, but real-world support quality was not established, supporting 6.8.",
+    "billing": "A useful core and optional paid AI or team features can be tested in stages, while current price detail was missing, supporting 7.9.",
+    "overall": "Raycast is a powerful extendable launcher, but thin outside evidence limits the overall score to 7.7."
   },
   "conflictsAndUnknowns": [
     "No customer experience data available due to inaccessible review platforms",

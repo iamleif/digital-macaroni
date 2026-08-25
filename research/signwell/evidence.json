@@ -181,11 +181,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "",
-    "product": "",
-    "support": "",
-    "billing": "",
-    "overall": ""
+    "onboarding": "A simple send-and-sign path plus vendor customer accounts describing easy adoption support 8.2, with no Digital Macaroni hands-on test.",
+    "product": "Legally binding signatures, templates, audit trails, SOC 2 Type II, HIPAA support, and an API provide strong core depth, supporting 8.0.",
+    "support": "The accessible packet did not provide enough independent support evidence, so uncertainty limits the score to 7.0.",
+    "billing": "Plan detail was incomplete in the evidence packet, while the simple core product still supports a cautious 7.2 pending a live quote.",
+    "overall": "SignWell appears to cover the core signing job well, but thin independent evidence limits the overall score to 7.6."
   },
   "conflictsAndUnknowns": [
     "Independent review platforms (G2/Capterra) inaccessible due to CAPTCHA requirements",

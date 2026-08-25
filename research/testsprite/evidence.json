@@ -19,7 +19,6 @@
       "No Digital Macaroni hands-on test was completed.",
       "Independent review platforms (G2, Trustpilot, ProductHunt) inaccessible due to security blocks",
       "Single detailed customer experience available",
-      "Pricing information unverified through official channels",
       "No access to support interaction documentation"
     ]
   },
@@ -106,6 +105,20 @@
       ]
     },
     {
+      "id": "official-pricing",
+      "name": "TestSprite pricing",
+      "url": "https://www.testsprite.com/pricing",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-25",
+      "keyThemes": [
+        "Free plan with 150 monthly credits",
+        "Starter plan at $19 per month after the first month",
+        "Standard plan at $69 per month",
+        "Usage limits are measured in credits"
+      ]
+    },
+    {
       "id": "official-extra-audit",
       "name": "TestSprite additional official source",
       "url": "https://www.testsprite.com/docs",
@@ -174,6 +187,14 @@
       "sourceIds": [
         "official-docs"
       ]
+    },
+    {
+      "statement": "TestSprite has a free plan and paid plans whose limits are measured partly in monthly credits",
+      "kind": "fact",
+      "status": "verified",
+      "sourceIds": [
+        "official-pricing"
+      ]
     }
   ],
   "experienceRecords": [
@@ -206,7 +227,7 @@
     "onboarding": "Reported as straightforward with first results in ~10 minutes (official-site) and 20 minutes for test generation (community-seed-1)",
     "product": "Strong on automated test maintenance and live verification but shows gaps in locale handling and brittle assertions",
     "support": "Undocumented locale configuration noted, with workarounds requiring API doc research",
-    "billing": "Free tier mentioned but not officially confirmed; paid plan existence noted without specifics",
+    "billing": "Official pricing lists a free plan with 150 monthly credits, Starter at $19 per month after the first month, and Standard at $69 per month",
     "overall": "Effective for test maintenance reduction with limitations in internationalization support"
   },
   "conflictsAndUnknowns": [

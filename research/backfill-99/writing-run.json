@@ -4,6 +4,265 @@
       "slug": "wave",
       "status": "blocked",
       "error": "fetch failed"
+    },
+    {
+      "slug": "testsprite",
+      "status": "completed",
+      "score": 7.5,
+      "date": "2026-01-13",
+      "icon": "/product-icons/testsprite.png"
+    },
+    {
+      "slug": "trae",
+      "status": "completed",
+      "score": 7.3,
+      "date": "2026-01-09",
+      "icon": "/product-icons/trae.png"
+    },
+    {
+      "slug": "freshbooks",
+      "status": "completed",
+      "score": 7.8,
+      "date": "2026-01-06",
+      "icon": "/product-icons/freshbooks.png"
+    },
+    {
+      "slug": "zoho-books",
+      "status": "completed",
+      "score": 8.1,
+      "date": "2025-12-30",
+      "icon": "/product-icons/zoho-books.png"
+    },
+    {
+      "slug": "aircall",
+      "status": "completed",
+      "score": 6.6,
+      "date": "2025-12-26",
+      "icon": "/product-icons/aircall.png"
+    },
+    {
+      "slug": "dialpad",
+      "status": "completed",
+      "score": 6.7,
+      "date": "2025-12-23",
+      "icon": "/product-icons/dialpad.png"
+    },
+    {
+      "slug": "justcall",
+      "status": "completed",
+      "score": 6.8,
+      "date": "2025-12-19",
+      "icon": "/product-icons/justcall.png"
+    },
+    {
+      "slug": "penpot",
+      "status": "completed",
+      "score": 7.7,
+      "date": "2025-12-16",
+      "icon": "/product-icons/penpot.png"
+    },
+    {
+      "slug": "kittl",
+      "status": "completed",
+      "score": 7.4,
+      "date": "2025-12-12",
+      "icon": "/product-icons/kittl.png"
+    },
+    {
+      "slug": "gumroad",
+      "status": "completed",
+      "score": 6.5,
+      "date": "2025-12-09",
+      "icon": "/product-icons/gumroad.png"
+    },
+    {
+      "slug": "paddle",
+      "status": "completed",
+      "score": 7.4,
+      "date": "2025-12-05",
+      "icon": "/product-icons/paddle.png"
+    },
+    {
+      "slug": "mailerlite",
+      "status": "completed",
+      "score": 6.2,
+      "date": "2025-12-02",
+      "icon": "/product-icons/mailerlite.png"
+    },
+    {
+      "slug": "sider",
+      "status": "completed",
+      "score": 6.2,
+      "date": "2025-11-28",
+      "icon": "/product-icons/sider.png"
+    },
+    {
+      "slug": "base44",
+      "status": "completed",
+      "score": 6.8,
+      "date": "2025-11-25",
+      "icon": "/product-icons/base44.png"
+    },
+    {
+      "slug": "stripo",
+      "status": "completed",
+      "score": 7.7,
+      "date": "2025-11-21",
+      "icon": "/product-icons/stripo.png"
+    },
+    {
+      "slug": "brevo",
+      "status": "completed",
+      "score": 6.9,
+      "date": "2025-11-18",
+      "icon": "/product-icons/brevo.png"
+    },
+    {
+      "slug": "kit",
+      "status": "completed",
+      "score": 7.5,
+      "date": "2025-11-14",
+      "icon": "/product-icons/kit.png"
+    },
+    {
+      "slug": "omnisend",
+      "status": "completed",
+      "score": 7.2,
+      "date": "2025-11-11",
+      "icon": "/product-icons/omnisend.png"
+    },
+    {
+      "slug": "pandadoc",
+      "status": "completed",
+      "score": 6.4,
+      "date": "2025-11-07",
+      "icon": "/product-icons/pandadoc.png"
+    },
+    {
+      "slug": "signwell",
+      "status": "completed",
+      "score": 7.6,
+      "date": "2025-11-04",
+      "icon": "/product-icons/signwell.png"
+    },
+    {
+      "slug": "dropbox-sign",
+      "status": "completed",
+      "score": 6.4,
+      "date": "2025-10-31",
+      "icon": "/product-icons/dropbox-sign.png"
+    },
+    {
+      "slug": "juro",
+      "status": "completed",
+      "score": 7.5,
+      "date": "2025-10-28",
+      "icon": "/product-icons/juro.png"
+    },
+    {
+      "slug": "guesty",
+      "status": "completed",
+      "score": 7.8,
+      "date": "2025-10-24",
+      "icon": "/product-icons/guesty.png"
+    },
+    {
+      "slug": "hostaway",
+      "status": "completed",
+      "score": 7.2,
+      "date": "2025-10-21",
+      "icon": "/product-icons/hostaway.png"
+    },
+    {
+      "slug": "ownerrez",
+      "status": "completed",
+      "score": 7.8,
+      "date": "2025-10-17",
+      "icon": "/product-icons/ownerrez.png"
+    },
+    {
+      "slug": "smoobu",
+      "status": "completed",
+      "score": 6.7,
+      "date": "2025-10-14",
+      "icon": "/product-icons/smoobu.png"
+    },
+    {
+      "slug": "calendly",
+      "status": "completed",
+      "score": 7.6,
+      "date": "2025-10-10",
+      "icon": "/product-icons/calendly.png"
+    },
+    {
+      "slug": "savvycal",
+      "status": "completed",
+      "score": 7.4,
+      "date": "2025-10-07",
+      "icon": "/product-icons/savvycal.png"
+    },
+    {
+      "slug": "cal-com",
+      "status": "completed",
+      "score": 6.9,
+      "date": "2025-10-03",
+      "icon": "/product-icons/cal-com.png"
+    },
+    {
+      "slug": "appwrite",
+      "status": "completed",
+      "score": 7.5,
+      "date": "2025-09-30",
+      "icon": "/product-icons/appwrite.png"
+    },
+    {
+      "slug": "postiz",
+      "status": "completed",
+      "score": 7.1,
+      "date": "2025-09-26",
+      "icon": "/product-icons/postiz.png"
+    },
+    {
+      "slug": "amie",
+      "status": "completed",
+      "score": 7.1,
+      "date": "2025-09-23",
+      "icon": "/product-icons/amie.png"
+    },
+    {
+      "slug": "raycast",
+      "status": "completed",
+      "score": 7.7,
+      "date": "2025-09-19",
+      "icon": "/product-icons/raycast.png"
+    },
+    {
+      "slug": "youcanbookme",
+      "status": "completed",
+      "score": 8.2,
+      "date": "2025-09-16",
+      "icon": "/product-icons/youcanbookme.png"
+    },
+    {
+      "slug": "crisp",
+      "status": "completed",
+      "score": 6.5,
+      "date": "2025-09-12",
+      "icon": "/product-icons/crisp.png"
+    },
+    {
+      "slug": "chatwoot",
+      "status": "completed",
+      "score": 7.5,
+      "date": "2025-09-09",
+      "icon": "/product-icons/chatwoot.png"
+    },
+    {
+      "slug": "ghost",
+      "status": "completed",
+      "score": 8,
+      "date": "2025-09-05",
+      "icon": "/product-icons/ghost.png"
     }
   ],
   "blocked": [

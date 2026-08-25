@@ -220,11 +220,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "",
-    "product": "",
-    "support": "",
-    "billing": "",
-    "overall": ""
+    "onboarding": "Migration help can be useful, but manual verification and device or network checks add real first-use friction, supporting 6.8.",
+    "product": "Calls, texts, WhatsApp, migration tools, and an AI voice agent give teams broad coverage, while session limits can interrupt remote work, supporting 7.5.",
+    "support": "One number-porting account praised responsive guidance, while device and verification cases show slower or incomplete resolution, supporting 6.7.",
+    "billing": "Reported charges for toll-free and forwarded calls weaken the clarity of unlimited plan language, supporting 6.1.",
+    "overall": "JustCall offers useful shared calling and messaging tools, but access controls and billing exceptions require a careful trial, supporting 6.8."
   },
   "conflictsAndUnknowns": [
     "Conflicting reports on support effectiveness: some users praise responsiveness while others report slow/unhelpful interactions",

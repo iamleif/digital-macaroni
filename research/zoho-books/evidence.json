@@ -4,7 +4,7 @@
   "legacy": false,
   "reviewType": "research-based",
   "researchStarted": "2026-08-14",
-  "researchUpdated": "2026-08-14",
+  "researchUpdated": "2026-08-25",
   "releaseDate": {
     "date": "2011-01-19",
     "precision": "day",
@@ -55,6 +55,20 @@
       "reviewCountSampled": 323,
       "accessed": "2026-08-14",
       "keyThemes": []
+    },
+    {
+      "id": "official-pricing",
+      "name": "Zoho Books US pricing",
+      "url": "https://www.zoho.com/us/books/pricing/",
+      "sourceType": "official",
+      "reviewCountSampled": null,
+      "accessed": "2026-08-25",
+      "keyThemes": [
+        "Free plan for businesses below $50,000 annual revenue",
+        "Standard costs $20 monthly or $15 with annual billing and supports three users",
+        "Professional costs $50 monthly or $40 with annual billing and supports five users",
+        "Higher plans add users, inventory, automation, and analytics"
+      ]
     },
     {
       "id": "reviews-2",
@@ -191,11 +205,11 @@
     }
   ],
   "scoreRationale": {
-    "onboarding": "",
-    "product": "",
-    "support": "",
-    "billing": "",
-    "overall": ""
+    "onboarding": "Reviewers praise the clean interface and broad documentation, but migration, account mapping, and the learning curve require care, supporting 7.7.",
+    "product": "Invoices, bank matching, purchasing, inventory, reports, tax tools, and Zoho integrations provide strong depth, with some complex GST cases still needing manual work, supporting 8.6.",
+    "support": "Zoho provides broad help material plus email support on Free and phone or chat on paid plans, but Digital Macaroni did not test support directly, supporting 7.8.",
+    "billing": "A useful free tier and clearly published plan, user, and feature limits offer strong value despite paid seats and scan add-ons, supporting 8.4.",
+    "overall": "Zoho Books combines substantial accounting depth with fair prices, while careful setup, local edition differences, and access to skilled bookkeeping help keep it from scoring higher, supporting 8.1."
   },
   "conflictsAndUnknowns": [
     "No negative feedback available due to inaccessible independent review sources"
