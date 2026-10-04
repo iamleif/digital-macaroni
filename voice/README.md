@@ -4,7 +4,7 @@ The live voice agents behind the website demos, each on its own engine:
 
 - Ellie (Northline Home Services): Gemini Live (`gemini-3.8-live`) through Google ADK.
 - Theo (Form & Field): ElevenLabs Agents when `ELEVENLABS_FORMFIELD_AGENT_ID` is set (it is in production).
-- Linda (Waypoint Travel): the cascade in `app/cascade.py`. `gemini-3.5-transcribe-live` hears, `gemini-3.5-flash-lite`
+- Linda (Waypoint Travel): the cascade in `app/cascade.py`. AssemblyAI Universal-3.6 Pro hears (`app/stt.py`; `DEMO_STT_PROVIDER=gemini` for `gemini-3.5-transcribe-live`), `gemini-3.5-flash-lite`
   answers through ADK and runs the tools, and `gemini-3.8-flash-lite-tts` speaks in the designed voice "Linda 2". Flights
   come from Duffel in test mode (`app/duffel.py`, read-only); booking stops before any order is created.
   `DEMO_CASCADE` lists the demos on the cascade (default `travel`).
