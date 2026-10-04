@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
-from typing import Any, Callable, Generic, Literal, Optional, TypeVar
+from typing import Any, Awaitable, Callable, Generic, Literal, Optional, TypeVar, Union
 from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, Field
@@ -46,7 +46,8 @@ class Operation(Generic[S]):
     # What the conversation panel shows while it runs, e.g. "Checking availability".
     label: str
     description: str
-    run: Callable[[S, Any, OpContext], OpResult]
+    # Plain demos answer from their own fixtures; one backed by an outside API may be async.
+    run: Callable[[S, Any, OpContext], Union[OpResult, Awaitable[OpResult]]]
     params: Optional[type[BaseModel]] = None
     # Runs alongside the conversation and its result never starts a turn of its own (3.8 Live:
     # NON_BLOCKING with SILENT scheduling). Only for a call the agent makes after it has finished
@@ -65,6 +66,9 @@ class DemoDefinition(Generic[S]):
     operations: dict[str, Operation[S]]
     # The records the dashboard shows. Never includes anything the visitor should not see.
     view: Callable[[S], dict[str, Any]]
+    # Cascade only: how the TTS voice should sound, and words the transcription should expect.
+    voice_style: str = ""
+    vocabulary: list[str] = field(default_factory=list)
 
 
 def Confirmed() -> Any:

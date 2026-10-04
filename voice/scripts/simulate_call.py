@@ -25,7 +25,7 @@ import websockets
 BASE = os.environ.get("DEMO_URL", "http://localhost:8080")
 WS = "ws" + BASE[4:]
 ORIGIN = "http://127.0.0.1:3790"
-NUMBERS = {"northline": "+12068879619", "formfield": "+18302392110"}
+NUMBERS = {"northline": "+12068879619", "formfield": "+18302392110", "travel": "+17205996395"}
 SCRIPTS = {
     "northline": [
         "Hi. My furnace stopped working this morning. Can someone come look at it tomorrow afternoon?",
@@ -46,6 +46,13 @@ SCRIPTS = {
         "The first one works.",
         "It's Alex Taylor, at 48 Birch Lane.",
         "Yes, please book it.",
+        "No, that's everything. Thanks, bye.",
+    ],
+    "travel": [
+        "Hi, I'd like to fly from London to New York on November twentieth, coming back on the twenty seventh. Just me, economy.",
+        "Tell me more about the cheapest one.",
+        "Great, let's book it. My name is Alex Taylor.",
+        "Yes, that's right.",
         "No, that's everything. Thanks, bye.",
     ],
     "formfield": [

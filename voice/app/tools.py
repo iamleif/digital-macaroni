@@ -14,6 +14,7 @@ comes after the goodbye and must never make the agent talk again.
 
 from __future__ import annotations
 
+import inspect
 import time
 import uuid
 from dataclasses import dataclass
@@ -63,17 +64,19 @@ def _operation_spec(name: str, op: Any) -> ToolSpec:
             r = fail("not_confirmed", "Read the details back and get a clear yes from the caller first.")
         else:
             try:
-                r = op.run(session.state, parsed, OpContext(now=datetime.now(timezone.utc), channel=session.channel))  # type: ignore[arg-type]
+                out = op.run(session.state, parsed, OpContext(now=datetime.now(timezone.utc), channel=session.channel))  # type: ignore[arg-type]
+                r = await out if inspect.isawaitable(out) else out
             except Exception as err:  # noqa: BLE001
                 log.error("tool.crashed", {"session": session.id, "tool": name}, err)
                 r = fail("internal_error", "Something went wrong. Apologise and offer to take a message instead.")
         log.info("tool.result", {"session": session.id, "tool": name, "outcome": "ok" if r.ok else r.error, "latency_ms": int((time.monotonic() - started) * 1000)})
+        # A failure can change records too (the travel demo notes a booking it stopped).
+        if r.changed:
+            session.publish_state()
         if r.ok:
-            if r.changed:
-                session.publish_state()
             session.emit({"type": "tool.succeeded", "callId": call_id, "tool": name, "label": op.label, "summary": r.summary, "version": session.version})
             return {"ok": True, **r.result}
-        session.emit({"type": "tool.failed", "callId": call_id, "tool": name, "label": op.label, "summary": r.message})
+        session.emit({"type": "tool.failed", "callId": call_id, "tool": name, "label": op.label, "summary": r.summary or r.message})
         return {"ok": False, "error": r.error, "message": r.message, **r.result}
 
     return ToolSpec(name=name, description=op.description, run=run, params=op.params, background=op.background)
@@ -166,16 +169,21 @@ def _schema(node: dict[str, Any]) -> types.Schema:
 
 
 class DemoTool(BaseTool):
-    """One demo tool for ADK: declares its schema and its Live behaviour, runs in the caller's session."""
+    """
+    One demo tool for ADK: declares its schema and, on Gemini Live, its behaviour; runs in the caller's
+    session. On the cascade (a text model, live=False) calls are ordinary and blocking; a background
+    tool (end_call) ends the model's turn instead of prompting it to speak again.
+    """
 
-    def __init__(self, spec: ToolSpec) -> None:
+    def __init__(self, spec: ToolSpec, live: bool = True) -> None:
         super().__init__(
             name=spec.name,
             description=spec.description,
-            behavior=types.Behavior.NON_BLOCKING if spec.background else types.Behavior.BLOCKING,
-            response_scheduling=types.FunctionResponseScheduling.SILENT if spec.background else None,
+            behavior=(types.Behavior.NON_BLOCKING if spec.background else types.Behavior.BLOCKING) if live else None,
+            response_scheduling=types.FunctionResponseScheduling.SILENT if spec.background and live else None,
         )
         self.spec = spec
+        self.live = live
 
     def _get_declaration(self) -> Optional[types.FunctionDeclaration]:
         params = _schema(self.spec.params.model_json_schema()) if self.spec.params else None
@@ -185,8 +193,10 @@ class DemoTool(BaseTool):
         session = get_session(tool_context.session.id)
         if session is None or session.ended:
             return {"ok": False, "error": "session_ended"}
+        if self.spec.background and not self.live:
+            tool_context.actions.skip_summarization = True
         return await self.spec.run(session, args or {})
 
 
-def demo_tools(demo: DemoDefinition[Any]) -> list[BaseTool]:
-    return [DemoTool(spec) for spec in tool_specs(demo)]
+def demo_tools(demo: DemoDefinition[Any], live: bool = True) -> list[BaseTool]:
+    return [DemoTool(spec, live) for spec in tool_specs(demo)]

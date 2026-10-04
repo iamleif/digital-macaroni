@@ -23,6 +23,7 @@ BASE = os.environ.get("DEMO_URL", "http://localhost:8080")
 ORIGIN = "http://127.0.0.1:3790"
 LINES = {
     "northline": ["Hi, can someone come and fix a leaking pipe under my kitchen sink on Monday morning?", "It's Jamie Fox, at 12 Orchard Road.", "The earliest one, please.", "Yes, book it.", "That's all, thanks. Goodbye."],
+    "travel": ["Hi, I'd like to fly from London to New York next Friday, coming back the following Friday.", "Just me, economy.", "Tell me more about the cheapest one.", "Great, let's book it. My name is Jamie Fox.", "Yes, that's right.", "No, that's all. Thanks, bye."],
     "formfield": ["Hi! Do you have any planters?", "Is the large sage one in stock?", "Great, can you reserve one for Priya?", "Yes, please.", "That's everything, thank you. Bye."],
 }
 t0 = time.monotonic()
@@ -45,7 +46,7 @@ async def main() -> None:
     demo = sys.argv[1] if len(sys.argv) > 1 else "northline"
     async with httpx.AsyncClient(base_url=BASE) as http:
         start = (await http.post("/browser/sessions", json={"demo": demo}, headers={"origin": ORIGIN})).json()
-    state = {"speaking": False, "last": time.monotonic(), "ended": False, "audio": 0, "final": None}
+    state = {"speaking": False, "last": time.monotonic(), "ended": False, "audio": 0, "final": None, "tools": 0}
     url = f"ws{BASE[4:]}/browser/sessions/{start['sessionId']}?token={start['token']}"
     async with websockets.connect(url, origin=ORIGIN) as ws:  # type: ignore[arg-type]
 
@@ -58,9 +59,13 @@ async def main() -> None:
                 t = e["type"]
                 if t == "transcript" and e["final"]:
                     print(f"{stamp()}  {'AGENT ' if e['speaker'] == 'agent' else 'VISITOR'}  {e['text']}", flush=True)
+                elif t == "tool.started":
+                    state["tools"] += 1
                 elif t == "tool.succeeded":
+                    state["tools"] -= 1
                     print(f"{stamp()}    ✓ {e['summary']}", flush=True)
                 elif t == "tool.failed":
+                    state["tools"] -= 1
                     print(f"{stamp()}    ✗ {e['label']}: {e['summary']}", flush=True)
                 elif t == "agent.speaking":
                     state["speaking"], state["last"] = e["speaking"], time.monotonic()
@@ -72,12 +77,13 @@ async def main() -> None:
 
         r = asyncio.create_task(reader())
 
-        async def wait_for_agent(timeout: float = 30) -> None:
+        async def wait_for_agent(timeout: float = 60) -> None:
             s = time.monotonic()
             while not state["speaking"] and time.monotonic() - s < timeout and not state["ended"]:
                 await asyncio.sleep(0.05)
             while time.monotonic() - s < timeout and not state["ended"]:
-                if not state["speaking"] and time.monotonic() - state["last"] > 1.2:
+                # A running tool (a flight search) means the agent has not finished its turn.
+                if not state["speaking"] and not state["tools"] and time.monotonic() - state["last"] > 1.2:
                     return
                 await asyncio.sleep(0.05)
 

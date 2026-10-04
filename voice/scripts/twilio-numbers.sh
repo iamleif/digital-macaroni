@@ -7,10 +7,15 @@ set -euo pipefail
 
 PROJECT=rankladder-471812
 service_url() { gcloud run services describe "$1" --project "$PROJECT" --region us-central1 --format='value(status.url)'; }
-DEMO_URL=$(service_url studio-demo-voice)
+# Twilio signs requests with the URL it calls, and the service checks them against DEMO_PUBLIC_URL, so the
+# numbers must use exactly that URL (Cloud Run also answers on a second hostname that would fail the check).
+DEMO_URL=$(gcloud run services describe studio-demo-voice --project "$PROJECT" --region us-central1 --format=json \
+  | python3 -c "import json,sys; print(next(e['value'] for e in json.load(sys.stdin)['spec']['template']['spec']['containers'][0]['env'] if e['name']=='DEMO_PUBLIC_URL'))")
 BRIDGE_URL=$(service_url rankladder-bridge)
 NORTHLINE=PNc357875b63682285ee17068e1057d137  # +1 206 887 9619
 FORMFIELD=PN7d2dd7a1d920b9c3786e6b0e70298a32  # +1 830 239 2110
+# Bought for the demo on 2026-10-04; never RankLadder's, so restore leaves it on the demo service.
+WAYPOINT=PNf238f5043c6247d156c3cd17c0a725cb   # +1 720 599 6395
 
 secret() { gcloud secrets versions access latest --secret="$1" --project "$PROJECT"; }
 AC=$(secret studio-demo-twilio-account-sid)
@@ -27,6 +32,7 @@ case "${1:-}" in
     curl -fsS "$DEMO_URL/health" >/dev/null || { echo "studio-demo-voice is not answering; deploy it first." >&2; exit 1; }
     update "$NORTHLINE" "$DEMO_URL/twilio/voice" ""
     update "$FORMFIELD" "$DEMO_URL/twilio/voice" ""
+    update "$WAYPOINT" "$DEMO_URL/twilio/voice" ""
     ;;
   restore)
     update "$NORTHLINE" "$BRIDGE_URL/twilio/voice" "$BRIDGE_URL/twilio/voice-status"

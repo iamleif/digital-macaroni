@@ -198,10 +198,16 @@ def _map_event(event: Any) -> list[LiveEvent]:
 
 async def open_live(session: DemoSession) -> LiveSession:
     """
-    Opens the demo's live agent on its own engine. The demos are two separate products: Northline on
-    Gemini Live, Form & Field on ElevenLabs Agents when configured. A demo configured for ElevenLabs
+    Opens the demo's live agent on its own engine. The demos are separate products: Northline on
+    Gemini Live, Form & Field on ElevenLabs Agents when configured, Waypoint on the cascade (cascade.py). A demo configured for ElevenLabs
     never falls back to Gemini; if ElevenLabs cannot start, the caller is told the demo is unavailable.
     """
+    if session.demo_id in config.cascade_demos:
+        from .cascade import open_cascade
+
+        live = await open_cascade(session)
+        log.info("live.engine", {"session": session.id, "outcome": "cascade"})
+        return live
     agent_id = config.elevenlabs_agents.get(session.demo_id)
     if agent_id:
         from .elevenlabs import open_elevenlabs

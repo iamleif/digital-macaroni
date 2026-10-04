@@ -1,10 +1,16 @@
 # Demo voice service
 
-The live voice agents behind the website demos: Ellie (Northline Home Services) and Theo (Form & Field).
-Python, Google ADK, `gemini-3.8-live`. Form & Field runs on ElevenLabs Agents when
-`ELEVENLABS_FORMFIELD_AGENT_ID` is set (it is in production).
+The live voice agents behind the website demos, each on its own engine:
 
-- Phone: Twilio media streams on the two demo numbers (`/twilio/voice`, `/twilio/media`).
+- Ellie (Northline Home Services): Gemini Live (`gemini-3.8-live`) through Google ADK.
+- Theo (Form & Field): ElevenLabs Agents when `ELEVENLABS_FORMFIELD_AGENT_ID` is set (it is in production).
+- Linda (Waypoint Travel): the cascade in `app/cascade.py`. `gemini-3.5-transcribe-live` hears, `gemini-3.5-flash-lite`
+  answers through ADK and runs the tools, and `gemini-3.8-flash-tts` speaks in the designed voice "Linda 2". Flights
+  come from Duffel in test mode (`app/duffel.py`, read-only); booking stops before any order is created.
+  `DEMO_CASCADE` lists the demos on the cascade (default `travel`).
+
+- Phone: Twilio media streams on the three demo numbers (`/twilio/voice`, `/twilio/media`): Northline (206) 887-9619,
+  Form & Field (830) 239-2110, Waypoint (720) 599-6395.
 - Website: browser microphone sessions (`/browser/sessions`) and pairing a phone call to a watching page (`/pairings`).
 - One Cloud Run service, `studio-demo-voice` in `rankladder-471812`, single instance (sessions live in memory).
 
@@ -12,7 +18,7 @@ Python, Google ADK, `gemini-3.8-live`. Form & Field runs on ElevenLabs Agents wh
 
 ```bash
 uv sync
-GEMINI_API_KEY=… DEMO_SKIP_TWILIO_SIGNATURE=1 uv run uvicorn app.main:app --port 8080
+GEMINI_API_KEY=… DUFFEL_ACCESS_TOKEN=… DEMO_SKIP_TWILIO_SIGNATURE=1 uv run uvicorn app.main:app --port 8080
 uv run python scripts/simulate_call.py northline vague   # a phone call, watched through keypad pairing
 uv run python scripts/simulate_browser.py northline      # a website conversation
 uv run pytest                                            # operations, audio, tool declarations
@@ -25,7 +31,9 @@ gcloud run deploy studio-demo-voice --source . --project rankladder-471812 --reg
 ```
 
 Settings and secrets live on the Cloud Run service and carry over between deploys.
-`scripts/twilio-numbers.sh point|restore` moves the two demo numbers to this service or back to RankLadder's bridge.
+`scripts/twilio-numbers.sh point|restore` moves the Northline and Form & Field numbers to this service or back to
+RankLadder's bridge; Waypoint's number was bought for the demo and stays on this service. Waypoint also needs the
+`studio-demo-duffel-token` secret as `DUFFEL_ACCESS_TOKEN`.
 
 ## Gemini 3.8 Live and tools
 

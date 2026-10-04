@@ -25,11 +25,20 @@ class Config:
         default_factory=lambda: {
             env.get("NORTHLINE_NUMBER", "+12068879619"): "northline",
             env.get("FORMFIELD_NUMBER", "+18302392110"): "formfield",
+            env.get("TRAVEL_NUMBER", "+17205996395"): "travel",
         }
     )
+    # Prebuilt Gemini voice names, or designed voice ids ("voice_…", from AI Studio; the travel default is
+    # "Linda 2", designed on gemini-3.8-flash-tts and valid until 2027-10-04).
     voices: dict[str, str] = field(
-        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus")}
+        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu")}
     )
+    # Demos on the cascade (speech-to-text, a Gemini text model through ADK, then Gemini TTS) instead of Gemini Live.
+    cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel").split(",") if d.strip())
+    stt_model: str = env.get("DEMO_STT_MODEL", "gemini-3.5-transcribe-live")
+    text_model: str = env.get("DEMO_TEXT_MODEL", "gemini-3.5-flash-lite")
+    tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-tts")
+    duffel_token: str = env.get("DUFFEL_ACCESS_TOKEN", "")
     # Silence that ends the visitor's turn. Lower is snappier; too low cuts people off mid-thought.
     end_of_speech_silence_ms: int = int(env.get("DEMO_END_OF_SPEECH_SILENCE_MS", "700"))
     # Log pitch and loudness of each agent turn on phone calls (numbers only), to diagnose voice changes.
