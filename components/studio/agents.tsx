@@ -12,7 +12,7 @@ const PERSONAS: Record<DemoId, { tone: string; preview: ReactNode; voice: string
   northline: {
     tone: "blue",
     preview: <NorthlinePreview />,
-    voice: "Warm & reassuring",
+    voice: "Gentle & reassuring",
     pitch: "Books service visits from real availability, moves them when plans change, and takes a message when nothing fits.",
   },
   formfield: {
