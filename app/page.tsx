@@ -64,10 +64,10 @@ const exampleActions: [string, string, string][] = [
   ["send_confirmation", "Texted a confirmation", "SMS"],
 ];
 
-const stats = [
-  { value: "3", label: "Live voice agents you can call today", tab: "Right now" },
-  { value: "3", label: "Products we’ve built and run ourselves" },
-  { value: "1", label: "Team from first sketch to launch" },
+const steps = [
+  { title: "Tell us what you need", copy: "A few questions about your business and the calls you get. It takes a couple of minutes." },
+  { title: "A discovery conversation", copy: "By email or on a call, whichever you prefer. We dig into how you work and what would actually help." },
+  { title: "A clear proposal", copy: "Scope, price and timeline in writing, agreed before any work begins." },
 ];
 
 export default function HomePage() {
@@ -148,7 +148,7 @@ export default function HomePage() {
         <Reveal className={h.apiBand}>
           <span className={h.apiIcon}><Code size={20} /></span>
           <div><b>If it has an API, we can connect to it.</b><p>In-house systems, industry software, webhooks, REST or GraphQL APIs, even a shared spreadsheet. If your system has a way in, your agent can use it.</p></div>
-          <a className={h.pillDark} href="/contact/">Ask about your tools<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
+          <a className={h.pillDark} href="/contact/?topic=custom-agent">Ask about your tools<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
         </Reveal>
         <p className={h.tmNote}>Tools shown are examples of systems with APIs we can connect to. Names are trademarks of their owners and don’t imply a partnership.</p>
       </div>
@@ -173,21 +173,24 @@ export default function HomePage() {
       </div>
     </section>
 
-    {/* Studio statement */}
-    <section id="studio" className={h.sheet} aria-labelledby="studio-heading">
-      <div className={`${h.sheetInner} ${h.statement}`}>
-        <Reveal className={h.statementMark}><Image unoptimized src="/studio/macaroni.png" alt="" width={84} height={84} /></Reveal>
-        <div>
-          <Reveal><h2 id="studio-heading" className={h.statementText}>
-            We’re an independent product studio. We design and build the things a business runs on, <span>the agent your customers call, the tools your team opens every morning, and the site that brings them in.</span>
-          </h2></Reveal>
-          <div className={h.stats}>
-            {stats.map((st, i) => <Reveal key={st.label} delay={i * 80} className={h.stat}>
-              {st.tab && <span className={h.statTab}><i />{st.tab}</span>}
-              <div className={h.statCard} data-tabbed={st.tab ? true : undefined}><strong>{st.value}</strong><p>{st.label}</p></div>
-            </Reveal>)}
+    {/* Start a conversation */}
+    <section id="studio" className={`${h.sheet} ${h.ctaSheet}`} aria-labelledby="studio-heading">
+      <div className={`${h.sheetInner} ${h.cta}`}>
+        <Reveal className={h.ctaCopy}>
+          <span className={h.ctaMark}><Image unoptimized src="/studio/macaroni.png" alt="" width={56} height={56} /></span>
+          <h2 id="studio-heading" className={h.h2}>An independent studio.<br /><span>Happy to talk it through.</span></h2>
+          <p className={h.lede}>We’re a small, independent product studio, and we build with AI agents, so the work moves quickly. Tell us what you need and we’ll start with a discovery conversation: by email or on a call, whichever suits you.</p>
+          <div className={h.ctaActions}>
+            <a className={h.pillDark} href="/contact/">Start a conversation<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
+            <a className={h.pillLight} href="mailto:hello@digitalmacaroni.io">hello@digitalmacaroni.io</a>
           </div>
-        </div>
+        </Reveal>
+        <ol className={h.steps}>
+          {steps.map((st, i) => <Reveal as="div" key={st.title} delay={i * 80} className={h.step}>
+            <span className={h.stepNo}>{i + 1}</span>
+            <div><b>{st.title}</b><p>{st.copy}</p></div>
+          </Reveal>)}
+        </ol>
       </div>
     </section>
 
@@ -224,7 +227,7 @@ export default function HomePage() {
                 <li><Check size={15} />Your name, voice, hours and services</li>
                 <li><Check size={15} />Every call’s transcript and summary in your dashboard</li>
               </ul>
-              <a className={h.pillOutline} href="/contact/">Start with a ready-made agent <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
+              <a className={h.pillOutline} href="/contact/?topic=ready-made">Start with a ready-made agent <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
             </article>
           </Reveal>
           <Reveal delay={90} className={h.planShell} >
@@ -240,7 +243,7 @@ export default function HomePage() {
                 <li><Check size={15} />Designed and tested on your real calls</li>
                 <li><Check size={15} />Fixed scope and price, agreed up front</li>
               </ul>
-              <a className={h.pillYellow} href="/contact/">Shape a custom project <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
+              <a className={h.pillYellow} href="/contact/?topic=custom-agent">Shape a custom project <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
             </article>
           </Reveal>
         </div>

@@ -6,7 +6,7 @@ import type { DemoEvent, DemoId } from "./types";
  * CallWatcher: a code the visitor types during a phone call, then that call's events.
  * Nothing here holds credentials; the service issues a per-session token.
  */
-export const VOICE_URL = (process.env.NEXT_PUBLIC_DEMO_VOICE_URL ?? "https://studio-demo-voice-580150696401.us-central1.run.app").replace(/\/$/, "");
+export const VOICE_URL = (process.env.NEXT_PUBLIC_DEMO_VOICE_URL ?? "https://studio-demo-voice-361680400699.us-central1.run.app").replace(/\/$/, "");
 
 // Runs on the audio thread: downsamples the microphone to 16 kHz and posts 20 ms Int16 frames.
 const CAPTURE_WORKLET = `

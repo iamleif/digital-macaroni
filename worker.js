@@ -2,12 +2,32 @@ const RECIPIENT = "hello@digitalmacaroni.io";
 const SENDER = "website@digitalmacaroni.io";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TOPICS = new Map([
+  ["ready-made", "Ready-made voice agent"],
+  ["custom-agent", "Custom voice agent"],
+  ["software", "Business software or dashboard"],
+  ["app", "An app"],
+  ["question", "General question"],
+  ["other", "Something else"],
+  // Older form values, kept so a cached page still sends.
   ["new-project", "New project"],
   ["existing-project", "Existing project"],
   ["collaboration", "Collaboration"],
-  ["question", "General question"],
-  ["other", "Something else"],
 ]);
+
+// Optional details the form asks for depending on the topic. Only these are read, each capped.
+const DETAILS = [
+  ["company", "Business"],
+  ["phone", "Phone"],
+  ["contact_pref", "Prefers"],
+  ["business_type", "Business type"],
+  ["call_volume", "Calls per month"],
+  ["texting", "Texting"],
+  ["hosting", "Running it"],
+  ["tools", "Tools to connect"],
+  ["build", "What to build"],
+  ["timeline", "Timeline"],
+  ["budget", "Budget"],
+];
 
 function json(message, status = 200) {
   return Response.json(
@@ -80,13 +100,19 @@ export default {
       return json("Please enter a message under 5,000 characters.", 400);
     }
 
+    const details = DETAILS
+      .map(([field, label]) => [label, String(form.get(field) || "").trim().slice(0, 300)])
+      .filter(([, value]) => value)
+      .map(([label, value]) => `${label}: ${value}\n`)
+      .join("");
+
     try {
       await env.CONTACT_EMAIL.send({
         to: RECIPIENT,
         from: { email: SENDER, name: "Digital Macaroni website" },
         replyTo: { email, name: cleanHeader(name) },
         subject: `Website inquiry: ${topicLabel} — ${cleanHeader(name)}`,
-        text: `Name: ${name}\nEmail: ${email}\nTopic: ${topicLabel}\n\n${message}`,
+        text: `Name: ${name}\nEmail: ${email}\nTopic: ${topicLabel}\n${details}\n${message}`,
       });
     } catch (error) {
       console.error("Contact email failed", error);
