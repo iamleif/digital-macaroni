@@ -16,8 +16,8 @@ from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field
 
-from .. import duffel
-from .types import DemoDefinition, OpContext, OpResult, Operation, add_days, date_in, date_label, fail, ok
+from .. import duffel, email
+from .types import Confirmed, DemoDefinition, OpContext, OpResult, Operation, add_days, date_in, date_label, fail, ok
 
 TIME_ZONE = "America/New_York"
 SHORTLIST = 3
@@ -67,6 +67,8 @@ class TravelState:
     # The booking read back to the caller, awaiting their yes (the site's booking card shows it).
     read_back: Optional[dict[str, Any]] = None
     stage: str = "trip"
+    # The itinerary email, once sent: only a masked address is kept.
+    emailed: Optional[dict[str, Any]] = None
     # Names of places the agent looked up, by code, so the dashboard can say "London" rather than "LON".
     places: dict[str, str] = field(default_factory=dict)
 
@@ -372,7 +374,8 @@ How you work, step by step, always through your tools:
 5. Bags: ask once whether they need an extra checked bag, giving the price the tool gives; add it with add_bags only if they want it.
 6. The traveller: ask for the lead traveller's full name and call set_traveller. Do not ask for date of birth, email, phone, passport or payment details: in this demo the other details the airline needs are filled with clearly marked samples, and you can say so in a few words.
 7. Review: call review_booking. It re-checks the price live and returns the whole booking. Read it back clearly, starting with "Here's your booking": the flights, the fare, the seat, the bags, the traveller's name, and the total. Nothing is booked yet, so never say "you are booked" or "you're all set". Ask whether everything is correct.
-8. Payment: when they say yes, call book_flight. It stops at payment: say exactly "{PAYMENT_LINE}" Then ask whether there is anything else you can help with. Never say a flight is booked, held, reserved or paid.
+8. Payment: when they say yes, call book_flight. It stops at payment: say exactly "{PAYMENT_LINE}" Never say a flight is booked, held, reserved or paid.
+9. Email: then offer once to email them a copy of the itinerary. If they want it, ask for their email address, read it back spelling out anything unusual, and when they confirm it, call email_itinerary with callerConfirmed true. Say it is on its way only if the tool returns ok. If they decline, that's fine. Then ask whether there is anything else you can help with.
 
 Rules: if a tool fails, explain simply and do what its message suggests. If they change their mind at any point (another flight, another seat, no bag), use the tools to change it; the dashboard follows.
 
@@ -672,6 +675,32 @@ async def book_flight(state: TravelState, i: NoArgs, ctx: OpContext) -> OpResult
     return r
 
 
+class EmailItinerary(BaseModel):
+    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it, e.g. 'alex.taylor@example.com'.")
+    callerConfirmed: bool = Confirmed()
+
+
+async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext) -> OpResult:
+    """Emails the reviewed itinerary to the caller: once per call, from a fixed template."""
+    if state.review is None:
+        return fail("not_reviewed", "There is no reviewed itinerary to send yet.")
+    if state.emailed:
+        return fail("already_sent", f"The itinerary was already emailed to {state.emailed['to']} on this call.")
+    address = email.normalise(i.email)
+    if address is None:
+        return fail("invalid_email", "That doesn't look like a complete email address. Ask the caller to say it again, slowly.")
+    r = state.review
+    rows = [("Flights", f"{r['airline']} · {r['outbound']}"), ("Return", r.get("return") or ""), ("Fare", r["fare"]), ("Seat", r["seat"]), ("Bags", r["bags"]), ("Traveller", r["traveller"])]
+    body, text = email.page("Waypoint Travel", "Your flight itinerary", "Here's the trip we put together on the phone. It's a quote, not a booking: in this demo we stop before payment.", rows, r["total"], "Linda")
+    why = await email.send(address, f"Your Waypoint Travel itinerary · {r['total']}", body, text, "Linda at Waypoint Travel")
+    if why == "too_many_for_address":
+        return fail(why, "That address has already had several emails from our demos today. Apologise and offer nothing further by email.")
+    if why:
+        return fail("email_failed", "The email could not be sent right now. Apologise briefly.")
+    state.emailed = {"to": email.mask(address), "total": r["total"]}
+    return ok(f"Itinerary emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"]}, True)
+
+
 def view(state: TravelState) -> dict[str, Any]:
     return {
         "stage": state.stage,
@@ -687,6 +716,7 @@ def view(state: TravelState) -> dict[str, Any]:
         "review": state.review and {k: v for k, v in state.review.items() if k != "amount"},
         "readBack": state.read_back,
         "booking": state.booking,
+        "emailed": state.emailed,
     }
 
 
@@ -711,5 +741,6 @@ travel: DemoDefinition[TravelState] = DemoDefinition(
         "set_traveller": Operation("Adding the traveller", "The lead traveller's full name; the rest is filled with marked samples.", set_traveller, SetTraveller),
         "review_booking": Operation("Reviewing the booking", "Re-check the price live and return the whole booking with the total, to read back.", review_booking, NoArgs),
         "book_flight": Operation("Taking payment", "After the caller confirms the review: complete the booking. In this demo it stops at payment.", book_flight, NoArgs),
+        "email_itinerary": Operation("Emailing the itinerary", "Email the reviewed itinerary to the caller, after they confirm the address read back to them. Once per call.", email_itinerary, EmailItinerary),
     },
 )

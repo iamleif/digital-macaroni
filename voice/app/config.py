@@ -43,6 +43,10 @@ class Config:
     text_model: str = env.get("DEMO_TEXT_MODEL", "gemini-3.5-flash-lite")
     tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-lite-tts")
     duffel_token: str = env.get("DUFFEL_ACCESS_TOKEN", "")
+    # Confirmation emails (Resend; the sending domain digitalmacaroni.io is verified there).
+    resend_api_key: str = env.get("RESEND_API_KEY", "")
+    email_from: str = env.get("DEMO_EMAIL_FROM", "demos@digitalmacaroni.io")
+    email_reply_to: str = env.get("DEMO_EMAIL_REPLY_TO", "hello@digitalmacaroni.io")
     # Silence that ends the visitor's turn. Lower is snappier; too low cuts people off mid-thought.
     end_of_speech_silence_ms: int = int(env.get("DEMO_END_OF_SPEECH_SILENCE_MS", "700"))
     # Log pitch and loudness of each agent turn on phone calls (numbers only), to diagnose voice changes.

@@ -252,3 +252,45 @@ def test_ordinary_speech_is_not_taken_for_a_code(text):
 
 def test_a_number_on_its_own_counts_as_something_said():
     assert finished("8946") and finished("8 9 4 6")
+
+
+@pytest.mark.parametrize("spoken,expected", [("alex.taylor@example.com", "alex.taylor@example.com"), ("Alex dot Taylor at Gmail dot com", "alex.taylor@gmail.com"), ("jamie underscore fox at outlook dot co dot uk", "jamie_fox@outlook.co.uk"), ("not an email", None), ("alex at gmail", None)])
+def test_spoken_email_addresses_are_normalised(spoken, expected):
+    from app import email
+    assert email.normalise(spoken) == expected
+
+
+async def test_itinerary_email_is_sent_once_from_the_reviewed_booking(fake_duffel, monkeypatch):
+    from app import email
+    sent: list[tuple[str, str]] = []
+
+    async def send(to, subject, html_body, text_body, from_name):
+        sent.append((to, text_body))
+        return None
+
+    monkeypatch.setattr(email, "send", send)
+    state, run = runner()
+    await run("search_flights", SEARCH)
+    early = await run("email_itinerary", {"email": "alex@example.com", "callerConfirmed": True})
+    assert early.error == "not_reviewed" and not sent
+    await run("choose_flight", {"option": _option_for(state, "British Airways")})
+    await run("set_traveller", {"fullName": "Alex Taylor"})
+    await run("review_booking")
+    bad = await run("email_itinerary", {"email": "alex at example", "callerConfirmed": True})
+    assert bad.error == "invalid_email" and not sent
+    r = await run("email_itinerary", {"email": "Alex dot Taylor at example dot com", "callerConfirmed": True})
+    assert r.ok and r.result["to"] == "a•••r@example.com" and travel.view(state)["emailed"]["to"] == "a•••r@example.com"
+    assert sent[0][0] == "alex.taylor@example.com" and "Alex Taylor" in sent[0][1] and "Total: $415" in sent[0][1] and "nothing was booked" in sent[0][1]
+    again = await run("email_itinerary", {"email": "other@example.com", "callerConfirmed": True})
+    assert again.error == "already_sent" and len(sent) == 1
+    assert "alex.taylor" not in str(travel.view(state))
+
+
+def test_email_limits_per_address(monkeypatch):
+    from app import email
+    monkeypatch.setattr(email, "_by_address", {})
+    monkeypatch.setattr(email, "_recent", [])
+    for _ in range(email.EMAILS_PER_ADDRESS_PER_DAY):
+        assert email.allowed("a@example.com") is None
+        email._by_address.setdefault(email._key("a@example.com"), []).append(__import__("time").time())
+    assert email.allowed("a@example.com") == "too_many_for_address" and email.allowed("b@example.com") is None
