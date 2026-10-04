@@ -69,6 +69,8 @@ class DemoDefinition(Generic[S]):
     # Cascade only: how the TTS voice should sound, and words the transcription should expect.
     voice_style: str = ""
     vocabulary: list[str] = field(default_factory=list)
+    # Lines the agent says word for word (its openings); their audio is synthesised once and reused.
+    fixed_lines: list[str] = field(default_factory=list)
 
 
 def Confirmed() -> Any:

@@ -45,6 +45,14 @@ async def _forget_starts() -> None:
             _starts.pop(ip, None)
 
 
+async def _warm_phrases() -> None:
+    # Fixed lines of the cascade demos (openings, holding lines, goodbye) play instantly once cached.
+    from .cascade import warm_phrases
+
+    started = time.monotonic()
+    log.info("cascade.phrases_ready", {"count": await warm_phrases(), "latency_ms": int((time.monotonic() - started) * 1000)})
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     if not config.gemini_api_key:
@@ -54,6 +62,7 @@ async def lifespan(_: FastAPI):
     tasks = [asyncio.create_task(sweeper()), asyncio.create_task(_forget_starts())]
     if config.gemini_api_key:
         tasks.append(asyncio.create_task(_warm_loop()))
+        tasks.append(asyncio.create_task(_warm_phrases()))
     log.info("service.started", {"model": config.model, "enabled": config.enabled, "max_concurrent": config.max_concurrent, "runtime": "python-adk"})
     yield
     for t in tasks:

@@ -4,7 +4,7 @@ from typing import Any
 import pytest
 
 from app import duffel
-from app.cascade import Chunker
+from app.cascade import Chunker, finished
 from app.demos.travel import duration, money, travel
 from app.demos.types import OpContext, OpResult
 
@@ -139,3 +139,13 @@ def test_chunker_speaks_the_first_sentence_then_the_rest_together():
         pieces += c.feed(token)
     pieces += c.flush()
     assert pieces == ["Sure, I can help with that, no problem.", "I found five flights. The cheapest is $399.79 with Iberia."]
+
+
+@pytest.mark.parametrize("text", ["Yes.", "Just me, economy.", "Hi, I'd like to fly from London to New York next Friday.", "Can you check Saturday?", "My name is Jamie Fox."])
+def test_a_finished_sentence_ends_the_turn(text):
+    assert finished(text)
+
+
+@pytest.mark.parametrize("text", ["I'd like to fly from London to New York and", "My name is", "Hi, I'd like to fly from", "Coming back on the 27th,", "um", ""])
+def test_a_trailing_transcript_waits_for_more(text):
+    assert not finished(text)

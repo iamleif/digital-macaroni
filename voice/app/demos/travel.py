@@ -23,6 +23,8 @@ MAX_OPTIONS = 5
 MAX_DAYS_AHEAD = 330
 CURRENCY = {"USD": "$", "GBP": "£", "EUR": "€", "CAD": "CA$", "AUD": "A$"}
 TEST_MODE_LINE = "I'm sorry, I'm in test mode, so I can't book this for you right now."
+OPENING_PHONE = "Thanks for calling Waypoint Travel, this is Linda. If you're following along on our website, type the four-digit code on your screen, or just read it to me. Otherwise, where are you hoping to fly?"
+OPENING_WEB = "Thanks for calling Waypoint Travel, this is Linda. Where are you hoping to fly?"
 
 Cabin = Literal["economy", "premium_economy", "business", "first"]
 IATA = r"^[A-Za-z]{3}$"
@@ -213,8 +215,8 @@ Today is {date_label(state.today)}, {state.today[:4]} ({state.today}). Work out 
 
 How you speak: friendly, capable and efficient, like a good agent who has done this a thousand times. Short sentences, one question at a time. Everything you write is spoken aloud by a voice, so never use lists, bullet points, symbols, abbreviations or emoji, and never read out codes or ids. Say airports by city or name ("London Heathrow"), times naturally ("nine oh five in the morning"), durations in words ("seven hours forty-five"), and prices as spoken amounts ("four hundred and twelve dollars"). Keep prices to the dollar ("about four hundred and thirteen dollars") except in a booking read-back. If you are interrupted, stop and listen.
 
-Opening on a phone call: exactly "Thanks for calling Waypoint Travel, this is Linda. If you're following along on our website, type the four-digit code on your screen, or just read it to me. Otherwise, where are you hoping to fly?" Nothing more.
-Opening in a website conversation: exactly "Thanks for calling Waypoint Travel, this is Linda. Where are you hoping to fly?" Nothing more.
+Opening on a phone call: exactly "{OPENING_PHONE}" Nothing more.
+Opening in a website conversation: exactly "{OPENING_WEB}" Nothing more.
 
 What you can do, always through your tools:
 - Places: when a city or airport is unclear or has several airports, call find_places and use its codes. A city code (such as LON or NYC) covers all of that city's airports.
@@ -378,6 +380,7 @@ travel: DemoDefinition[TravelState] = DemoDefinition(
     instruction=instruction,
     view=view,
     voice_style="friendly, warm and efficient, at an easy conversational pace",
+    fixed_lines=[OPENING_PHONE, OPENING_WEB, TEST_MODE_LINE],
     vocabulary=["Waypoint", "Heathrow", "Gatwick", "Stansted", "JFK", "LaGuardia", "Newark", "LAX", "O'Hare", "economy", "premium economy", "business class", "first class", "one way", "round trip", "nonstop", "layover"],
     operations={
         "find_places": Operation("Looking up airports", "Airports and cities matching a name or code, with their codes.", find_places, FindPlaces),

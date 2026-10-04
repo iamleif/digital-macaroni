@@ -4,9 +4,11 @@ answers through ADK and runs the demo's tools, and its reply is spoken by Gemini
 still being written. Speaks the same LiveSession interface as the Gemini Live and ElevenLabs adapters,
 so transports, tools, records and the conversation panel work unchanged.
 
-Turn-taking is ours to do. A turn ends after a short silence measured here (the transcription model
-is then told the audio stream ended, which makes it finalise at once instead of waiting on its own
-detector). The reply starts speculatively from the latest interim transcript at that moment; when the
+Turn-taking is ours to do. After a short silence measured here the transcription model is told the
+audio stream ended, which makes it finalise at once instead of waiting on its own detector. Whether
+the turn is over is then read from the words: a transcript that ends like a finished sentence is
+answered straight away; one that trails off ("…to New York and", "my name is") waits a little longer
+for the rest, so a pause mid-thought is not taken as the end. The reply starts speculatively from the latest interim transcript at that moment; when the
 final transcript arrives a quarter of a second later it either matches (the reply carries on) or the
 speculative reply is discarded and rewound before anything was heard. The visitor interrupts by speaking over the agent: the reply is cancelled (ADK abort
 signal), queued speech is dropped, and the next turn tells the model what the visitor actually heard.
@@ -44,8 +46,12 @@ CASCADE_NOTE = """
 Everything you write is turned into speech as you write it, so write only the words you say aloud: plain sentences, no lists, symbols, markdown, notes or stage directions. Keep each reply short; the caller can always ask for more. Do not announce that you are checking or looking something up: when a lookup takes a moment, the caller hears a short holding line automatically. When the caller is done, say your goodbye and call end_call in the same reply."""
 
 SPEECH_RMS = 700
-# Silence after speech that ends the visitor's turn.
-END_OF_TURN_S = 0.5
+# Silence after speech before the transcript is finalised and, if it reads as finished, answered.
+END_OF_TURN_S = 0.3
+# Further silence allowed after a transcript that trails off, before it is answered anyway.
+UNFINISHED_HOLD_S = 0.6
+# Last words that mean the visitor has not finished.
+TRAILING = {"and", "but", "or", "so", "because", "to", "the", "a", "an", "my", "our", "from", "of", "for", "with", "in", "on", "at", "um", "uh", "er", "like", "then", "that", "which", "is", "are", "was", "it's", "i'm", "we're", "i", "we", "if", "about", "around"}
 # Words that acknowledge rather than interrupt.
 BACKCHANNEL = {"yeah", "yes", "yep", "okay", "ok", "mm", "mhm", "uh-huh", "right", "sure", "great", "cool", "hmm", "uh", "um", "ah", "oh"}
 # Spoken when a tool that calls an outside service starts before the agent has said anything.
@@ -71,6 +77,52 @@ def _instruction(ctx: ReadonlyContext) -> str:
 
 
 _runners: dict[str, InMemoryRunner] = {}
+
+# Audio for lines spoken word for word (openings, holding lines, goodbye), synthesised once at start-up
+# in each cascade demo's voice and replayed instantly. Keyed by TTS model, voice, style and words.
+_phrases: dict[tuple[str, str, str, str], bytes] = {}
+PHRASE_CHUNK = 9600  # 0.2 s of 24 kHz PCM16
+
+
+def voice_config_for(voice: str) -> types.VoiceConfig:
+    """A designed voice ("voice_…") or a prebuilt one by name."""
+    return types.VoiceConfig(voice=voice) if voice.startswith("voice_") else types.VoiceConfig(prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=voice))
+
+
+def _phrase_key(voice: str, style: str, text: str) -> tuple[str, str, str, str]:
+    return (config.tts_model, voice, style, _squash(text))
+
+
+async def _tts(text: str, voice_config: types.VoiceConfig, style: str) -> AsyncIterator[bytes]:
+    part = types.Part(text=text, speech_metadata=types.SpeechMetadata(style=style) if style else None)
+    cfg = types.GenerateContentConfig(response_modalities=[types.Modality.AUDIO], speech_config=types.SpeechConfig(voice_config=voice_config))
+    async for chunk in await client().aio.models.generate_content_stream(model=config.tts_model, contents=[types.Content(role="user", parts=[part])], config=cfg):
+        for c in chunk.candidates or []:
+            for part_out in (c.content.parts if c.content else None) or []:
+                if part_out.inline_data and part_out.inline_data.data:
+                    yield part_out.inline_data.data
+
+
+async def warm_phrases() -> int:
+    """Synthesises every cascade demo's fixed lines, split into pieces exactly as replies are spoken."""
+    count = 0
+    for demo_id in config.cascade_demos:
+        demo = demos.get(demo_id)
+        if demo is None:
+            continue
+        voice = config.voices.get(demo_id, "Achird")
+        for line in [*demo.fixed_lines, *HOLD_LINES, GOODBYE_LINE]:
+            chunker = Chunker()
+            for piece in chunker.feed(line + " ") + chunker.flush():
+                key = _phrase_key(voice, demo.voice_style, piece)
+                if key in _phrases:
+                    continue
+                try:
+                    _phrases[key] = b"".join([c async for c in _tts(piece, voice_config_for(voice), demo.voice_style)])
+                    count += 1
+                except Exception as err:  # noqa: BLE001
+                    log.warn("cascade.phrase_failed", {"demo": demo_id}, err)
+    return count
 
 
 def runner(demo_id: str) -> InMemoryRunner:
@@ -173,8 +225,7 @@ class Cascade:
         self.app_name = f"{session.demo_id}_cascade"
         self.voice = config.voices.get(session.demo_id, "Achird")
         self.style = session.demo.voice_style
-        # A designed voice ("voice_…") or a prebuilt one by name.
-        self.voice_config = types.VoiceConfig(voice=self.voice) if self.voice.startswith("voice_") else types.VoiceConfig(prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=self.voice))
+        self.voice_config = voice_config_for(self.voice)
         self.out: asyncio.Queue[Optional[LiveEvent]] = asyncio.Queue()
         # (text, end of speech, transcript final, speculative)
         self.inputs: asyncio.Queue[tuple[str, float, float, bool]] = asyncio.Queue()
@@ -192,6 +243,9 @@ class Cascade:
         self.interim = ""
         self.speculated: Optional[str] = None
         self.speculation_dropped = False
+        # A final transcript that trailed off, waiting to see whether the visitor carries on.
+        self.held: Optional[str] = None
+        self.hold_timer: Optional[asyncio.TimerHandle] = None
         # Visitor speech, from our own level meter.
         self.voice_at = 0.0
         self.in_speech = False
@@ -243,6 +297,8 @@ class Cascade:
         if self.closed and not self.tasks:
             return
         self.closed = True
+        if self.hold_timer:
+            self.hold_timer.cancel()
         if self.turn:
             self.turn.abort.set()
             self._stop_speech(self.turn)
@@ -280,11 +336,17 @@ class Cascade:
                 if rms(pcm) > SPEECH_RMS:
                     self.voice_at = now
                     self.in_speech = True
+                    # They are carrying on: whatever was held waits for the rest.
+                    if self.hold_timer:
+                        self.hold_timer.cancel()
+                        self.hold_timer = None
                 await self.stt.send_realtime_input(audio=types.Blob(data=pcm, mime_type="audio/pcm;rate=16000"))
                 if self.in_speech and now - self.voice_at >= END_OF_TURN_S:
                     self.in_speech = False
                     await self.stt.send_realtime_input(audio_stream_end=True)
-                    if self.interim and not self._busy():
+                    if self.held is not None:
+                        self._arm_hold()
+                    elif self.interim and not self._busy() and finished(self.interim):
                         self.speculated, self.speculation_dropped = self.interim, False
                         self.inputs.put_nowait((self.interim, self.voice_at, now, True))
         except asyncio.CancelledError:
@@ -342,7 +404,7 @@ class Cascade:
                 return
             self._drop_speculation()
             if words:
-                self.inputs.put_nowait((text, self.voice_at, time.monotonic(), False))
+                self._submit(text)
             return
         if not words:
             return
@@ -351,6 +413,27 @@ class Cascade:
                 return
             self._interrupt()
         self._push(LiveEvent("transcript_set", speaker="visitor", text=text, finished=True))
+        self._submit(text)
+
+    def _submit(self, text: str) -> None:
+        """Answers what the visitor said now if it reads as finished; otherwise holds it briefly."""
+        if self.held is not None:
+            text = f"{self.held} {text}"
+        if finished(text):
+            self._release(text)
+        else:
+            self.held = text
+            self._arm_hold()
+
+    def _arm_hold(self) -> None:
+        if self.hold_timer:
+            self.hold_timer.cancel()
+        self.hold_timer = asyncio.get_running_loop().call_later(UNFINISHED_HOLD_S, lambda: self.held is not None and self._release(self.held))
+
+    def _release(self, text: str) -> None:
+        if self.hold_timer:
+            self.hold_timer.cancel()
+        self.held, self.hold_timer = None, None
         self.inputs.put_nowait((text, self.voice_at, time.monotonic(), False))
 
     def _drop_speculation(self) -> None:
@@ -577,16 +660,13 @@ class Cascade:
 
     async def _synthesise(self, p: Piece) -> None:
         try:
-            part = types.Part(text=p.text, speech_metadata=types.SpeechMetadata(style=self.style) if self.style else None)
-            cfg = types.GenerateContentConfig(
-                response_modalities=[types.Modality.AUDIO],
-                speech_config=types.SpeechConfig(voice_config=self.voice_config),
-            )
-            async for chunk in await client().aio.models.generate_content_stream(model=config.tts_model, contents=[types.Content(role="user", parts=[part])], config=cfg):
-                for c in chunk.candidates or []:
-                    for part_out in (c.content.parts if c.content else None) or []:
-                        if part_out.inline_data and part_out.inline_data.data:
-                            p.audio.put_nowait(part_out.inline_data.data)
+            cached = _phrases.get(_phrase_key(self.voice, self.style, p.text))
+            if cached:
+                for i in range(0, len(cached), PHRASE_CHUNK):
+                    p.audio.put_nowait(cached[i : i + PHRASE_CHUNK])
+                return
+            async for data in _tts(p.text, self.voice_config, self.style):
+                p.audio.put_nowait(data)
         except asyncio.CancelledError:
             pass
         except Exception as err:  # noqa: BLE001
@@ -613,6 +693,14 @@ class Cascade:
                 "discarded": t.discarded,
             },
         )
+
+
+def finished(text: str) -> bool:
+    """Whether a transcript reads as a finished turn: it ends a sentence and not on a word that
+    expects more ("…and", "my name is")."""
+    t = text.strip()
+    words = _words(t)
+    return bool(words) and t[-1] in ".?!" and words[-1] not in TRAILING
 
 
 def _squash(text: str) -> str:
