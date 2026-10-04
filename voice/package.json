@@ -1,0 +1,33 @@
+{
+  "name": "digitalmacaroni-voice",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Live voice backend for the Digital Macaroni demo agents: Twilio phone calls and browser conversations on Gemini Live through ADK.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/main.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@fastify/formbody": "9.0.0",
+    "@fastify/websocket": "11.3.1",
+    "@google/adk": "2.2.0",
+    "@google/genai": "2.25.0",
+    "fastify": "5.12.5",
+    "ws": "8.22.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.18.2",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}
