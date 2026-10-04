@@ -1,5 +1,6 @@
 """
-The cascade: the visitor's speech is transcribed (Gemini Live transcription), a Gemini text model
+The cascade: the visitor's speech is transcribed (AssemblyAI Universal-3.6 Pro by default, or Gemini
+Live transcription; see stt.py), a Gemini text model
 answers through ADK and runs the demo's tools, and its reply is spoken by Gemini TTS while it is
 still being written. Speaks the same LiveSession interface as the Gemini Live and ElevenLabs adapters,
 so transports, tools, records and the conversation panel work unchanged.
@@ -39,6 +40,7 @@ from .config import config
 from .demos import demos
 from .live import LiveEvent, full_instruction
 from .session import DemoSession, get_session
+from .stt import Transcriber, open_transcriber
 from .tools import demo_tools
 
 CASCADE_NOTE = """
@@ -235,8 +237,7 @@ class Cascade:
         # (text, end of speech, transcript final, speculative)
         self.inputs: asyncio.Queue[tuple[str, float, float, bool]] = asyncio.Queue()
         self.audio_in: asyncio.Queue[Optional[bytes]] = asyncio.Queue()
-        self.stt: Any = None
-        self._stt_cm: Any = None
+        self.stt: Optional[Transcriber] = None
         self.turn: Optional[Turn] = None
         # A turn whose reply is written but still playing, and the task that completes it.
         self.tail: Optional[Turn] = None
@@ -263,16 +264,7 @@ class Cascade:
 
     async def start(self) -> None:
         await self.runner.session_service.create_session(app_name=self.app_name, user_id=self.session.id, session_id=self.session.id)
-        stt_config = types.LiveConnectConfig(
-            response_modalities=[types.Modality.TEXT],
-            input_audio_transcription=types.AudioTranscriptionConfig(custom_vocabulary=self.session.demo.vocabulary or None),
-            # The model's own end-of-speech detector is the backstop; ours (END_OF_TURN_S) is quicker.
-            realtime_input_config=types.RealtimeInputConfig(
-                automatic_activity_detection=types.AutomaticActivityDetection(end_of_speech_sensitivity=types.EndSensitivity.END_SENSITIVITY_HIGH, silence_duration_ms=config.end_of_speech_silence_ms)
-            ),
-        )
-        self._stt_cm = client().aio.live.connect(model=config.stt_model, config=stt_config)
-        self.stt = await asyncio.wait_for(self._stt_cm.__aenter__(), timeout=8)
+        self.stt = await open_transcriber(self.session.demo.vocabulary, client())
         self.tasks = [asyncio.create_task(self._send_audio()), asyncio.create_task(self._transcripts()), asyncio.create_task(self._turns())]
         # end_call runs as soon as the model asks, usually before its goodbye has been synthesised; the
         # transport is told only once everything said so far has played.
@@ -312,11 +304,8 @@ class Cascade:
         for t in [*self.tasks, *([self.tail_task] if self.tail_task else [])]:
             t.cancel()
         self.tasks = []
-        if self._stt_cm is not None:
-            try:
-                await self._stt_cm.__aexit__(None, None, None)
-            except Exception:  # noqa: BLE001
-                pass
+        if self.stt is not None:
+            await self.stt.close()
         try:
             await self.runner.session_service.delete_session(app_name=self.app_name, user_id=self.session.id, session_id=self.session.id)
         except Exception:  # noqa: BLE001
@@ -349,10 +338,10 @@ class Cascade:
                     if self.hold_timer:
                         self.hold_timer.cancel()
                         self.hold_timer = None
-                await self.stt.send_realtime_input(audio=types.Blob(data=pcm, mime_type="audio/pcm;rate=16000"))
+                await self.stt.send(pcm)
                 if self.in_speech and now - self.voice_at >= END_OF_TURN_S:
                     self.in_speech = False
-                    await self.stt.send_realtime_input(audio_stream_end=True)
+                    await self.stt.end_of_speech()
                     if self.held is not None:
                         self._arm_hold()
                     elif self.interim and not self._busy() and finished(self.interim) and not self._may_be_code(self.interim):
@@ -365,15 +354,13 @@ class Cascade:
 
     async def _transcripts(self) -> None:
         try:
-            while not self.closed:
-                async for msg in self.stt.receive():
-                    sc = msg.server_content
-                    if not sc:
-                        continue
-                    if sc.interim_input_transcription and sc.interim_input_transcription.text:
-                        self._interim(sc.interim_input_transcription.text)
-                    if sc.input_transcription and sc.input_transcription.text:
-                        self._final(sc.input_transcription.text)
+            async for kind, text in self.stt.events():
+                if self.closed:
+                    break
+                if kind == "interim":
+                    self._interim(text)
+                else:
+                    self._final(text)
         except asyncio.CancelledError:
             pass
         except Exception as err:  # noqa: BLE001

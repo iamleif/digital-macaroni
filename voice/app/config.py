@@ -35,6 +35,10 @@ class Config:
     )
     # Demos on the cascade (speech-to-text, a Gemini text model through ADK, then Gemini TTS) instead of Gemini Live.
     cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel").split(",") if d.strip())
+    # Speech-to-text for the cascade: "assemblyai" (Universal-3.6 Pro, the default) or "gemini".
+    stt_provider: str = env.get("DEMO_STT_PROVIDER", "assemblyai")
+    assemblyai_api_key: str = env.get("ASSEMBLYAI_API_KEY", "")
+    assemblyai_model: str = env.get("DEMO_ASSEMBLYAI_MODEL", "universal-3-6-pro")
     stt_model: str = env.get("DEMO_STT_MODEL", "gemini-3.5-transcribe-live")
     text_model: str = env.get("DEMO_TEXT_MODEL", "gemini-3.5-flash-lite")
     tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-lite-tts")

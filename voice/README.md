@@ -34,7 +34,7 @@ gcloud run deploy studio-demo-voice --source . --project digital-macaroni-510610
 Settings and secrets live on the Cloud Run service and carry over between deploys.
 `scripts/twilio-numbers.sh point|restore` moves the Northline and Form & Field numbers to this service or back to
 RankLadder's bridge; Waypoint's number was bought for the demo and stays on this service. Waypoint also needs the
-`studio-demo-duffel-token` secret as `DUFFEL_ACCESS_TOKEN`.
+`studio-demo-duffel-token` secret as `DUFFEL_ACCESS_TOKEN` and `studio-demo-assemblyai-api-key` as `ASSEMBLYAI_API_KEY`.
 
 ## Gemini 3.8 Live and tools
 
