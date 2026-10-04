@@ -12,6 +12,11 @@ from tests.test_demos import CTX, runner, slots_for
 def outbox(monkeypatch):
     sent: list[dict[str, Any]] = []
 
+    async def any_domain(domain):
+        return True
+
+    monkeypatch.setattr(email, "receives_mail", any_domain)
+
     async def send(to, subject, html_body, text_body, from_name):
         sent.append({"to": to, "subject": subject, "html": html_body, "text": text_body, "from": from_name})
         return None
@@ -72,3 +77,16 @@ def test_every_product_has_an_email_picture():
     folder = Path(email.__file__).parent / "email_assets" / "products"
     for p in CATALOGUE:
         assert (folder / f"{p['id']}.{'jpg' if p['id'] in PHOTOS else 'png'}").exists(), p["id"]
+
+
+async def test_a_misheard_domain_is_caught_before_anything_is_sent(outbox, monkeypatch):
+    async def no_mail(domain):
+        return domain != "recent.dev"
+
+    monkeypatch.setattr(email, "receives_mail", no_mail)
+    state, run = runner(formfield)
+    run("reserve_item", {"variantId": "ridge-sage", "quantity": 1, "name": "Sam Rivera", "callerConfirmed": True})
+    r = await call(formfield, state, "email_reservation", {"email": "delivered@recent.dev", "callerConfirmed": True})
+    assert r.error == "unknown_domain" and "spell the part after the @" in r.message and not outbox
+    ok = await call(formfield, state, "email_reservation", {"email": "delivered@resend.dev", "callerConfirmed": True})
+    assert ok.ok and len(outbox) == 1

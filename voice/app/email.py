@@ -90,6 +90,22 @@ async def send(to: str, subject: str, html_body: str, text_body: str, from_name:
     return None
 
 
+async def receives_mail(domain: str) -> bool:
+    """Whether a domain can receive email (has MX or address records), by DNS over HTTPS. Unknown counts as yes."""
+    try:
+        async with httpx.AsyncClient(timeout=3) as http:
+            for kind in ("MX", "A"):
+                r = await http.get("https://dns.google/resolve", params={"name": domain, "type": kind})
+                data = r.json()
+                if data.get("Status") == 3:  # NXDOMAIN: no such domain
+                    return False
+                if data.get("Answer"):
+                    return True
+        return False
+    except Exception:  # noqa: BLE001
+        return True
+
+
 async def confirm(spoken: str, message: tuple[str, str, str], from_name: str) -> tuple[Optional[str], Optional[str]]:
     """
     Sends one demo email to the address the caller gave. Returns (masked address, None) when sent, or
@@ -98,6 +114,9 @@ async def confirm(spoken: str, message: tuple[str, str, str], from_name: str) ->
     address = normalise(spoken)
     if address is None:
         return None, "invalid_email"
+    # A misheard domain ("recent.dev" for "resend.dev") must not reach a stranger or bounce.
+    if not await receives_mail(address.rpartition("@")[2]):
+        return None, "unknown_domain"
     subject, body, text = message
     why = await send(address, subject, body, text, from_name)
     return (None, why) if why else (mask(address), None)
@@ -107,6 +126,7 @@ async def confirm(spoken: str, message: tuple[str, str, str], from_name: str) ->
 REFUSALS = {
     "invalid_email": "That doesn't look like a complete email address. Ask the caller to say it again, slowly, and read it back.",
     "too_many_for_address": "That address has already had several emails from our demos today. Apologise; nothing more can be emailed to it today.",
+    "unknown_domain": "Nothing was sent: the part after the @ doesn't seem to exist, so it was probably misheard. Say which domain you heard, and ask the caller to spell the part after the @ slowly.",
 }
 
 
