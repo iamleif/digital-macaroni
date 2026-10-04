@@ -9,7 +9,7 @@ import { answerBySlug } from "@/components/studio/answers/content";
 import h from "@/components/studio/home.module.css";
 
 export const metadata: Metadata = {
-  title: { absolute: "Digital Macaroni — Voice agents and software that get to work" },
+  title: { absolute: "Digital Macaroni — AI voice agents and software that get to work" },
   description: "Digital Macaroni designs and builds custom AI voice agents, dashboards and apps for businesses. Call one of our live demo agents and watch it work.",
   alternates: { canonical: "/" },
 };

@@ -210,6 +210,9 @@ function useStickToBottom<T extends HTMLElement>(dep: unknown) {
   return ref;
 }
 
+/** Booking demos stop on purpose at payment: that is the end of the flow, not an error. */
+const isTestStop = (a: Action) => a.status === "failed" && /test mode/i.test(a.summary ?? "");
+
 /** A failure's first sentence only: the rest is guidance for the agent. */
 const outcome = (a: Action) => (a.status === "failed" ? (a.summary ?? a.label).split(/(?<=[.!?])\s/)[0] : a.summary ?? a.label);
 
@@ -221,8 +224,8 @@ function Conversation({ entries, agentName, demoId }: { entries: Entry[]; agentN
         {e.speaker === "agent" ? <span className={d.orbMini} data-demo={demoId} aria-hidden="true" /> : null}
         <div><span>{e.speaker === "agent" ? agentName : "You"}</span><p>{e.text}</p></div>
       </div>
-      : <div key={e.id} className={d.step} data-status={e.status}>
-        <i aria-hidden="true">{e.status === "running" ? null : e.status === "done" ? <Check size={11} /> : "!"}</i>
+      : <div key={e.id} className={d.step} data-status={isTestStop(e) ? "stopped" : e.status}>
+        <i aria-hidden="true">{e.status === "running" ? null : e.status === "done" || isTestStop(e) ? <Check size={11} /> : "!"}</i>
         <span>{e.status === "running" ? `${e.label}…` : outcome(e)}</span>
       </div>)}
   </div>;
@@ -235,7 +238,7 @@ const took = (ms: number) => (ms < 1000 ? `${Math.max(1, ms)} ms` : `${(ms / 100
 
 function BehindTheCall({ demo, feed }: { demo: DemoInfo; feed: Feed }) {
   const actions = feed.entries.filter((e): e is Action => e.kind === "action");
-  const done = actions.filter((a) => a.status === "done");
+  const done = actions.filter((a) => a.status === "done" || isTestStop(a));
   const uses = (tool: string) =>
     tool === "link_screen" ? Number(feed.log.some((i) => i.kind === "event" && i.text.includes("linked")))
     : tool === "end_call" ? Number(feed.ended === "agent_ended")
@@ -275,7 +278,7 @@ function BehindTheCall({ demo, feed }: { demo: DemoInfo; feed: Feed }) {
           if (item.kind === "event") return <li key={item.id} data-kind="event"><time>{clock(item.at)}</time><span>{item.text}</span></li>;
           const a = byId.get(item.id);
           if (!a) return null;
-          return <li key={item.id} data-kind="action" data-status={a.status}>
+          return <li key={item.id} data-kind="action" data-status={isTestStop(a) ? "done" : a.status}>
             <time>{clock(a.at)}</time>
             <span>{label.get(a.tool) ?? a.label}{a.status === "running" ? <em> …</em> : <> → {outcome(a)}</>}<code>{a.tool}</code></span>
             {a.doneAt ? <small>{took(a.doneAt - a.at)}</small> : null}
@@ -290,8 +293,12 @@ function BehindTheCall({ demo, feed }: { demo: DemoInfo; feed: Feed }) {
 const OUTCOMES: Partial<Record<DemoId, NonNullable<DemoInfo["design"]["outcomes"]>>> = {
   travel: [
     { tools: ["search_flights"], one: "Searched live airline fares", many: "Searched live fares {n} times" },
-    { tools: ["get_offer_details"], one: "Checked a fare’s rules and bags", many: "Checked {n} fares’ rules and bags" },
+    { tools: ["choose_flight", "choose_fare"], one: "Priced the fare and its levels", many: "Priced {n} fares" },
+    { tools: ["choose_seat"], one: "Picked a seat on the seat map", many: "Changed the seat {n} times" },
+    { tools: ["add_bags"], one: "Added checked bags", many: "Updated the bags {n} times" },
+    { tools: ["review_booking"], one: "Re-checked the price and read it back", many: "Read the booking back {n} times" },
     { tools: ["book_flight"], one: "Took the booking up to payment", many: "Took {n} bookings up to payment" },
+    { tools: ["email_itinerary"], one: "Emailed the itinerary", many: "Emailed the itinerary" },
   ],
 };
 

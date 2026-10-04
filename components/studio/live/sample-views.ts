@@ -1,4 +1,4 @@
-import type { FormFieldView, NorthlineView, TravelJourney, TravelView } from "./types";
+import type { FormFieldView, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
 
 /**
  * Representative records for the homepage cards and the demo window before a conversation starts.
@@ -76,23 +76,53 @@ export const formfieldEmpty: FormFieldView = {
   messages: [],
 };
 
-const leg = (date: string, from: [string, string], to: [string, string], departs: string, arrives: string, duration: string, airline: string, flight: string, via: string[] = []): TravelJourney => ({
-  from: from[0], fromName: from[1], to: to[0], toName: to[1], date, departs, arrives, arrivesNextDay: false, duration, stops: via.length, via, flights: [flight], airlines: [airline],
+const leg = (date: string, from: [string, string], to: [string, string], departs: string, arrives: string, duration: string, airline: string, flight: string, via: string[] = [], nextDay = false): TravelJourney => ({
+  from: from[0], fromName: from[1], to: to[0], toName: to[1], date, departs, arrives, arrivesNextDay: nextDay, duration, stops: via.length, via, flights: [flight], airlines: [airline],
 });
 const LHR: [string, string] = ["LHR", "Heathrow Airport"];
 const JFK: [string, string] = ["JFK", "John F. Kennedy International Airport"];
 
+/** A 27-row, three-and-three economy cabin: the front rows and window or aisle seats cost extra, row 12 is an exit row. */
+function sampleSeatMap(): TravelSeatMap {
+  const taken = new Set(["1B", "1C", "2A", "2E", "3D", "3F", "5B", "6A", "6C", "6F", "7A", "7D", "8A", "8B", "8E", "9A", "9F", "10A", "10C", "10D", "12C", "13B", "13E", "14A", "14F", "15D", "16A", "16B", "16C", "17F", "18A", "18E", "19C", "19D", "20B", "21A", "21F", "22D", "22E", "23A", "24C", "24F", "25B", "26A", "26E", "27C", "27D"]);
+  const rows: TravelSeatMap["rows"] = [];
+  for (let n = 1; n <= 27; n++) {
+    const cell = (l: string): TravelSeatCell => {
+      const id = `${n}${l}`;
+      if (taken.has(id)) return { id, st: "taken" };
+      const price = n <= 5 ? "$35" : n === 12 ? "$45" : "AF".includes(l) || "CD".includes(l) ? "$18" : null;
+      return { id, st: price ? "paid" : "free", price };
+    };
+    rows.push({ row: n, exit: n === 12, sections: [["A", "B", "C"].map(cell), ["D", "E", "F"].map(cell)] });
+  }
+  rows.push({ row: null, exit: false, sections: [[{ type: "lavatory" }, { type: "empty" }, { type: "empty" }], [{ type: "empty" }, { type: "empty" }, { type: "galley" }]] });
+  return { cabin: "economy", aisles: 1, wings: { first_row_index: 8, last_row_index: 16 }, rows, flight: { from: "LHR", to: "JFK", flight: "ZZ117" } };
+}
+
+export const travelSeatMap = sampleSeatMap();
+
 export const travelSample: TravelView = {
+  stage: "payment",
   search: { origin: "LON", destination: "NYC", departureDate: "2026-11-20", returnDate: "2026-11-27", adults: 1, cabinClass: "economy", originName: "London", destinationName: "New York", label: "LON to NYC, Friday, November 20, back Friday, November 27" },
   options: [
-    { option: 1, airline: "British Airways", price: "$389", amount: "389.00", currency: "USD", journeys: [leg("Friday, November 20", LHR, JFK, "8:20 AM", "11:05 AM", "7h 45m", "British Airways", "BA117"), leg("Friday, November 27", JFK, LHR, "6:30 PM", "6:40 AM", "7h 10m", "British Airways", "BA178")] },
-    { option: 2, airline: "Iberia", price: "$402", amount: "402.00", currency: "USD", journeys: [leg("Friday, November 20", LHR, JFK, "7:05 AM", "1:50 PM", "11h 45m", "Iberia", "IB3167", ["MAD"]), leg("Friday, November 27", JFK, LHR, "5:15 PM", "9:55 AM", "11h 40m", "Iberia", "IB6252", ["MAD"])] },
-    { option: 3, airline: "Virgin Atlantic", price: "$426", amount: "426.00", currency: "USD", journeys: [leg("Friday, November 20", LHR, JFK, "11:40 AM", "2:35 PM", "7h 55m", "Virgin Atlantic", "VS3"), leg("Friday, November 27", JFK, LHR, "8:05 PM", "8:10 AM", "7h 05m", "Virgin Atlantic", "VS4")] },
+    { option: 1, label: "Best value", airline: "Duffel Airways", price: "$389", amount: "389.00", currency: "USD", journeys: [leg("Friday, November 20", LHR, JFK, "8:20 AM", "11:05 AM", "7h 45m", "Duffel Airways", "ZZ117"), leg("Friday, November 27", JFK, LHR, "6:30 PM", "6:40 AM", "7h 10m", "Duffel Airways", "ZZ178", [], true)] },
+    { option: 2, label: "Cheapest", airline: "Iberia", price: "$372", amount: "372.00", currency: "USD", journeys: [leg("Friday, November 20", LHR, JFK, "7:05 AM", "1:50 PM", "11h 45m", "Iberia", "IB3167", ["MAD"]), leg("Friday, November 27", JFK, LHR, "5:15 PM", "9:55 AM", "11h 40m", "Iberia", "IB6252", ["MAD"], true)] },
+    { option: 3, label: "Fastest", airline: "Virgin Atlantic", price: "$426", amount: "426.00", currency: "USD", journeys: [leg("Friday, November 20", LHR, JFK, "11:40 AM", "2:35 PM", "7h 55m", "Virgin Atlantic", "VS3"), leg("Friday, November 27", JFK, LHR, "8:05 PM", "8:10 AM", "7h 05m", "Virgin Atlantic", "VS4", [], true)] },
   ],
   selected: 1,
-  details: { option: 1, price: "$389", priceChanged: false, fareBrand: "Economy Basic", refund: "Not refundable", changes: "Changeable for a fee of $70", baggage: "1 checked bag, 1 carry-on per traveller" },
-  readBack: null,
-  booking: { option: 1, travellerName: "Alex Taylor", price: "$389", status: "not_booked_test_mode" },
+  details: { option: 1, price: "$389", priceChanged: false, fareBrand: "Economy Basic", refund: "Not refundable", changes: "Changeable for a fee of $70", baggage: "no checked bags, 1 carry-on per traveller" },
+  fareLevels: [
+    { brand: "Economy Basic", price: "$389", amount: "389.00", refund: "Not refundable", changes: "Changeable for a fee of $70", baggage: "no checked bags, 1 carry-on per traveller", current: true, difference: null },
+    { brand: "Economy Standard", price: "$429", amount: "429.00", refund: "Not refundable", changes: "Changeable free of charge", baggage: "1 checked bag, 1 carry-on per traveller", current: false, difference: "$40" },
+    { brand: "Economy Flex", price: "$519", amount: "519.00", refund: "Refundable for a fee of $50", changes: "Changeable free of charge", baggage: "2 checked bags, 1 carry-on per traveller", current: false, difference: "$130" },
+  ],
+  seatMap: travelSeatMap,
+  seat: { seat: "11A", row: 11, position: "window", exitRow: false, price: "$18" },
+  bags: { included: "no checked bags, 1 carry-on per traveller", added: 1, extraBagPrice: "$65", maxExtra: 2, total: "$65" },
+  traveller: { name: "Alex Taylor", bornOn: "1990-04-12", email: "traveller@example.com", phone: "+1 555 0142", sample: ["bornOn", "email", "phone"] },
+  review: { airline: "Duffel Airways", outbound: "Friday, November 20, 8:20 AM from Heathrow Airport, arriving 11:05 AM", return: "Friday, November 27, 6:30 PM from John F. Kennedy International Airport", fare: "Economy Basic · $389", fareChanged: false, seat: "11A (window) · $18", bags: "no checked bags, 1 carry-on per traveller + 1 extra · $65", traveller: "Alex Taylor", total: "$472" },
+  readBack: { option: 1, travellerName: "Alex Taylor", price: "$472" },
+  booking: { option: 1, travellerName: "Alex Taylor", price: "$472", status: "not_booked_test_mode" },
 };
 
-export const travelEmpty: TravelView = { search: null, options: [], selected: null, details: null, readBack: null, booking: null };
+export const travelEmpty: TravelView = { stage: "trip", search: null, options: [], selected: null, details: null, fareLevels: [], seatMap: null, seat: null, bags: null, traveller: null, review: null, readBack: null, booking: null };

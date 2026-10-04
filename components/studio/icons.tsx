@@ -22,3 +22,7 @@ export const Globe = ({ size }: P) => <svg {...base(size)}><circle cx="12" cy="1
 export const ArrowRight = ({ size }: P) => <svg {...base(size)}><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
 export const Plug = ({ size }: P) => <svg {...base(size)}><path d="M9 3v5M15 3v5M6.5 8h11v3a5.5 5.5 0 0 1-11 0V8ZM12 16.5V21" /></svg>;
 export const Code = ({ size }: P) => <svg {...base(size)}><path d="m8.5 7.5-5 4.5 5 4.5M15.5 7.5l5 4.5-5 4.5M13.5 5l-3 14" /></svg>;
+export const Lock = ({ size }: P) => <svg {...base(size)}><rect x="5" y="10.5" width="14" height="10" rx="2.5" /><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3M12 14.5v2" /></svg>;
+export const Suitcase = ({ size }: P) => <svg {...base(size)}><rect x="5" y="7" width="14" height="13" rx="2.5" /><path d="M9.5 7V4.5h5V7M9 11v5M15 11v5M8 20v1.5M16 20v1.5" /></svg>;
+export const Seat = ({ size }: P) => <svg {...base(size)}><path d="M7 4.5h5a1.5 1.5 0 0 1 1.5 1.5v7H8.5A1.5 1.5 0 0 1 7 11.5v-7Z" /><path d="M5 13.5h11.5a2 2 0 0 1 2 2V17H6.5A1.5 1.5 0 0 1 5 15.5v-2ZM8 17v3M16 17v3" /></svg>;
+export const User = ({ size }: P) => <svg {...base(size)}><circle cx="12" cy="8.5" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" /></svg>;
