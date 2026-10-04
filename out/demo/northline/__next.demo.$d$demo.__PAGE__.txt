@@ -1,0 +1,34 @@
+1:"$Sreact.fragment"
+2:I[7934,["437","static/chunks/437-37e3231ac684c609.js","596","static/chunks/app/demo/%5Bdemo%5D/page-7760c3642536bcd7.js"],"DemoPage"]
+3:I[484,[],"OutletBoundary"]
+4:"$Sreact.suspense"
+8:I[484,[],"ViewportBoundary"]
+9:I[484,[],"MetadataBoundary"]
+:HL["/_next/static/css/72b395f0039e76de.css","style"]
+7:X
+12:X
+12:C
+0:{"buildId":"UfUu9983TLcftORqVFAeH","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"demo":{"id":"northline","name":"Northline","role":"Home services booking","agentName":"Ellie","phone":"+12068879619","phoneDisplay":"(206) 887-9619","intro":"Talk to Ellie, Northline’s booking assistant. Book a heating, cooling or plumbing visit, change it, or leave a message, and watch the schedule change as she works.","prompts":["Can someone look at my furnace tomorrow afternoon?","Actually, can we make it a bit later?","Could someone call me back instead?"],"sampleDetails":"Need an address? Use 48 Birch Lane. Northline, its technicians and its schedule are fictional; nobody will visit.","sampleCard":{"title":"Use these details","items":[{"label":"Address","value":"48 Birch Lane"},{"label":"Name","value":"Any name you like"}]},"design":{"platform":"Gemini Live","stack":[{"role":"All three","value":"Google Gemini Live hears, thinks and speaks in one speech-to-speech model: no separate transcription or voice step"}],"tools":[{"name":"get_business_info","label":"Look up services and fees"},{"name":"note_request_details","label":"Fill in the service request"},{"name":"check_availability","label":"Check the schedule"},{"name":"book_appointment","label":"Book a visit"},{"name":"reschedule_appointment","label":"Move a visit"},{"name":"cancel_appointment","label":"Cancel a visit"},{"name":"take_message","label":"Leave a message for the team"},{"name":"get_caller_number","label":"Read caller ID"},{"name":"link_screen","label":"Link a call to this screen"},{"name":"end_call","label":"End the call"}],"builtWith":["Google Gemini Live","one speech-to-speech model"],"outcomes":[{"tools":["check_availability"],"one":"Checked the schedule","many":"Checked the schedule {n} times"},{"tools":["book_appointment"],"one":"Booked a visit","many":"Booked {n} visits"},{"tools":["reschedule_appointment"],"one":"Moved the visit","many":"Moved the visit {n} times"},{"tools":["cancel_appointment"],"one":"Cancelled a visit","many":"Cancelled {n} visits"},{"tools":["take_message"],"one":"Left a message for the team","many":"Left {n} messages for the team"}],"handoffTools":["take_message"],"rules":["Offers only times the live schedule returns","Reads the details back and waits for a yes before booking or changing","Moves the same visit rather than double-booking","For gas, sparking or flooding near electrics: leave and call 911 first"]}}}],[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/72b395f0039e76de.css","precedence":"next"}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":"$@6","staleTime":"$7","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$L8",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L9",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Ellie at Northline · Live voice demo · Digital Macaroni"}],["$","meta","1",{"name":"description","content":"Talk to Ellie, Northline’s booking assistant. Book a heating, cooling or plumbing visit, change it, or leave a message, and watch the schedule change as she works."}],["$","meta","2",{"name":"creator","content":"Digital Macaroni"}],["$","meta","3",{"name":"publisher","content":"Digital Macaroni"}],["$","link","4",{"rel":"canonical","href":"https://digitalmacaroni.io/demo/northline/"}],["$","meta","5",{"property":"og:title","content":"Digital Macaroni"}],["$","meta","6",{"property":"og:description","content":"Custom AI voice agents, dashboards and apps, designed and built by one studio."}],["$","meta","7",{"property":"og:url","content":"https://digitalmacaroni.io/"}],["$","meta","8",{"property":"og:site_name","content":"Digital Macaroni"}],["$","meta","9",{"property":"og:type","content":"website"}],["$","meta","10",{"name":"twitter:card","content":"summary"}],["$","meta","11",{"name":"twitter:title","content":"Digital Macaroni"}],["$","meta","12",{"name":"twitter:description","content":"Custom AI voice agents, dashboards and apps, designed and built by one studio."}],"$La","$Lb","$Lc","$Ld"]}]}]}],"$Le"]}],"isPartial":"$@f","staleTime":"$7","varyParams":null},{"rsc":"$L10","isPartial":"$@11","staleTime":"$7","varyParams":"$12"},{"rsc":"$L13","isPartial":"$@14","staleTime":"$7","varyParams":"$12"},{"rsc":"$L15","isPartial":"$@16","staleTime":"$7","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@17","rootVaryParams":null,"needsRuntimeRequest":"$@18"}
+19:I[6869,[],"IconMark"]
+1a:I[7121,[],""]
+1b:I[4581,[],""]
+1c:I[8500,["345","static/chunks/app/not-found-b109e7316e0ee19e.js"],""]
+:HL["/_next/static/css/406954a3bc5d5a2e.css","style"]
+5:null
+a:["$","link","13",{"rel":"icon","href":"/favicon.ico?2f25711458c6d685","type":"image/x-icon","sizes":"16x16"}]
+b:["$","link","14",{"rel":"icon","href":"/icon.png?48b0d8865bbb7cbd","type":"image/png","sizes":"512x512"}]
+c:["$","link","15",{"rel":"apple-touch-icon","href":"/apple-icon.png?b3567976eec36a13","type":"image/png","sizes":"180x180"}]
+d:["$","$L19","16",{}]
+e:["$","meta",null,{"name":"next-size-adjust","content":""}]
+10:["$","$1","c",{"children":[null,["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}]}]]}]
+13:["$","$1","c",{"children":[null,["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}]}]]}]
+15:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/406954a3bc5d5a2e.css","precedence":"next"}]],["$","html",null,{"lang":"en","className":"__variable_246ccd __variable_c29908","children":["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#content","children":"Skip to content"}],["$","$L1a",null,{"parallelRouterKey":"children","template":["$","$L1b",null,{}],"notFound":[["$","main",null,{"id":"content","className":"not-found","children":[["$","h1",null,{"children":"Nothing here."}],["$","p",null,{"children":"This page doesn’t exist."}],["$","$L1c",null,{"className":"text-link","href":"/","children":["Back home ",["$","span",null,{"aria-hidden":"true","children":"↗"}]]}]]}],[]]}]]}]}]]}]
+7:300
+18:true
+7:C
+17:0
+f:"$undefined"
+11:"$undefined"
+14:"$undefined"
+16:"$undefined"
+6:"$undefined"

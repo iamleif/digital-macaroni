@@ -1,43 +1,39 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { ArrowUpRight, Check } from "@/components/studio/icons";
+import c from "@/components/studio/contact.module.css";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with Digital Macaroni.",
+  description: "Tell Digital Macaroni what your business needs: a voice agent, business software or an app.",
   alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {
   return (
-    <main id="content" className="contact-page">
-      <header className="contact-header">
-        <Link className="mini-brand" href="/" aria-label="Digital Macaroni, home">
-          <Image
-            src="/brand/macaroni-yellow-logo.png"
-            alt=""
-            width={120}
-            height={120}
-          />
-          <span>Digital Macaroni</span>
-        </Link>
-        <Link className="back-link" href="/">
-          Back home
-        </Link>
+    <div className={c.page}>
+      <header className={c.top}>
+        <a href="/" className={c.brand} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} />Digital Macaroni</a>
+        <a href="/" className={c.back}>Back to the studio<ArrowUpRight size={14} /></a>
       </header>
-
-      <div className="contact-layout">
-        <section className="contact-copy" aria-labelledby="contact-title">
-          <h1 id="contact-title">Let’s make something.</h1>
-          <p>
-            Have a product in mind, a problem worth solving, or just want to say
-            hello? Send a note here.
-          </p>
+      <main id="content" className={c.sheet}>
+        <section className={c.copy} aria-labelledby="contact-title">
+          <h1 id="contact-title">Let’s make something useful.</h1>
+          <p>A new idea, a tricky workflow, or something you wish worked better. Tell us what’s on your mind and we’ll figure out the right thing to make.</p>
+          <ul>
+            <li><Check size={15} />Voice agents, business software and apps</li>
+            <li><Check size={15} />Projects from $5,000, scope agreed up front</li>
+            <li><Check size={15} />Or email <a href="mailto:hello@digitalmacaroni.io">hello@digitalmacaroni.io</a></li>
+          </ul>
         </section>
-
-        <ContactForm />
-      </div>
-    </main>
+        <div className={c.formCard}><ContactForm /></div>
+      </main>
+      <footer className={c.foot}>
+        <a href="/privacy/">Privacy</a>
+        <a href="/demo-terms/">Demo terms</a>
+        <span>© 2026 Digital Macaroni</span>
+      </footer>
+    </div>
   );
 }

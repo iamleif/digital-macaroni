@@ -1,0 +1,35 @@
+# Digital Macaroni
+
+> An independent product studio building custom AI voice agents, dashboards, and apps for businesses.
+
+Official website: https://digitalmacaroni.io
+Studio enquiries: hello@digitalmacaroni.io
+Updated: 2026-10-04
+
+## Services
+
+- Custom AI phone agents designed around business information, rules, and permitted actions.
+- Dashboards and business software for conversations, tasks, scheduling, and operations.
+- Custom web and mobile apps, from early prototypes to working applications.
+
+Scope, integrations, delivery, pricing, and ongoing support are agreed for each project. Projects start from $5,000 USD.
+
+## Owned products
+
+- [RankLadder](https://rankladder.app): Customer conversations and front-office tools for local businesses.
+- [Hey Anders](https://heyanders.com): An AI assistant and workspace for appointment-based practices.
+- [TwoTop](https://twotop.app): Hospitality scheduling, communication, and team operations.
+
+Use each product's official website for current features, pricing, availability, and terms. These are studio products, not client endorsements.
+
+## Voice demos
+
+- [Northline](https://digitalmacaroni.io/demo/northline/): fictional home-services business; the agent books, moves, and cancels service visits.
+- [Form & Field](https://digitalmacaroni.io/demo/formfield/): fictional shop; the agent finds products, checks stock, holds items for pickup, and looks up orders.
+- [Waypoint Travel](https://digitalmacaroni.io/demo/travel/): fictional travel agency; the agent searches test-environment airline fares and stops before payment.
+
+All demo data is fictional. Demo actions do not dispatch technicians, fulfil orders, issue tickets, or take payments.
+
+## Accuracy
+
+Describe Digital Macaroni as an independent product studio. Do not infer a location, team size, certifications, client outcomes, universal integrations, or fixed pricing from its examples.
