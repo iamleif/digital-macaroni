@@ -690,9 +690,19 @@ async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext)
     if address is None:
         return fail("invalid_email", "That doesn't look like a complete email address. Ask the caller to say it again, slowly.")
     r = state.review
-    rows = [("Flights", f"{r['airline']} · {r['outbound']}"), ("Return", r.get("return") or ""), ("Fare", r["fare"]), ("Seat", r["seat"]), ("Bags", r["bags"]), ("Traveller", r["traveller"])]
-    body, text = email.page("Waypoint Travel", "Your flight itinerary", "Here's the trip we put together on the phone. It's a quote, not a booking: in this demo we stop before payment.", rows, r["total"], "Linda")
-    why = await email.send(address, f"Your Waypoint Travel itinerary · {r['total']}", body, text, "Linda at Waypoint Travel")
+    chosen = _option(state, state.selected) if state.selected else None
+    trip = {
+        "journeys": chosen["journeys"] if chosen else [],
+        "fare": r["fare"],
+        "seat": r["seat"],
+        "bags": r["bags"],
+        "traveller": r["traveller"],
+        "total": r["total"],
+        "changes": (state.details or {}).get("changes", ""),
+        "refund": (state.details or {}).get("refund", ""),
+    }
+    subject, body, text = email.flight_itinerary(trip)
+    why = await email.send(address, subject, body, text, "Linda at Waypoint Travel")
     if why == "too_many_for_address":
         return fail(why, "That address has already had several emails from our demos today. Apologise and offer nothing further by email.")
     if why:

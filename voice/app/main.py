@@ -10,11 +10,13 @@ import asyncio
 import json
 import re
 import time
+from pathlib import Path
 from contextlib import asynccontextmanager
 from typing import Any, Optional
 
 from fastapi import FastAPI, Request, Response, WebSocket
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect
 
 from . import log
@@ -70,6 +72,8 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
+# Logos for the demo emails (email clients load them from here).
+app.mount("/email-assets", StaticFiles(directory=str(Path(__file__).parent / "email_assets")), name="email-assets")
 
 
 def xml(body: str) -> Response:
