@@ -9,6 +9,7 @@ import type { DemoEvent, DemoId, DemoView, FormFieldView, NorthlineView, TravelV
 import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
 import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
+import { Location } from "../location";
 import { ArrowUpRight, Check, Phone } from "../icons";
 import { FormFieldOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
@@ -120,6 +121,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     <footer className={d.foot}>
       <span>{demo.name} is a fictional business. Nothing is really booked, sold or charged.</span>
       <a href="/privacy/">Privacy</a><a href="/demo-terms/">Demo terms</a>
+      <Location />
     </footer>
   </div>;
 }

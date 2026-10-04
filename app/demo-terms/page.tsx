@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/components/studio/site";
 import { InfoPage } from "@/components/studio/info-page";
 
-export const metadata: Metadata = {
-  title: { absolute: "Demo terms — Digital Macaroni" },
+export const metadata: Metadata = pageMeta({
+  title: "Demo terms — Digital Macaroni",
   description: "What to expect when you call Digital Macaroni’s sample voice agents.",
-  alternates: { canonical: "/demo-terms/" },
-};
+  path: "/demo-terms/",
+});
 
 export default function DemoTermsPage() {
   return <InfoPage title="A demo, with clear boundaries." intro="These examples show how a phone conversation and a business’s software can work together." updated="October 4, 2026">

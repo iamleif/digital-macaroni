@@ -397,7 +397,6 @@
 .seatNav { display: inline-flex; gap: 4px; }
 .seatNav button { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink-2); box-shadow: 0 0 0 1px var(--hair); transition: background-color 0.3s var(--ease); }
 .seatNav button:hover { background: var(--tint); }
-.seatNav button:first-child svg { transform: rotate(180deg); }
 .panelNote { margin-top: 10px !important; font-size: 11.5px; color: var(--muted); }
 .fareLabel { font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 999px; background: #f1f0ec; color: var(--ink-2); white-space: nowrap; }
 .fareLabel[data-label="Cheapest"] { background: #e6f6ee; color: #17744c; }
@@ -418,32 +417,34 @@
 .levelTag { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: #fff; color: var(--ink-2); box-shadow: 0 0 0 1px var(--hair); }
 .level[data-current] .levelTag { background: var(--accent); color: #fff; box-shadow: none; }
 
-/* Seat map: the cabin drawn sideways, nose on the left, one column per row */
+/* Seat map: the cabin top to bottom, nose first, one line per row; it scrolls inside its panel. */
 .seatPanel { border-radius: 16px; padding: 14px; box-shadow: 0 0 0 1px var(--hair); }
-.seatScroll { --seat: 36px; overflow: auto hidden; overscroll-behavior-x: contain; scrollbar-width: thin; border-radius: 12px; mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+.seatScroll { --seat: 28px; --aisle: 22px; max-height: 420px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; border-radius: 12px; mask-image: linear-gradient(180deg, #000, #000 calc(100% - 32px), transparent); }
 .seatScroll:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 12px; }
-.plane { --nose: 64px; position: relative; isolation: isolate; width: max-content; padding: 40px 28px 40px 0; }
-.fuselage { position: relative; display: flex; gap: 4px; padding: 12px 18px 12px var(--nose); border-radius: 50% 26px 26px 50% / 50% 26px 26px 50%; background: linear-gradient(180deg, #fff, #faf9f6); box-shadow: 0 0 0 1px var(--hair), 0 18px 30px -24px rgba(15, 15, 13, 0.35); }
-.fuselage::before { content: ""; position: absolute; left: 20px; top: 50%; width: 22px; height: 32px; transform: translateY(-50%); border-radius: 50% 4px 4px 50%; background: color-mix(in srgb, var(--accent) 20%, #e8e6df); }
-.seatRows { position: relative; display: flex; gap: 4px; }
-.wing { position: absolute; z-index: -1; top: -48px; bottom: -48px; left: calc(var(--w0) * 100%); width: calc(var(--wn) * 100%); background: color-mix(in srgb, var(--accent) 16%, #efede6); clip-path: polygon(0 50%, 42% 0, 78% 0, 100% 50%, 78% 100%, 42% 100%); pointer-events: none; }
-.seatAxis, .seatCol { display: flex; flex-direction: column; gap: 4px; flex: none; width: var(--seat); }
-.seatAxis > span { display: grid; place-items: center; aspect-ratio: 1; font-size: 11px; font-weight: 600; color: var(--faint); }
-.seatAxis > .aisle { aspect-ratio: 1 / 0.7; }
+.plane { --nose: 56px; position: relative; isolation: isolate; padding: 0 40px 28px; }
+.fuselage { position: relative; width: max-content; margin: 0 auto; padding: var(--nose) 12px 16px; border-radius: 50% 50% 24px 24px / 64px 64px 24px 24px; background: linear-gradient(90deg, #faf9f6, #fff 30%, #fff 70%, #faf9f6); box-shadow: 0 0 0 1px var(--hair), 0 18px 30px -24px rgba(15, 15, 13, 0.35); }
+.fuselage::before { content: ""; position: absolute; left: 50%; top: 18px; width: 30px; height: 16px; transform: translateX(-50%); border-radius: 50% 50% 4px 4px / 80% 80% 4px 4px; background: color-mix(in srgb, var(--accent) 20%, #e8e6df); }
+.seatRows { position: relative; display: flex; flex-direction: column; gap: 4px; }
+.wing { position: absolute; z-index: -1; top: calc(var(--w0) * 100%); height: calc(var(--wn) * 100%); left: -52px; right: -52px; background: color-mix(in srgb, var(--accent) 16%, #efede6); clip-path: polygon(50% 0, 100% 42%, 100% 78%, 50% 100%, 0 78%, 0 42%); pointer-events: none; }
+.seatAxis, .seatCol { display: grid; grid-template-columns: var(--cols); gap: 0 4px; height: var(--seat); flex: none; }
+.seatAxis { position: sticky; top: 0; z-index: 2; height: 20px; margin-bottom: 2px; background: #fff; box-shadow: 0 8px 10px -8px rgba(15, 15, 13, 0.14); border-radius: 0 0 8px 8px; }
+.seatAxis > span { display: grid; place-items: center; font-size: 10.5px; font-weight: 600; color: var(--faint); }
 .seatCol { position: relative; animation: rowIn 0.45s var(--ease) both; }
-.seatCol[data-exit]::before, .seatCol[data-exit]::after { content: ""; position: absolute; left: 15%; right: 15%; height: 3px; border-radius: 2px; background: #e0a35a; }
-.seatCol[data-exit]::before { top: -7px; }
-.seatCol[data-exit]::after { bottom: -7px; }
-.seat, .facility { position: relative; display: grid; place-items: center; aspect-ratio: 1; border-radius: 22% 22% 30% 30%; font-style: normal; }
+.seatCol[data-thin] { height: calc(var(--seat) * 0.4); }
+.seatCol[data-exit]::before, .seatCol[data-exit]::after { content: ""; position: absolute; top: 15%; bottom: 15%; width: 3px; border-radius: 2px; background: #e0a35a; }
+.seatCol[data-exit]::before { left: -8px; }
+.seatCol[data-exit]::after { right: -8px; }
+.seat, .facility { position: relative; display: grid; place-items: center; min-width: 0; border-radius: 22% 22% 30% 30%; font-style: normal; }
 .seat[data-st="free"] { background: #fff; box-shadow: inset 0 0 0 1.25px #d9d6cd; }
 .seat[data-st="paid"] { background: color-mix(in srgb, var(--accent) 12%, #fff); box-shadow: inset 0 0 0 1.25px color-mix(in srgb, var(--accent) 45%, transparent); }
 .seat[data-st="taken"] { background: #e6e4de; }
-.seat i { font-style: normal; font-size: 10.5px; font-weight: 600; letter-spacing: -0.04em; color: var(--accent-ink); line-height: 1; }
+.seat i { font-style: normal; font-size: 9.5px; font-weight: 600; letter-spacing: -0.05em; color: var(--accent-ink); line-height: 1; }
 .seat[data-chosen] { background: var(--accent); box-shadow: none; color: #fff; z-index: 1; animation: seatPick 0.7s var(--ease) both, seatPulse 1.5s ease-in-out 0.7s infinite alternate; }
-.facility { font-size: 9.5px; font-weight: 600; color: var(--faint); }
+.facility { font-size: 9px; font-weight: 600; color: var(--faint); }
 .facility[data-type="lavatory"], .facility[data-type="galley"], .facility[data-type="closet"] { background: #f1f0ec; border-radius: 4px; }
-.aisle { display: grid; place-items: center; aspect-ratio: 1 / 0.7; font-size: 10.5px; font-weight: 500; color: var(--faint); font-variant-numeric: tabular-nums; }
-@keyframes rowIn { from { opacity: 0; transform: translateY(6px) scale(0.96); } }
+.aisle { display: grid; place-items: center; font-size: 10px; font-weight: 500; color: var(--faint); font-variant-numeric: tabular-nums; }
+.seatNav button svg { transform: rotate(90deg); }
+.seatNav button:first-child svg { transform: rotate(-90deg); }
 @keyframes seatPick { 0% { transform: scale(0.6); background: color-mix(in srgb, var(--accent) 12%, #fff); } 60% { transform: scale(1.25); } 100% { transform: scale(1.08); } }
 @keyframes seatPulse { from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); } to { box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 0%, transparent); } }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: 11.5px; color: var(--muted); }
@@ -570,26 +571,14 @@
   .steps li small { display: none; }
   .steps li span { font-size: 10.5px; }
   .levelGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-  .seatScroll { --seat: 32px; overflow: hidden auto; overscroll-behavior-y: contain; max-height: 460px; margin: 0; padding: 0; mask-image: linear-gradient(180deg, #000, #000 calc(100% - 36px), transparent); }
-  .plane { --nose: 64px; width: auto; padding: 0 34px 24px; }
-  .fuselage { flex-direction: column; width: max-content; margin: 0 auto; padding: var(--nose) 12px 16px; border-radius: 50% 50% 24px 24px / 70px 70px 24px 24px; }
-  .fuselage::before { left: 50%; top: 20px; width: 32px; height: 18px; transform: translateX(-50%); border-radius: 50% 50% 4px 4px / 80% 80% 4px 4px; }
-  .seatRows { flex-direction: column; }
-  .seatAxis, .seatCol { flex-direction: row; width: auto; height: var(--seat); }
-  .seatAxis { height: 18px; }
-  .seatAxis > span, .seat, .facility { width: var(--seat); flex: none; }
-  .seatAxis > span { aspect-ratio: auto; }
-  .aisle, .seatAxis > .aisle { width: calc(var(--seat) * 0.7); flex: none; aspect-ratio: auto; }
-  .seatCol[data-exit]::before, .seatCol[data-exit]::after { top: 15%; bottom: 15%; left: auto; right: auto; width: 3px; height: auto; }
-  .seatCol[data-exit]::before { left: -8px; }
-  .seatCol[data-exit]::after { right: -8px; }
-  .wing { top: calc(var(--w0) * 100%); height: calc(var(--wn) * 100%); bottom: auto; left: -40px; right: -40px; width: auto; clip-path: polygon(50% 0, 100% 42%, 100% 78%, 50% 100%, 0 78%, 0 42%); }
-  .seatNav button { transform: rotate(90deg); }
-  .seat i { font-size: 9.5px; }
   .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .foot { flex-wrap: wrap; gap: 8px 16px; text-align: center; }
 }
 @media (max-width: 480px) {
+  .seatScroll { --seat: 25px; --aisle: 16px; max-height: 380px; }
+  .plane { padding: 0 20px 24px; }
+  .seatAxis, .seatCol { gap: 0 3px; }
+  .seatRows { gap: 3px; }
   .page { padding: 0 8px 8px; }
   .number { font-size: 24px; }
   .tools { grid-template-columns: 1fr; }
@@ -609,8 +598,3 @@
 /* The plane is wider than the column: it scrolls inside its panel instead of widening the page. */
 .stagePanel { grid-template-columns: minmax(0, 1fr); }
 .seatPanel { min-width: 0; }
-/* The seat letters stay in view while the cabin scrolls past them. */
-.seatAxis { position: sticky; left: 0; z-index: 2; background: #fff; box-shadow: 10px 0 10px -8px rgba(15, 15, 13, 0.12); border-radius: 0 10px 10px 0; }
-@media (max-width: 860px) {
-  .seatAxis { left: auto; top: 0; box-shadow: 0 10px 10px -8px rgba(15, 15, 13, 0.12); border-radius: 0 0 10px 10px; }
-}

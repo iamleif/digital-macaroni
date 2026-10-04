@@ -175,7 +175,7 @@ const travel = timeline([
   say("visitor", "Basic is fine. Can I get a window seat?"),
   tool("c4", "get_seats", "Opening the seat map"),
   900,
-  ok("c4", "get_seats", "Opening the seat map", "112 seats open"),
+  ok("c4", "get_seats", "Opening the seat map", "121 seats open"),
   state(4, tSeats),
   2200,
   tool("c5", "choose_seat", "Choosing a seat"),

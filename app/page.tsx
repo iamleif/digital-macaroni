@@ -6,13 +6,17 @@ import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, 
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { Work } from "@/components/studio/work";
 import { answerBySlug } from "@/components/studio/answers/content";
+import { Location } from "@/components/studio/location";
+import { pageMeta } from "@/components/studio/site";
 import h from "@/components/studio/home.module.css";
 
-export const metadata: Metadata = {
-  title: { absolute: "Digital Macaroni — AI voice agents and software that get to work" },
-  description: "Digital Macaroni designs and builds custom AI voice agents, dashboards and apps for businesses. Call one of our live demo agents and watch it work.",
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Digital Macaroni — AI voice agents and software that get to work",
+  shareTitle: "Digital Macaroni — AI voice agents that get to work",
+  description: "Digital Macaroni designs and builds custom AI voice agents that answer your business’s phone and get the job done. Call one of our live demo agents and watch it work.",
+  path: "/",
+  ownImage: true,
+});
 
 const services = [
   {
@@ -316,11 +320,13 @@ export default function HomePage() {
     <footer className={h.footer}>
       <a href="/" className={h.brand}><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} />Digital Macaroni</a>
       <nav aria-label="Site information">
+        <a href="/about/">About</a>
         <a href="/answers/">Answers</a>
         <a href="/llm-info/">For AI assistants</a>
         <a href="/privacy/">Privacy</a>
         <a href="/demo-terms/">Demo terms</a>
       </nav>
+      <Location />
       <span>© 2026 Digital Macaroni</span>
     </footer>
   </div>;

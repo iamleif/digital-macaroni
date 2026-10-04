@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/components/studio/site";
 import { InfoPage } from "@/components/studio/info-page";
 
-export const metadata: Metadata = {
-  title: { absolute: "Privacy — Digital Macaroni" },
+export const metadata: Metadata = pageMeta({
+  title: "Privacy — Digital Macaroni",
   description: "How Digital Macaroni handles enquiries, demo phone calls, and website information.",
-  alternates: { canonical: "/privacy/" },
-};
+  path: "/privacy/",
+});
 
 export default function PrivacyPage() {
   return <InfoPage title="Privacy." intro="How we handle your information when you visit our website, contact us, or call a voice demo." updated="October 4, 2026">

@@ -6,26 +6,23 @@ export const dynamic = "force-static";
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://digitalmacaroni.io";
 
+  // Bump when a page's content changes; answers carry their own date.
+  const updated = "2026-10-04";
+
   return [
-    {
-      url: base,
-      changeFrequency: "monthly",
-      priority: 1,
-    },
+    { url: `${base}/`, lastModified: updated, changeFrequency: "monthly", priority: 1 },
     ...["northline", "formfield", "travel"].map((demo) => ({
       url: `${base}/demo/${demo}/`,
+      lastModified: updated,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    {
-      url: `${base}/contact`,
-      changeFrequency: "yearly",
-      priority: 0.7,
-    },
+    { url: `${base}/about/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
+    { url: `${base}/contact/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
     { url: `${base}/answers/`, lastModified: UPDATED_ISO, changeFrequency: "monthly", priority: 0.8 },
     ...ANSWERS.map((x) => ({ url: `${base}/answers/${x.slug}/`, lastModified: UPDATED_ISO, changeFrequency: "monthly" as const, priority: 0.7 })),
-    { url: `${base}/llm-info/`, changeFrequency: "monthly", priority: 0.4 },
-    { url: `${base}/privacy/`, changeFrequency: "yearly", priority: 0.2 },
-    { url: `${base}/demo-terms/`, changeFrequency: "yearly", priority: 0.2 },
+    { url: `${base}/llm-info/`, lastModified: updated, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${base}/privacy/`, lastModified: updated, changeFrequency: "yearly", priority: 0.2 },
+    { url: `${base}/demo-terms/`, lastModified: updated, changeFrequency: "yearly", priority: 0.2 },
   ];
 }

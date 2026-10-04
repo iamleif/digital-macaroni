@@ -1,0 +1,5 @@
+# Link-preview images are exported without a file extension; serve them as PNG.
+/opengraph-image
+  Content-Type: image/png
+/*/opengraph-image
+  Content-Type: image/png

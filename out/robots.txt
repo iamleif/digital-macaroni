@@ -20,10 +20,10 @@ User-Agent: bingbot
 Allow: /
 
 User-Agent: GPTBot
-Disallow: /
+Allow: /
 
 User-Agent: CCBot
-Disallow: /
+Allow: /
 
 User-Agent: *
 Allow: /

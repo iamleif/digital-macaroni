@@ -378,15 +378,51 @@ function FareLevels({ view, agentName }: { view: TravelView; agentName: string }
 }
 
 const FACILITY: Record<string, string> = { lavatory: "WC", galley: "G", closet: "C", stairs: "S" };
+type SeatCell = Extract<TravelSeatCell, { id: string }>;
+const isSeat = (c: TravelSeatCell): c is SeatCell => "id" in c;
+const letterOf = (id: string) => id.replace(/^\d+/, "");
+
+/**
+ * Lines every row up on one set of columns. Airlines send each row's cells left to right, but a row
+ * can drop a seat (2 seats where the rest of the cabin has 3), so seats sit at their letter's column
+ * and a row without seats (lavatories, galleys) is centred in its section.
+ */
+function seatColumns(map: TravelSeatMap) {
+  const count = Math.max(0, ...map.rows.map((r) => r.sections.length));
+  const letters = Array.from({ length: count }, (_, si) => {
+    const seen = new Set(map.rows.flatMap((r) => (r.sections[si] ?? []).filter(isSeat).map((c) => letterOf(c.id))));
+    const sorted = [...seen].sort();
+    const widest = Math.max(0, ...map.rows.map((r) => r.sections[si]?.length ?? 0));
+    return [...sorted, ...Array<string>(Math.max(0, widest - sorted.length)).fill("")];
+  });
+  const rows = map.rows.map((r) => letters.map((cols, si) => {
+    const cells = r.sections[si] ?? [];
+    const slots: (TravelSeatCell | null)[] = Array(cols.length).fill(null);
+    const rest: TravelSeatCell[] = [];
+    for (const c of cells) {
+      const at = isSeat(c) ? cols.indexOf(letterOf(c.id)) : -1;
+      if (at >= 0 && !slots[at]) slots[at] = c;
+      else rest.push(c);
+    }
+    let i = cells.some(isSeat) ? 0 : Math.floor((cols.length - cells.length) / 2);
+    for (const c of rest) {
+      while (i < slots.length && slots[i]) i++;
+      if (i < slots.length) slots[i++] = c;
+    }
+    return slots;
+  }));
+  return { letters, rows };
+}
 
 function SeatMap({ map, seat }: { map: TravelSeatMap; seat: TravelView["seat"] }) {
-  const ref = map.rows.find((r) => r.row != null);
-  const letters = ref ? ref.sections.map((sec) => sec.map((c) => ("id" in c ? c.id.replace(/^\d+/, "") : ""))) : [];
-  const seats = map.rows.flatMap((r) => r.sections.flat()).filter((c): c is Extract<TravelSeatCell, { id: string }> => "id" in c);
+  const { letters, rows } = seatColumns(map);
+  const seats = map.rows.flatMap((r) => r.sections.flat()).filter(isSeat);
   const open = seats.filter((c) => c.st !== "taken");
   const n = map.rows.length;
-  const w = map.wings;
-  // The cabin shows a section at a time; it slides to the seat once one is chosen.
+  // A wing over one or two rows is test data (Duffel's test airline puts it at the nose), not a real plane.
+  const w = map.wings && map.wings.last_row_index - map.wings.first_row_index >= 2 ? map.wings : null;
+  const cols = letters.map((sec) => `repeat(${sec.length}, var(--seat))`).join(" var(--aisle) ");
+  // The cabin runs nose to tail down the panel and scrolls; it slides to the seat once one is chosen.
   const scroller = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const box = scroller.current;
@@ -394,15 +430,10 @@ function SeatMap({ map, seat }: { map: TravelSeatMap; seat: TravelView["seat"] }
     if (!box || !el) return;
     const r = box.getBoundingClientRect();
     const e = el.getBoundingClientRect();
-    const t = setTimeout(() => box.scrollBy({ left: e.left - r.left - r.width / 2 + e.width / 2, top: e.top - r.top - r.height / 2 + e.height / 2, behavior: "smooth" }), 250);
+    const t = setTimeout(() => box.scrollBy({ top: e.top - r.top - r.height / 2 + e.height / 2, behavior: "smooth" }), 250);
     return () => clearTimeout(t);
   }, [seat?.seat]);
-  const nudge = (dir: 1 | -1) => {
-    const box = scroller.current;
-    if (!box) return;
-    const across = box.scrollWidth > box.clientWidth + 4;
-    box.scrollBy({ left: across ? dir * box.clientWidth * 0.6 : 0, top: across ? 0 : dir * box.clientHeight * 0.6, behavior: "smooth" });
-  };
+  const nudge = (dir: 1 | -1) => scroller.current?.scrollBy({ top: dir * scroller.current.clientHeight * 0.6, behavior: "smooth" });
   return <section className={d.seatPanel} aria-label="Seat map">
     <div className={d.panelHead}>
       <h3>{map.flight ? `${map.flight.flight} · ${map.flight.from} → ${map.flight.to}` : "Seat map"}</h3>
@@ -415,19 +446,22 @@ function SeatMap({ map, seat }: { map: TravelSeatMap; seat: TravelView["seat"] }
     <div className={d.seatScroll} ref={scroller} tabIndex={0} aria-label="Seat map, scrolls front to back">
     <div className={d.plane}>
       <div className={d.fuselage}>
-        <div className={d.seatRows}>
+        <div className={d.seatRows} style={{ "--cols": cols } as CSSProperties}>
           {w ? <span className={d.wing} style={{ "--w0": (w.first_row_index + 1) / (n + 1), "--wn": (w.last_row_index - w.first_row_index + 1) / (n + 1) } as CSSProperties} aria-hidden="true" /> : null}
           <div className={d.seatAxis} aria-hidden="true">{letters.map((sec, si) => <Fragment key={si}>{si > 0 ? <span className={d.aisle} /> : null}{sec.map((l, ci) => <span key={ci}>{l}</span>)}</Fragment>)}</div>
-          {map.rows.map((r, i) => <div key={r.row ?? `x${i}`} className={d.seatCol} data-exit={r.exit || undefined} style={{ animationDelay: `${i * 30}ms` }}>
-            {r.sections.map((sec, si) => <Fragment key={si}>
-              {si > 0 ? <span className={d.aisle}>{si === 1 && r.row != null ? r.row : ""}</span> : null}
-              {sec.map((c, ci) => "id" in c
-                ? <span key={c.id} className={d.seat} data-st={c.st} data-chosen={seat?.seat === c.id || undefined} title={`${c.id} · ${c.st === "taken" ? "taken" : c.price ?? "free"}`}>
-                  {seat?.seat === c.id ? <Check size={15} /> : c.st === "paid" ? <i>{c.price}</i> : null}
-                </span>
-                : <span key={`f${ci}`} className={d.facility} data-type={c.type}>{FACILITY[c.type] ?? ""}</span>)}
-            </Fragment>)}
-          </div>)}
+          {map.rows.map((r, i) => {
+            const labelled = r.sections.flat().some((c) => isSeat(c) || c.type in FACILITY);
+            return <div key={r.row ?? `x${i}`} className={d.seatCol} data-exit={r.exit || undefined} data-thin={!labelled || undefined} style={{ animationDelay: `${Math.min(i, 16) * 25}ms` }}>
+              {rows[i].map((sec, si) => <Fragment key={si}>
+                {si > 0 ? <span className={d.aisle}>{si === 1 && r.row != null ? r.row : ""}</span> : null}
+                {sec.map((c, ci) => c && isSeat(c)
+                  ? <span key={c.id} className={d.seat} data-st={c.st} data-chosen={seat?.seat === c.id || undefined} title={`${c.id} · ${c.st === "taken" ? "taken" : c.price ?? "free"}`}>
+                    {seat?.seat === c.id ? <Check size={13} /> : c.st === "paid" ? <i>{c.price}</i> : null}
+                  </span>
+                  : <span key={`f${ci}`} className={d.facility} data-type={c?.type ?? "empty"}>{c ? FACILITY[c.type] ?? "" : ""}</span>)}
+              </Fragment>)}
+            </div>;
+          })}
         </div>
       </div>
     </div>

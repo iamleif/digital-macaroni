@@ -82,21 +82,31 @@ const leg = (date: string, from: [string, string], to: [string, string], departs
 const LHR: [string, string] = ["LHR", "Heathrow Airport"];
 const JFK: [string, string] = ["JFK", "John F. Kennedy International Airport"];
 
-/** A 27-row, three-and-three economy cabin: the front rows and window or aisle seats cost extra, row 12 is an exit row. */
+/**
+ * The economy cabin of a wide-body, three-three-three with two aisles, the shape Duffel Airways sends:
+ * window and aisle seats cost extra, the narrower rows at either end have two seats a side, and row 18
+ * behind the lavatories is an exit row.
+ */
 function sampleSeatMap(): TravelSeatMap {
-  const taken = new Set(["1B", "1C", "2A", "2E", "3D", "3F", "5B", "6A", "6C", "6F", "7A", "7D", "8A", "8B", "8E", "9A", "9F", "10A", "10C", "10D", "12C", "13B", "13E", "14A", "14F", "15D", "16A", "16B", "16C", "17F", "18A", "18E", "19C", "19D", "20B", "21A", "21F", "22D", "22E", "23A", "24C", "24F", "25B", "26A", "26E", "27C", "27D"]);
   const rows: TravelSeatMap["rows"] = [];
-  for (let n = 1; n <= 27; n++) {
-    const cell = (l: string): TravelSeatCell => {
+  const blocks = (n: number) => (n === 10 || n >= 31 ? [["A", "C"], ["D", "E", "F"], ["J", "K"]] : [["A", "B", "C"], ["D", "E", "F"], ["H", "J", "K"]]);
+  for (let n = 10; n <= 32; n++) {
+    // A seat at either end of its block is a window or an aisle.
+    const cell = (l: string, edge: boolean): TravelSeatCell => {
       const id = `${n}${l}`;
-      if (taken.has(id)) return { id, st: "taken" };
-      const price = n <= 5 ? "$35" : n === 12 ? "$45" : "AF".includes(l) || "CD".includes(l) ? "$18" : null;
+      if (id !== "11A" && (n * 7 + l.charCodeAt(0) * 3) % 5 < 2) return { id, st: "taken" };
+      const price = n === 18 ? "$45" : edge ? "$18" : null;
       return { id, st: price ? "paid" : "free", price };
     };
-    rows.push({ row: n, exit: n === 12, sections: [["A", "B", "C"].map(cell), ["D", "E", "F"].map(cell)] });
+    if (n === 18) {
+      rows.push({ row: null, exit: false, sections: [[{ type: "lavatory" }], [{ type: "lavatory" }], [{ type: "lavatory" }]] });
+      rows.push({ row: null, exit: false, sections: [[{ type: "exit_row" }], [], [{ type: "exit_row" }]] });
+    }
+    rows.push({ row: n, exit: n === 18, sections: blocks(n).map((b) => b.map((l, i) => cell(l, i === 0 || i === b.length - 1))) });
   }
-  rows.push({ row: null, exit: false, sections: [[{ type: "lavatory" }, { type: "empty" }, { type: "empty" }], [{ type: "empty" }, { type: "empty" }, { type: "galley" }]] });
-  return { cabin: "economy", aisles: 1, wings: { first_row_index: 8, last_row_index: 16 }, rows, flight: { from: "LHR", to: "JFK", flight: "ZZ117" } };
+  rows.push({ row: null, exit: false, sections: [[{ type: "galley" }], [{ type: "galley" }], [{ type: "galley" }]] });
+  const at = (n: number) => rows.findIndex((r) => r.row === n);
+  return { cabin: "economy", aisles: 2, wings: { first_row_index: at(13), last_row_index: at(22) }, rows, flight: { from: "LHR", to: "JFK", flight: "ZZ117" } };
 }
 
 export const travelSeatMap = sampleSeatMap();

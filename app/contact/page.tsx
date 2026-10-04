@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowUpRight, Check } from "@/components/studio/icons";
 import c from "@/components/studio/contact.module.css";
+import { Location } from "@/components/studio/location";
+import { pageMeta } from "@/components/studio/site";
 import { ContactForm } from "./ContactForm";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Tell Digital Macaroni what your business needs: a voice agent, business software or an app.",
-  alternates: { canonical: "/contact" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Contact — Digital Macaroni",
+  shareTitle: "Talk to Digital Macaroni about an AI voice agent",
+  description: "Tell Digital Macaroni what your business needs: an AI voice agent, business software or an app. Ready-made agents from $2,500; custom from $5,000.",
+  path: "/contact/",
+});
 
 export default function ContactPage() {
   return (
@@ -32,6 +35,7 @@ export default function ContactPage() {
       <footer className={c.foot}>
         <a href="/privacy/">Privacy</a>
         <a href="/demo-terms/">Demo terms</a>
+        <Location />
         <span>© 2026 Digital Macaroni</span>
       </footer>
     </div>

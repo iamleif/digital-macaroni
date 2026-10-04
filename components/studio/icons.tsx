@@ -26,3 +26,6 @@ export const Lock = ({ size }: P) => <svg {...base(size)}><rect x="5" y="10.5" w
 export const Suitcase = ({ size }: P) => <svg {...base(size)}><rect x="5" y="7" width="14" height="13" rx="2.5" /><path d="M9.5 7V4.5h5V7M9 11v5M15 11v5M8 20v1.5M16 20v1.5" /></svg>;
 export const Seat = ({ size }: P) => <svg {...base(size)}><path d="M7 4.5h5a1.5 1.5 0 0 1 1.5 1.5v7H8.5A1.5 1.5 0 0 1 7 11.5v-7Z" /><path d="M5 13.5h11.5a2 2 0 0 1 2 2V17H6.5A1.5 1.5 0 0 1 5 15.5v-2ZM8 17v3M16 17v3" /></svg>;
 export const User = ({ size }: P) => <svg {...base(size)}><circle cx="12" cy="8.5" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" /></svg>;
+
+// Brand mark (filled, not a line icon): the LinkedIn "in", from Simple Icons (CC0).
+export const LinkedIn = ({ size = 16 }: P) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>;

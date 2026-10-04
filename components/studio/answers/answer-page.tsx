@@ -1,13 +1,13 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { voiceDemos } from "../live/demo-info";
-import { ArrowUpRight, Check } from "../icons";
+import { ArrowUpRight, Check, LinkedIn } from "../icons";
+import { Location } from "../location";
+import { FOUNDER, FOUNDER_REF, JsonLd, ORG_REF, SITE } from "../site";
 import { ANSWERS, CATEGORIES, UPDATED, UPDATED_ISO, type Answer } from "./content";
 import { SOURCES } from "./sources";
 import a from "./answers.module.css";
 
-const SITE = "https://digitalmacaroni.io";
-export const AUTHOR = { name: "Leif", byline: "founder of Digital Macaroni" };
 
 /** Shared chrome for the Answers hub and pages: top bar, sheet, conversation prompt, footer. */
 export function AnswersShell({ children }: { children: ReactNode }) {
@@ -23,16 +23,33 @@ export function AnswersShell({ children }: { children: ReactNode }) {
     <main id="content" className={a.sheet}>{children}</main>
     <footer className={a.foot}>
       <a href="/answers/">All answers</a>
-      <a href="/llm-info/">About Digital Macaroni</a>
+      <a href="/about/">About</a>
+      <a href="/llm-info/">For AI assistants</a>
       <a href="/privacy/">Privacy</a>
       <a href="/demo-terms/">Demo terms</a>
+      <Location />
       <span>© 2026 Digital Macaroni</span>
     </footer>
   </div>;
 }
 
-function JsonLd({ data }: { data: object }) {
-  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />;
+/** "By Leif Johansen (LinkedIn), founder of Digital Macaroni" — the name opens the About page, the mark opens LinkedIn. */
+function Byline() {
+  return <>By <a href="/about/" rel="author" className={a.author}>{FOUNDER.name}</a><a href={FOUNDER.linkedin} target="_blank" rel="noopener noreferrer me" className={a.authorLinkedIn} aria-label={`${FOUNDER.name} on LinkedIn`}><LinkedIn size={14} /></a>, founder of Digital Macaroni</>;
+}
+
+function AuthorCard() {
+  return <aside className={a.authorCard} aria-label="About the author">
+    <div>
+      <p className={a.authorCardKicker}>Written by</p>
+      <p className={a.authorCardName}>{FOUNDER.name}</p>
+      <p>Founder of Digital Macaroni. Leif designs and builds AI voice agents for businesses, after a career spent answering customers: hotel desks, cabin crew, marketing and film.</p>
+    </div>
+    <div className={a.authorCardLinks}>
+      <a href={FOUNDER.linkedin} target="_blank" rel="noopener noreferrer me"><LinkedIn size={15} />LinkedIn</a>
+      <a href="/about/">About Leif<ArrowUpRight size={14} /></a>
+    </div>
+  </aside>;
 }
 
 function TestItYourself({ answer }: { answer: Answer }) {
@@ -61,8 +78,9 @@ export function AnswerPage({ answer }: { answer: Answer }) {
       url,
       datePublished: UPDATED_ISO,
       dateModified: UPDATED_ISO,
-      author: { "@type": "Person", name: AUTHOR.name, jobTitle: "Founder", worksFor: { "@type": "Organization", name: "Digital Macaroni", url: SITE } },
-      publisher: { "@type": "Organization", name: "Digital Macaroni", url: SITE, logo: { "@type": "ImageObject", url: `${SITE}/studio/macaroni.png` } },
+      image: `${url}opengraph-image`,
+      author: { ...FOUNDER_REF, "@type": "Person", name: FOUNDER.name, url: `${SITE}/about/`, sameAs: [FOUNDER.linkedin] },
+      publisher: ORG_REF,
       mainEntityOfPage: url,
       citation: answer.sources.map((k) => SOURCES[k].url),
     },
@@ -87,7 +105,7 @@ export function AnswerPage({ answer }: { answer: Answer }) {
     <article className={a.article}>
       <nav className={a.crumbs} aria-label="Breadcrumb"><a href="/answers/">Answers</a><span aria-hidden="true">/</span><span>{CATEGORIES[answer.category].title}</span></nav>
       <h1>{answer.title}</h1>
-      <p className={a.byline}>By {AUTHOR.name}, {AUTHOR.byline} · Updated <time dateTime={UPDATED_ISO}>{UPDATED}</time></p>
+      <p className={a.byline}><Byline /> · Updated <time dateTime={UPDATED_ISO}>{UPDATED}</time></p>
 
       <section className={a.short} aria-label="Short answer">
         <p className={a.shortLabel}><Check size={14} />Short answer</p>
@@ -116,6 +134,8 @@ export function AnswerPage({ answer }: { answer: Answer }) {
         <h2 id="related-heading">Related answers</h2>
         <div>{related.map((r) => <a key={r.slug} href={`/answers/${r.slug}/`}><span>{CATEGORIES[r.category].title}</span><b>{r.title}</b><ArrowUpRight size={14} /></a>)}</div>
       </section> : null}
+
+      <AuthorCard />
 
       <section className={a.note}>
         <div><h2>Want this for your business?</h2><p>Tell us what you need and we&rsquo;ll write back with questions and ideas.</p></div>

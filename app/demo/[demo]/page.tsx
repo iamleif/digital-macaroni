@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DemoPage } from "@/components/studio/demo/demo-page";
+import { pageMeta } from "@/components/studio/site";
 import { voiceDemos } from "@/components/studio/live/demo-info";
 import type { DemoId } from "@/components/studio/live/types";
 
@@ -15,11 +16,13 @@ export async function generateMetadata({ params }: { params: Promise<{ demo: str
   const { demo: id } = await params;
   const demo = voiceDemos[id as DemoId];
   if (!demo) return {};
-  return {
-    title: { absolute: `${demo.agentName} at ${demo.name} · Live voice demo · Digital Macaroni` },
+  return pageMeta({
+    title: `${demo.agentName} at ${demo.name} · Live voice demo · Digital Macaroni`,
+    shareTitle: `Call ${demo.agentName}, a live AI voice agent · Digital Macaroni`,
     description: demo.intro,
-    alternates: { canonical: `/demo/${id}/` },
-  };
+    path: `/demo/${id}/`,
+    ownImage: true,
+  });
 }
 
 export default async function LiveDemoPage({ params }: { params: Promise<{ demo: string }> }) {
