@@ -1,0 +1,26 @@
+[project]
+name = "studio-demo-voice"
+version = "0.2.0"
+description = "Digital Macaroni demo voice service: Gemini Live through Google ADK (Python), Twilio phone and browser"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.141.1",
+    "google-adk==2.11.0",
+    "httpx>=0.28.1",
+    "numpy>=2.5.3",
+    "pydantic>=2.13.5",
+    "python-multipart>=0.0.32",
+    "uvicorn[standard]>=0.54.0",
+    "websockets>=15.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+pythonpath = ["."]
