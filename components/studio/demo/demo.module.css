@@ -123,6 +123,8 @@
 .wave { display: flex; align-items: center; justify-content: center; gap: 3px; height: 44px; }
 .wave i { width: 3px; border-radius: 3px; background: linear-gradient(180deg, #ffd95e, #f2b71c); animation: bar 1.3s var(--ease) infinite alternate; transform-origin: center; opacity: 0.55; }
 .wave[data-speaking] i { opacity: 1; animation-duration: 0.6s; }
+/* Driven by the agent's voice (voice-bars.tsx) once the page has loaded. */
+:is(.wave, .badgeWave)[data-live] i { animation: none; height: 100% !important; transform-origin: center; transition: opacity 0.3s var(--ease); will-change: transform; }
 @keyframes bar { from { transform: scaleY(0.3); } to { transform: scaleY(1); } }
 
 /* ---------- Sample details ---------- */

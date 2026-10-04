@@ -15,6 +15,8 @@ export type DemoEvent =
   | { type: "state"; version: number; state: DemoView }
   | { type: "audio.interrupted" }
   | { type: "agent.speaking"; speaking: boolean }
+  /** The agent's voice as waveform bars: `bands` bytes per frame, low pitches first; the first frame plays `in` ms after it was sent. */
+  | { type: "agent.levels"; in: number; frameMs: number; bands: number; levels: string }
   | { type: "pairing.waiting"; code: string; expiresAt: number }
   | { type: "pairing.linked" }
   | { type: "pairing.expired" };

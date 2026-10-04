@@ -7,10 +7,12 @@ import type { DemoInfo } from "../live/demo-info";
 import { formfieldEmpty, northlineEmpty, travelEmpty } from "../live/sample-views";
 import type { DemoEvent, DemoId, DemoView, FormFieldView, NorthlineView, TravelView } from "../live/types";
 import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
+import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
 import { ArrowUpRight, Check, Phone } from "../icons";
 import { FormFieldOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
+import { VoiceBars } from "./voice-bars";
 import d from "./demo.module.css";
 
 type Action = Extract<Entry, { kind: "action" }>;
@@ -25,6 +27,9 @@ const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: 
  */
 export function DemoPage({ demo }: { demo: DemoInfo }) {
   const { feed, push, reset } = useDemoFeed();
+  // The waveform's levels arrive many times a second: they go straight to the bars, not through React.
+  const [voice] = useState(() => new VoiceLevels());
+  const receive = useCallback((e: DemoEvent) => { if (!voice.take(e)) push(e); }, [voice, push]);
 
   const [replaying, setReplaying] = useState(false);
   useEffect(() => { setReplaying(new URLSearchParams(window.location.search).has("replay")); }, []);
@@ -33,12 +38,12 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   const watcher = useRef<CallWatcher | null>(null);
   const startWatcher = useCallback(() => {
     watcher.current?.stop();
-    const w = new CallWatcher(demo.id, push, (status, code) => setWatch((prev) => ({ status, code: code ?? prev.code })));
+    const w = new CallWatcher(demo.id, receive, (status, code) => setWatch((prev) => ({ status, code: code ?? prev.code })));
     watcher.current = w;
     void w.start();
-  }, [demo.id, push]);
+  }, [demo.id, receive]);
   /** "Call again" / "Get a new code": clear the last call's results, then ask for a fresh code. */
-  function newCode() { reset(); setWatch({ status: "requesting" }); startWatcher(); }
+  function newCode() { reset(); voice.clear(); setWatch({ status: "requesting" }); startWatcher(); }
 
   useEffect(() => {
     if (replaying) return;
@@ -67,7 +72,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
       <span className={d.topRole}>{demo.role} · live demo</span>
       <div className={d.topStatus} role="status">
         {replaying ? <span className={d.replayPill}>Sample replay · not a live call</span> : null}
-        {onCall || finished ? <CallBadge demo={demo} feed={feed} onCall={onCall} onNewCode={newCode} /> : null}
+        {onCall || finished ? <CallBadge demo={demo} feed={feed} voice={voice} onCall={onCall} onNewCode={newCode} /> : null}
       </div>
       <a href="/#agents" className={d.back}>All demos<ArrowUpRight size={14} /></a>
     </header>
@@ -75,7 +80,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     <main id="content" className={d.layout}>
       <aside className={d.left}>
         {/* Once the call links, the card folds into the top-bar badge to give the conversation room. */}
-        {onCall || finished ? null : <CallCard demo={demo} feed={feed} onCall={onCall} watch={watch} onNewCode={newCode} />}
+        {onCall || finished ? null : <CallCard demo={demo} feed={feed} voice={voice} onCall={onCall} watch={watch} onNewCode={newCode} />}
 
         {demo.sampleCard ? <section className={d.sample} aria-label={demo.sampleCard.title}>
           <h2>{demo.sampleCard.title}</h2>
@@ -114,7 +119,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
 
 const BADGE_WAVE = [6, 11, 8, 14, 9, 16, 10, 7, 12, 15, 9, 6];
 
-function CallBadge({ demo, feed, onCall, onNewCode }: { demo: DemoInfo; feed: Feed; onCall: boolean; onNewCode: () => void }) {
+function CallBadge({ demo, feed, voice, onCall, onNewCode }: { demo: DemoInfo; feed: Feed; voice: VoiceLevels; onCall: boolean; onNewCode: () => void }) {
   const events = feed.log.filter((i): i is Extract<typeof i, { kind: "event" }> => i.kind === "event");
   const startedAt = events[0]?.at ?? null;
   const [now, setNow] = useState(() => Date.now());
@@ -136,7 +141,7 @@ function CallBadge({ demo, feed, onCall, onNewCode }: { demo: DemoInfo; feed: Fe
   return <div className={d.callBadge} data-speaking={feed.speaking || undefined}>
     <span className={d.badgeOrb} data-speaking={feed.speaking || undefined} aria-hidden="true" />
     <span className={d.badgeText}><b>On a call with {demo.agentName}</b><small><i />{feed.speaking ? `${demo.agentName} is speaking` : "Listening"}</small></span>
-    <span className={d.badgeWave} aria-hidden="true">{BADGE_WAVE.map((h, i) => <i key={i} style={{ height: h, animationDelay: `${i * -0.12}s` }} />)}</span>
+    <VoiceBars className={d.badgeWave} voice={voice} speaking={feed.speaking} shape={BADGE_WAVE} />
     <span className={d.badgeTimer}>{timer}</span>
   </div>;
 }
@@ -145,14 +150,14 @@ function CallBadge({ demo, feed, onCall, onNewCode }: { demo: DemoInfo; feed: Fe
 
 const WAVE = [8, 14, 10, 20, 15, 26, 18, 11, 17, 24, 30, 19, 13, 22, 27, 16, 21, 12, 9, 15, 11, 18, 13];
 
-function CallCard({ demo, feed, onCall, watch, onNewCode }: { demo: DemoInfo; feed: Feed; onCall: boolean; watch: { status: WatchStatus; code?: string }; onNewCode: () => void }) {
+function CallCard({ demo, feed, voice, onCall, watch, onNewCode }: { demo: DemoInfo; feed: Feed; voice: VoiceLevels; onCall: boolean; watch: { status: WatchStatus; code?: string }; onNewCode: () => void }) {
   // On a phone, the dial link carries the code: the dialer waits (",,") then sends it as keypad tones.
   const dial = watch.status === "waiting" && watch.code ? `tel:${demo.phone},,${watch.code}` : `tel:${demo.phone}`;
 
   let body;
   if (onCall) {
     body = <>
-      <div className={d.wave} data-speaking={feed.speaking || undefined} aria-hidden="true">{WAVE.map((h, i) => <i key={i} style={{ height: h, animationDelay: `${i * -0.11}s` }} />)}</div>
+      <VoiceBars className={d.wave} voice={voice} speaking={feed.speaking} shape={WAVE} />
       <p className={d.callNote}><b>You’re on screen.</b> Keep talking: everything {demo.agentName} does shows up here.</p>
     </>;
   } else if (feed.ended || watch.status === "ended") {
