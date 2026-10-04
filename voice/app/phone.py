@@ -16,7 +16,7 @@ from typing import Any, Optional
 from starlette.websockets import WebSocket, WebSocketDisconnect
 
 from . import log
-from .audio import PhoneEncoder, rms, twilio_to_gemini, voice_stats
+from .audio import LevelMeter, PhoneEncoder, rms, twilio_to_gemini, voice_stats
 from .config import config
 from .live import LiveSession, TranscriptTracker, open_live
 from .pairing import MAX_ATTEMPTS_PER_CALL, link_call
@@ -59,6 +59,7 @@ class PhoneBridge:
         self.handles: list[asyncio.TimerHandle] = []
         self.speaking_timer: Optional[asyncio.TimerHandle] = None
         self.encoder = PhoneEncoder()
+        self.meter = LevelMeter()
         self.turn_audio: list[bytes] = []
         self.turn_number = 0
         self.digits = ""
@@ -132,6 +133,15 @@ class PhoneBridge:
             self.speaking_timer.cancel()
         self.speaking_timer = self.loop.call_later(max(0.0, self.playback_ends_at - _now()), self.set_speaking, False)
 
+    def send_levels(self, pcm24: bytes, plays_in: float) -> None:
+        """The waveform on a linked page: this chunk's bar heights and when the caller hears them."""
+        if not self.session:
+            return
+        first = plays_in - self.meter.pending / LevelMeter.RATE
+        levels = self.meter.feed(pcm24)
+        if levels:
+            self.session.emit({"type": "agent.levels", "in": max(0, round(first * 1000)), "frameMs": 40, "bands": LevelMeter.BANDS, "levels": base64.b64encode(levels).decode()})
+
     def send_hangup_mark(self) -> None:
         if not self.hangup or self.hangup["mark_sent"]:
             return
@@ -197,6 +207,9 @@ class PhoneBridge:
                 if e.type == "interrupted":
                     self.send({"event": "clear", "streamSid": self.stream_sid})
                     self.encoder.reset()
+                    self.meter.reset()
+                    if self.session:
+                        self.session.emit({"type": "audio.interrupted"})
                     self.measure_turn()
                     self.playback_ends_at = _now()
                     if self.tracker:
@@ -232,8 +245,11 @@ class PhoneBridge:
                     if config.voice_diagnostics and len(self.turn_audio) < 1500:
                         self.turn_audio.append(e.data)
                     mu = self.encoder.encode(e.data)
+                    now = _now()
+                    plays_at = max(now, self.playback_ends_at)
                     # mu-law at 8 kHz: one byte per sample.
-                    self.playback_ends_at = max(_now(), self.playback_ends_at) + len(mu) / 8000
+                    self.playback_ends_at = plays_at + len(mu) / 8000
+                    self.send_levels(e.data, plays_at - now)
                     if self.hangup and not self.hangup["mark_sent"]:
                         if self.hangup.get("settle"):
                             self.hangup["settle"].cancel()

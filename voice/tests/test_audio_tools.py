@@ -57,3 +57,18 @@ def test_tools_declare_their_live_behaviour():
     assert decl.parameters.required == ["service", "date"]
     assert "heating_repair" in (decl.parameters.properties["service"].enum or [])
     assert decl.parameters.properties["partOfDay"].nullable
+
+
+def test_level_meter_frames_carry_across_chunks_and_silence_is_flat():
+    from app.audio import LevelMeter
+
+    m = LevelMeter()
+    speech = tone(300, 0.1) + tone(2500, 0.1)  # 200 ms: five 40 ms frames
+    out = m.feed(speech[:3000]) + m.feed(speech[3000:])
+    assert len(out) == 5 * LevelMeter.BANDS
+    assert m.pending == 0
+    frames = np.frombuffer(out, np.uint8).reshape(5, LevelMeter.BANDS)
+    # A low tone lights the inner (low) bands, a high one the outer bands.
+    assert frames[0].argmax() < frames[-1].argmax()
+    assert LevelMeter().feed(bytes(LevelMeter.FRAME * 2 * 3)) == bytes(3 * LevelMeter.BANDS)
+    assert m.feed(tone(300, 0.01)) == b"" and m.pending == 240

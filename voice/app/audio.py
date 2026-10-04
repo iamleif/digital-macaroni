@@ -153,3 +153,49 @@ def voice_stats(pcm: bytes, rate: int = 24000) -> dict[str, float]:
         return sorted(a)[len(a) // 2] if a else 0.0
 
     return {"seconds": round(n / rate, 1), "pitchHz": round(median(pitches)), "loudnessDb": round(20 * math.log10(median(levels) or 1e-6), 1)}
+
+
+class LevelMeter:
+    """
+    The agent's voice as bar heights for the demo page's waveform: every 40 ms of 24 kHz PCM16 becomes
+    BANDS bytes (0-255), low pitches first. Bands are log-spaced across the voice's range, tilted so the
+    quieter upper bands still move, and gated so silence stays flat. Partial frames carry over between
+    chunks; reset() after an interruption.
+    """
+
+    RATE = 24000
+    FRAME = 960  # 40 ms
+    BANDS = 12
+    FLOOR_DB = -62.0
+    RANGE_DB = 48.0
+
+    def __init__(self) -> None:
+        self.window = np.hanning(self.FRAME)
+        freqs = np.fft.rfftfreq(self.FRAME, 1 / self.RATE)
+        edges = np.geomspace(140, 7000, self.BANDS + 1)
+        self.bins = [np.where((freqs >= lo) & (freqs < hi))[0] for lo, hi in zip(edges[:-1], edges[1:])]
+        # Speech loses roughly 6 dB per octave above its fundamental; give some of it back per band.
+        centres = np.sqrt(edges[:-1] * edges[1:])
+        self.tilt = 4.5 * np.log2(centres / centres[0])
+        self.reset()
+
+    def reset(self) -> None:
+        self.carry = np.zeros(0)
+
+    @property
+    def pending(self) -> int:
+        """Samples held from earlier chunks: the next frame began this many samples before the next chunk."""
+        return len(self.carry)
+
+    def feed(self, pcm24: bytes) -> bytes:
+        x = np.concatenate([self.carry, np.frombuffer(pcm24, dtype="<i2").astype(np.float64) / 32768])
+        n = len(x) // self.FRAME
+        self.carry = x[n * self.FRAME :]
+        if not n:
+            return b""
+        frames = x[: n * self.FRAME].reshape(n, self.FRAME) * self.window
+        power = np.abs(np.fft.rfft(frames, axis=1)) ** 2 / (self.FRAME * self.FRAME / 4)
+        bands = np.stack([power[:, b].mean(axis=1) for b in self.bins], axis=1)
+        db = 10 * np.log10(bands + 1e-12) + self.tilt
+        level = np.clip((db - self.FLOOR_DB) / self.RANGE_DB, 0, 1)
+        return np.rint(level * 255).astype(np.uint8).tobytes()

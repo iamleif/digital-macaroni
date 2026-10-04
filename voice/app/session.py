@@ -59,7 +59,7 @@ class DemoSession:
         self._history: list[Event] = []
 
     def emit(self, e: Event) -> None:
-        if e["type"] not in ("audio", "audio.interrupted"):
+        if e["type"] not in ("audio", "audio.interrupted", "agent.levels"):
             self._history.append(e)
             if len(self._history) > HISTORY_CAP:
                 del self._history[: len(self._history) - HISTORY_CAP]

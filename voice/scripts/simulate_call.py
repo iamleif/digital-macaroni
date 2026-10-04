@@ -90,6 +90,7 @@ async def main() -> None:
         pairing = (await http.post("/pairings", json={"demo": demo}, headers={"origin": ORIGIN})).json()
 
     state = {"speaking": False, "last_audio": time.monotonic(), "ended": False, "final": None}
+    levels = {"events": 0, "frames": 0, "late_ms": 0, "interrupted": 0}
 
     async def watch() -> None:
         async with websockets.connect(f"{WS}/pairings/{pairing['viewerToken']}", origin=ORIGIN) as viewer:  # type: ignore[arg-type]
@@ -107,6 +108,12 @@ async def main() -> None:
                 elif t == "agent.speaking":
                     state["speaking"] = e["speaking"]
                     state["last_audio"] = time.monotonic()
+                elif t == "agent.levels":
+                    levels["events"] += 1
+                    levels["frames"] += len(base64.b64decode(e["levels"])) // e["bands"]
+                    levels["late_ms"] = max(levels["late_ms"], e["in"])
+                elif t == "audio.interrupted":
+                    levels["interrupted"] += 1
                 elif t == "state":
                     state["final"] = e["state"]
                 elif t == "pairing.linked":
@@ -114,6 +121,7 @@ async def main() -> None:
                 elif t == "session.ended":
                     state["ended"] = True
                     print(f"{stamp()}  — session ended: {e['reason']}", flush=True)
+                    print(f"           waveform: {levels['events']} level events, {levels['frames'] * 40 / 1000:.1f} s of bars, furthest ahead {levels['late_ms']} ms, {levels['interrupted']} interruptions", flush=True)
                     return
 
     watcher = asyncio.create_task(watch())
