@@ -38,10 +38,14 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   const watcher = useRef<CallWatcher | null>(null);
   const startWatcher = useCallback(() => {
     watcher.current?.stop();
-    const w = new CallWatcher(demo.id, receive, (status, code) => setWatch((prev) => ({ status, code: code ?? prev.code })));
+    const w = new CallWatcher(demo.id, receive, (status, code) => {
+      // A new call: clear the last call's results before its events arrive.
+      if (status === "linked") { reset(); voice.clear(); }
+      setWatch((prev) => ({ status, code: code ?? prev.code }));
+    });
     watcher.current = w;
     void w.start();
-  }, [demo.id, receive]);
+  }, [demo.id, receive, reset, voice]);
   /** "Call again" / "Get a new code": clear the last call's results, then ask for a fresh code. */
   function newCode() { reset(); voice.clear(); setWatch({ status: "requesting" }); startWatcher(); }
 
@@ -50,6 +54,12 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     startWatcher();
     return () => watcher.current?.stop();
   }, [replaying, startWatcher]);
+
+  // When a call ends, go straight back to the normal screen with a fresh code. The finished call's
+  // results stay on screen until the next call links.
+  useEffect(() => {
+    if (!replaying && watch.status === "ended") { voice.clear(); startWatcher(); }
+  }, [replaying, watch.status, startWatcher, voice]);
 
   // Sample replay: scripted events through the real feed.
   useEffect(() => {
@@ -60,7 +70,6 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   }, [replaying, demo.id, push, reset]);
 
   const onCall = !feed.ended && (watch.status === "linked" || (replaying && feed.entries.length > 0));
-  const finished = !onCall && (Boolean(feed.ended) || (watch.status === "ended" && feed.entries.length > 0));
   const view = feed.view ?? EMPTY[demo.id];
   const state: LiveState = feed.view ? (feed.ended ? "finished" : "live") : "sample";
 
@@ -72,7 +81,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
       <span className={d.topRole}>{demo.role} · live demo</span>
       <div className={d.topStatus} role="status">
         {replaying ? <span className={d.replayPill}>Sample replay · not a live call</span> : null}
-        {onCall || finished ? <CallBadge demo={demo} feed={feed} voice={voice} onCall={onCall} onNewCode={newCode} /> : null}
+        {onCall ? <CallBadge demo={demo} feed={feed} voice={voice} /> : null}
       </div>
       <a href="/#agents" className={d.back}>All demos<ArrowUpRight size={14} /></a>
     </header>
@@ -80,7 +89,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     <main id="content" className={d.layout}>
       <aside className={d.left}>
         {/* Once the call links, the card folds into the top-bar badge to give the conversation room. */}
-        {onCall || finished ? null : <CallCard demo={demo} feed={feed} voice={voice} onCall={onCall} watch={watch} onNewCode={newCode} />}
+        {onCall ? null : <CallCard demo={demo} feed={feed} voice={voice} onCall={onCall} watch={watch} replaying={replaying} onNewCode={newCode} />}
 
         {demo.sampleCard ? <section className={d.sample} aria-label={demo.sampleCard.title}>
           <h2>{demo.sampleCard.title}</h2>
@@ -119,24 +128,16 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
 
 const BADGE_WAVE = [6, 11, 8, 14, 9, 16, 10, 7, 12, 15, 9, 6];
 
-function CallBadge({ demo, feed, voice, onCall, onNewCode }: { demo: DemoInfo; feed: Feed; voice: VoiceLevels; onCall: boolean; onNewCode: () => void }) {
-  const events = feed.log.filter((i): i is Extract<typeof i, { kind: "event" }> => i.kind === "event");
-  const startedAt = events[0]?.at ?? null;
+/** Shown only while a call is live; when it ends the page returns to the call card. */
+function CallBadge({ demo, feed, voice }: { demo: DemoInfo; feed: Feed; voice: VoiceLevels }) {
+  const startedAt = feed.log.find((i): i is Extract<typeof i, { kind: "event" }> => i.kind === "event")?.at ?? null;
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
-    if (!onCall) return;
     const t = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(t);
-  }, [onCall]);
-  const endedAt = onCall ? now : (events.at(-1)?.at ?? now);
-  const secs = startedAt ? Math.max(0, Math.round((endedAt - startedAt) / 1000)) : 0;
+  }, []);
+  const secs = startedAt ? Math.max(0, Math.round((now - startedAt) / 1000)) : 0;
   const timer = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
-
-  if (!onCall) return <div className={d.callBadge} data-state="ended">
-    <span className={d.badgeOrb} aria-hidden="true" />
-    <span className={d.badgeText}><b>Call finished</b><small>{demo.agentName} · {timer} · your results stay on screen</small></span>
-    <button className={d.badgeBtn} onClick={onNewCode}><Phone size={14} />Call again</button>
-  </div>;
 
   return <div className={d.callBadge} data-speaking={feed.speaking || undefined}>
     <span className={d.badgeOrb} data-speaking={feed.speaking || undefined} aria-hidden="true" />
@@ -150,7 +151,9 @@ function CallBadge({ demo, feed, voice, onCall, onNewCode }: { demo: DemoInfo; f
 
 const WAVE = [8, 14, 10, 20, 15, 26, 18, 11, 17, 24, 30, 19, 13, 22, 27, 16, 21, 12, 9, 15, 11, 18, 13];
 
-function CallCard({ demo, feed, voice, onCall, watch, onNewCode }: { demo: DemoInfo; feed: Feed; voice: VoiceLevels; onCall: boolean; watch: { status: WatchStatus; code?: string }; onNewCode: () => void }) {
+function CallCard({ demo, feed, voice, onCall, watch, replaying, onNewCode }: { demo: DemoInfo; feed: Feed; voice: VoiceLevels; onCall: boolean; watch: { status: WatchStatus; code?: string }; replaying: boolean; onNewCode: () => void }) {
+  // After a call, the card is back to normal with a fresh code; the last call's results stay below.
+  const lastCall = feed.ended ? <p className={d.callNote}><b>Call finished.</b> Your results stay on screen. Call again with a new code.</p> : null;
   // On a phone, the dial link carries the code: the dialer waits (",,") then sends it as keypad tones.
   const dial = watch.status === "waiting" && watch.code ? `tel:${demo.phone},,${watch.code}` : `tel:${demo.phone}`;
 
@@ -160,17 +163,14 @@ function CallCard({ demo, feed, voice, onCall, watch, onNewCode }: { demo: DemoI
       <VoiceBars className={d.wave} voice={voice} speaking={feed.speaking} shape={WAVE} />
       <p className={d.callNote}><b>You’re on screen.</b> Keep talking: everything {demo.agentName} does shows up here.</p>
     </>;
-  } else if (feed.ended || watch.status === "ended") {
-    body = <>
-      <p className={d.callNote}><b>Call finished.</b> Your results stay on screen.</p>
-      <button className={d.yellowBtn} onClick={onNewCode}><Phone size={15} />Call again</button>
-    </>;
+  } else if (replaying && feed.ended) {
+    body = <p className={d.callNote}><b>Call finished.</b> This was a sample replay.</p>;
   } else if (watch.status === "waiting" && watch.code) {
-    body = <div className={d.code}>
+    body = <>{lastCall}<div className={d.code}>
       <span>Your screen code</span>
       <div aria-label={`code ${watch.code.split("").join(" ")}`}>{watch.code.split("").map((c, i) => <b key={i}>{c}</b>)}</div>
       <small>{demo.agentName} asks for it when you call. Type it or say it, and this page follows your call.</small>
-    </div>;
+    </div></>;
   } else if (watch.status === "expired") {
     body = <p className={d.callNote}>That code expired. <button className={d.link} onClick={onNewCode}>Get a new code</button></p>;
   } else if (watch.status === "error") {
