@@ -4,7 +4,7 @@ from typing import Any
 import pytest
 
 from app import duffel
-from app.cascade import Chunker, finished
+from app.cascade import Chunker, finished, spoken_code
 from app.demos.travel import duration, money, travel
 from app.demos.types import OpContext, OpResult
 
@@ -149,3 +149,17 @@ def test_a_finished_sentence_ends_the_turn(text):
 @pytest.mark.parametrize("text", ["I'd like to fly from London to New York and", "My name is", "Hi, I'd like to fly from", "Coming back on the 27th,", "um", ""])
 def test_a_trailing_transcript_waits_for_more(text):
     assert not finished(text)
+
+
+@pytest.mark.parametrize("text", ["8946", "8946.", "8 9 4 6", "Eight nine four six.", "It's 8946.", "The code is eight, nine, four, six.", "8, 9, 4, 6"])
+def test_a_spoken_screen_code_is_recognised(text):
+    assert spoken_code(text) == "8946"
+
+
+@pytest.mark.parametrize("text", ["Hi, I'd like to fly from London to New York on November 20th 2026, one way, just me.", "Just me, economy.", "894", "89461", "I paid 1200 dollars and 4000 more", "Two adults."])
+def test_ordinary_speech_is_not_taken_for_a_code(text):
+    assert spoken_code(text) is None
+
+
+def test_a_number_on_its_own_counts_as_something_said():
+    assert finished("8946") and finished("8 9 4 6")

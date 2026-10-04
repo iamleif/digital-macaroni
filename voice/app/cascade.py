@@ -56,6 +56,11 @@ TRAILING = {"and", "but", "or", "so", "because", "to", "the", "a", "an", "my", "
 BACKCHANNEL = {"yeah", "yes", "yep", "okay", "ok", "mm", "mhm", "uh-huh", "right", "sure", "great", "cool", "hmm", "uh", "um", "ah", "oh"}
 # Spoken when a tool that calls an outside service starts before the agent has said anything.
 HOLD_LINES = ["One moment while I check.", "Let me look that up.", "Bear with me a second."]
+# A phone caller reading out the four-digit screen code is linked here, the same way the keypad does
+# it, rather than leaving the digits for the model to interpret.
+SPOKEN_LINKED_NOTE = "[The caller read out their screen code and it linked; they can now see the dashboard. Acknowledge it in a few words and carry on.]"
+SPOKEN_CODE_FAILED_NOTE = "[The caller read out a screen code, {code}, but it did not match a waiting screen{why}. Ask them to check the four digits on the page, or type them on the keypad.]"
+DIGIT_WORDS = {"zero": "0", "oh": "0", "o": "0", "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9"}
 # Spoken when the model hangs up without a word.
 GOODBYE_LINE = "Thanks for calling. Goodbye!"
 # TTS requests running ahead of playback.
@@ -246,6 +251,8 @@ class Cascade:
         # A final transcript that trailed off, waiting to see whether the visitor carries on.
         self.held: Optional[str] = None
         self.hold_timer: Optional[asyncio.TimerHandle] = None
+        # The call is linked to a screen (by keypad or a spoken code), so spoken codes are not tried again.
+        self.screen_linked = False
         # Visitor speech, from our own level meter.
         self.voice_at = 0.0
         self.in_speech = False
@@ -324,6 +331,8 @@ class Cascade:
 
     def send_text(self, text: str) -> None:
         """A system note (greet, nudge, time limit): a turn of its own, after any running one."""
+        if "linked their screen" in text:
+            self.screen_linked = True
         if not self.closed:
             now = time.monotonic()
             self.inputs.put_nowait((text, now, now, False))
@@ -346,7 +355,7 @@ class Cascade:
                     await self.stt.send_realtime_input(audio_stream_end=True)
                     if self.held is not None:
                         self._arm_hold()
-                    elif self.interim and not self._busy() and finished(self.interim):
+                    elif self.interim and not self._busy() and finished(self.interim) and not self._may_be_code(self.interim):
                         self.speculated, self.speculation_dropped = self.interim, False
                         self.inputs.put_nowait((self.interim, self.voice_at, now, True))
         except asyncio.CancelledError:
@@ -415,10 +424,36 @@ class Cascade:
         self._push(LiveEvent("transcript_set", speaker="visitor", text=text, finished=True))
         self._submit(text)
 
+    def _may_be_code(self, text: str) -> bool:
+        """A screen code on an unlinked phone call: it goes through _link_spoken_code, never a speculative reply."""
+        return self.session.link_screen is not None and not self.screen_linked and spoken_code(text) is not None
+
+    def _link_spoken_code(self, text: str) -> Optional[str]:
+        """
+        On a phone call not yet linked to a screen, a short utterance that is a four-digit code links it
+        directly. Returns the note to give the model instead of the raw digits, or None to pass the words on.
+        """
+        link = self.session.link_screen
+        if link is None or self.screen_linked:
+            return None
+        code = spoken_code(text)
+        if code is None:
+            return None
+        result = link(code)
+        if result == "linked":
+            self.screen_linked = True
+            return SPOKEN_LINKED_NOTE
+        why = " (too many tries on this call)" if result == "too_many_attempts" else ""
+        return SPOKEN_CODE_FAILED_NOTE.format(code=" ".join(code), why=why)
+
     def _submit(self, text: str) -> None:
         """Answers what the visitor said now if it reads as finished; otherwise holds it briefly."""
         if self.held is not None:
             text = f"{self.held} {text}"
+        note = self._link_spoken_code(text)
+        if note is not None:
+            self._release(note)
+            return
         if finished(text):
             self._release(text)
         else:
@@ -696,11 +731,36 @@ class Cascade:
 
 
 def finished(text: str) -> bool:
-    """Whether a transcript reads as a finished turn: it ends a sentence and not on a word that
-    expects more ("…and", "my name is")."""
+    """Whether a transcript reads as a finished turn: it ends a sentence or a number (a code, a date),
+    and not on a word that expects more ("…and", "my name is")."""
     t = text.strip()
     words = _words(t)
-    return bool(words) and t[-1] in ".?!" and words[-1] not in TRAILING
+    return bool(words) and (t[-1] in ".?!" or t[-1].isdigit()) and words[-1] not in TRAILING
+
+
+def spoken_code(text: str) -> Optional[str]:
+    """
+    A four-digit screen code in a short utterance ("8946", "8 9 4 6", "eight nine four six",
+    "it's 8946"), or None. Longer sentences are left to the model, so a year or a price in a travel
+    request is never taken for a code.
+    """
+    tokens = re.findall(r"[a-z']+|\d", text.lower())
+    runs: list[str] = []
+    run = ""
+    other = 0
+    for t in tokens:
+        d = t if t.isdigit() else DIGIT_WORDS.get(t)
+        if d is None:
+            other += 1
+            if run:
+                runs.append(run)
+            run = ""
+        else:
+            run += d
+    if run:
+        runs.append(run)
+    codes = [r for r in runs if len(r) == 4]
+    return codes[0] if len(codes) == 1 and len(runs) == 1 and other <= 4 else None
 
 
 def _squash(text: str) -> str:
@@ -708,7 +768,8 @@ def _squash(text: str) -> str:
 
 
 def _words(text: str) -> list[str]:
-    return re.findall(r"[a-z'\-]+", text.lower())
+    # Digits count: a caller reading out "8946" has said something.
+    return re.findall(r"[a-z0-9'\-]+", text.lower())
 
 
 def _heard(p: Piece, now: float) -> str:
