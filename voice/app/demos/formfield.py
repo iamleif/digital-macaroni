@@ -13,6 +13,7 @@ from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from .. import email
 from .types import Confirmed, DemoDefinition, OpContext, OpResult, Operation, add_days, date_in, date_label, fail, mask_number, ok, reference
 
 TIME_ZONE = "America/Chicago"
@@ -65,6 +66,8 @@ class FormFieldState:
     support_requests: list[dict[str, str]] = field(default_factory=list)
     messages: list[dict[str, str]] = field(default_factory=list)
     seq: int = 0
+    # The reservation email, once sent: only a masked address is kept.
+    emailed: Optional[dict[str, Any]] = None
 
 
 def product(pid: str) -> Optional[dict[str, Any]]:
@@ -137,6 +140,7 @@ What you can do, always through your tools:
 - Take a message with take_message if they want someone to call back. On a phone call, use get_caller_number and ask whether the number they are calling from (say only its last four digits) is the best one; otherwise ask for a number, and suggest the sample number 555-0142 if they would rather not give theirs.
 
 Rules: never say something is reserved, changed or cancelled unless the tool returned ok true. For a callback, call take_message only after the caller has confirmed the number. If a tool fails, explain simply and offer what it suggests.
+Email: once an item is reserved, offer once to email the reservation details. If they want it, ask for their email address, read it back spelling out anything unusual, and when they confirm it, call email_reservation with callerConfirmed true. Say it is on its way only if the tool returns ok. If they decline, that's fine.
 
 Ending: after you finish something for the caller, ask whether there is anything else. Only when the caller says they are done or says goodbye, say a short goodbye and then call end_call. Never call end_call in the same turn as a reservation, change or support request."""
 
@@ -295,6 +299,33 @@ def take_message(state: FormFieldState, i: TakeMessage, ctx: OpContext) -> OpRes
     return ok(f"Message for the team · {mid}", {"messageId": mid}, True)
 
 
+# Product pictures for the email: studio photographs where they exist, drawings for the rest.
+PHOTOS = {"ridge-lamp", "everyday-mugs", "field-planter", "linen-throw"}
+
+
+class EmailReservation(BaseModel):
+    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    callerConfirmed: bool = Confirmed()
+
+
+async def email_reservation(state: FormFieldState, i: EmailReservation, ctx: OpContext) -> OpResult:
+    """Emails the pickup reservation to the caller, with the item's picture: once per call."""
+    held = [r for r in state.reservations if r.status == "reserved"]
+    if not held:
+        return fail("nothing_reserved", "There is no reservation to send yet.")
+    if state.emailed:
+        return fail("already_sent", f"The reservation was already emailed to {state.emailed['to']} on this call.")
+    r = held[-1]
+    p, v = variant_of(r.variant_id)  # type: ignore[misc]
+    image = email.asset(f"products/{p['id']}.{'jpg' if p['id'] in PHOTOS else 'png'}")
+    details = {"product": p["name"], "option": v["option"], "quantity": r.quantity, "price": price(p["price"] * r.quantity), "pickupBy": date_label(r.pickup_by), "shop": "210 Market Street", "hours": "10 AM – 6 PM, Monday to Saturday", "name": r.name, "reference": r.id, "image": image}
+    masked, why = await email.confirm(i.email, email.pickup_reservation(details), "Theo at Form & Field")
+    if why:
+        return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
+    state.emailed = {"to": masked, "reference": r.id}
+    return ok(f"Reservation emailed · {masked}", {"sent": True, "to": masked}, True)
+
+
 def view(state: FormFieldState) -> dict[str, Any]:
     order = next((o for o in ORDERS if o["number"] == state.matched_order), None)
 
@@ -316,6 +347,7 @@ def view(state: FormFieldState) -> dict[str, Any]:
         "order": {"number": order["number"], "name": order["name"], "items": order["items"], "status": order["status"], "events": order["events"]} if order else None,
         "supportRequests": state.support_requests,
         "messages": [{"id": m["id"], "name": m["name"], "summary": m["summary"], "callback": mask_number(m["callbackNumber"])} for m in state.messages],
+        "emailed": state.emailed,
     }
 
 
@@ -340,5 +372,6 @@ formfield: DemoDefinition[FormFieldState] = DemoDefinition(
             CreateSupportRequest,
         ),
         "take_message": Operation("Leaving a message for the team", "Leave a callback request for the shop team.", take_message, TakeMessage),
+        "email_reservation": Operation("Emailing the reservation", "Email the pickup reservation to the caller, after they confirm the address read back to them. Once per call.", email_reservation, EmailReservation),
     },
 )

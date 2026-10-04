@@ -13,6 +13,7 @@ from typing import Any, Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from .. import email
 from .types import (
     Confirmed,
     DemoDefinition,
@@ -105,6 +106,8 @@ class NorthlineState:
     appointments: list[Appointment] = field(default_factory=list)
     messages: list[Message] = field(default_factory=list)
     seq: int = 0
+    # The confirmation email, once sent: only a masked address is kept.
+    emailed: Optional[dict[str, Any]] = None
 
 
 def slot_id(day: str, hour: int) -> str:
@@ -253,6 +256,7 @@ Other things you can do, always through your tools:
 - Take a message for a callback with take_message when they prefer a call back, nothing suitable is available, or you cannot help. Ask for a name. On a phone call, use get_caller_number and ask whether the number they are calling from (say only its last four digits) is the best one to reach them; otherwise ask for a number, and suggest the sample number 555-0142 if they would rather not give theirs.
 
 Rules: never say something is booked, moved or cancelled unless the tool returned ok true. For a callback, call take_message only after the caller has confirmed the number. If a tool says something is missing, just ask the caller for it; if it fails for another reason, explain simply and offer what it suggests. Asking about a time is not a request to book it. If the caller mentions gas, a carbon monoxide alarm, burning smells, sparking, or water near electrics, tell them to leave the area and call 911 or their gas utility first, and remind them this is a demo line.
+Email: once a visit is booked (or moved), offer once to email a confirmation. If they want it, ask for their email address, read it back spelling out anything unusual, and when they confirm it, call email_confirmation with callerConfirmed true. Say it is on its way only if the tool returns ok. If they decline, that's fine.
 
 Ending: after you finish something for the caller, ask whether there is anything else. Only when the caller says they are done or says goodbye, say a short goodbye and then call end_call. Never call end_call in the same turn as a booking, change or message."""
 
@@ -448,6 +452,28 @@ def take_message(state: NorthlineState, i: TakeMessage, ctx: OpContext) -> OpRes
     return ok(f"Message for the team · {mid}", {"messageId": mid}, True)
 
 
+class EmailConfirmation(BaseModel):
+    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    callerConfirmed: bool = Confirmed()
+
+
+async def email_confirmation(state: NorthlineState, i: EmailConfirmation, ctx: OpContext) -> OpResult:
+    """Emails the booked visit to the caller: once per call, from a fixed template."""
+    booked = active(state)
+    if not booked:
+        return fail("nothing_booked", "There is no booked visit to confirm yet.")
+    if state.emailed:
+        return fail("already_sent", f"The confirmation was already emailed to {state.emailed['to']} on this call.")
+    a = booked[-1]
+    s = describe_slot(a.slot_id)
+    visit = {"day": s["day"], "window": s["window"], "technician": first_name(a.tech_id), "service": service(a.service_id)["name"], "issue": a.issue, "address": a.address, "name": a.name, "reference": a.id}
+    masked, why = await email.confirm(i.email, email.visit_confirmation(visit), "Ellie at Northline")
+    if why:
+        return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
+    state.emailed = {"to": masked, "reference": a.id}
+    return ok(f"Confirmation emailed · {masked}", {"sent": True, "to": masked}, True)
+
+
 def view(state: NorthlineState) -> dict[str, Any]:
     days = bookable_days(state)
     focus = (state.viewing or {}).get("date") or (active(state)[0].slot_id[:10] if active(state) else add_days(state.today, 1))
@@ -492,6 +518,7 @@ def view(state: NorthlineState) -> dict[str, Any]:
             for a in state.appointments
         ],
         "messages": [{"id": m.id, "name": m.name, "summary": m.summary, "preferredTime": m.preferred_time, "callback": mask_number(m.callback_number)} for m in state.messages],
+        "emailed": state.emailed,
     }
 
 
@@ -520,5 +547,6 @@ northline: DemoDefinition[NorthlineState] = DemoDefinition(
         "reschedule_appointment": Operation("Moving the visit", "Move the existing booking to a new slot from check_availability, after the caller confirmed the new time.", reschedule_appointment, RescheduleAppointment),
         "cancel_appointment": Operation("Cancelling the visit", "Cancel a booking made in this call, after the caller confirmed.", cancel_appointment, CancelAppointment),
         "take_message": Operation("Leaving a message for the team", "Leave a callback request for the Northline team.", take_message, TakeMessage),
+        "email_confirmation": Operation("Emailing the confirmation", "Email the booked visit's confirmation to the caller, after they confirm the address read back to them. Once per call.", email_confirmation, EmailConfirmation),
     },
 )

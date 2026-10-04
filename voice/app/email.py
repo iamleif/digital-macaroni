@@ -90,6 +90,26 @@ async def send(to: str, subject: str, html_body: str, text_body: str, from_name:
     return None
 
 
+async def confirm(spoken: str, message: tuple[str, str, str], from_name: str) -> tuple[Optional[str], Optional[str]]:
+    """
+    Sends one demo email to the address the caller gave. Returns (masked address, None) when sent, or
+    (None, reason): "invalid_email", "too_many_for_address", "busy", "not_configured" or "failed".
+    """
+    address = normalise(spoken)
+    if address is None:
+        return None, "invalid_email"
+    subject, body, text = message
+    why = await send(address, subject, body, text, from_name)
+    return (None, why) if why else (mask(address), None)
+
+
+# What the agent is told for each reason an email was not sent.
+REFUSALS = {
+    "invalid_email": "That doesn't look like a complete email address. Ask the caller to say it again, slowly, and read it back.",
+    "too_many_for_address": "That address has already had several emails from our demos today. Apologise; nothing more can be emailed to it today.",
+}
+
+
 # ---- Templates ----
 # Table layout with inline styles: the dialect every email client (Gmail, Apple Mail, Outlook) renders.
 # Images are hosted by this service at /email-assets (inline cid: images are dropped by some webmail).
@@ -197,6 +217,7 @@ def flight_itinerary(t: dict[str, Any]) -> tuple[str, str, str]:
     def leg(j: dict[str, Any], label: str) -> str:
         via = "Nonstop" if not j["stops"] else f"{j['stops']} stop{'s' if j['stops'] > 1 else ''} via {', '.join(j['via'])}"
         nxt = '<span style="font-size:12px;color:#b26f2a"> +1</span>' if j.get("arrivesNextDay") else ""
+        logo = f'<img src="{e(t["airlineLogo"])}" width="18" height="18" alt="" style="vertical-align:middle;border:0;margin-right:6px">' if t.get("airlineLogo") else ""
         return f"""<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px;margin:0 0 10px">
 <tr><td style="padding:16px 18px 4px;font-family:{FONT};font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:{b.accent}">{e(label)} &middot; {e(j['date'])}</td></tr>
 <tr><td style="padding:4px 18px 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
@@ -204,7 +225,7 @@ def flight_itinerary(t: dict[str, Any]) -> tuple[str, str, str]:
 <td width="24%" align="center" style="font-family:{FONT};vertical-align:middle;color:{b.accent}"><div style="font-size:20px">&#9992;</div><div style="font-size:12px;color:#857d70">{e(j['duration'])}</div><div style="font-size:11px;color:#857d70">{e(via)}</div></td>
 <td width="38%" align="right" style="font-family:{FONT};vertical-align:top"><div style="font-size:32px;font-weight:800;color:{b.ink};letter-spacing:-.5px">{e(j['to'])}</div><div style="font-size:14px;font-weight:700;color:{b.ink}">{e(j['arrives'])}{nxt}</div><div style="font-size:12px;color:#857d70">{e(j['toName'])}</div></td>
 </tr></table></td></tr>
-<tr><td style="padding:0 18px 14px;font-family:{FONT};font-size:12px;color:#857d70">{e(' · '.join(j['airlines']))} &middot; {e(' · '.join(j['flights']))}</td></tr></table>"""
+<tr><td style="padding:0 18px 14px;font-family:{FONT};font-size:12px;color:#857d70">{logo}{e(' · '.join(j['airlines']))} &middot; {e(' · '.join(j['flights']))}</td></tr></table>"""
 
     card = _pill("Quote · not booked", b) + '<div style="height:14px"></div>' + "".join(leg(j, "Outbound" if n == 0 else "Return") for n, j in enumerate(t["journeys"]))
     rows = [("Fare", t["fare"]), ("Seat", t["seat"]), ("Bags", t["bags"]), ("Traveller", t["traveller"]), ("Changes", t.get("changes", "")), ("Refunds", t.get("refund", ""))]
@@ -241,7 +262,9 @@ def pickup_reservation(r: dict[str, Any]) -> tuple[str, str, str]:
     """Form & Field: the reserved item, ready for pickup. Returns (subject, html, text)."""
     b = BRANDS["formfield"]
     card = f"""{_pill("Reserved for pickup · " + r["reference"], b)}<div style="height:14px"></div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr><td style="padding:20px 20px 18px;font-family:{FONT}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr>
+{f'<td width="120" style="padding:14px 0 14px 14px;vertical-align:middle"><img src="{e(r["image"])}" width="120" height="120" alt="{e(r["product"])}" style="display:block;border:0;border-radius:10px;background:#fff"></td>' if r.get("image") else ""}
+<td style="padding:20px 20px 18px;font-family:{FONT};vertical-align:middle">
 <div style="font-family:{SERIF};font-size:24px;font-weight:700;color:{b.ink}">{e(r["product"])}</div>
 <div style="padding:4px 0 0;font-size:15px;color:#555b50">{e(r["quantity"])} &times; {e(r["option"])} &middot; {e(r["price"])}</div></td></tr></table>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px">{_detail_rows([("Pick up by", r["pickupBy"]), ("Shop", r["shop"]), ("Hours", r["hours"]), ("Name", r["name"]), ("Payment", "In store at pickup"), ("Reference", r["reference"])], b)}</table>"""

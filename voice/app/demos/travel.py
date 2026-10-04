@@ -132,6 +132,7 @@ def summarise(offer: dict[str, Any], number: int) -> dict[str, Any]:
         "option": number,
         "offerId": offer["id"],
         "airline": (offer.get("owner") or {}).get("name"),
+        "airlineLogo": (offer.get("owner") or {}).get("logo_symbol_url"),
         "price": money(offer["total_amount"], offer["total_currency"]),
         "amount": offer["total_amount"],
         "currency": offer["total_currency"],
@@ -686,9 +687,6 @@ async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext)
         return fail("not_reviewed", "There is no reviewed itinerary to send yet.")
     if state.emailed:
         return fail("already_sent", f"The itinerary was already emailed to {state.emailed['to']} on this call.")
-    address = email.normalise(i.email)
-    if address is None:
-        return fail("invalid_email", "That doesn't look like a complete email address. Ask the caller to say it again, slowly.")
     r = state.review
     chosen = _option(state, state.selected) if state.selected else None
     trip = {
@@ -700,14 +698,12 @@ async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext)
         "total": r["total"],
         "changes": (state.details or {}).get("changes", ""),
         "refund": (state.details or {}).get("refund", ""),
+        "airlineLogo": chosen.get("airlineLogo") if chosen else None,
     }
-    subject, body, text = email.flight_itinerary(trip)
-    why = await email.send(address, subject, body, text, "Linda at Waypoint Travel")
-    if why == "too_many_for_address":
-        return fail(why, "That address has already had several emails from our demos today. Apologise and offer nothing further by email.")
+    masked, why = await email.confirm(i.email, email.flight_itinerary(trip), "Linda at Waypoint Travel")
     if why:
-        return fail("email_failed", "The email could not be sent right now. Apologise briefly.")
-    state.emailed = {"to": email.mask(address), "total": r["total"]}
+        return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
+    state.emailed = {"to": masked, "total": r["total"]}
     return ok(f"Itinerary emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"]}, True)
 
 
