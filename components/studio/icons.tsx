@@ -18,3 +18,7 @@ export const Settings = ({ size }: P) => <svg {...base(size)}><circle cx="12" cy
 export const Search = ({ size }: P) => <svg {...base(size)}><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4.2-4.2" /></svg>;
 export const Sparkle = ({ size }: P) => <svg {...base(size)}><path d="m12 3 2.1 6.1L20 11l-5.9 1.9L12 19l-2.1-6.1L4 11l5.9-1.9L12 3Z" /></svg>;
 export const Bolt = ({ size }: P) => <svg {...base(size)}><path d="M13 2.5 4.5 13.5H12l-1 8 8.5-11H12l1-8Z" /></svg>;
+export const Globe = ({ size }: P) => <svg {...base(size)}><circle cx="12" cy="12" r="8.5" /><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.2 3.6 8.5s-1.2 6.1-3.6 8.5c-2.4-2.4-3.6-5.2-3.6-8.5S9.6 5.9 12 3.5Z" /></svg>;
+export const ArrowRight = ({ size }: P) => <svg {...base(size)}><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
+export const Plug = ({ size }: P) => <svg {...base(size)}><path d="M9 3v5M15 3v5M6.5 8h11v3a5.5 5.5 0 0 1-11 0V8ZM12 16.5V21" /></svg>;
+export const Code = ({ size }: P) => <svg {...base(size)}><path d="m8.5 7.5-5 4.5 5 4.5M15.5 7.5l5 4.5-5 4.5M13.5 5l-3 14" /></svg>;

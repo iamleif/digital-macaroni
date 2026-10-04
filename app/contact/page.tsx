@@ -23,7 +23,7 @@ export default function ContactPage() {
           <p>A new idea, a tricky workflow, or something you wish worked better. Tell us what’s on your mind and we’ll figure out the right thing to make.</p>
           <ul>
             <li><Check size={15} />Voice agents, business software and apps</li>
-            <li><Check size={15} />Projects from $5,000, scope agreed up front</li>
+            <li><Check size={15} />Ready-made agents from $2,500; custom from $5,000</li>
             <li><Check size={15} />Or email <a href="mailto:hello@digitalmacaroni.io">hello@digitalmacaroni.io</a></li>
           </ul>
         </section>
