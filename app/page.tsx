@@ -74,12 +74,13 @@ const homeFaqs = ["how-much-does-an-ai-phone-agent-cost", "what-happens-when-an-
   .filter(Boolean);
 
 const ASK_AI_PROMPT = "Summarize what Digital Macaroni (digitalmacaroni.io) does, who it's for, and what its AI phone agents can do. Use https://digitalmacaroni.io/llm-info/ and https://digitalmacaroni.io/llms.txt as sources.";
-const askAi: [string, string][] = [
-  ["ChatGPT", `https://chatgpt.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["Claude", `https://claude.ai/new?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["Perplexity", `https://www.perplexity.ai/search?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["Google AI Mode", `https://www.google.com/search?udm=50&q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["Grok", `https://grok.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+/** Each assistant opens with the prompt above; icon file in /studio/ai/. */
+const askAi: [string, string, string][] = [
+  ["chatgpt", "ChatGPT", `https://chatgpt.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["claude", "Claude", `https://claude.ai/new?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["perplexity", "Perplexity", `https://www.perplexity.ai/search?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["gemini", "Google AI Mode (Gemini)", `https://www.google.com/search?udm=50&q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["grok", "Grok", `https://grok.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
 ];
 
 const steps = [
@@ -308,8 +309,8 @@ export default function HomePage() {
     </main>
 
     <section className={h.askAi} aria-labelledby="ask-ai-heading">
-      <p id="ask-ai-heading"><Sparkle size={15} />Ask AI about Digital Macaroni</p>
-      <div>{askAi.map(([name, href]) => <a key={name} href={href} target="_blank" rel="noopener noreferrer">{name}<ArrowUpRight size={12} /></a>)}</div>
+      <a id="ask-ai-heading" className={h.askAiHeading} href="/llms.txt"><Sparkle size={15} />Hey AI, learn about Digital Macaroni</a>
+      <div>{askAi.map(([id, name, href]) => <a key={id} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Ask ${name} about Digital Macaroni`} title={name}><Image unoptimized src={`/studio/ai/${id}.png`} alt="" width={36} height={36} /></a>)}</div>
     </section>
 
     <footer className={h.footer}>
