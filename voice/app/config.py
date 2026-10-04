@@ -37,7 +37,7 @@ class Config:
     cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel").split(",") if d.strip())
     stt_model: str = env.get("DEMO_STT_MODEL", "gemini-3.5-transcribe-live")
     text_model: str = env.get("DEMO_TEXT_MODEL", "gemini-3.5-flash-lite")
-    tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-tts")
+    tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-lite-tts")
     duffel_token: str = env.get("DUFFEL_ACCESS_TOKEN", "")
     # Silence that ends the visitor's turn. Lower is snappier; too low cuts people off mid-thought.
     end_of_speech_silence_ms: int = int(env.get("DEMO_END_OF_SPEECH_SILENCE_MS", "700"))
