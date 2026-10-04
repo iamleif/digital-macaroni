@@ -1,6 +1,6 @@
 """
-Duffel's flights API, read-only: place lookups, flight searches and fresh offer details. This module
-never creates orders; the travel demo stops at the booking step. Duffel's own Python SDK is archived
+Duffel's flights API, read-only: place lookups, flight searches, fresh offer details with the extras
+an airline sells, and seat maps. This module never creates orders; the travel demo stops at payment. Duffel's own Python SDK is archived
 and pinned to a switched-off API version, so this calls the REST API directly.
 
 One access token is shared by every visitor and Duffel allows 60 requests a minute per account, so
@@ -114,7 +114,7 @@ async def suggest_places(query: str) -> list[dict[str, Any]]:
     return places
 
 
-async def search_offers(slices: list[dict[str, str]], adults: int, cabin_class: str, max_connections: int) -> list[dict[str, Any]]:
+async def search_offers(slices: list[dict[str, Any]], adults: int, cabin_class: str, max_connections: int) -> list[dict[str, Any]]:
     """Runs a search and returns its offers, cheapest first (raw Duffel offers)."""
     request = await _call(
         "search",
@@ -126,6 +126,11 @@ async def search_offers(slices: list[dict[str, str]], adults: int, cabin_class: 
     return await _call("offers", "GET", "/air/offers", params={"offer_request_id": request["id"], "sort": "total_amount", "limit": 50, "max_connections": max_connections})
 
 
-async def get_offer(offer_id: str) -> dict[str, Any]:
-    """One offer with the airline's current price."""
-    return await _call("offer", "GET", f"/air/offers/{offer_id}")
+async def get_offer(offer_id: str, services: bool = False) -> dict[str, Any]:
+    """One offer with the airline's current price; with services, also the extras it sells (bags, seats)."""
+    return await _call("offer", "GET", f"/air/offers/{offer_id}", params={"return_available_services": "true"} if services else None)
+
+
+async def seat_maps(offer_id: str) -> list[dict[str, Any]]:
+    """Seat maps for an offer, one per flight segment; empty when the airline does not provide them."""
+    return await _call("seat_maps", "GET", "/air/seat_maps", params={"offer_id": offer_id})

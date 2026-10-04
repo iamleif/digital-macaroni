@@ -14,6 +14,7 @@ comes after the goodbye and must never make the agent talk again.
 
 from __future__ import annotations
 
+import asyncio
 import inspect
 import time
 import uuid
@@ -66,6 +67,11 @@ def _operation_spec(name: str, op: Any) -> ToolSpec:
             try:
                 out = op.run(session.state, parsed, OpContext(now=datetime.now(timezone.utc), channel=session.channel))  # type: ignore[arg-type]
                 r = await out if inspect.isawaitable(out) else out
+            except asyncio.CancelledError:
+                # The caller cut in and the reply was abandoned mid-tool: close the card rather than leave it running.
+                log.info("tool.result", {"session": session.id, "tool": name, "outcome": "cancelled", "latency_ms": int((time.monotonic() - started) * 1000)})
+                session.emit({"type": "tool.failed", "callId": call_id, "tool": name, "label": op.label, "summary": "Stopped: you cut in"})
+                raise
             except Exception as err:  # noqa: BLE001
                 log.error("tool.crashed", {"session": session.id, "tool": name}, err)
                 r = fail("internal_error", "Something went wrong. Apologise and offer to take a message instead.")

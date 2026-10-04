@@ -30,10 +30,17 @@ ASSEMBLY_MAX_TERMS = 100
 
 
 class Transcriber(Protocol):
+    # The transcriber's own end-of-turn model decides when the visitor has finished (AssemblyAI); when
+    # False, our silence detector does (Gemini), and replies may start speculatively from interims.
+    decides_turns: bool
+
     async def send(self, pcm16k: bytes) -> None: ...
 
     async def end_of_speech(self) -> None:
         """Our silence detector thinks the visitor has stopped: finalise what was said, now."""
+
+    async def force_end(self) -> None:
+        """A long silence and still no final: end the turn regardless."""
 
     def events(self) -> AsyncIterator[Event]: ...
 
@@ -41,6 +48,10 @@ class Transcriber(Protocol):
 
 
 class AssemblyTranscriber:
+    # Its end-of-turn model tells a pause mid-thought from the end of one; forcing an endpoint at our
+    # 0.3 s silence split callers' sentences into separate turns.
+    decides_turns = True
+
     def __init__(self, ws: Any) -> None:
         self.ws = ws
         self.buf = bytearray()
@@ -60,6 +71,11 @@ class AssemblyTranscriber:
         await self.ws.send(data)
 
     async def end_of_speech(self) -> None:
+        # Not forced: AssemblyAI ends the turn itself (see decides_turns).
+        await self._flush()
+
+    async def force_end(self) -> None:
+        # The backstop when its own end-of-turn has not come after a long silence.
         await self._flush()
         await self.ws.send(json.dumps({"type": "ForceEndpoint"}))
 
@@ -93,6 +109,8 @@ class AssemblyTranscriber:
 
 
 class GeminiTranscriber:
+    decides_turns = False
+
     def __init__(self, cm: Any, session: Any) -> None:
         self.cm = cm
         self.session = session
@@ -103,6 +121,10 @@ class GeminiTranscriber:
     async def end_of_speech(self) -> None:
         # Makes the model finalise at once instead of waiting on its own detector.
         await self.session.send_realtime_input(audio_stream_end=True)
+
+    async def force_end(self) -> None:
+        # end_of_speech already finalised.
+        return None
 
     async def events(self) -> AsyncIterator[Event]:
         while True:

@@ -21,7 +21,6 @@ finalise, the model's first words, the first audio, and the total from the end o
 from __future__ import annotations
 
 import asyncio
-import inspect
 import re
 import time
 from dataclasses import dataclass, field
@@ -50,6 +49,8 @@ Everything you write is turned into speech as you write it, so write only the wo
 SPEECH_RMS = 700
 # Silence after speech before the transcript is finalised and, if it reads as finished, answered.
 END_OF_TURN_S = 0.3
+# Silence after which the turn is ended even if the transcriber's own end-of-turn has not come.
+FORCE_END_S = 1.0
 # Further silence allowed after a transcript that trails off, before it is answered anyway.
 UNFINISHED_HOLD_S = 0.6
 # Last words that mean the visitor has not finished.
@@ -257,6 +258,7 @@ class Cascade:
         # Visitor speech, from our own level meter.
         self.voice_at = 0.0
         self.in_speech = False
+        self.forced = False
         self.closed = False
         self.tasks: list[asyncio.Task[Any]] = []
 
@@ -334,6 +336,7 @@ class Cascade:
                 if rms(pcm) > SPEECH_RMS:
                     self.voice_at = now
                     self.in_speech = True
+                    self.forced = False
                     # They are carrying on: whatever was held waits for the rest.
                     if self.hold_timer:
                         self.hold_timer.cancel()
@@ -344,9 +347,12 @@ class Cascade:
                     await self.stt.end_of_speech()
                     if self.held is not None:
                         self._arm_hold()
-                    elif self.interim and not self._busy() and finished(self.interim) and not self._may_be_code(self.interim):
+                    elif self.interim and not self.stt.decides_turns and not self._busy() and finished(self.interim) and not self._may_be_code(self.interim):
                         self.speculated, self.speculation_dropped = self.interim, False
                         self.inputs.put_nowait((self.interim, self.voice_at, now, True))
+                elif not self.in_speech and not self.forced and self.interim and now - self.voice_at >= FORCE_END_S:
+                    self.forced = True
+                    await self.stt.force_end()
         except asyncio.CancelledError:
             pass
         except Exception as err:  # noqa: BLE001
@@ -630,8 +636,9 @@ class Cascade:
             self._push(LiveEvent("turn_complete"))
 
     def _waits(self, tool: str) -> bool:
+        """A tool slow enough that the caller should hear a holding line while it runs."""
         op = self.session.demo.operations.get(tool)
-        return bool(op and inspect.iscoroutinefunction(op.run))
+        return bool(op and op.slow)
 
     async def _play(self, turn: Turn, queue: asyncio.Queue[Optional[Piece]]) -> None:
         """Synthesises pieces up to TTS_AHEAD in advance and sends their audio strictly in order."""

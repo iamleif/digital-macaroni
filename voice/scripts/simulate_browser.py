@@ -23,7 +23,17 @@ BASE = os.environ.get("DEMO_URL", "http://localhost:8080")
 ORIGIN = "http://127.0.0.1:3790"
 LINES = {
     "northline": ["Hi, can someone come and fix a leaking pipe under my kitchen sink on Monday morning?", "It's Jamie Fox, at 12 Orchard Road.", "The earliest one, please.", "Yes, book it.", "That's all, thanks. Goodbye."],
-    "travel": ["Hi, I'd like to fly from London to New York next Friday, coming back the following Friday.", "Just me, economy.", "Tell me more about the cheapest one.", "Great, let's book it. My name is Jamie Fox.", "Yes, that's right.", "No, that's all. Thanks, bye."],
+    "travel": [
+        "Hi, I'd like to fly from London to New York on November twentieth, one way, just me.",
+        "Economy is fine. I care most about the price, and a morning flight if possible.",
+        "Let's go with the Duffel Airways one.",
+        "What would the next fare up give me?",
+        "No, I'll stick with the basic fare. Can I pick a seat? A window, please.",
+        "Yes, please add one checked bag.",
+        "My name is Alex Taylor.",
+        "Yes, that's all correct.",
+        "No, that's everything. Thanks, bye.",
+    ],
     "formfield": ["Hi! Do you have any planters?", "Is the large sage one in stock?", "Great, can you reserve one for Priya?", "Yes, please.", "That's everything, thank you. Bye."],
 }
 t0 = time.monotonic()
@@ -88,18 +98,34 @@ async def main() -> None:
                 await asyncio.sleep(0.05)
 
         silence = b"\x00" * 640
+        talking = asyncio.Event()
+
+        async def line_noise() -> None:
+            # A real microphone never stops sending: keep the line open with silence between lines.
+            while not state["ended"]:
+                if not talking.is_set():
+                    try:
+                        await ws.send(silence)
+                    except websockets.ConnectionClosed:
+                        return
+                await asyncio.sleep(0.02)
+
+        noise = asyncio.create_task(line_noise())
         await wait_for_agent()
         with tempfile.TemporaryDirectory() as d:
             for i, line in enumerate(LINES[demo]):
                 if state["ended"]:
                     break
                 print(f"{stamp()}  (visitor says: {line})", flush=True)
-                audio = speak(line, d, i) + silence * 60
+                audio = speak(line, d, i)
+                talking.set()
                 for o in range(0, len(audio), 640):
                     await ws.send(audio[o : o + 640])
                     await asyncio.sleep(0.02)
+                talking.clear()
                 await wait_for_agent()
         await asyncio.sleep(4)
+        noise.cancel()
         r.cancel()
     print(f"\nAgent audio received: {state['audio'] / 48000:.1f} s")
     print("Final records:", json.dumps(state["final"])[:600])

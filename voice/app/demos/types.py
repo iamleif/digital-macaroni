@@ -54,6 +54,8 @@ class Operation(Generic[S]):
     # speaking (hanging up): a SILENT result never prompts the model to carry on, so a tool the agent
     # calls before it speaks must stay BLOCKING or the agent falls silent.
     background: bool = False
+    # Slow enough (an outside search taking seconds) that the caller hears a holding line while it runs.
+    slow: bool = False
 
 
 @dataclass
