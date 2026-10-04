@@ -1,0 +1,6 @@
+# Files never uploaded to Cloud Build for `gcloud run deploy --source .` (built with Google's buildpacks).
+.venv
+__pycache__
+.pytest_cache
+tests
+*.log

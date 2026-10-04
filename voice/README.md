@@ -12,7 +12,8 @@ The live voice agents behind the website demos, each on its own engine:
 - Phone: Twilio media streams on the three demo numbers (`/twilio/voice`, `/twilio/media`): Northline (206) 887-9619,
   Form & Field (830) 239-2110, Waypoint (720) 599-6395.
 - Website: browser microphone sessions (`/browser/sessions`) and pairing a phone call to a watching page (`/pairings`).
-- One Cloud Run service, `studio-demo-voice` in `rankladder-471812`, single instance (sessions live in memory).
+- One Cloud Run service, `studio-demo-voice` in `digital-macaroni-510610`, single always-on instance (sessions live in memory).
+  Built with Google buildpacks from `Procfile` and `.python-version` (no Dockerfile).
 
 ## Run locally
 
@@ -27,7 +28,7 @@ uv run pytest                                            # operations, audio, to
 ## Deploy
 
 ```bash
-gcloud run deploy studio-demo-voice --source . --project rankladder-471812 --region us-central1
+gcloud run deploy studio-demo-voice --source . --project digital-macaroni-510610 --region us-central1
 ```
 
 Settings and secrets live on the Cloud Run service and carry over between deploys.

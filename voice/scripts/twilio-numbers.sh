@@ -5,13 +5,15 @@
 # Only the incoming-call (voice) settings of these two numbers change. Uses the demo-only API key.
 set -euo pipefail
 
-PROJECT=rankladder-471812
-service_url() { gcloud run services describe "$1" --project "$PROJECT" --region us-central1 --format='value(status.url)'; }
+# The demo service and its secrets live in Digital Macaroni's project; RankLadder's bridge (where
+# restore sends Northline and Form & Field back) stays in RankLadder's.
+PROJECT=digital-macaroni-510610
+BRIDGE_PROJECT=rankladder-471812
 # Twilio signs requests with the URL it calls, and the service checks them against DEMO_PUBLIC_URL, so the
 # numbers must use exactly that URL (Cloud Run also answers on a second hostname that would fail the check).
 DEMO_URL=$(gcloud run services describe studio-demo-voice --project "$PROJECT" --region us-central1 --format=json \
   | python3 -c "import json,sys; print(next(e['value'] for e in json.load(sys.stdin)['spec']['template']['spec']['containers'][0]['env'] if e['name']=='DEMO_PUBLIC_URL'))")
-BRIDGE_URL=$(service_url rankladder-bridge)
+BRIDGE_URL=$(gcloud run services describe rankladder-bridge --project "$BRIDGE_PROJECT" --region us-central1 --format='value(status.url)')
 NORTHLINE=PNc357875b63682285ee17068e1057d137  # +1 206 887 9619
 FORMFIELD=PN7d2dd7a1d920b9c3786e6b0e70298a32  # +1 830 239 2110
 # Bought for the demo on 2026-10-04; never RankLadder's, so restore leaves it on the demo service.
