@@ -1,0 +1,98 @@
+const RECIPIENT = "hello@digitalmacaroni.io";
+const SENDER = "website@digitalmacaroni.io";
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TOPICS = new Map([
+  ["new-project", "New project"],
+  ["existing-project", "Existing project"],
+  ["collaboration", "Collaboration"],
+  ["question", "General question"],
+  ["other", "Something else"],
+]);
+
+function json(message, status = 200) {
+  return Response.json(
+    { message },
+    {
+      status,
+      headers: { "Cache-Control": "no-store" },
+    },
+  );
+}
+
+function cleanHeader(value) {
+  return value.replace(/[\r\n]+/g, " ").trim();
+}
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    if (url.pathname !== "/api/contact") {
+      return new Response("Not found", { status: 404 });
+    }
+
+    if (request.method !== "POST") {
+      return json("Method not allowed.", 405);
+    }
+
+    const origin = request.headers.get("Origin");
+    if (origin && new URL(origin).host !== url.host) {
+      return json("Request rejected.", 403);
+    }
+
+    const contentLength = Number(request.headers.get("Content-Length") || 0);
+    if (contentLength > 16_000) {
+      return json("Your message is too long.", 413);
+    }
+
+    let form;
+    try {
+      form = await request.formData();
+    } catch {
+      return json("We couldn’t read your message.", 400);
+    }
+
+    const name = String(form.get("name") || "").trim();
+    const email = String(form.get("email") || "").trim().toLowerCase();
+    const topic = String(form.get("topic") || "").trim();
+    const message = String(form.get("message") || "").trim();
+    const website = String(form.get("website") || "").trim();
+
+    // Bots commonly fill every field. Return success without sending anything.
+    if (website) {
+      return json("Thanks. Your message is on its way.");
+    }
+
+    if (!name || name.length > 100) {
+      return json("Please enter your name.", 400);
+    }
+
+    if (!EMAIL_PATTERN.test(email) || email.length > 254) {
+      return json("Please enter a valid email address.", 400);
+    }
+
+    const topicLabel = TOPICS.get(topic);
+    if (!topicLabel) {
+      return json("Please choose what this is about.", 400);
+    }
+
+    if (!message || message.length > 5000) {
+      return json("Please enter a message under 5,000 characters.", 400);
+    }
+
+    try {
+      await env.CONTACT_EMAIL.send({
+        to: RECIPIENT,
+        from: { email: SENDER, name: "Digital Macaroni website" },
+        replyTo: { email, name: cleanHeader(name) },
+        subject: `Website inquiry: ${topicLabel} — ${cleanHeader(name)}`,
+        text: `Name: ${name}\nEmail: ${email}\nTopic: ${topicLabel}\n\n${message}`,
+      });
+    } catch (error) {
+      console.error("Contact email failed", error);
+      return json("We couldn’t send your message. Please try again.", 500);
+    }
+
+    return json("Thanks. Your message is on its way.");
+  },
+};

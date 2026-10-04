@@ -1,3 +1,0 @@
-{
-  "content": "The private writer's notebook for Umami is tailored for individuals or small teams seeking a lightweight, privacy-focused analytics solution. It is particularly useful for bloggers, developers, and site owners who prioritize data ownership and minimal tracking. The notebook assumes the reader has a basic understanding of web technologies and may be interested in self-hosting or cloud-based analytics. It is not ideal for large enterprises or teams requiring advanced reporting and integration capabilities. The notebook serves as a guide to help the reader understand the product's strengths, limitations, and how it fits into their specific use case."
-}

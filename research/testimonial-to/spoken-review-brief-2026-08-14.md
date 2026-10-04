@@ -1,3 +1,0 @@
-# Testimonial.to spoken review brief
-
-Testimonial.to gives a business a page where customers can submit text or video praise without creating an account. Approved items can be placed on a website through links and embeds. This removes setup work, but it does not make vague praise useful or settle permission by itself. Free allows ten text and two video items. Starter is $25 monthly billed yearly. Unlimited video begins with Ultimate at $50 monthly per space billed yearly. Ask ten customers, verify every claim and permission, place proof beside the right claim, then update and remove one item. Compare the work with a simple form and manual page.

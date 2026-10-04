@@ -1,0 +1,25 @@
+1:"$Sreact.fragment"
+2:I[8500,["500","static/chunks/500-b13bb91f5a6311b6.js","437","static/chunks/437-879f8ced7e8c9435.js","977","static/chunks/app/contact/page-d38d5b2501a2319c.js"],""]
+3:I[8437,["500","static/chunks/500-b13bb91f5a6311b6.js","437","static/chunks/437-879f8ced7e8c9435.js","977","static/chunks/app/contact/page-d38d5b2501a2319c.js"],"Image"]
+4:I[746,["500","static/chunks/500-b13bb91f5a6311b6.js","437","static/chunks/437-879f8ced7e8c9435.js","977","static/chunks/app/contact/page-d38d5b2501a2319c.js"],"ContactForm"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+a:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+c:I[6869,[],"IconMark"]
+e:I[7121,[],""]
+f:I[4581,[],""]
+:HL["/_next/static/css/2b28f3459753aab9.css","style"]
+9:X
+11:X
+11:C
+0:{"buildId":"EgcW6T7pDAWn_I6v3h9MB","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"id":"content","className":"contact-page","children":[["$","header",null,{"className":"contact-header","children":[["$","$L2",null,{"className":"mini-brand","href":"/","aria-label":"Digital Macaroni, home","children":[["$","$L3",null,{"src":"/brand/macaroni-yellow-logo.png","alt":"","width":120,"height":120}],["$","span",null,{"children":"Digital Macaroni"}]]}],["$","$L2",null,{"className":"back-link","href":"/","children":"Back home"}]]}],["$","div",null,{"className":"contact-layout","children":[["$","section",null,{"className":"contact-copy","aria-labelledby":"contact-title","children":[["$","h1",null,{"id":"contact-title","children":"Let’s make something."}],["$","p",null,{"children":"Have a product in mind, a problem worth solving, or just want to say hello? Send a note here."}]]}],["$","$L4",null,{}]]}]]}],null,["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]]}],"isPartial":"$@8","staleTime":"$9","varyParams":null},{"rsc":["$","$1","h",{"children":[null,["$","$La",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$6",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Contact — Digital Macaroni"}],["$","meta","1",{"name":"description","content":"Get in touch with Digital Macaroni."}],["$","meta","2",{"name":"creator","content":"Digital Macaroni"}],["$","meta","3",{"name":"publisher","content":"Digital Macaroni"}],["$","link","4",{"rel":"canonical","href":"https://digitalmacaroni.io/contact/"}],["$","meta","5",{"property":"og:title","content":"Digital Macaroni"}],["$","meta","6",{"property":"og:description","content":"An independent digital studio creating software, brands, websites, and other useful things."}],["$","meta","7",{"property":"og:url","content":"https://digitalmacaroni.io/"}],["$","meta","8",{"property":"og:site_name","content":"Digital Macaroni"}],["$","meta","9",{"property":"og:type","content":"website"}],["$","meta","10",{"name":"twitter:card","content":"summary"}],["$","meta","11",{"name":"twitter:title","content":"Digital Macaroni"}],["$","meta","12",{"name":"twitter:description","content":"An independent digital studio creating software, brands, websites, and other useful things."}],["$","link","13",{"rel":"icon","href":"/favicon.ico?2f25711458c6d685","type":"image/x-icon","sizes":"16x16"}],["$","link","14",{"rel":"icon","href":"/icon.png?48b0d8865bbb7cbd","type":"image/png","sizes":"512x512"}],["$","link","15",{"rel":"apple-touch-icon","href":"/apple-icon.png?b3567976eec36a13","type":"image/png","sizes":"180x180"}],["$","$Lc","16",{}]]}]}]}],null]}],"isPartial":"$@d","staleTime":"$9","varyParams":null},{"rsc":["$","$1","c",{"children":[null,["$","$Le",null,{"parallelRouterKey":"children","template":["$","$Lf",null,{}]}]]}],"isPartial":"$@10","staleTime":"$9","varyParams":"$11"},{"rsc":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2b28f3459753aab9.css","precedence":"next"}]],["$","html",null,{"lang":"en","children":["$","body",null,{"children":[["$","a",null,{"className":"skip-link","href":"#content","children":"Skip to content"}],["$","$Le",null,{"parallelRouterKey":"children","template":["$","$Lf",null,{}],"notFound":[["$","main",null,{"id":"content","className":"not-found","children":[["$","h1",null,{"children":"Nothing here."}],["$","p",null,{"children":"This page doesn’t exist."}],["$","$L2",null,{"className":"text-link","href":"/","children":["Back home ",["$","span",null,{"aria-hidden":"true","children":"↗"}]]}]]}],[]]}]]}]}]]}],"isPartial":"$@12","staleTime":"$9","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@13","rootVaryParams":null,"needsRuntimeRequest":"$@14"}
+7:null
+9:300
+14:true
+9:C
+13:0
+d:"$undefined"
+10:"$undefined"
+12:"$undefined"
+8:"$undefined"

@@ -1,12 +1,21 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "digital-macaroni",
+  "main": "./worker.js",
   "account_id": "cad35e9e19121012045ba51f5fdd1409",
   "compatibility_date": "2026-08-14",
   "assets": {
     "directory": "./out",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
   },
+  "send_email": [
+    {
+      "name": "CONTACT_EMAIL",
+      "destination_address": "hello@digitalmacaroni.io",
+      "allowed_sender_addresses": ["website@digitalmacaroni.io"]
+    }
+  ],
   "routes": [
     {
       "pattern": "digitalmacaroni.io",

@@ -1,3 +1,0 @@
-{
-  "body": "Missive is a shared email tool designed for small teams that want to work on emails as a group. Its main value is in reducing duplicate replies and keeping context in one place. The tradeoff is that the search experience can be slow, especially for older messages or when using email providers other than Gmail or Outlook. If your team often replies to the same message multiple times or loses track of who’s responding, Missive could save time. But if your team uses a different email provider or needs advanced features, you might want to consider alternatives. The cost is also worth evaluating, as it may not be the best fit for solo users or teams that don’t need deep email collaboration."
-}

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Digital Macaroni Review Writer"
-  short_description: "Turn research evidence into editorial reviews"
-  default_prompt: "Use $digital-macaroni-review-writer to turn this evidence packet into a connected, source-grounded software review."

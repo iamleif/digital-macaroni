@@ -1,3 +1,0 @@
-{
-  "content": "The private writer's notebook for Trigger.dev explores the developer tool's core features, user experiences, and reliability. Trigger.dev offers a code-first approach for handling long-running background tasks, with support for TypeScript, retries, logs, and run history. The product aims to simplify task management, but its reliance on cloud infrastructure and lack of self-hosting options raise concerns. Users report mixed experiences with reliability and documentation. The tool is best suited for developers who need robust task handling but may not be ideal for teams or workflows that require full control or minimal costs. Overall, Trigger.dev provides useful tools for specific use cases but has limitations in broader adoption."
-}

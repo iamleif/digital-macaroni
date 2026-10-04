@@ -1,3 +1,0 @@
-# Typedream spoken review brief
-
-Typedream is a no-code website builder that feels closer to writing a document than arranging a design canvas. Its defaults help a non-designer publish a landing page or small site quickly. Those defaults also reduce control over phone layouts, advanced search work, code, commerce, and large content systems. Free publishes one page. Launch is $15 monthly billed yearly or $20 month to month. Grow is $42 or $49. Build the actual five-page site, test forms and every phone size, break and repair a publish, check search previews and redirects, then try to move the content elsewhere.

@@ -1,31 +1,21 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import type { ReactNode } from "react";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://digitalmacaroni.io"),
   title: {
-    default: "Digital Macaroni — Independent software reviews",
+    default: "Digital Macaroni — Digital studio",
     template: "%s — Digital Macaroni",
   },
   description:
-    "Independent software reviews with clear opinions and simple scores.",
-  authors: [{ name: "Leif Johansen", url: "https://digitalmacaroni.io/about" }],
-  creator: "Leif Johansen",
+    "Digital Macaroni is an independent digital studio creating software, brands, websites, and other useful things.",
+  creator: "Digital Macaroni",
   publisher: "Digital Macaroni",
-  alternates: {
-    types: {
-      "application/rss+xml": "/feed.xml",
-      "application/feed+json": "/feed.json",
-    },
-  },
   openGraph: {
     title: "Digital Macaroni",
     description:
-      "We use software, say what we think, and give it a score.",
+      "An independent digital studio creating software, brands, websites, and other useful things.",
     type: "website",
     url: "https://digitalmacaroni.io",
     siteName: "Digital Macaroni",
@@ -33,46 +23,19 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "Digital Macaroni",
-    description: "Independent software reviews with clear opinions and simple scores.",
+    description:
+      "An independent digital studio creating software, brands, websites, and other useful things.",
   },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('consent', 'default', {
-  'ad_storage': 'denied',
-  'ad_user_data': 'denied',
-  'ad_personalization': 'denied',
-  'analytics_storage': 'denied'
-});
-gtag('js', new Date());
-gtag('config', 'G-VPGKY80HW8', {
-  'allow_google_signals': false,
-  'allow_ad_personalization_signals': false
-});`,
-          }}
-        />
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-VPGKY80HW8"
-        />
-      </head>
+    <html lang="en">
       <body>
         <a className="skip-link" href="#content">
           Skip to content
         </a>
-        <div className="site-shell">
-          <Header />
-          <main id="content">{children}</main>
-          <Footer />
-        </div>
-        <Script src="https://tag.grainql.com/v4/dm-4ao6x2.js" strategy="afterInteractive" />
+        {children}
       </body>
     </html>
   );

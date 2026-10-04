@@ -1,28 +1,16 @@
 {
   "name": "digitalmacaroni",
   "version": "1.0.0",
-  "description": "Independent writing about SaaS, customer experience, product design and AI.",
+  "description": "An independent digital studio creating useful products.",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/assert-editorial-gate.mjs && node scripts/validate-content.mjs && next build --webpack",
+    "build": "next build --webpack",
     "start": "next start",
     "preview": "npm run build && wrangler dev --assets ./out",
-    "deploy": "node scripts/assert-editorial-gate.mjs --remote && node scripts/validate-content.mjs && next build --webpack && wrangler deploy --autoconfig=false",
+    "deploy": "next build --webpack && wrangler deploy --autoconfig=false",
     "cf-typegen": "wrangler types",
-    "lint": "tsc --noEmit",
-    "content:validate": "node scripts/validate-content.mjs",
-    "content:sync": "node --env-file-if-exists=.env.local scripts/sync-reviews-to-supabase.mjs",
-    "research:official": "python3 crawler/sync_official_sources.py",
-    "draft:review": "node --env-file-if-exists=.env.local scripts/draft-review.mjs",
-    "pipeline:reviews": "node scripts/editorial-pipeline.mjs",
-    "pipeline:rewrite-existing": "node scripts/rewrite-existing-review-set.mjs --sync",
-    "pipeline:rewrite:test": "node --test scripts/tests/rewrite-checkpoints.test.mjs",
-    "publish:review": "node scripts/editorial-pipeline.mjs publish",
-    "editorial:gate": "node scripts/assert-editorial-gate.mjs",
-    "editorial:gate:remote": "node scripts/assert-editorial-gate.mjs --remote",
-    "editorial:test:database": "supabase db query --linked --file supabase/tests/editorial_pipeline_gate.sql",
-    "publish:check": "node scripts/publish-check.mjs"
+    "lint": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -39,11 +27,7 @@
   "dependencies": {
     "@fontsource/dm-mono": "^5.3.0",
     "@fontsource/plus-jakarta-sans": "^5.3.0",
-    "@phosphor-icons/react": "^2.1.10",
-    "@supabase/supabase-js": "^2.112.3",
-    "gray-matter": "^4.0.3",
     "next": "^16.0.0",
-    "next-mdx-remote": "^5.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

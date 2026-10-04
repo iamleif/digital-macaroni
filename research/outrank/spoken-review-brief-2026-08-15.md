@@ -1,6 +1,0 @@
-- Outrank is an SEO‑automation tool that writes articles, creates images, does keyword research and swaps backlinks.
-- It helps website owners who want to scale content quickly without hiring writers.
-- The automation works in theory, but we have no evidence the output actually ranks.
-- The feature matters most for sites that rely on search traffic; it matters less for businesses that get traffic elsewhere.
-- One reviewer could not verify the quality of the generated content, and another noted missing support info.
-- Before paying, try the free trial, check the rankings of the first few articles, and confirm you understand the pricing model.

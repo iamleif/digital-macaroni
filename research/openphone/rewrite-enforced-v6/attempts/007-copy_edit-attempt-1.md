@@ -1,5 +1,0 @@
-{
-  "title": "Quo: A Clean Tool for Small Teams, But Not a Perfect Phone System",
-  "description": "Quo is a modern, clean business phone tool for small teams that prioritizes cloud-based communication and shared lines, but it has notable drawbacks in reliability and support.",
-  "body": "Quo is a cloud-based business phone system that allows small teams to manage calls, texts, and shared lines without physical hardware. It is designed for remote and distributed teams, offering a unified workspace for communication and collaboration. The main feature that stands out is its support for shared phone lines and the ability to handle incoming calls and messages from a single number. However, the tradeoff is that Quo may not be ideal for businesses that rely heavily on real calls, texts, or number porting. Some users reported issues with call quality, message delays, and support during critical times, which can affect the overall experience. Before committing to Quo, it's important to check whether the trial includes real calls and texts, whether number porting is possible, and whether there's a plan for handling potential outages."
-}
