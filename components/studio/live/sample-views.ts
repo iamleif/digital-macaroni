@@ -7,7 +7,7 @@ import type { FormFieldView, NorthlineView, TravelJourney, TravelView } from "./
 const windows = [8, 10, 12, 14, 16].map((hour) => ({ hour, label: ["8–10 AM", "10 AM–12 PM", "12–2 PM", "2–4 PM", "4–6 PM"][[8, 10, 12, 14, 16].indexOf(hour)]! }));
 
 export const northlineSample: NorthlineView = {
-  timeZone: "Central Time",
+  timeZone: "Pacific Time",
   today: "",
   day: { date: "", label: "Tomorrow" },
   technicians: [
@@ -22,13 +22,13 @@ export const northlineSample: NorthlineView = {
     { techId: "jordan", hour: 12, kind: "existing", title: "Seasonal tune-up" },
     { techId: "maya", hour: 12, kind: "existing", title: "Heating repair" },
     { techId: "sam", hour: 12, kind: "existing", title: "Water heater service" },
-    { techId: "maya", hour: 14, kind: "demo", title: "Heating repair", appointmentId: "NL-345", name: "Alex Taylor", address: "48 Birch Lane" },
+    { techId: "maya", hour: 14, kind: "demo", title: "Heating repair", appointmentId: "NL-345", name: "Alex Taylor", address: "48 Birch Lane, Seattle" },
     { techId: "jordan", hour: 16, kind: "existing", title: "Cooling repair" },
   ],
   open: [{ techId: "sam", hour: 8 }, { techId: "jordan", hour: 8 }, { techId: "maya", hour: 10 }, { techId: "jordan", hour: 10 }, { techId: "maya", hour: 16 }],
   proposed: null,
-  request: { service: "Heating repair", name: "Alex Taylor", address: "48 Birch Lane", issue: "Furnace stopped heating", proposed: null },
-  appointments: [{ id: "NL-345", status: "booked", service: "Heating repair", day: "Tomorrow", window: "2–4 PM", technician: "Maya Ortiz", name: "Alex Taylor", address: "48 Birch Lane", changes: 0 }],
+  request: { service: "Heating repair", name: "Alex Taylor", address: "48 Birch Lane, Seattle", issue: "Furnace stopped heating", proposed: null },
+  appointments: [{ id: "NL-345", status: "booked", service: "Heating repair", day: "Tomorrow", window: "2–4 PM", technician: "Maya Ortiz", name: "Alex Taylor", address: "48 Birch Lane, Seattle", changes: 0 }],
   messages: [],
 };
 

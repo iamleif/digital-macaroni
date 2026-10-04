@@ -50,8 +50,7 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
     phoneDisplay: "(206) 887-9619",
     intro: "Talk to Ellie, Northline’s booking assistant. Book a heating, cooling or plumbing visit, change it, or leave a message, and watch the schedule change as she works.",
     prompts: ["Can someone look at my furnace tomorrow afternoon?", "Actually, can we make it a bit later?", "Could someone call me back instead?"],
-    sampleDetails: "Need an address? Use 48 Birch Lane. Northline, its technicians and its schedule are fictional; nobody will visit.",
-    sampleCard: { title: "Use these details", items: [{ label: "Address", value: "48 Birch Lane" }, { label: "Name", value: "Any name you like" }] },
+    sampleDetails: "Use any name and address you like. Northline, its technicians and its schedule are fictional; nobody will visit.",
     design: {
       platform: "Gemini Live",
       stack: [{ role: "All three", value: "Google Gemini Live hears, thinks and speaks in one speech-to-speech model: no separate transcription or voice step" }],

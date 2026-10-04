@@ -31,7 +31,7 @@ const speaking = (on: boolean): DemoEvent => ({ type: "agent.speaking", speaking
 
 const nlRequest = (patch: Partial<NorthlineView["request"]>): NorthlineView => ({ ...northlineEmpty, request: { ...northlineEmpty.request, ...patch } });
 const nlOpen: NorthlineView = {
-  ...nlRequest({ service: "Heating repair", issue: "Furnace stopped heating", name: "Alex Taylor", address: "48 Birch Lane", proposed: { day: "Tomorrow", window: "2–4 PM" } }),
+  ...nlRequest({ service: "Heating repair", issue: "Furnace stopped heating", name: "Alex Taylor", address: "48 Birch Lane, Seattle", proposed: { day: "Tomorrow", window: "2–4 PM" } }),
   open: [{ techId: "maya", hour: 14 }, { techId: "maya", hour: 16 }, { techId: "jordan", hour: 10 }],
   proposed: 14,
 };
@@ -52,14 +52,14 @@ const northline = timeline([
   say("agent", "I’m sorry to hear that. Can I get your name and the address for the visit?"),
   speaking(false),
   1500,
-  say("visitor", "Alex Taylor, 48 Birch Lane."),
-  state(2, nlRequest({ service: "Heating repair", issue: "Furnace stopped heating", name: "Alex Taylor", address: "48 Birch Lane" })),
+  say("visitor", "Alex Taylor, 48 Birch Lane, Seattle."),
+  state(2, nlRequest({ service: "Heating repair", issue: "Furnace stopped heating", name: "Alex Taylor", address: "48 Birch Lane, Seattle" })),
   tool("c2", "check_availability", "Check the schedule"),
   700,
   ok("c2", "check_availability", "Check the schedule", "3 open windows · Maya free 2–4 PM tomorrow"),
   state(3, nlOpen),
   speaking(true),
-  say("agent", "Maya can be there tomorrow between 2 and 4. Just to confirm: a heating repair at 48 Birch Lane, tomorrow 2 to 4 PM. Shall I book it?"),
+  say("agent", "Maya can be there tomorrow between 2 and 4. Just to confirm: a heating repair at 48 Birch Lane, Seattle, tomorrow 2 to 4 PM. Shall I book it?"),
   speaking(false),
   1800,
   say("visitor", "Yes, please."),

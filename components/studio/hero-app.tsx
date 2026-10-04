@@ -57,7 +57,7 @@ export function HeroApp() {
         <aside className={h.appDetail}>
           <div className={h.detailHead}><i data-tone="a">CB</i><div><b>Chloe Bennett</b><small>(206) 555-0148 · new customer</small></div></div>
           <p className={h.detailLabel}>Summary</p>
-          <p className={h.detailSummary}>Furnace not igniting. Wants someone tomorrow afternoon. Address 48 Birch Lane.</p>
+          <p className={h.detailSummary}>Furnace not igniting. Wants someone tomorrow afternoon. Address 48 Birch Lane, Seattle.</p>
           <p className={h.detailLabel}>Ellie did</p>
           <ul className={h.toolList}>
             <li><Check size={12} />Checked the schedule<code>180ms</code></li>
