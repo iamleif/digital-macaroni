@@ -101,7 +101,6 @@
 .card p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
 .cardArrow { position: absolute; right: 16px; top: 18px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--hair); transition: background-color 0.3s var(--ease), color 0.3s var(--ease); }
 .card:hover .cardArrow { background: var(--ink); color: #fff; }
-.hubUpdated { margin: 48px 0 0; font-size: 13px; color: var(--faint); }
 
 @media (max-width: 860px) {
   .cards, .related > div { grid-template-columns: 1fr 1fr; }

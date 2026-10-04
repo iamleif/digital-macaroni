@@ -148,7 +148,6 @@ export function AnswersHub() {
           <span className={a.cardArrow}><ArrowUpRight size={14} /></span>
         </a>)}</div>
       </section>)}
-      <p className={a.hubUpdated}>Updated <time dateTime={UPDATED_ISO}>{UPDATED}</time> by {AUTHOR.name}, {AUTHOR.byline}.</p>
     </div>
   </AnswersShell>;
 }
