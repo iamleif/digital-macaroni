@@ -55,6 +55,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   }, [replaying, demo.id, push, reset]);
 
   const onCall = !feed.ended && (watch.status === "linked" || (replaying && feed.entries.length > 0));
+  const finished = !onCall && (Boolean(feed.ended) || (watch.status === "ended" && feed.entries.length > 0));
   const view = feed.view ?? EMPTY[demo.id];
   const state: LiveState = feed.view ? (feed.ended ? "finished" : "live") : "sample";
 
@@ -66,14 +67,15 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
       <span className={d.topRole}>{demo.role} · live demo</span>
       <div className={d.topStatus} role="status">
         {replaying ? <span className={d.replayPill}>Sample replay · not a live call</span> : null}
-        {onCall ? <span className={d.livePill} data-speaking={feed.speaking || undefined}><i />{feed.speaking ? `${demo.agentName} is speaking` : "Listening"}</span> : null}
+        {onCall || finished ? <CallBadge demo={demo} feed={feed} onCall={onCall} onNewCode={newCode} /> : null}
       </div>
       <a href="/#agents" className={d.back}>All demos<ArrowUpRight size={14} /></a>
     </header>
 
     <main id="content" className={d.layout}>
       <aside className={d.left}>
-        <CallCard demo={demo} feed={feed} onCall={onCall} watch={watch} onNewCode={newCode} />
+        {/* Once the call links, the card folds into the top-bar badge to give the conversation room. */}
+        {onCall || finished ? null : <CallCard demo={demo} feed={feed} onCall={onCall} watch={watch} onNewCode={newCode} />}
 
         {demo.sampleCard ? <section className={d.sample} aria-label={demo.sampleCard.title}>
           <h2>{demo.sampleCard.title}</h2>
@@ -105,6 +107,37 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
       <span>{demo.name} is a fictional business. Nothing is really booked, sold or charged.</span>
       <a href="/privacy/">Privacy</a><a href="/demo-terms/">Demo terms</a>
     </footer>
+  </div>;
+}
+
+/* ---------------- Call badge (top bar, once the call is linked) ---------------- */
+
+const BADGE_WAVE = [6, 11, 8, 14, 9, 16, 10, 7, 12, 15, 9, 6];
+
+function CallBadge({ demo, feed, onCall, onNewCode }: { demo: DemoInfo; feed: Feed; onCall: boolean; onNewCode: () => void }) {
+  const events = feed.log.filter((i): i is Extract<typeof i, { kind: "event" }> => i.kind === "event");
+  const startedAt = events[0]?.at ?? null;
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    if (!onCall) return;
+    const t = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(t);
+  }, [onCall]);
+  const endedAt = onCall ? now : (events.at(-1)?.at ?? now);
+  const secs = startedAt ? Math.max(0, Math.round((endedAt - startedAt) / 1000)) : 0;
+  const timer = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+
+  if (!onCall) return <div className={d.callBadge} data-state="ended">
+    <span className={d.badgeOrb} aria-hidden="true" />
+    <span className={d.badgeText}><b>Call finished</b><small>{demo.agentName} · {timer} · your results stay on screen</small></span>
+    <button className={d.badgeBtn} onClick={onNewCode}><Phone size={14} />Call again</button>
+  </div>;
+
+  return <div className={d.callBadge} data-speaking={feed.speaking || undefined}>
+    <span className={d.badgeOrb} data-speaking={feed.speaking || undefined} aria-hidden="true" />
+    <span className={d.badgeText}><b>On a call with {demo.agentName}</b><small><i />{feed.speaking ? `${demo.agentName} is speaking` : "Listening"}</small></span>
+    <span className={d.badgeWave} aria-hidden="true">{BADGE_WAVE.map((h, i) => <i key={i} style={{ height: h, animationDelay: `${i * -0.12}s` }} />)}</span>
+    <span className={d.badgeTimer}>{timer}</span>
   </div>;
 }
 
