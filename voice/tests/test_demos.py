@@ -7,7 +7,7 @@ from app.demos.formfield import formfield
 from app.demos.northline import issue_is_vague, northline
 from app.demos.types import OpContext, OpResult, add_days, weekday
 
-# A Thursday morning in Chicago.
+# A Thursday morning in Seattle.
 NOW = datetime(2026, 10, 1, 14, 0, tzinfo=timezone.utc)
 CTX = OpContext(now=NOW, channel="browser")
 TOMORROW = "2026-10-02"

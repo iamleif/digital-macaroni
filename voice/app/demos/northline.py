@@ -29,7 +29,7 @@ from .types import (
     weekday,
 )
 
-TIME_ZONE = "America/Chicago"
+TIME_ZONE = "America/Los_Angeles"
 WINDOWS = (8, 10, 12, 14, 16)
 DAYS_AHEAD = 7
 
@@ -219,7 +219,9 @@ def instruction(state: NorthlineState, ctx: OpContext) -> str:
 
 Behind the scenes, and not something to mention unless asked: this line is a demonstration. Bookings and messages are sample records, and no technician will actually visit or call. If a caller asks directly whether you are a real person, answer honestly and briefly that you are Northline's AI assistant. If they ask directly whether this is a real business or a real booking, say briefly that this is a demo line and nothing will actually be scheduled, then carry on helping.
 
-Today is {today} ({state.today}), Central Time. Use this to resolve "today", "tomorrow" and weekdays.
+Northline is based in Seattle, Washington, and serves Seattle and the cities around it.
+
+Today is {today} ({state.today}), Pacific Time. Use this to resolve "today", "tomorrow" and weekdays.
 
 How you speak: warm, calm and reassuring, like a capable dispatcher who has done this a thousand times. Short sentences. One question per turn. Never read out ids, slot codes or anything in brackets. No more than three options at once. If you are interrupted, stop and listen.
 
@@ -241,7 +243,7 @@ Finding the right visit. Before checking availability you need two things: which
 - You are not a technician. Don't diagnose, guess at causes, suggest fixes or promise what the visit will find. Ask about what they see, hear or smell, never about parts.
 - For a heating problem, ask once whether they smell gas or have a carbon monoxide alarm going off.
 
-Booking, in this order: the service and what they've noticed, as above; when suits them; check_availability for that day and offer what it returned; the caller's name and the service address. When they pick a time, read it all back once in one sentence (the service, day and window, name and address) and ask whether to book it. On a clear yes, call book_appointment with callerConfirmed true. Then say only what is new: the reference, and that the technician will call half an hour before arriving. Don't repeat what you just read back.
+Booking, in this order: the service and what they've noticed, as above; when suits them; check_availability for that day and offer what it returned; the caller's name and the service address, street and city (if they give only a street, ask which city). Any name and address the caller gives is fine, wherever it is; never suggest one. When they pick a time, read it all back once in one sentence (the service, day and window, name and address) and ask whether to book it. On a clear yes, call book_appointment with callerConfirmed true. Then say only what is new: the reference, and that the technician will call half an hour before arriving. Don't repeat what you just read back.
 
 Keeping the request card current: note_request_details is instant and its result needs no comment. Call it at most once per caller turn, with everything new from that turn, then say what you were going to say. Record the service only once it is settled, and the issue in the caller's words, never a category. When they choose a time, record it as proposedSlotId.
 
@@ -263,8 +265,8 @@ def get_business_info(state: NorthlineState, _: Any, ctx: OpContext) -> OpResult
         "Services and hours",
         {
             "services": [{"service": s["id"], "name": s["name"], "callOutFee": f"${s['fee']}" if s["fee"] else "Free", "covers": s["about"]} for s in SERVICES],
-            "hours": "Visits Monday to Saturday, arrival windows from 8 AM to 6 PM Central Time. Closed Sunday.",
-            "area": "Maple Grove, Cedar Falls and Riverside.",
+            "hours": "Visits Monday to Saturday, arrival windows from 8 AM to 6 PM Pacific Time. Closed Sunday.",
+            "area": "Seattle, Washington, and nearby: Shoreline, Bellevue, Kirkland, Redmond, Renton and Burien.",
             "policies": [
                 "The call-out fee covers the visit and diagnosis; repair work is quoted on site before anything is done.",
                 "Customers can change or cancel a visit free of charge.",
@@ -278,7 +280,7 @@ def get_business_info(state: NorthlineState, _: Any, ctx: OpContext) -> OpResult
 class NoteRequestDetails(BaseModel):
     service: Optional[ServiceId] = Field(None, description=SERVICE_HELP)
     name: Optional[str] = Field(None, min_length=1, max_length=80, description="The caller's name as they gave it.")
-    address: Optional[str] = Field(None, min_length=3, max_length=160, description="The service address as confirmed.")
+    address: Optional[str] = Field(None, min_length=3, max_length=160, description="The service address as confirmed, street and city.")
     issue: Optional[str] = Field(None, min_length=3, max_length=200, description=ISSUE_HELP)
     proposedSlotId: Optional[str] = Field(None, description="The slot the caller chose, before booking.")
 
@@ -470,7 +472,7 @@ def view(state: NorthlineState) -> dict[str, Any]:
                     open_cells.append({"techId": t["id"], "hour": hour})
 
     return {
-        "timeZone": "Central Time",
+        "timeZone": "Pacific Time",
         "today": state.today,
         "day": {"date": day, "label": date_label(day)},
         "technicians": [{"id": t["id"], "name": t["name"].split(" ")[0]} for t in TECHNICIANS],
@@ -510,7 +512,7 @@ northline: DemoDefinition[NorthlineState] = DemoDefinition(
         ),
         "check_availability": Operation(
             "Checking the schedule",
-            "Open arrival windows for a service on a date (YYYY-MM-DD, Central Time). If that date has none, returns the next available windows instead. Only offer what this returns.",
+            "Open arrival windows for a service on a date (YYYY-MM-DD, Pacific Time). If that date has none, returns the next available windows instead. Only offer what this returns.",
             check_availability,
             CheckAvailability,
         ),
