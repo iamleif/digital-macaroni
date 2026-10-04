@@ -5,6 +5,7 @@ import { HeroApp } from "@/components/studio/hero-app";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, Plug, Sparkle, Wave } from "@/components/studio/icons";
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { Work } from "@/components/studio/work";
+import { answerBySlug } from "@/components/studio/answers/content";
 import h from "@/components/studio/home.module.css";
 
 export const metadata: Metadata = {
@@ -46,13 +47,16 @@ const languages: [string, string][] = [
   ["Tamil", "தமிழ்"], ["Chinese", "中文"], ["Japanese", "日本語"], ["Korean", "한국어"], ["Vietnamese", "Tiếng Việt"], ["Indonesian", "Bahasa Indonesia"], ["Malay", "Bahasa Melayu"], ["Filipino", "Tagalog"],
 ];
 
-/** Tools with public APIs, grouped the way an owner thinks about them. Examples, not partnerships. */
+/** Tools with documented APIs (each checked against its developer docs, 2026-10-04), grouped the way an owner thinks about them. Examples, not partnerships. */
 const integrations: { group: string; tools: string[] }[] = [
-  { group: "Calendars & booking", tools: ["Google Calendar", "Outlook", "Calendly", "Acuity", "Clio"] },
-  { group: "CRM", tools: ["HubSpot", "Salesforce", "Pipedrive", "GoHighLevel"] },
-  { group: "Field service", tools: ["ServiceTitan", "Jobber", "Housecall Pro"] },
-  { group: "Commerce & payments", tools: ["Shopify", "Square", "Stripe"] },
-  { group: "Messages", tools: ["SMS", "Email", "Slack", "Microsoft Teams"] },
+  { group: "Calendars & booking", tools: ["Google Calendar", "Outlook", "Calendly", "Acuity", "SimplyBook.me"] },
+  { group: "CRM", tools: ["HubSpot", "Salesforce", "Pipedrive", "Zoho CRM", "GoHighLevel", "Keap", "Close", "Teamleader", "Dynamics 365"] },
+  { group: "Legal", tools: ["Clio", "MyCase", "PracticePanther", "Lawmatics", "Smokeball"] },
+  { group: "Trades & repair", tools: ["ServiceTitan", "Jobber", "Housecall Pro", "simPRO", "ServiceM8", "AccuLynx", "JobNimbus", "Shopmonkey", "Tekmetric"] },
+  { group: "Vet & pet care", tools: ["ezyVet", "Vetspire", "MoeGo"] },
+  { group: "Commerce & payments", tools: ["Shopify", "WooCommerce", "Square", "Stripe", "PayPal", "Clover", "Toast", "Lightspeed", "SumUp", "Mollie"] },
+  { group: "Accounting", tools: ["QuickBooks", "Xero", "Sage", "FreshBooks", "FreeAgent", "Zoho Books"] },
+  { group: "Messages", tools: ["SMS", "WhatsApp", "Email", "Slack", "Microsoft Teams"] },
   { group: "Data", tools: ["Google Sheets", "Airtable", "Notion", "Your database"] },
 ];
 
@@ -64,9 +68,23 @@ const exampleActions: [string, string, string][] = [
   ["send_confirmation", "Texted a confirmation", "SMS"],
 ];
 
+/** Homepage questions: each links to its full answer page. */
+const homeFaqs = ["how-much-does-an-ai-phone-agent-cost", "what-happens-when-an-ai-phone-agent-gets-something-wrong", "can-i-keep-my-business-phone-number", "will-callers-know-they-are-talking-to-an-ai", "hosted-vs-managed-vs-self-hosted-ai-phone-agent", "custom-ai-phone-agent-vs-template-build"]
+  .map((slug) => answerBySlug(slug)!)
+  .filter(Boolean);
+
+const ASK_AI_PROMPT = "Summarize what Digital Macaroni (digitalmacaroni.io) does, who it's for, and what its AI phone agents can do. Use https://digitalmacaroni.io/llm-info/ and https://digitalmacaroni.io/llms.txt as sources.";
+const askAi: [string, string][] = [
+  ["ChatGPT", `https://chatgpt.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["Claude", `https://claude.ai/new?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["Perplexity", `https://www.perplexity.ai/search?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["Google AI Mode", `https://www.google.com/search?udm=50&q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["Grok", `https://grok.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+];
+
 const steps = [
   { title: "Tell us what you need", copy: "A few questions about your business and the calls you get. It takes a couple of minutes." },
-  { title: "A discovery conversation", copy: "By email or on a call, whichever you prefer. We dig into how you work and what would actually help." },
+  { title: "We write back", copy: "We read it properly and reply by email with questions and ideas for your business." },
   { title: "A clear proposal", copy: "Scope, price and timeline in writing, agreed before any work begins." },
 ];
 
@@ -77,7 +95,7 @@ export default function HomePage() {
     <section className={`${h.sheet} ${h.heroSheet}`} aria-labelledby="hero-heading">
       <header className={h.nav}>
         <a href="#" className={h.brand} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={30} height={30} priority />Digital Macaroni</a>
-        <nav aria-label="Studio navigation" className={h.navLinks}><a href="#agents">Voice demos</a><a href="#services">Services</a><a href="#work">Work</a><a href="#pricing">Pricing</a></nav>
+        <nav aria-label="Studio navigation" className={h.navLinks}><a href="#agents">Voice demos</a><a href="#services">Services</a><a href="#work">Work</a><a href="#pricing">Pricing</a><a href="/answers/">Answers</a></nav>
         <a className={h.navCta} href="/contact/">Let’s talk</a>
       </header>
 
@@ -141,15 +159,15 @@ export default function HomePage() {
               <ol>{exampleActions.map(([tool, did, where]) => <li key={tool}><span className={h.flowCheck}><Check size={12} /></span><div><b>{did}</b><code>{tool}</code></div><ArrowRight size={14} /><em>{where}</em></li>)}</ol>
             </div>
           </Reveal>
-          <div className={h.toolGroups}>
-            {integrations.map((g, i) => <Reveal key={g.group} delay={i * 50} className={h.toolGroup}><p>{g.group}</p><div>{g.tools.map((t) => <span key={t}>{t}</span>)}</div></Reveal>)}
-          </div>
+          <Reveal delay={80} className={h.apiBand}>
+            <span className={h.apiIcon}><Code size={20} /></span>
+            <div><b>If it has an API, we can connect to it.</b><p>In-house systems, industry software, webhooks, REST or GraphQL APIs, even a shared spreadsheet. If your system has a way in, your agent can use it.</p></div>
+            <a className={h.pillDark} href="/contact/?topic=custom-agent">Ask about your tools<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
+          </Reveal>
         </div>
-        <Reveal className={h.apiBand}>
-          <span className={h.apiIcon}><Code size={20} /></span>
-          <div><b>If it has an API, we can connect to it.</b><p>In-house systems, industry software, webhooks, REST or GraphQL APIs, even a shared spreadsheet. If your system has a way in, your agent can use it.</p></div>
-          <a className={h.pillDark} href="/contact/?topic=custom-agent">Ask about your tools<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
-        </Reveal>
+        <div className={h.toolGroups}>
+          {integrations.map((g, i) => <Reveal key={g.group} delay={(i % 3) * 50} className={h.toolGroup}><p>{g.group}</p><div>{g.tools.map((t) => <span key={t}>{t}</span>)}</div></Reveal>)}
+        </div>
         <p className={h.tmNote}>Tools shown are examples of systems with APIs we can connect to. Names are trademarks of their owners and don’t imply a partnership.</p>
       </div>
     </section>
@@ -178,11 +196,10 @@ export default function HomePage() {
       <div className={`${h.sheetInner} ${h.cta}`}>
         <Reveal className={h.ctaCopy}>
           <span className={h.ctaMark}><Image unoptimized src="/studio/macaroni.png" alt="" width={56} height={56} /></span>
-          <h2 id="studio-heading" className={h.h2}>An independent studio.<br /><span>Happy to talk it through.</span></h2>
-          <p className={h.lede}>We’re a small, independent product studio, and we build with AI agents, so the work moves quickly. Tell us what you need and we’ll start with a discovery conversation: by email or on a call, whichever suits you.</p>
+          <h2 id="studio-heading" className={h.h2}>Let’s talk it through.</h2>
+          <p className={h.lede}>Want to win more business from the calls you already get, give your customers a better experience, or free your team from the phone? Drop us a note, tell us what you need, and we’ll take it from there.</p>
           <div className={h.ctaActions}>
-            <a className={h.pillDark} href="/contact/">Start a conversation<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
-            <a className={h.pillLight} href="mailto:hello@digitalmacaroni.io">hello@digitalmacaroni.io</a>
+            <a className={h.pillDark} href="/contact/">Drop us a note<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
           </div>
         </Reveal>
         <ol className={h.steps}>
@@ -269,12 +286,37 @@ export default function HomePage() {
       </div>
     </section>
 
+    {/* Questions */}
+    <section id="questions" className={h.sheet} aria-labelledby="questions-heading">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: homeFaqs.map((f) => ({ "@type": "Question", name: f.title, acceptedAnswer: { "@type": "Answer", text: f.short } })) }).replace(/</g, "\\u003c") }} />
+      <div className={`${h.sheetInner} ${h.faqWrap}`}>
+        <Reveal className={h.faqHead}>
+          <h2 id="questions-heading" className={h.h2}>Questions,<br /><span>answered straight.</span></h2>
+          <p className={h.lede}>The things people ask before they buy. Each one links to a full answer with sources.</p>
+          <a className={h.pillLight} href="/answers/">All answers<span className={h.pillIcon} style={{ background: "rgba(15,15,13,.06)" }}><ArrowUpRight size={14} /></span></a>
+        </Reveal>
+        <div className={h.faqList}>
+          {homeFaqs.map((f) => <details key={f.slug} className={h.faqItem}>
+            <summary>{f.title}</summary>
+            <p>{f.short}</p>
+            <a href={`/answers/${f.slug}/`}>Read the full answer<ArrowUpRight size={13} /></a>
+          </details>)}
+        </div>
+      </div>
+    </section>
+
     </main>
+
+    <section className={h.askAi} aria-labelledby="ask-ai-heading">
+      <p id="ask-ai-heading"><Sparkle size={15} />Ask AI about Digital Macaroni</p>
+      <div>{askAi.map(([name, href]) => <a key={name} href={href} target="_blank" rel="noopener noreferrer">{name}<ArrowUpRight size={12} /></a>)}</div>
+    </section>
 
     <footer className={h.footer}>
       <a href="/" className={h.brand}><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} />Digital Macaroni</a>
       <nav aria-label="Site information">
-        <a href="/llm-info/"><Sparkle size={15} />Hey AI, learn about Digital Macaroni</a>
+        <a href="/answers/">Answers</a>
+        <a href="/llm-info/">For AI assistants</a>
         <a href="/privacy/">Privacy</a>
         <a href="/demo-terms/">Demo terms</a>
       </nav>

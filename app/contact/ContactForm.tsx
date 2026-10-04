@@ -48,7 +48,6 @@ function Row({ children }: { children: ReactNode }) {
 export function ContactForm() {
   const [status, setStatus] = useState<Status>(initialStatus);
   const [topic, setTopic] = useState<Topic>("");
-  const [contact, setContact] = useState<"email" | "call">("email");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -79,7 +78,6 @@ export function ContactForm() {
 
       form.reset();
       setTopic("");
-      setContact("email");
       setStatus({
         state: "success",
         message: result.message || "Thanks. Your message is on its way.",
@@ -164,18 +162,6 @@ export function ContactForm() {
         <label htmlFor="message">{message.label}</label>
         <textarea id="message" name="message" required maxLength={5000} placeholder={message.placeholder} />
       </div>
-
-      <fieldset className="field choices">
-        <legend>How should we start?</legend>
-        <div>
-          <label data-on={contact === "email" || undefined}><input type="radio" name="contact_pref" value="Email" checked={contact === "email"} onChange={() => setContact("email")} />Email me</label>
-          <label data-on={contact === "call" || undefined}><input type="radio" name="contact_pref" value="A call" checked={contact === "call"} onChange={() => setContact("call")} />Let’s have a call</label>
-        </div>
-      </fieldset>
-      {contact === "call" ? <div className="field">
-        <label htmlFor="phone">Best number to call</label>
-        <input id="phone" name="phone" type="tel" autoComplete="tel" required maxLength={40} />
-      </div> : null}
 
       <div className="honeypot" aria-hidden="true">
         <label htmlFor="website">Leave this field empty</label>
