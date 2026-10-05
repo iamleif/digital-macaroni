@@ -473,10 +473,12 @@
 .langIcon .chip { margin: 0; }
 .langCopy > p:not(.langNote) { margin: 20px 0 0; font-size: 17px; line-height: 1.6; color: #b3b0a6; max-width: 460px; }
 .langNote { margin: 14px 0 0; font-size: 13px; color: #8d8a80; }
-/* Flags floating loose on the right, each its own size and tilt, drifting slowly. */
-.flagCloud { position: relative; height: 380px; margin: 0 32px; --k: 1.2; }
-.flagCloud img { position: absolute; width: calc(var(--w) * 1px * var(--k, 1)); height: auto; aspect-ratio: 3 / 2; translate: -50% -50%; border-radius: calc(var(--w) * 0.11px * var(--k, 1)); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 14px 28px -12px rgba(0, 0, 0, 0.7); animation: drift 6s ease-in-out infinite; }
-@keyframes drift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+/* Flags in a tidy grid; the last cell says the list goes on. */
+.flagGrid { justify-self: center; display: grid; grid-template-columns: repeat(4, 84px); gap: 16px; }
+.flagGrid img, .flagMore { width: 100%; height: auto; aspect-ratio: 3 / 2; border-radius: 10px; }
+.flagGrid img { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 12px 24px -12px rgba(0, 0, 0, 0.7); transition: transform 0.4s var(--ease); }
+.flagGrid img:hover { transform: translateY(-3px); }
+.flagMore { display: grid; place-items: center; padding: 6px; text-align: center; font-size: 12.5px; line-height: 1.25; color: #b3b0a6; background: rgba(255, 255, 255, 0.05); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14); }
 .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* ---------- Pricing ---------- */
@@ -638,7 +640,7 @@
   .flow li > svg { display: none; }
   .apiBand { padding: 20px; }
   .langInner { padding-top: 56px; padding-bottom: 56px; }
-  .flagCloud { height: 280px; margin: 0 12px; --k: 0.72; }
+  .flagGrid { grid-template-columns: repeat(4, minmax(0, 72px)); gap: 12px; }
   .footer { padding: 18px 12px 24px; }
   .askAi { padding: 16px; }
 }

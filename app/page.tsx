@@ -51,16 +51,8 @@ const services = [
   },
 ];
 
-/**
- * Flags floating beside the languages copy: [code, centre x %, centre y %, width px, tilt deg].
- * SVGs in public/studio/flags (country-flag-icons, MIT). A flag stands in for a language, not a market.
- */
-const flags: [string, number, number, number, number][] = [
-  ["de", 24, 20, 60, -6], ["fr", 43, 13, 46, 5], ["jp", 60, 23, 58, -4], ["br", 81, 16, 54, 7],
-  ["es", 32, 45, 56, 6], ["us", 54, 47, 66, -3], ["in", 75, 42, 60, 5], ["gr", 88, 32, 44, -7],
-  ["kr", 19, 66, 48, -8], ["cn", 40, 70, 50, 4], ["hr", 62, 74, 58, -5], ["it", 83, 65, 48, 8],
-  ["nl", 28, 87, 42, 3], ["th", 49, 89, 40, -6], ["pl", 72, 89, 44, 6], ["se", 88, 84, 42, -4],
-];
+/** Flags beside the languages copy, in a 4×4 grid whose last cell says there are more. SVGs in public/studio/flags (country-flag-icons, MIT). A flag stands in for a language, not a market. */
+const flags = ["us", "es", "fr", "de", "it", "br", "nl", "pl", "se", "gr", "hr", "in", "cn", "jp", "kr"];
 
 /** The 32 languages on the real-time voice engine's published list. */
 const languages: [string, string][] = [
@@ -161,9 +153,9 @@ export default function HomePage() {
           <p className={h.langNote}>{languages.length} languages and more. Available languages depend on the voice chosen for your agent.</p>
           <ul className={h.srOnly}>{languages.map(([name]) => <li key={name}>{name}</li>)}</ul>
         </Reveal>
-        <Reveal delay={80} className={h.flagCloud}>
-          {flags.map(([code, x, y, w, tilt], i) => <Image key={code} unoptimized src={`/studio/flags/${code}.svg`} alt="" width={w} height={Math.round(w * 2 / 3)}
-            style={{ left: `${x}%`, top: `${y}%`, rotate: `${tilt}deg`, ["--w" as string]: w, animationDelay: `${-(i * 0.7) % 6}s` }} />)}
+        <Reveal delay={80} className={h.flagGrid}>
+          {flags.map((code) => <Image key={code} unoptimized src={`/studio/flags/${code}.svg`} alt="" width={84} height={56} />)}
+          <span className={h.flagMore}>+ many more</span>
         </Reveal>
       </div>
     </section>
