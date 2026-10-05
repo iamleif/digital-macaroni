@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   publisher: NAME,
   openGraph: { siteName: NAME, locale: "en_US", type: "website" },
   twitter: { card: "summary_large_image" },
+  // Bing Webmaster Tools ownership. Google Search Console is verified on the domain (DNS).
+  verification: { other: { "msvalidate.01": "F464D8695CB460649309E60978C4AB66" } },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

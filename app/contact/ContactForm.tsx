@@ -106,7 +106,8 @@ export function ContactForm() {
 
   return (
     <form
-      className="contact-form"
+      // rr-block: Grain's session recordings show the form as a blank box, never what people type.
+      className="contact-form rr-block"
       action="/api/contact"
       method="post"
       onSubmit={handleSubmit}

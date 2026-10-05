@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://digitalmacaroni.io";
 
   // Bump when a page's content changes; answers carry their own date.
-  const updated = "2026-10-04";
+  const updated = "2026-10-05";
 
   return [
     { url: `${base}/`, lastModified: updated, changeFrequency: "monthly", priority: 1 },
