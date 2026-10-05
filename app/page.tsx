@@ -26,7 +26,7 @@ const services = [
     icon: <Wave size={20} />,
     title: "Voice agents",
     copy: "Agents that answer the phone, understand what callers need and do the work, all in your brand’s voice.",
-    tags: ["Booking & rescheduling", "Orders & stock checks", "Lead intake & qualifying", "Reminders & follow-ups", "Messages & handoff", "After-hours cover", "32 languages"],
+    tags: ["Booking & rescheduling", "Orders & stock checks", "Lead intake & qualifying", "Reminders & follow-ups", "Messages & handoff", "After-hours cover"],
   },
   {
     id: "automations",
