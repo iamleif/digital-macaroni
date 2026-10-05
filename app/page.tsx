@@ -25,27 +25,42 @@ const services = [
     dark: true,
     icon: <Wave size={20} />,
     title: "Voice agents",
-    copy: "Agents that answer the phone, book the job and hand off the rest, all in your brand’s voice.",
-    tags: ["Booking & rescheduling", "Shop & order help", "Messages & handoff", "After-hours cover"],
+    copy: "Agents that answer the phone, understand what callers need and do the work, all in your brand’s voice.",
+    tags: ["Booking & rescheduling", "Orders & stock checks", "Lead intake & qualifying", "Reminders & follow-ups", "Messages & handoff", "After-hours cover", "32 languages"],
+  },
+  {
+    id: "automations",
+    icon: <Plug size={20} />,
+    title: "Automations & integrations",
+    copy: "Connect the tools you already run, so a conversation turns into a booking, a record, an invoice or a message to the right person.",
+    tags: ["CRM updates", "Calendars & scheduling", "Text & email follow-ups", "Slack & Teams alerts", "Invoices & payments", "APIs & webhooks"],
   },
   {
     id: "software",
     icon: <Grid size={20} />,
     title: "Business software",
     copy: "Dashboards and back-office tools shaped around how your team actually works.",
-    tags: ["Dashboards", "Internal tools", "Integrations"],
+    tags: ["Dashboards", "Internal tools", "Admin panels", "Reporting", "Scheduling & dispatch", "Customer records"],
   },
   {
     id: "apps",
     icon: <Device size={20} />,
     title: "Apps",
-    copy: "Web and mobile apps for your customers, from first prototype to the App Store.",
-    tags: ["iOS & web", "Customer portals"],
+    copy: "Web and mobile apps for your customers and your team, from first prototype to the App Store.",
+    tags: ["iOS", "Android", "Web apps", "Customer portals", "Booking apps", "Prototypes & MVPs"],
   },
 ];
 
-/** Flags for the languages section, in public/studio/flags (country-flag-icons, MIT). A flag stands in for a language, not a market. */
-const flags = ["us", "gb", "es", "mx", "fr", "de", "it", "pt", "br", "nl", "pl", "se", "no", "dk", "fi", "cz", "sk", "hu", "ro", "bg", "hr", "gr", "tr", "ua", "sa", "in", "cn", "jp", "kr", "vn", "id", "my", "ph"];
+/**
+ * Flags floating beside the languages copy: [code, centre x %, centre y %, width px, tilt deg].
+ * SVGs in public/studio/flags (country-flag-icons, MIT). A flag stands in for a language, not a market.
+ */
+const flags: [string, number, number, number, number][] = [
+  ["us", 12, 14, 76, -6], ["fr", 36, 7, 46, 5], ["jp", 58, 18, 60, -4], ["br", 84, 10, 54, 7],
+  ["es", 22, 43, 58, 6], ["de", 49, 47, 84, -3], ["in", 76, 40, 64, 5], ["gr", 95, 30, 44, -7],
+  ["it", 6, 68, 50, -8], ["cn", 33, 73, 52, 4], ["gb", 60, 77, 64, -5], ["kr", 87, 68, 50, 8],
+  ["nl", 17, 93, 44, 3], ["pl", 44, 95, 40, -6], ["vn", 73, 96, 46, 6], ["se", 96, 90, 42, -4],
+];
 
 /** The 32 languages on the real-time voice engine's published list. */
 const languages: [string, string][] = [
@@ -146,8 +161,9 @@ export default function HomePage() {
           <p className={h.langNote}>{languages.length} languages and more. Available languages depend on the voice chosen for your agent.</p>
           <ul className={h.srOnly}>{languages.map(([name]) => <li key={name}>{name}</li>)}</ul>
         </Reveal>
-        <Reveal delay={80} className={h.flagPile}>
-          {flags.map((code) => <Image key={code} unoptimized src={`/studio/flags/${code}.svg`} alt="" width={48} height={32} />)}
+        <Reveal delay={80} className={h.flagCloud}>
+          {flags.map(([code, x, y, w, tilt], i) => <Image key={code} unoptimized src={`/studio/flags/${code}.svg`} alt="" width={w} height={Math.round(w * 2 / 3)}
+            style={{ left: `${x}%`, top: `${y}%`, rotate: `${tilt}deg`, ["--w" as string]: w, animationDelay: `${-(i * 0.7) % 6}s` }} />)}
         </Reveal>
       </div>
     </section>
@@ -182,7 +198,7 @@ export default function HomePage() {
     <section id="services" className={h.sheet} aria-labelledby="services-heading">
       <div className={h.sheetInner}>
         <div className={h.sectionHead}>
-          <Reveal><h2 id="services-heading" className={h.h2}>What we <span className={h.chip} data-tone="orange"><Sparkle size={20} /></span> build<br />for your business</h2><p className={h.lede}>Three things, made properly by one team.</p></Reveal>
+          <Reveal><h2 id="services-heading" className={h.h2}>What we <span className={h.chip} data-tone="orange"><Sparkle size={20} /></span> build<br />for your business</h2><p className={h.lede}>Voice agents, automations, software and apps, made properly by one team.</p></Reveal>
         </div>
         <div className={h.serviceGrid}>
           {services.map((sv, i) => <Reveal key={sv.id} as="article" delay={i * 80} className={h.service} >

@@ -294,10 +294,10 @@
 .tmNote { margin: 18px 0 0; font-size: 12px; color: var(--faint); text-align: center; }
 
 /* ---------- Services ---------- */
-.serviceGrid { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 14px; }
+.serviceGrid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; }
 .service { min-width: 0; }
 .serviceCard {
-  height: 100%; min-height: 380px; border-radius: 26px; padding: 28px;
+  height: 100%; min-height: 250px; border-radius: 26px; padding: 28px;
   display: flex; flex-direction: column;
   background: linear-gradient(180deg, #fbfaf7, #f2f1ec);
   box-shadow: 0 0 0 1px var(--hair-2), inset 0 1px 0 #fff;
@@ -308,7 +308,7 @@
 .serviceIcon { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; background: #fff; box-shadow: 0 0 0 1px var(--hair), 0 4px 10px -6px rgba(15, 15, 13, 0.3); }
 .serviceCard[data-dark] .serviceIcon { background: var(--yellow); color: var(--ink); box-shadow: none; }
 .serviceCard h3 { font-size: 30px; font-weight: 500; letter-spacing: -0.04em; line-height: 1.1; margin: 22px 0 0; }
-.serviceCard p { margin: auto 0 18px; padding-top: 40px; font-size: 15px; line-height: 1.55; color: var(--muted); max-width: 340px; }
+.serviceCard p { margin: auto 0 18px; padding-top: 28px; font-size: 15px; line-height: 1.55; color: var(--muted); max-width: 420px; }
 .serviceCard[data-dark] p { color: #b3b0a6; }
 .serviceTags { display: flex; flex-wrap: wrap; gap: 6px; }
 .serviceTags span { font-size: 12.5px; padding: 6px 11px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px var(--hair); color: var(--ink-2); }
@@ -471,12 +471,10 @@
 .langInner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; padding-top: 72px; padding-bottom: 72px; }
 .langCopy > p:not(.kickerDark):not(.langNote) { margin: 20px 0 0; font-size: 17px; line-height: 1.6; color: #b3b0a6; max-width: 460px; }
 .langNote { margin: 14px 0 0; font-size: 13px; color: #8d8a80; }
-/* A loose pile of flags: overlapping, each a few degrees off, straightening on hover. */
-.flagPile { justify-self: center; width: 100%; max-width: 440px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 0; padding: 32px 28px 32px 38px; border-radius: 24px; background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
-.flagPile img { width: 54px; height: 36px; margin-left: -6px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 0 2px #1a1916, 0 6px 14px -6px rgba(0, 0, 0, 0.6); transform: rotate(-4deg); transition: transform 0.4s var(--ease); }
-.flagPile img:nth-child(3n + 2) { transform: rotate(3deg) translateY(2px); }
-.flagPile img:nth-child(3n) { transform: rotate(-1deg) translateY(-2px); }
-.flagPile img:hover { transform: translateY(-4px) scale(1.12); z-index: 1; position: relative; }
+/* Flags floating loose on the right, each its own size and tilt, drifting slowly. */
+.flagCloud { position: relative; height: 420px; margin: 0 32px; --k: 1.2; }
+.flagCloud img { position: absolute; width: calc(var(--w) * 1px * var(--k, 1)); height: auto; aspect-ratio: 3 / 2; translate: -50% -50%; border-radius: calc(var(--w) * 0.11px * var(--k, 1)); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 14px 28px -12px rgba(0, 0, 0, 0.7); animation: drift 6s ease-in-out infinite; }
+@keyframes drift { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
 .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* ---------- Pricing ---------- */
@@ -562,8 +560,7 @@
   .appDetail { display: none; }
   .serviceGrid { grid-template-columns: 1fr 1fr; }
   .extraList { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .service:first-child { grid-column: 1 / -1; }
-  .serviceCard { min-height: 300px; }
+  .serviceCard { min-height: 280px; }
   /* Too narrow for three: the cards become a swipeable row. */
   .agentGrid {
     grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 390px; gap: 16px;
@@ -639,8 +636,7 @@
   .flow li > svg { display: none; }
   .apiBand { padding: 20px; }
   .langInner { padding-top: 56px; padding-bottom: 56px; }
-  .flagPile { padding: 20px 12px 20px 24px; }
-  .flagPile img { width: 42px; height: 28px; margin-left: -5px; }
+  .flagCloud { height: 280px; margin: 0 12px; --k: 0.72; }
   .footer { padding: 18px 12px 24px; }
   .askAi { padding: 16px; }
 }
