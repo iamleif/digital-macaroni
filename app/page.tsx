@@ -44,6 +44,9 @@ const services = [
   },
 ];
 
+/** Flags for the languages section, in public/studio/flags (country-flag-icons, MIT). A flag stands in for a language, not a market. */
+const flags = ["us", "gb", "es", "mx", "fr", "de", "it", "pt", "br", "nl", "pl", "se", "no", "dk", "fi", "cz", "sk", "hu", "ro", "bg", "hr", "gr", "tr", "ua", "sa", "in", "cn", "jp", "kr", "vn", "id", "my", "ph"];
+
 /** The 32 languages on the real-time voice engine's published list. */
 const languages: [string, string][] = [
   ["English", ""], ["Spanish", "Español"], ["French", "Français"], ["German", "Deutsch"], ["Italian", "Italiano"], ["Portuguese", "Português"], ["Dutch", "Nederlands"], ["Polish", "Polski"],
@@ -135,20 +138,17 @@ export default function HomePage() {
 
     {/* Languages */}
     <section id="languages" className={`${h.sheet} ${h.darkSheet} ${h.langSheet}`} aria-labelledby="languages-heading">
-      <div className={h.sheetInner}>
-        <div className={h.langHead}>
-          <Reveal>
-            <p className={h.kickerDark}>Languages</p>
-            <h2 id="languages-heading" className={h.h2}>Speaks your customers’ <span className={h.chip} data-tone="yellow"><Globe size={22} /></span> language.</h2>
-          </Reveal>
-          <Reveal delay={80} className={h.langAside}>
-            <p>Your agent can speak many languages, so callers can talk in the one they’re most comfortable with, from the first question to the booking.</p>
-          </Reveal>
-        </div>
-        <Reveal className={h.langGrid}>
-          {languages.map(([name, native]) => <div key={name} className={h.lang}><b>{name}</b><span>{native || "\u00a0"}</span></div>)}
+      <div className={`${h.sheetInner} ${h.langInner}`}>
+        <Reveal className={h.langCopy}>
+          <p className={h.kickerDark}>Languages</p>
+          <h2 id="languages-heading" className={h.h2}>Speaks your customers’ <span className={h.chip} data-tone="yellow"><Globe size={22} /></span> language.</h2>
+          <p>Your agent can speak many languages, so callers can talk in the one they’re most comfortable with, from the first question to the booking.</p>
+          <p className={h.langNote}>{languages.length} languages and more. Available languages depend on the voice chosen for your agent.</p>
+          <ul className={h.srOnly}>{languages.map(([name]) => <li key={name}>{name}</li>)}</ul>
         </Reveal>
-        <p className={h.langNote}>And many more. Available languages depend on the voice chosen for your agent.</p>
+        <Reveal delay={80} className={h.flagPile}>
+          {flags.map((code) => <Image key={code} unoptimized src={`/studio/flags/${code}.svg`} alt="" width={48} height={32} />)}
+        </Reveal>
       </div>
     </section>
 
