@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import type { ReactNode } from "react";
+import { CookieBanner } from "@/components/studio/consent";
 import { DESCRIPTION, FOUNDER, JsonLd, NAME, SITE, siteGraph } from "@/components/studio/site";
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
         {children}
         <JsonLd data={siteGraph} />
+        <CookieBanner />
       </body>
     </html>
   );

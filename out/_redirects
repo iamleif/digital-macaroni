@@ -1,0 +1,3 @@
+# The AI fact sheet is plain text now; the old page URL points to it.
+/llm-info /llm-info.txt 301
+/llm-info/ /llm-info.txt 301

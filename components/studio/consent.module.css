@@ -1,0 +1,23 @@
+.card {
+  position: fixed; left: 16px; bottom: 16px; z-index: 60;
+  width: min(340px, calc(100vw - 32px));
+  padding: 16px 16px 14px; border-radius: 18px;
+  background: #fff; color: #0f0f0d;
+  box-shadow: 0 0 0 1px rgba(15, 15, 13, 0.08), 0 18px 40px -16px rgba(15, 15, 13, 0.35);
+  font-family: var(--font-geist-sans), system-ui, sans-serif; font-size: 13.5px; line-height: 1.5;
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.card p { margin: 0 0 12px; color: #3b3a36; }
+.card a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.actions { display: flex; justify-content: flex-end; gap: 8px; }
+.actions button { min-width: 92px; padding: 8px 14px; border: 0; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
+.actions button:hover { opacity: 0.85; }
+.no { background: #f1f0ec; color: #0f0f0d; }
+.yes { background: #0f0f0d; color: #fff; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+
+/* Footer "Cookie settings": looks like the links next to it. */
+.link { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; transition: color 0.3s; }
+.link:hover { color: #0f0f0d; }
+
+@media (prefers-reduced-motion: reduce) { .card { animation: none; } }

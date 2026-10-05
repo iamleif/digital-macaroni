@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useState, type ReactNode } from "react";
+import { FormEvent, useEffect, useRef, useState, type ReactNode } from "react";
+import { track } from "@/components/studio/consent";
 
 type Status = {
   state: "idle" | "sending" | "success" | "error";
@@ -48,8 +49,11 @@ function Row({ children }: { children: ReactNode }) {
 export function ContactForm() {
   const [status, setStatus] = useState<Status>(initialStatus);
   const [topic, setTopic] = useState<Topic>("");
+  // When the form appeared; the server drops anything sent faster than a person could type.
+  const shownAt = useRef(0);
 
   useEffect(() => {
+    shownAt.current = Date.now();
     const params = new URLSearchParams(window.location.search);
     const asked = params.get("topic");
     if (asked && TOPICS.some(([v]) => v === asked)) setTopic(asked as Topic);
@@ -65,9 +69,11 @@ export function ContactForm() {
     setStatus({ state: "sending", message: "Sending…" });
 
     try {
+      const body = new FormData(form);
+      body.set("elapsed", String(Date.now() - shownAt.current));
       const response = await fetch(form.action, {
         method: "POST",
-        body: new FormData(form),
+        body,
         headers: { Accept: "application/json" },
       });
       const result = (await response.json()) as { message?: string };
@@ -76,6 +82,8 @@ export function ContactForm() {
         throw new Error(result.message || "We couldn’t send your message. Please try again.");
       }
 
+      // Only the topic is sent; never the visitor's name, email or message.
+      track("contact_form_sent", { topic: topic || "unspecified" });
       form.reset();
       setTopic("");
       setStatus({

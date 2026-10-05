@@ -83,6 +83,16 @@ export default {
       return json("Thanks. Your message is on its way.");
     }
 
+    // The page reports how long the form was open. Direct posts have no time at all;
+    // anything under three seconds was filled by a script.
+    const elapsed = Number(form.get("elapsed"));
+    if (!Number.isFinite(elapsed) || elapsed <= 0) {
+      return json("Please reload the page and try again.", 400);
+    }
+    if (elapsed < 3000) {
+      return json("Thanks. Your message is on its way.");
+    }
+
     if (!name || name.length > 100) {
       return json("Please enter your name.", 400);
     }

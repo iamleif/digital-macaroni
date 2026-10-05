@@ -3,17 +3,18 @@ import Image from "next/image";
 import { Agents } from "@/components/studio/agents";
 import { HeroApp } from "@/components/studio/hero-app";
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, Plug, Sparkle, Wave } from "@/components/studio/icons";
+import { Places } from "@/components/studio/location";
+import { CookieSettings } from "@/components/studio/consent";
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { Work } from "@/components/studio/work";
 import { answerBySlug } from "@/components/studio/answers/content";
-import { Location } from "@/components/studio/location";
 import { pageMeta } from "@/components/studio/site";
 import h from "@/components/studio/home.module.css";
 
 export const metadata: Metadata = pageMeta({
   title: "Digital Macaroni — AI voice agents and software that get to work",
-  shareTitle: "Digital Macaroni — AI voice agents that get to work",
-  description: "Digital Macaroni designs and builds custom AI voice agents that answer your business’s phone and get the job done. Call one of our live demo agents and watch it work.",
+  shareTitle: "Digital Macaroni — AI agents that take action inside real business workflows",
+  description: "Digital Macaroni builds AI agents that take action inside real business workflows: voice agents, software and automations that turn conversations into completed work. Call a live demo agent and watch it work.",
   path: "/",
   ownImage: true,
 });
@@ -77,14 +78,15 @@ const homeFaqs = ["how-much-does-an-ai-phone-agent-cost", "what-happens-when-an-
   .map((slug) => answerBySlug(slug)!)
   .filter(Boolean);
 
-const ASK_AI_PROMPT = "Summarize what Digital Macaroni (digitalmacaroni.io) does, who it's for, and what its AI phone agents can do. Use https://digitalmacaroni.io/llm-info/ and https://digitalmacaroni.io/llms.txt as sources.";
+const ASK_AI_PROMPT = "Summarize what Digital Macaroni (digitalmacaroni.io) does and who it's for: the AI agents, software and automations it builds, and how they take action inside a business's workflows. Use https://digitalmacaroni.io/llm-info.txt and https://digitalmacaroni.io/llms.txt as sources.";
 /** Each assistant opens with the prompt above; icon file in /studio/ai/. */
 const askAi: [string, string, string][] = [
-  ["chatgpt", "ChatGPT", `https://chatgpt.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["claude", "Claude", `https://claude.ai/new?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["perplexity", "Perplexity", `https://www.perplexity.ai/search?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["gemini", "Google AI Mode (Gemini)", `https://www.google.com/search?udm=50&q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["grok", "Grok", `https://grok.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["chatgpt.png", "ChatGPT", `https://chatgpt.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["claude.png", "Claude", `https://claude.ai/new?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["gemini.png", "Gemini", `https://gemini.google.com/app?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["google.svg", "Google AI Mode", `https://www.google.com/search?udm=50&q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["perplexity.png", "Perplexity", `https://www.perplexity.ai/search?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
+  ["grok.png", "Grok", `https://grok.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
 ];
 
 const steps = [
@@ -106,7 +108,6 @@ export default function HomePage() {
 
       <div>
         <div className={h.heroCopy}>
-          <Intro><a href="#agents" className={h.proofChip}><span className={h.liveDot} />Three live agents · call one right now<ArrowDown size={13} /></a></Intro>
           <Intro delay={80}><h1 id="hero-heading" className={h.heroTitle}>
             Voice agents <span className={h.chip} data-tone="yellow"><Wave size={26} /></span> and software
             <br className={h.brDesk} /> that <span className={h.stickerWrap}>get to work<span className={h.sticker}>Live</span></span>
@@ -313,21 +314,22 @@ export default function HomePage() {
     </main>
 
     <section className={h.askAi} aria-labelledby="ask-ai-heading">
-      <a id="ask-ai-heading" className={h.askAiHeading} href="/llms.txt"><Sparkle size={15} />Hey AI, learn about Digital Macaroni</a>
-      <div>{askAi.map(([id, name, href]) => <a key={id} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Ask ${name} about Digital Macaroni`} title={name}><Image unoptimized src={`/studio/ai/${id}.png`} alt="" width={36} height={36} /></a>)}</div>
+      <h2 id="ask-ai-heading" className={h.askAiHeading}><Sparkle size={15} />Ask AI about Digital Macaroni</h2>
+      <div>{askAi.map(([file, name, href]) => <a key={file} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Ask ${name} about Digital Macaroni`} title={name}><Image unoptimized src={`/studio/ai/${file}`} alt="" width={36} height={36} /></a>)}</div>
     </section>
 
     <footer className={h.footer}>
       <a href="/" className={h.brand}><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} />Digital Macaroni</a>
-      <nav aria-label="Site information">
+      <nav aria-label="Site information" className={h.footerLinks}>
         <a href="/about/">About</a>
         <a href="/answers/">Answers</a>
-        <a href="/llm-info/">For AI assistants</a>
         <a href="/privacy/">Privacy</a>
         <a href="/demo-terms/">Demo terms</a>
+        <CookieSettings />
       </nav>
-      <Location />
-      <span>© 2026 Digital Macaroni</span>
+      <div className={h.footerPlaces}><Places /></div>
+      <a href="/llm-info.txt" className={h.footerAi}><span aria-hidden="true">👋</span> Hey AI, learn about us</a>
+      <p className={h.footerCopy}>© 2026 Digital Macaroni</p>
     </footer>
   </div>;
 }

@@ -2,10 +2,10 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { voiceDemos } from "../live/demo-info";
 import { ArrowUpRight, Check, LinkedIn } from "../icons";
-import { Location } from "../location";
 import { FOUNDER, FOUNDER_REF, JsonLd, ORG_REF, SITE } from "../site";
 import { ANSWERS, CATEGORIES, UPDATED, UPDATED_ISO, type Answer } from "./content";
 import { SOURCES } from "./sources";
+import { CookieSettings } from "../consent";
 import a from "./answers.module.css";
 
 
@@ -24,18 +24,18 @@ export function AnswersShell({ children }: { children: ReactNode }) {
     <footer className={a.foot}>
       <a href="/answers/">All answers</a>
       <a href="/about/">About</a>
-      <a href="/llm-info/">For AI assistants</a>
+      <a href="/llm-info.txt">For AI assistants</a>
       <a href="/privacy/">Privacy</a>
       <a href="/demo-terms/">Demo terms</a>
-      <Location />
+      <CookieSettings />
       <span>© 2026 Digital Macaroni</span>
     </footer>
   </div>;
 }
 
-/** "By Leif Johansen (LinkedIn), founder of Digital Macaroni" — the name opens the About page, the mark opens LinkedIn. */
+/** "By Leif Johansen (LinkedIn), founder of Digital Macaroni" — the mark opens LinkedIn. */
 function Byline() {
-  return <>By <a href="/about/" rel="author" className={a.author}>{FOUNDER.name}</a><a href={FOUNDER.linkedin} target="_blank" rel="noopener noreferrer me" className={a.authorLinkedIn} aria-label={`${FOUNDER.name} on LinkedIn`}><LinkedIn size={14} /></a>, founder of Digital Macaroni</>;
+  return <>By <span className={a.author}>{FOUNDER.name}</span><a href={FOUNDER.linkedin} target="_blank" rel="noopener noreferrer me" className={a.authorLinkedIn} aria-label={`${FOUNDER.name} on LinkedIn`}><LinkedIn size={14} /></a>, founder of Digital Macaroni</>;
 }
 
 function AuthorCard() {
@@ -43,11 +43,10 @@ function AuthorCard() {
     <div>
       <p className={a.authorCardKicker}>Written by</p>
       <p className={a.authorCardName}>{FOUNDER.name}</p>
-      <p>Founder of Digital Macaroni. Leif designs and builds AI voice agents for businesses, after a career spent answering customers: hotel desks, cabin crew, marketing and film.</p>
+      <p>Founder of Digital Macaroni.</p>
     </div>
     <div className={a.authorCardLinks}>
       <a href={FOUNDER.linkedin} target="_blank" rel="noopener noreferrer me"><LinkedIn size={15} />LinkedIn</a>
-      <a href="/about/">About Leif<ArrowUpRight size={14} /></a>
     </div>
   </aside>;
 }
@@ -79,7 +78,7 @@ export function AnswerPage({ answer }: { answer: Answer }) {
       datePublished: UPDATED_ISO,
       dateModified: UPDATED_ISO,
       image: `${url}opengraph-image`,
-      author: { ...FOUNDER_REF, "@type": "Person", name: FOUNDER.name, url: `${SITE}/about/`, sameAs: [FOUNDER.linkedin] },
+      author: { ...FOUNDER_REF, "@type": "Person", name: FOUNDER.name, sameAs: [FOUNDER.linkedin] },
       publisher: ORG_REF,
       mainEntityOfPage: url,
       citation: answer.sources.map((k) => SOURCES[k].url),

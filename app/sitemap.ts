@@ -21,8 +21,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/contact/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
     { url: `${base}/answers/`, lastModified: UPDATED_ISO, changeFrequency: "monthly", priority: 0.8 },
     ...ANSWERS.map((x) => ({ url: `${base}/answers/${x.slug}/`, lastModified: UPDATED_ISO, changeFrequency: "monthly" as const, priority: 0.7 })),
-    { url: `${base}/llm-info/`, lastModified: updated, changeFrequency: "monthly", priority: 0.4 },
     { url: `${base}/privacy/`, lastModified: updated, changeFrequency: "yearly", priority: 0.2 },
+    { url: `${base}/cookies/`, lastModified: updated, changeFrequency: "yearly", priority: 0.2 },
     { url: `${base}/demo-terms/`, lastModified: updated, changeFrequency: "yearly", priority: 0.2 },
   ];
 }

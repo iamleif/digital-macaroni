@@ -9,10 +9,10 @@ import type { DemoEvent, DemoId, DemoView, FormFieldView, NorthlineView, TravelV
 import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
 import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
-import { Location } from "../location";
 import { ArrowUpRight, Check, Phone } from "../icons";
 import { FormFieldOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
+import { CookieSettings, track } from "../consent";
 import { VoiceBars } from "./voice-bars";
 import d from "./demo.module.css";
 
@@ -41,12 +41,12 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     watcher.current?.stop();
     const w = new CallWatcher(demo.id, receive, (status, code) => {
       // A new call: clear the last call's results before its events arrive.
-      if (status === "linked") { reset(); voice.clear(); }
+      if (status === "linked") { reset(); voice.clear(); track("demo_call_started", { agent: demo.agentName, demo: demo.id }); }
       setWatch((prev) => ({ status, code: code ?? prev.code }));
     });
     watcher.current = w;
     void w.start();
-  }, [demo.id, receive, reset, voice]);
+  }, [demo.id, demo.agentName, receive, reset, voice]);
   /** "Call again" / "Get a new code": clear the last call's results, then ask for a fresh code. */
   function newCode() { reset(); voice.clear(); setWatch({ status: "requesting" }); startWatcher(); }
 
@@ -120,8 +120,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
 
     <footer className={d.foot}>
       <span>{demo.name} is a fictional business. Nothing is really booked, sold or charged.</span>
-      <a href="/privacy/">Privacy</a><a href="/demo-terms/">Demo terms</a>
-      <Location />
+      <a href="/privacy/">Privacy</a><a href="/demo-terms/">Demo terms</a><CookieSettings />
     </footer>
   </div>;
 }

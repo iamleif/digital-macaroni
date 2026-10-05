@@ -76,11 +76,13 @@ export async function ogCard({ kicker, title, sub, agent, chip, footer }: {
           {agent ? <CallCard agent={agent} /> : null}
         </div>
 
-        {/* Footer */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 21, color: MUTED }}>
-          <div style={{ display: "flex", width: 10, height: 10, borderRadius: 10, background: "#22a06b" }} />
-          <span>{footer ?? "Three live AI voice agents · call one from any phone"}</span>
-        </div>
+        {/* Footer: only when the page has a line of its own; the empty row keeps the body centred. */}
+        {footer ? (
+          <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 21, color: MUTED }}>
+            <div style={{ display: "flex", width: 10, height: 10, borderRadius: 10, background: "#22a06b" }} />
+            <span>{footer}</span>
+          </div>
+        ) : <div style={{ display: "flex", height: 26 }} />}
       </div>
     </div>,
     {

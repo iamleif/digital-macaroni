@@ -1,13 +1,32 @@
-import { LOCATION } from "./site";
+/** Twelve stars on a circle a third of the flag's height, as on the flag of Europe. */
+const EU_STARS = Array.from({ length: 12 }, (_, i) => {
+  const a = (i * Math.PI) / 6;
+  return [13.5 + 6 * Math.sin(a), 9 - 6 * Math.cos(a)].map((n) => Math.round(n * 100) / 100);
+});
 
-/** Footer sign-off: where the studio is, with a small Norwegian flag. */
-export function Location() {
-  return <span style={{ display: "inline-flex", alignItems: "center", gap: 7 }}>
-    <svg width={18} height={13} viewBox="0 0 22 16" role="img" aria-label="Flag of Norway" style={{ borderRadius: 2, boxShadow: "0 0 0 1px rgba(15, 15, 13, 0.08)", flex: "none" }}>
-      <rect width="22" height="16" fill="#ba0c2f" />
-      <path d="M6 0h4v16H6zM0 6h22v4H0z" fill="#fff" />
-      <path d="M7 0h2v16H7zM0 7h22v2H0z" fill="#00205b" />
+/** A five-pointed star centred on x, y. */
+function star(x: number, y: number, r = 1) {
+  const pts = Array.from({ length: 10 }, (_, i) => {
+    const a = (i * Math.PI) / 5, d = i % 2 ? r * 0.4 : r;
+    return `${(x + d * Math.sin(a)).toFixed(2)},${(y - d * Math.cos(a)).toFixed(2)}`;
+  });
+  return `M${pts.join("L")}Z`;
+}
+
+const flag = { borderRadius: 2, boxShadow: "0 0 0 1px rgba(15, 15, 13, 0.08)", flex: "none" } as const;
+
+/** Footer line under the logo: where the studio works, with small flags. */
+export function Places() {
+  return <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+    <svg width={19} height={13} viewBox="0 0 19 13" role="img" aria-label="Flag of the United States" style={flag}>
+      <rect width="19" height="13" fill="#fff" />
+      {[0, 2, 4, 6, 8, 10, 12].map((i) => <rect key={i} y={i} width="19" height="1" fill="#b31942" />)}
+      <rect width="7.6" height="7" fill="#0a3161" />
     </svg>
-    {LOCATION.city}, {LOCATION.country}
+    <svg width={19} height={13} viewBox="0 0 27 18" role="img" aria-label="Flag of Europe" style={flag}>
+      <rect width="27" height="18" fill="#003399" />
+      {EU_STARS.map(([x, y]) => <path key={`${x},${y}`} d={star(x, y)} fill="#ffcc00" />)}
+    </svg>
+    <span style={{ marginLeft: 2 }}>Working across the US and Europe</span>
   </span>;
 }

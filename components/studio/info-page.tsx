@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { ArrowUpRight, Sparkle } from "./icons";
-import { Location } from "./location";
+import { CookieSettings } from "./consent";
 import i from "./info.module.css";
 
 /** Plain reading pages (privacy, demo terms, information for AI) in the studio's style. */
@@ -19,10 +19,10 @@ export function InfoPage({ title, intro, updated, children }: { title: string; i
     </main>
     <footer className={i.foot}>
       <a href="/about/">About</a>
-      <a href="/llm-info/"><Sparkle size={14} />Hey AI, learn about Digital Macaroni</a>
+      <a href="/llm-info.txt"><Sparkle size={14} />Hey AI, learn about Digital Macaroni</a>
       <a href="/privacy/">Privacy</a>
       <a href="/demo-terms/">Demo terms</a>
-      <Location />
+      <CookieSettings />
       <span>© 2026 Digital Macaroni</span>
     </footer>
   </div>;

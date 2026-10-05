@@ -3,11 +3,9 @@ import type { Metadata } from "next";
 /** One place for who we are: page metadata and the structured data on every page read from here. */
 export const SITE = "https://digitalmacaroni.io";
 export const NAME = "Digital Macaroni";
-export const EMAIL = "hello@digitalmacaroni.io";
-export const TAGLINE = "AI voice agents that answer the phone and get the job done.";
+export const TAGLINE = "AI agents that take action inside real business workflows.";
 export const DESCRIPTION =
-  "Digital Macaroni designs and builds custom AI voice agents for businesses: agents that answer the phone, talk like a person and handle the work that comes with the call.";
-export const LOCATION = { city: "Oslo", country: "Norway", countryCode: "NO" };
+  "Digital Macaroni builds AI agents that take action inside real business workflows: voice agents, software and automations that turn conversations into completed work.";
 export const COMPANY_LINKEDIN = "https://www.linkedin.com/company/digitalmacaroni/";
 export const FOUNDER = {
   name: "Leif Johansen",
@@ -34,7 +32,7 @@ export function pageMeta({ title, description, path, shareTitle, type = "website
 }): Metadata {
   const share = shareTitle ?? title;
   // A page's own card when it has one, otherwise the site-wide card.
-  const images = [{ url: ownImage ? `${path}opengraph-image` : "/opengraph-image", width: 1200, height: 630, alt: ownImage ? share : `${NAME}: AI voice agents that get to work`, type: "image/png" }];
+  const images = [{ url: ownImage ? `${path}opengraph-image` : "/opengraph-image", width: 1200, height: 630, alt: ownImage ? share : `${NAME}: AI agents that take action inside real business workflows`, type: "image/png" }];
   return {
     title: { absolute: title },
     description,
@@ -67,13 +65,11 @@ export const siteGraph = {
       image: `${SITE}/opengraph-image`,
       description: DESCRIPTION,
       slogan: TAGLINE,
-      email: EMAIL,
       foundingDate: "2024-06",
       founder: FOUNDER_REF,
-      address: { "@type": "PostalAddress", addressLocality: LOCATION.city, addressCountry: LOCATION.countryCode },
       sameAs: [COMPANY_LINKEDIN],
-      contactPoint: { "@type": "ContactPoint", contactType: "sales", email: EMAIL, url: `${SITE}/contact/`, availableLanguage: "English" },
-      knowsAbout: ["AI voice agents", "AI phone agents", "Conversational AI", "Voice user interface design", "Telephony", "Business software"],
+      contactPoint: { "@type": "ContactPoint", contactType: "sales", url: `${SITE}/contact/`, availableLanguage: "English" },
+      knowsAbout: ["AI agents", "AI voice agents", "Workflow automation", "System integrations", "Business software", "Conversational AI"],
       makesOffer: [
         {
           "@type": "Offer",
@@ -94,7 +90,7 @@ export const siteGraph = {
         },
       ],
       owns: [
-        { "@type": "Product", name: "RankLadder", url: "https://rankladder.app", description: "An AI receptionist and front office for local service businesses." },
+        { "@type": "Product", name: "RankLadder", url: "https://rankladder.app", description: "Customer conversations and front-office tools for local businesses." },
         { "@type": "Product", name: "Hey Anders", url: "https://heyanders.com", description: "An AI assistant and workspace for appointment-based practices." },
         { "@type": "Product", name: "TwoTop", url: "https://twotop.app", description: "Hospitality scheduling, communication and team operations." },
       ],
@@ -104,10 +100,8 @@ export const siteGraph = {
       "@id": FOUNDER_ID,
       name: FOUNDER.name,
       jobTitle: FOUNDER.role,
-      url: `${SITE}/about/`,
       worksFor: ORG_REF,
       sameAs: [FOUNDER.linkedin],
-      knowsAbout: ["AI voice agents", "Customer experience", "Product marketing", "Film production"],
     },
     {
       "@type": "WebSite",
