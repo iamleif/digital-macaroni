@@ -57,12 +57,9 @@ const services = [
  */
 const flags: [string, number, number, number, number][] = [
   ["de", 18, 14, 60, -6], ["fr", 41, 6, 46, 5], ["jp", 63, 18, 58, -4], ["br", 89, 10, 54, 7],
-  ["es", 27, 44, 56, 6], ["us", 55, 47, 66, -3], ["in", 81, 40, 60, 5], ["gr", 101, 29, 44, -7],
-  ["kr", 11, 69, 48, -8], ["cn", 38, 74, 50, 4], ["hr", 65, 78, 58, -5], ["it", 92, 68, 48, 8],
-  ["nl", 22, 94, 42, 3], ["th", 49, 96, 40, -6], ["pl", 77, 97, 44, 6], ["se", 103, 89, 42, -4],
-  // Smaller ones, drifting out past the right edge.
-  ["cz", 74, 2, 32, -6], ["ph", 37, 28, 30, -5], ["pt", 113, 15, 36, 6], ["fi", 126, 36, 30, -3],
-  ["no", 119, 55, 34, -5], ["hu", 129, 72, 32, 5], ["dk", 112, 78, 30, 7], ["id", 120, 100, 30, -4],
+  ["es", 27, 44, 56, 6], ["us", 55, 47, 66, -3], ["in", 81, 40, 60, 5], ["gr", 97, 29, 44, -7],
+  ["kr", 11, 69, 48, -8], ["cn", 38, 74, 50, 4], ["hr", 65, 78, 58, -5], ["it", 91, 68, 48, 8],
+  ["nl", 22, 94, 42, 3], ["th", 49, 96, 40, -6], ["pl", 77, 97, 44, 6], ["se", 97, 90, 42, -4],
 ];
 
 /** The 32 languages on the real-time voice engine's published list. */
@@ -158,8 +155,8 @@ export default function HomePage() {
     <section id="languages" className={`${h.sheet} ${h.darkSheet} ${h.langSheet}`} aria-labelledby="languages-heading">
       <div className={`${h.sheetInner} ${h.langInner}`}>
         <Reveal className={h.langCopy}>
-          <p className={h.kickerDark}>Languages</p>
-          <h2 id="languages-heading" className={h.h2}>Speaks your customers’ <span className={h.chip} data-tone="yellow"><Globe size={22} /></span> language.</h2>
+          <div className={h.langIcon}><span className={h.chip} data-tone="yellow"><Globe size={22} /></span></div>
+          <h2 id="languages-heading" className={h.h2}>Speaks your customers’ language.</h2>
           <p>Your agent can speak many languages, so callers can talk in the one they’re most comfortable with, from the first question to the booking.</p>
           <p className={h.langNote}>{languages.length} languages and more. Available languages depend on the voice chosen for your agent.</p>
           <ul className={h.srOnly}>{languages.map(([name]) => <li key={name}>{name}</li>)}</ul>
