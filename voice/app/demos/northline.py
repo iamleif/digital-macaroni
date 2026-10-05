@@ -222,7 +222,9 @@ def instruction(state: NorthlineState, ctx: OpContext) -> str:
 
 Behind the scenes, and not something to mention unless asked: this line is a demonstration. Bookings and messages are sample records, and no technician will actually visit or call. If a caller asks directly whether you are a real person, answer honestly and briefly that you are Northline's AI assistant. If they ask directly whether this is a real business or a real booking, say briefly that this is a demo line and nothing will actually be scheduled, then carry on helping.
 
-Northline is based in Seattle, Washington, and serves Seattle and the cities around it.
+Northline: Seattle, WA. Serves Seattle, West Seattle, North Seattle, Bellevue, Kirkland, Redmond, Renton, Burien and SeaTac.
+Phone: (206) 887-9619
+Open for visits Monday–Saturday, arrival windows 8 AM–6 PM Pacific. Closed Sunday: never check availability for a Sunday. If the caller wants today or the soonest visit and today is Sunday, check Monday.
 
 Today is {today} ({state.today}), Pacific Time. Use this to resolve "today", "tomorrow" and weekdays.
 
@@ -251,7 +253,7 @@ Booking, in this order: the service and what they've noticed, as above; when sui
 Keeping the request card current: note_request_details is instant and its result needs no comment. Call it at most once per caller turn, with everything new from that turn, then say what you were going to say. Record the service only once it is settled, and the issue in the caller's words, never a category. When they choose a time, record it as proposedSlotId.
 
 Other things you can do, always through your tools:
-- Answer questions about services, fees, hours and area with get_business_info. Never invent prices, policies or services.
+- Answer questions about services, fees and policies with get_business_info. Never invent prices, policies or services.
 - Change or cancel a booking made in this call: check_availability for the new time, then reschedule_appointment or cancel_appointment once the caller has confirmed. If they have already clearly said yes to a specific new time, that is the confirmation; don't ask again. A change moves the same appointment; never book a second one.
 - Take a message for a callback with take_message when they prefer a call back, nothing suitable is available, or you cannot help. Ask for a name. On a phone call, use get_caller_number and ask whether the number they are calling from (say only its last four digits) is the best one to reach them; otherwise ask for a number, and suggest the sample number 555-0142 if they would rather not give theirs.
 
@@ -270,7 +272,8 @@ def get_business_info(state: NorthlineState, _: Any, ctx: OpContext) -> OpResult
         {
             "services": [{"service": s["id"], "name": s["name"], "callOutFee": f"${s['fee']}" if s["fee"] else "Free", "covers": s["about"]} for s in SERVICES],
             "hours": "Visits Monday to Saturday, arrival windows from 8 AM to 6 PM Pacific Time. Closed Sunday.",
-            "area": "Seattle, Washington, and nearby: Shoreline, Bellevue, Kirkland, Redmond, Renton and Burien.",
+            "area": "Seattle, Washington: Seattle, West Seattle, North Seattle, Bellevue, Kirkland, Redmond, Renton, Burien and SeaTac.",
+            "phone": "(206) 887-9619",
             "policies": [
                 "The call-out fee covers the visit and diagnosis; repair work is quoted on site before anything is done.",
                 "Customers can change or cancel a visit free of charge.",
@@ -341,6 +344,10 @@ def check_availability(state: NorthlineState, i: CheckAvailability, ctx: OpConte
             break
     offered = alternatives[:3]
     state.offered = list(dict.fromkeys(state.offered + offered))
+    # The board moves to the first day being offered, so what lights up matches what the caller hears.
+    if offered:
+        first = offered[0][:10]
+        state.viewing = {"date": first, "slots": [s for s in open_slots(state, first, skill) if in_part(s)], "skill": skill}
     return ok(
         f"Nothing on {date_label(i.date)} · next openings found" if offered else "Nothing available this week",
         {"date": i.date, "day": date_label(i.date), "available": [], "reason": "closed_sunday" if weekday(i.date) == 0 else "fully_booked", "nextAvailable": [describe_slot(s) for s in offered]},
