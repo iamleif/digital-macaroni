@@ -2,8 +2,9 @@ import type { ReactNode } from "react";
 import { voiceDemos } from "./live/demo-info";
 import type { DemoId } from "./live/types";
 import { FormFieldPreview, NorthlinePreview, WaypointPreview } from "./agent-previews";
+import { architecturePath } from "./agent-pages/content";
 import { BrandLockup } from "./brand-marks";
-import { ArrowUpRight, Phone, Wave } from "./icons";
+import { ArrowRight, ArrowUpRight, Phone, Wave } from "./icons";
 import { Reveal } from "./reveal";
 import h from "./home.module.css";
 
@@ -62,6 +63,7 @@ function AgentCard({ id, index }: { id: DemoId; index: number }) {
       </dl>
     </div>
     </a>
+    <a className={h.agentMore} href={architecturePath(id)}>How it’s built<ArrowRight size={14} /></a>
   </Reveal>;
 }
 

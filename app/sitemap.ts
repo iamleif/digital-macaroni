@@ -17,6 +17,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
+    { url: `${base}/architecture/`, lastModified: "2026-10-05", changeFrequency: "monthly", priority: 0.8 },
+    ...["speech-to-speech", "managed-voice-platform", "stt-llm-tts-cascade"].map((slug) => ({
+      url: `${base}/architecture/${slug}/`,
+      lastModified: "2026-10-05",
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     { url: `${base}/about/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
     { url: `${base}/contact/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
     { url: `${base}/answers/`, lastModified: UPDATED_ISO, changeFrequency: "monthly", priority: 0.8 },

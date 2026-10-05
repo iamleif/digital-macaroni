@@ -25,6 +25,14 @@ Straight answers about AI agents for businesses, with sources: https://digitalma
 - [Will callers know they're talking to an AI?](https://digitalmacaroni.io/answers/will-callers-know-they-are-talking-to-an-ai/)
 - [Can I keep my business phone number?](https://digitalmacaroni.io/answers/can-i-keep-my-business-phone-number/)
 
+## Voice agent architecture
+
+How AI voice agents are built, with a live demo of each architecture: https://digitalmacaroni.io/architecture/
+
+- [Speech-to-speech (single bidirectional model)](https://digitalmacaroni.io/architecture/speech-to-speech/): one model hears, reasons, calls tools and speaks in one live stream. Demo: Northline, on Google Gemini 3.8 Live.
+- [Managed voice platform](https://digitalmacaroni.io/architecture/managed-voice-platform/): a voice platform runs the conversation while tools and data stay on our server. Demo: Form & Field, on ElevenLabs Agents.
+- [Cascade: speech-to-text, LLM, text-to-speech](https://digitalmacaroni.io/architecture/stt-llm-tts-cascade/): separate models hear, think and speak, with our own turn-taking. Demo: Waypoint Travel, on AssemblyAI and Google Gemini.
+
 ## Example projects
 
 - [Northline](https://digitalmacaroni.io/demo/northline/): example voice agent for a fictional home-services business.

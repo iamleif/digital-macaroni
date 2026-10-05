@@ -23,6 +23,7 @@ export function AnswersShell({ children }: { children: ReactNode }) {
     <main id="content" className={a.sheet}>{children}</main>
     <footer className={a.foot}>
       <a href="/answers/">All answers</a>
+      <a href="/architecture/">Architecture</a>
       <a href="/about/">About</a>
       <a href="/llm-info.txt">For AI assistants</a>
       <a href="/privacy/">Privacy</a>
