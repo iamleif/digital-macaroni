@@ -10,6 +10,11 @@ type Status = {
 
 const initialStatus: Status = { state: "idle", message: "" };
 
+/** The bio link a visitor arrived through (?utm_source=tiktok…), read from the address only: nothing is stored on the device. */
+function bioSource(): string {
+  return new URLSearchParams(window.location.search).get("utm_source")?.trim().slice(0, 40) ?? "";
+}
+
 const TOPICS = [
   ["ready-made", "A ready-made voice agent"],
   ["custom-agent", "A custom voice agent"],
@@ -49,11 +54,15 @@ function Row({ children }: { children: ReactNode }) {
 export function ContactForm() {
   const [status, setStatus] = useState<Status>(initialStatus);
   const [topic, setTopic] = useState<Topic>("");
+  const [source, setSource] = useState("");
+  const [landing, setLanding] = useState("");
   // When the form appeared; the server drops anything sent faster than a person could type.
   const shownAt = useRef(0);
 
   useEffect(() => {
     shownAt.current = Date.now();
+    setSource(bioSource());
+    setLanding(window.location.pathname);
     const params = new URLSearchParams(window.location.search);
     const asked = params.get("topic");
     if (asked && TOPICS.some(([v]) => v === asked)) setTopic(asked as Topic);
@@ -171,6 +180,9 @@ export function ContactForm() {
         <label htmlFor="message">{message.label}</label>
         <textarea id="message" name="message" required maxLength={5000} placeholder={message.placeholder} />
       </div>
+
+      <input type="hidden" name="source" value={source} />
+      <input type="hidden" name="landing" value={landing} />
 
       <div className="honeypot" aria-hidden="true">
         <label htmlFor="website">Leave this field empty</label>

@@ -27,6 +27,9 @@ const DETAILS = [
   ["build", "What to build"],
   ["timeline", "Timeline"],
   ["budget", "Budget"],
+  // Where the visitor came from: the bio link's utm_source, and the page the form was sent from.
+  ["source", "Came from"],
+  ["landing", "Sent from page"],
 ];
 
 function json(message, status = 200) {
