@@ -59,9 +59,16 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    const source = SHORT_LINKS[url.pathname.replace(/\/+$/, "").toLowerCase()];
+    const path = url.pathname.replace(/\/+$/, "").toLowerCase();
+    const source = SHORT_LINKS[path];
     if (source) {
       return Response.redirect(`${url.origin}/try/?utm_source=${source}&utm_medium=social`, 302);
+    }
+    // Per-episode YouTube links: /yt1, /yt2… also tag which video sent the visitor.
+    const episode = path.match(/^\/yt(\d{1,3})$/);
+    if (episode) {
+      const ep = "ep" + episode[1].padStart(2, "0");
+      return Response.redirect(`${url.origin}/try/?utm_source=youtube&utm_medium=video&utm_campaign=${ep}`, 302);
     }
 
     if (url.pathname !== "/api/contact") {
