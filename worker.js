@@ -46,9 +46,23 @@ function cleanHeader(value) {
   return value.replace(/[\r\n]+/g, " ").trim();
 }
 
+// Short bio links: digitalmacaroni.io/yt etc. land on /try/ with the platform tagged for analytics.
+const SHORT_LINKS = {
+  "/yt": "youtube",
+  "/tt": "tiktok",
+  "/ig": "instagram",
+  "/fb": "facebook",
+  "/li": "linkedin",
+};
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    const source = SHORT_LINKS[url.pathname.replace(/\/+$/, "").toLowerCase()];
+    if (source) {
+      return Response.redirect(`${url.origin}/try/?utm_source=${source}&utm_medium=social`, 302);
+    }
 
     if (url.pathname !== "/api/contact") {
       return new Response("Not found", { status: 404 });
