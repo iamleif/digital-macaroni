@@ -22,7 +22,7 @@ import websockets
 BASE = os.environ.get("DEMO_URL", "http://localhost:8080")
 ORIGIN = "http://127.0.0.1:3790"
 LINES = {
-    "northline": ["Hi, can someone come and fix a leaking pipe under my kitchen sink on Monday morning?", "It's Jamie Fox, at 12 Orchard Road.", "The earliest one, please.", "Yes, book it.", "That's all, thanks. Goodbye."],
+    "northline": ["Hi, my furnace is running but the house won't warm up. Can someone come on Monday morning?", "It's Jamie Fox, at 12 Orchard Road, Seattle.", "The earliest one, please.", "Yes, book it.", "That's all, thanks. Goodbye."],
     "travel": [
         "Hi, I'd like to fly from London to New York on November twentieth, one way, just me.",
         "Economy is fine. I care most about the price, and a morning flight if possible.",

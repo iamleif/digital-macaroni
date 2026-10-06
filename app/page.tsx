@@ -6,7 +6,6 @@ import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, 
 import { Places } from "@/components/studio/location";
 import { CookieSettings } from "@/components/studio/consent";
 import { Intro, Reveal } from "@/components/studio/reveal";
-import { Work } from "@/components/studio/work";
 import { answerBySlug } from "@/components/studio/answers/content";
 import { pageMeta } from "@/components/studio/site";
 import h from "@/components/studio/home.module.css";
@@ -112,7 +111,7 @@ export default function HomePage() {
     <section className={`${h.sheet} ${h.heroSheet}`} aria-labelledby="hero-heading">
       <header className={h.nav}>
         <a href="#" className={h.brand} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={30} height={30} priority />Digital Macaroni</a>
-        <nav aria-label="Studio navigation" className={h.navLinks}><a href="#agents">Voice demos</a><a href="#services">Services</a><a href="#work">Work</a><a href="#pricing">Pricing</a><a href="/answers/">Answers</a></nav>
+        <nav aria-label="Studio navigation" className={h.navLinks}><a href="#agents">Voice demos</a><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="/answers/">Answers</a></nav>
         <a className={h.navCta} href="/contact/">Let’s talk</a>
       </header>
 
@@ -125,7 +124,7 @@ export default function HomePage() {
           <Intro delay={160}><p className={h.heroSub}>We design and build custom AI voice agents, dashboards and apps, made to look, sound and run like your business.</p></Intro>
           <Intro delay={240} className={h.heroActions}>
             <a className={h.pillDark} href="#agents">Try a live demo<span className={h.pillIcon}><ArrowDown size={14} /></span></a>
-            <a className={h.pillLight} href="#work">See our work</a>
+            <a className={h.pillLight} href="#pricing">See pricing</a>
           </Intro>
         </div>
         <Intro delay={360}><HeroApp /></Intro>
@@ -222,16 +221,6 @@ export default function HomePage() {
             <div><b>{st.title}</b><p>{st.copy}</p></div>
           </Reveal>)}
         </ol>
-      </div>
-    </section>
-
-    {/* Work */}
-    <section id="work" className={h.sheet} aria-labelledby="work-heading">
-      <div className={h.sheetInner}>
-        <div className={h.sectionHead}>
-          <Reveal><h2 id="work-heading" className={h.h2}>Things we’ve <span className={h.chip} data-tone="blue"><Check size={22} /></span> made</h2><p className={h.lede}>Three products of our own. The same care goes into what we build for you.</p></Reveal>
-        </div>
-        <Reveal><Work /></Reveal>
       </div>
     </section>
 

@@ -94,7 +94,7 @@ class TestNorthline:
         slots = slots_for(run, "cooling_tune_up")
         assert run("book_appointment", {"slotId": slots[0], "service": "cooling_tune_up", "name": "Alex", "address": "48 Birch Lane", "issue": "AC tune-up", "callerConfirmed": True}).ok
         info = res(run("get_business_info"))
-        assert next(s for s in info["services"] if s["service"] == "replacement_estimate")["callOutFee"] == "Free"
+        assert next(s for s in info["services"] if s["service"] == "replacement_estimate")["price"] == "Free"
 
     def test_keeps_a_category_off_the_request_card_and_says_so(self):
         state, run = runner(northline)
@@ -111,7 +111,7 @@ class TestNorthline:
     def test_offers_next_openings_when_a_day_has_none_and_says_sunday_is_closed(self):
         state, run = runner(northline)
         sunday = next(d for d in (add_days(state.today, i) for i in range(7)) if weekday(d) == 0)
-        r = run("check_availability", {"service": "plumbing_repair", "date": sunday})
+        r = run("check_availability", {"service": "cooling_repair", "date": sunday})
         assert r.ok and res(r)["available"] == [] and res(r)["reason"] == "closed_sunday" and res(r)["nextAvailable"]
 
     def test_takes_a_message_once(self):
@@ -123,9 +123,9 @@ class TestNorthline:
 
     def test_shows_openings_only_for_technicians_who_do_that_work(self):
         state, run = runner(northline)
-        run("check_availability", {"service": "plumbing_repair", "date": "2026-10-03"})
+        run("check_availability", {"service": "heating_repair", "date": "2026-10-03"})
         view = northline.view(state)
-        assert view["open"] and all(o["techId"] != "maya" for o in view["open"])
+        assert view["open"] and all(o["techId"] != "sam" for o in view["open"])
 
     def test_shows_other_customers_jobs_without_their_details(self):
         state, _ = runner(northline)

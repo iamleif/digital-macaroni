@@ -18,10 +18,10 @@ export const northlineSample: NorthlineView = {
   windows,
   schedule: [
     { techId: "maya", hour: 8, kind: "existing", title: "Heating repair" },
-    { techId: "sam", hour: 10, kind: "existing", title: "Plumbing repair" },
+    { techId: "sam", hour: 10, kind: "existing", title: "Cooling repair" },
     { techId: "jordan", hour: 12, kind: "existing", title: "Seasonal tune-up" },
     { techId: "maya", hour: 12, kind: "existing", title: "Heating repair" },
-    { techId: "sam", hour: 12, kind: "existing", title: "Water heater service" },
+    { techId: "sam", hour: 12, kind: "existing", title: "AC tune-up" },
     { techId: "maya", hour: 14, kind: "demo", title: "Heating repair", appointmentId: "NL-345", name: "Alex Taylor", address: "48 Birch Lane, Seattle" },
     { techId: "jordan", hour: 16, kind: "existing", title: "Cooling repair" },
   ],

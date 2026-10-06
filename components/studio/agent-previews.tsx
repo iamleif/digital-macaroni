@@ -10,9 +10,9 @@ import h from "./home.module.css";
 const hours = ["10a", "12p", "2p", "4p", "6p"];
 const techs = [
   { name: "Maya", initials: "M", tone: "a", jobs: [{ start: 1, title: "Heat pump", who: "R. Patel" }, { start: 3, title: "Furnace", who: "Chloe Bennett", isNew: true }] },
-  { name: "Sam", initials: "S", tone: "b", jobs: [{ start: 2, title: "Plumbing", who: "M. Tran" }, { start: 4, title: "Water heater", who: "D. Ruiz" }] },
+  { name: "Sam", initials: "S", tone: "b", jobs: [{ start: 2, title: "AC repair", who: "M. Tran" }, { start: 4, title: "Heat pump", who: "D. Ruiz" }] },
   { name: "Jordan", initials: "J", tone: "c", jobs: [{ start: 1, title: "Tune-up", who: "P. Oduya" }, { start: 4, title: "Cooling repair", who: "J. Whitfield" }] },
-  { name: "Priya", initials: "P", tone: "d", jobs: [{ start: 1, title: "Drain clearing", who: "K. Moss" }] },
+  { name: "Priya", initials: "P", tone: "d", jobs: [{ start: 1, title: "Thermostat", who: "K. Moss" }] },
 ];
 
 export function NorthlinePreview() {

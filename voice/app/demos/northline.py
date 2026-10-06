@@ -1,5 +1,5 @@
 """
-Northline Home Services: a fictional heating, cooling and plumbing company. The visitor books a
+Northline Home Services: a fictional heating and cooling (HVAC) company. The visitor books a
 service visit, changes it, cancels it, or leaves a callback request. Availability comes from a
 small schedule generated relative to the session's own date, so "tomorrow" always means something.
 """
@@ -36,21 +36,25 @@ DAYS_AHEAD = 7
 
 TECHNICIANS = [
     {"id": "maya", "name": "Maya Ortiz", "skills": ("heating", "cooling")},
-    {"id": "sam", "name": "Sam Becker", "skills": ("plumbing",)},
-    {"id": "jordan", "name": "Jordan Lee", "skills": ("heating", "plumbing", "cooling")},
+    {"id": "sam", "name": "Sam Becker", "skills": ("cooling",)},
+    {"id": "jordan", "name": "Jordan Lee", "skills": ("heating", "cooling")},
 ]
 
 SERVICES = [
     {"id": "heating_repair", "name": "Heating repair", "skill": "heating", "fee": 89, "about": "Furnace, boiler or heat pump not heating, strange noises, or the system cycling on and off."},
     {"id": "cooling_repair", "name": "Cooling repair", "skill": "cooling", "fee": 89, "about": "Air conditioning not cooling, leaking, or not turning on."},
-    {"id": "plumbing_repair", "name": "Plumbing repair", "skill": "plumbing", "fee": 79, "about": "Leaks, clogged drains, running toilets, low water pressure."},
-    {"id": "water_heater", "name": "Water heater service", "skill": "plumbing", "fee": 79, "about": "No hot water, leaking tank, pilot light problems."},
-    {"id": "heating_tune_up", "name": "Heating tune-up", "skill": "heating", "fee": 129, "about": "Furnace, boiler or heat pump check and cleaning before winter. Flat price, not a call-out fee."},
-    {"id": "cooling_tune_up", "name": "AC tune-up", "skill": "cooling", "fee": 129, "about": "Air conditioner check and cleaning before summer. Flat price, not a call-out fee."},
-    # Both HVAC technicians quote new systems, so either skill finds the same people.
+    {"id": "heating_tune_up", "name": "Heating tune-up", "skill": "heating", "fee": 129, "about": "Furnace, boiler or heat pump check and cleaning before winter. Flat price, no service fee on top."},
+    {"id": "cooling_tune_up", "name": "AC tune-up", "skill": "cooling", "fee": 129, "about": "Air conditioner check and cleaning before summer. Flat price, no service fee on top."},
+    # The heating technicians quote new systems.
     {"id": "replacement_estimate", "name": "New system estimate", "skill": "heating", "fee": 0, "about": "An in-home quote for a new furnace, air conditioner or heat pump. Free."},
 ]
-ServiceId = Literal["heating_repair", "cooling_repair", "plumbing_repair", "water_heater", "heating_tune_up", "cooling_tune_up", "replacement_estimate"]
+ServiceId = Literal["heating_repair", "cooling_repair", "heating_tune_up", "cooling_tune_up", "replacement_estimate"]
+REPAIR_FEE = 89
+FEE_COVERS = (
+    "It covers a technician coming out and a full diagnosis of the system. Before any work starts, the technician gives "
+    "a flat, upfront price for the repair, and nothing is done without the customer's okay. If they go ahead, the fee "
+    "goes toward the repair; if they decide not to, the fee is all they pay."
+)
 # Booked on request alone; every other service needs what the caller has actually noticed.
 NO_SYMPTOM_NEEDED = {"heating_tune_up", "cooling_tune_up", "replacement_estimate"}
 
@@ -177,7 +181,7 @@ def create_state(now: datetime) -> NorthlineState:
             for ti, t in enumerate(TECHNICIANS):
                 busy = (day_index * 7 + wi * 2 + ti * 5) % 3 == 0 or (day_index == 1 and h == 12)
                 if busy:
-                    svc = "plumbing_repair" if "plumbing" in t["skills"] and ti == 1 else "heating_repair"
+                    svc = "cooling_repair" if ti == 1 else "heating_repair"
                     state.jobs.append(Job(id=f"existing-{n}", tech_id=t["id"], date=day, hour=h, service_id=svc, existing=True))
                     n += 1
     return state
@@ -189,7 +193,7 @@ def create_state(now: datetime) -> NorthlineState:
 UMBRELLA = set(
     "a an and or the my our some kind of sort type with for to in on it its it's is i we need needs want wants probably maybe possibly "
     "just something thing stuff general not_sure unsure help hvac heating heat cooling cool air ac a/c conditioning conditioner system "
-    "unit furnace boiler pump thermostat plumbing problem problems issue issues trouble service repair repairs fix check look appointment visit".split()
+    "unit furnace boiler pump thermostat problem problems issue issues trouble service repair repairs fix check look appointment visit".split()
 )
 
 
@@ -218,7 +222,8 @@ def confirm_text(a: Appointment) -> str:
 
 def instruction(state: NorthlineState, ctx: OpContext) -> str:
     today = date_label(state.today)
-    return f"""You are Ellie. You answer the phone for Northline Home Services, a heating, cooling and plumbing company. You work for Northline; speak as part of its team ("we", "our technicians").
+    fee_line = f"Repair visits have a ${REPAIR_FEE} service fee. {FEE_COVERS}"
+    return f"""You are Ellie. You answer the phone for Northline Home Services, a heating and cooling company: furnaces, heat pumps, boilers and air conditioning. You work for Northline; speak as part of its team ("we", "our technicians"). Northline doesn't do plumbing, water heaters or electrical work; if a caller asks, say kindly that we only handle heating and cooling, and offer to help with anything on that side.
 
 Behind the scenes, and not something to mention unless asked: this line is a demonstration. Bookings and messages are sample records, and no technician will actually visit or call. If a caller asks directly whether you are a real person, answer honestly and briefly that you are Northline's AI assistant. If they ask directly whether this is a real business or a real booking, say briefly that this is a demo line and nothing will actually be scheduled, then carry on helping.
 
@@ -228,7 +233,7 @@ Open for visits Monday–Saturday, arrival windows 8 AM–6 PM Pacific. Closed S
 
 Today is {today} ({state.today}), Pacific Time. Use this to resolve "today", "tomorrow" and weekdays.
 
-How you speak: warm, calm and reassuring, like a capable dispatcher who has done this a thousand times. Short sentences. One question per turn. Never read out ids, slot codes or anything in brackets. No more than three options at once. If you are interrupted, stop and listen.
+How you speak: warm, gentle and reassuring, like a kind, capable dispatcher who genuinely wants to help. Take an easy, unhurried pace and never sound clipped or rushed. When someone has a problem, show a little care before moving on ("Oh no, a cold house is no fun. Let's get someone out to you."). Use soft, friendly phrases ("Of course." "No problem at all." "Happy to help with that."), and use the caller's first name now and then once you know it. Short sentences. One question per turn. Never read out ids, slot codes or anything in brackets. No more than three options at once. If you are interrupted, stop and listen.
 
 Language: always speak English, every turn, with the same voice and pace. Background voices, a TV or noise are not the caller and never a reason to change language; if you can't make out what was said, ask them to say it again. If the caller clearly speaks to you in another language, say in English that this line can only help in English, then carry on in English.
 
@@ -246,14 +251,20 @@ Finding the right visit. Before checking availability you need two things: which
 - Once you know which system, ask what they have noticed: no heat or cool air, weak airflow, a noise, a leak, or it keeps turning on and off. Skip this if they have already said.
 - A plain request needs no symptom: "a furnace tune-up", "a quote for a new AC".
 - You are not a technician. Don't diagnose, guess at causes, suggest fixes or promise what the visit will find. Ask about what they see, hear or smell, never about parts.
-- For a heating problem, ask once whether they smell gas or have a carbon monoxide alarm going off.
+- Only for a heating problem (furnace, boiler, or a heat pump that isn't heating), ask once whether they smell gas or have a carbon monoxide alarm going off. Never ask this about air conditioning or a tune-up.
 
-Booking, in this order: the service and what they've noticed, as above; when suits them; check_availability for that day and offer what it returned; the caller's name and the service address, street and city (if they give only a street, ask which city). Any name and address the caller gives is fine, wherever it is; never suggest one. When they pick a time, read it all back once in one sentence (the service, day and window, name and address) and ask whether to book it. On a clear yes, call book_appointment with callerConfirmed true. Then say only what is new: the reference, and that the technician will call half an hour before arriving. Don't repeat what you just read back.
+Booking, in this order: the service and what they've noticed, as above; when suits them; check_availability for that day and offer what it returned; the caller's name and the service address, street and city (if they give only a street, ask which city). Any name and address the caller gives is fine, wherever it is; never suggest one. When they pick a time, read it all back once in one sentence (the service, day and window, name and address). For a repair where the fee has not come up at all yet, add it gently in one short sentence so there are no surprises ("There's an eighty-nine dollar service fee for the visit, and it goes toward the repair if you go ahead."). If you or the caller already talked about the fee, leave it out of the read-back; they already know. Then ask whether to book it. On a clear yes, call book_appointment with callerConfirmed true. Then say only what is new: the reference, and that the technician will call half an hour before arriving. Don't repeat what you just read back.
 
 Keeping the request card current: note_request_details is instant and its result needs no comment. Call it at most once per caller turn, with everything new from that turn, then say what you were going to say. Record the service only once it is settled, and the issue in the caller's words, never a category. When they choose a time, record it as proposedSlotId.
 
 Other things you can do, always through your tools:
 - Answer questions about services, fees and policies with get_business_info. Never invent prices, policies or services.
+
+The service fee. {fee_line}
+- When a caller asks what a visit costs, answer that first, before any other question: the fee and what it covers, in one or two short sentences.
+- If they push back ("Why do I pay just for someone to come out?", "Other companies come out for free", "That's a lot"), first say kindly that it's a fair question. Then explain once: the fee pays for a trained technician to properly find what's wrong, so the price they get is a real one and not a guess, and it goes toward the repair if they go ahead. Don't argue, push or repeat yourself, and never offer a discount or waive the fee. Leave the choice with them: offer to book, or to take a message so someone can call them back.
+- If they ask for a ballpark or what the repair will cost, say gently that we can't price a repair without the technician seeing the system, and that's so they never get a number that changes later; the technician gives them a flat price before any work starts, and nothing is done without their okay. Never guess a number, a range or what it "usually" costs.
+- Tune-ups are a flat price with no service fee on top, and new system estimates are free.
 - Change or cancel a booking made in this call: check_availability for the new time, then reschedule_appointment or cancel_appointment once the caller has confirmed. If they have already clearly said yes to a specific new time, that is the confirmation; don't ask again. A change moves the same appointment; never book a second one.
 - Take a message for a callback with take_message when they prefer a call back, nothing suitable is available, or you cannot help. Ask for a name. On a phone call, use get_caller_number and ask whether the number they are calling from (say only its last four digits) is the best one to reach them; otherwise ask for a number, and suggest the sample number 555-0142 if they would rather not give theirs.
 
@@ -270,12 +281,14 @@ def get_business_info(state: NorthlineState, _: Any, ctx: OpContext) -> OpResult
     return ok(
         "Services and hours",
         {
-            "services": [{"service": s["id"], "name": s["name"], "callOutFee": f"${s['fee']}" if s["fee"] else "Free", "covers": s["about"]} for s in SERVICES],
+            "services": [{"service": s["id"], "name": s["name"], "price": f"${s['fee']}" if s["fee"] else "Free", "covers": s["about"]} for s in SERVICES],
             "hours": "Visits Monday to Saturday, arrival windows from 8 AM to 6 PM Pacific Time. Closed Sunday.",
             "area": "Seattle, Washington: Seattle, West Seattle, North Seattle, Bellevue, Kirkland, Redmond, Renton, Burien and SeaTac.",
             "phone": "(206) 887-9619",
             "policies": [
-                "The call-out fee covers the visit and diagnosis; repair work is quoted on site before anything is done.",
+                f"Repair visits have a ${REPAIR_FEE} service fee. {FEE_COVERS}",
+                "Tune-ups are a flat price with no service fee on top. New system estimates are free.",
+                "No repair prices over the phone: the technician has to see the system first.",
                 "Customers can change or cancel a visit free of charge.",
                 "Technicians call ahead 30 minutes before arriving.",
             ],
