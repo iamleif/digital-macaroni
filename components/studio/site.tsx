@@ -7,6 +7,7 @@ export const TAGLINE = "AI agents that take action inside real business workflow
 export const DESCRIPTION =
   "Digital Macaroni builds AI agents that take action inside real business workflows: voice agents, software and automations that turn conversations into completed work.";
 export const COMPANY_LINKEDIN = "https://www.linkedin.com/company/digitalmacaroni/";
+export const COMPANY_YOUTUBE = "https://www.youtube.com/@DigitalMacaroni";
 export const FOUNDER = {
   name: "Leif Johansen",
   role: "Founder",
@@ -67,7 +68,7 @@ export const siteGraph = {
       slogan: TAGLINE,
       foundingDate: "2024-06",
       founder: FOUNDER_REF,
-      sameAs: [COMPANY_LINKEDIN],
+      sameAs: [COMPANY_LINKEDIN, COMPANY_YOUTUBE],
       contactPoint: { "@type": "ContactPoint", contactType: "sales", url: `${SITE}/contact/`, availableLanguage: "English" },
       knowsAbout: ["AI agents", "AI voice agents", "Workflow automation", "System integrations", "Business software", "Conversational AI"],
       makesOffer: [

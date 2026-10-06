@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Agents } from "@/components/studio/agents";
 import { HeroApp } from "@/components/studio/hero-app";
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, Plug, Sparkle, Wave } from "@/components/studio/icons";
+import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, LinkedIn, Plug, Sparkle, Wave, YouTube } from "@/components/studio/icons";
 import { Places } from "@/components/studio/location";
 import { CookieSettings } from "@/components/studio/consent";
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { answerBySlug } from "@/components/studio/answers/content";
-import { pageMeta } from "@/components/studio/site";
+import { COMPANY_LINKEDIN, COMPANY_YOUTUBE, pageMeta } from "@/components/studio/site";
 import h from "@/components/studio/home.module.css";
 
 export const metadata: Metadata = pageMeta({
@@ -311,8 +311,14 @@ export default function HomePage() {
     </main>
 
     <section className={h.askAi} aria-labelledby="ask-ai-heading">
-      <h2 id="ask-ai-heading" className={h.askAiHeading}><Sparkle size={15} />Ask AI about Digital Macaroni</h2>
-      <div>{askAi.map(([file, name, href]) => <a key={file} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Ask ${name} about Digital Macaroni`} title={name}><Image unoptimized src={`/studio/ai/${file}`} alt="" width={36} height={36} /></a>)}</div>
+      <nav aria-label="Digital Macaroni on social media" className={h.socials}>
+        <a href={COMPANY_YOUTUBE} target="_blank" rel="noopener noreferrer"><YouTube size={17} />YouTube</a>
+        <a href={COMPANY_LINKEDIN} target="_blank" rel="noopener noreferrer"><LinkedIn size={15} />LinkedIn</a>
+      </nav>
+      <div className={h.askAiGroup}>
+        <h2 id="ask-ai-heading" className={h.askAiHeading}><Sparkle size={15} />Ask AI about Digital Macaroni</h2>
+        <div className={h.askAiIcons}>{askAi.map(([file, name, href]) => <a key={file} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Ask ${name} about Digital Macaroni`} title={name}><Image unoptimized src={`/studio/ai/${file}`} alt="" width={36} height={36} /></a>)}</div>
+      </div>
     </section>
 
     <footer className={h.footer}>
