@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const updated = "2026-10-05";
 
   return [
-    { url: `${base}/`, lastModified: updated, changeFrequency: "monthly", priority: 1 },
+    { url: `${base}/`, lastModified: "2026-10-07", changeFrequency: "monthly", priority: 1 },
     ...["northline", "formfield", "travel"].map((demo) => ({
       url: `${base}/demo/${demo}/`,
       lastModified: updated,
