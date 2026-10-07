@@ -18,7 +18,7 @@ const CALC_UPDATED_ISO = "2026-10-07";
 export const metadata: Metadata = pageMeta({
   title: "Missed Call Calculator: What Missed Calls Cost Your Business",
   shareTitle: "Missed call calculator: what are missed calls costing you?",
-  description: "Free missed call calculator for HVAC, plumbing, roofing and other service businesses. Enter your missed calls and average job value to see the revenue you lose each month and year.",
+  description: "Free missed call calculator for home services, law firms, clinics, salons and more. Enter your missed calls and what a booking is worth to see the revenue you lose each month and year.",
   path: PATH,
   ownImage: true,
 });
@@ -29,7 +29,7 @@ const perCall = AI_MINUTES_PER_CALL * AI_RATE_PER_MINUTE;
 
 const Cite = ({ k, children }: { k: SourceKey; children: ReactNode }) => <a href={SOURCES[k].url} target="_blank" rel="noopener noreferrer">{children}</a>;
 
-const SHORT = `Multiply your missed calls by the share who would have booked, then by your average job value. ${DEFAULT_MISSED} missed calls × 1 in 4 × $350 = ${money(example.monthly)} a month, or ${money(example.monthly * 12)} a year.`;
+const SHORT = `Multiply your missed calls by the share who would have booked, then by what one booking is worth to you. ${DEFAULT_MISSED} missed calls × 1 in 4 × $350 = ${money(example.monthly)} a month, or ${money(example.monthly * 12)} a year.`;
 
 const FAQS = [
   { q: "How do you calculate the cost of missed calls?", a: SHORT },
@@ -39,8 +39,8 @@ const FAQS = [
   { q: "How much does it cost to answer every call with AI?", a: `An AI phone agent costs roughly ${Math.round(AI_RATE_PER_MINUTE * 100)} cents a minute all-in, so a ${AI_MINUTES_PER_CALL}-minute call costs about ${Math.round(perCall * 100)} cents. Digital Macaroni's Hosted plan is $${HOSTED_PLAN.price} a month with ${HOSTED_PLAN.minutes} minutes included.` },
 ];
 
-const SOURCE_KEYS: SourceKey[] = ["servicetitanBooking", "callrailConsumers", "callrailBenchmark", "quoCallbacks", "haHvac", "haPlumber", "haElectrician", "haRoof", "haGarage", "haPest", "partstech"];
-const TRADE_SOURCE: Record<string, SourceKey> = { hvac: "haHvac", plumbing: "haPlumber", electrical: "haElectrician", roofing: "haRoof", garage: "haGarage", pest: "haPest", auto: "partstech" };
+const SOURCE_KEYS: SourceKey[] = ["servicetitanBooking", "callrailConsumers", "callrailBenchmark", "quoCallbacks", "haHvac", "haPlumber", "haElectrician", "haRoof", "haGarage", "haPest", "haCleaning", "haLawn", "partstech", "clioRates", "natpFees", "naicAuto", "agentCommission", "pearlDental", "chiroFees", "forbesPT", "vetVisits", "aspsBotox", "fashSalon", "mmipMassage"];
+const TRADE_SOURCE: Record<string, SourceKey> = { hvac: "haHvac", plumbing: "haPlumber", electrical: "haElectrician", roofing: "haRoof", garage: "haGarage", pest: "haPest", cleaning: "haCleaning", lawn: "haLawn", auto: "partstech", law: "clioRates", accounting: "natpFees", insurance: "agentCommission", dental: "pearlDental", chiro: "chiroFees", pt: "forbesPT", vet: "vetVisits", medspa: "aspsBotox", salon: "fashSalon", massage: "mmipMassage" };
 const RELATED = ["how-much-does-an-ai-phone-agent-cost", "ai-phone-agent-for-home-services", "ai-phone-agent-for-roofing-companies"];
 
 export default function MissedCallCalculatorPage() {
@@ -82,7 +82,7 @@ export default function MissedCallCalculatorPage() {
     <div className={c.tool}>
       <nav className={a.crumbs} aria-label="Breadcrumb"><a href="/answers/">Answers</a><span aria-hidden="true">/</span><span>Free tools</span></nav>
       <h1 className={c.title}>Missed call calculator</h1>
-      <p className={c.lede}>See what unanswered calls cost your business each month. Pick your trade, enter your missed calls, and the answer updates as you go.</p>
+      <p className={c.lede}>See what unanswered calls cost your business each month. Pick your kind of business, enter your missed calls, and the answer updates as you go.</p>
       <MissedCallCalculator />
     </div>
 
@@ -96,17 +96,17 @@ export default function MissedCallCalculatorPage() {
 
       <div className={a.prose}>
         <h2>How the math works</h2>
-        <p><strong>Missed calls × share who would have booked × average job value = revenue lost per month.</strong> Multiply by 12 for the year.</p>
+        <p><strong>Missed calls × share who would have booked × what one booking is worth = revenue lost per month.</strong> Multiply by 12 for the year.</p>
         <p>That&rsquo;s all the calculator does. It leaves out repeat customers, referrals and the lifetime value of a new customer, so your real loss is usually higher than the number it shows.</p>
-        <p>Here&rsquo;s what {DEFAULT_MISSED} missed calls a month looks like by trade, at 1 in 4:</p>
+        <p>Here&rsquo;s what {DEFAULT_MISSED} missed calls a month looks like by kind of business, at 1 in 4:</p>
         <table>
-          <thead><tr><th>Trade</th><th>Typical job</th><th>Lost per month</th><th>Lost per year</th></tr></thead>
+          <thead><tr><th>Business</th><th>Typical booking</th><th>Lost per month</th><th>Lost per year</th></tr></thead>
           <tbody>{TRADES.filter((t) => t.ticket).map((t) => {
             const r = lostRevenue({ missed: DEFAULT_MISSED, ticket: t.ticket, rate: DEFAULT_RATE });
             return <tr key={t.id}><td>{t.label}</td><td><Cite k={TRADE_SOURCE[t.id]}>{money(t.ticket)}</Cite></td><td>{money(r.monthly)}</td><td>{money(r.monthly * 12)}</td></tr>;
           })}</tbody>
         </table>
-        <p>Typical job values are national averages from <Cite k="haHvac">HomeAdvisor</Cite> and, for auto repair, <Cite k="partstech">PartsTech&rsquo;s 2025 shop survey</Cite>. Your own average is better: use it if you know it.</p>
+        <p>Each typical value links to its source, listed at the bottom of the page. They&rsquo;re national figures for one booking only: a law firm&rsquo;s figure assumes a small matter, an insurance agency&rsquo;s is first-year commission, and a dental or physical therapy figure is the first visit. Repeat visits and renewals would add more. Your own number is better: use it if you know it.</p>
 
         <h2>Why 1 in 4</h2>
         <p>Not every caller is a job. Some want a quote, some are out of your area, some are spam. <Cite k="servicetitanBooking">ServiceTitan&rsquo;s data from more than 3,000 trade businesses</Cite> found the typical shop books 42% of its calls, and shops with fewer than five technicians book 24%. We default to 1 in 4 so the estimate stays careful. If your team books more than that, pick 1 in 3 or 1 in 2.</p>

@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight, Phone } from "../icons";
 import { track } from "../consent";
-import { AI_MINUTES_PER_CALL, AI_RATE_PER_MINUTE, BOOKING_RATES, DEFAULT_MISSED, DEFAULT_RATE, HOSTED_PLAN, TRADES, lostRevenue } from "./math";
+import { AI_MINUTES_PER_CALL, AI_RATE_PER_MINUTE, BOOKING_RATES, DEFAULT_MISSED, GROUPS, DEFAULT_RATE, HOSTED_PLAN, TRADES, type Group, lostRevenue } from "./math";
 import c from "./calculator.module.css";
 
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
@@ -15,7 +15,10 @@ export function MissedCallCalculator() {
   const [missed, setMissed] = useState(DEFAULT_MISSED);
   const [ticket, setTicket] = useState(TRADES[0].ticket);
   const [rate, setRate] = useState(DEFAULT_RATE);
+  const [custom, setCustom] = useState(false);
   const used = useRef(false);
+  const current = TRADES.find((t) => t.id === trade)!;
+  const group = { ...GROUPS[current.group], ...(current.value ? { value: current.value } : {}), ...(current.hint ? { hint: current.hint } : {}) };
 
   const touched = () => {
     if (used.current) return;
@@ -26,7 +29,7 @@ export function MissedCallCalculator() {
   const pickTrade = (id: string) => {
     const t = TRADES.find((x) => x.id === id)!;
     setTrade(id);
-    if (t.ticket) setTicket(t.ticket);
+    if (t.ticket) { setTicket(t.ticket); setCustom(false); }
     touched();
   };
 
@@ -39,12 +42,16 @@ export function MissedCallCalculator() {
     <h2 id="calc-heading" className={c.visuallyHidden}>Calculate what missed calls cost you</h2>
 
     <div className={c.inputs}>
-      <fieldset className={c.field}>
-        <legend><span className={c.step}>1</span>Your kind of business</legend>
-        <div className={c.chips}>
-          {TRADES.map((t) => <button key={t.id} type="button" className={c.chip} aria-pressed={trade === t.id} onClick={() => pickTrade(t.id)}>{t.label}</button>)}
+      <div className={c.field}>
+        <label htmlFor="business"><span className={c.step}>1</span>Your kind of business</label>
+        <div className={c.select}>
+          <select id="business" value={trade} onChange={(e) => pickTrade(e.target.value)}>
+            {(Object.keys(GROUPS) as Group[]).map((g) => <optgroup key={g} label={GROUPS[g].label}>
+              {TRADES.filter((t) => t.group === g).map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
+            </optgroup>)}
+          </select>
         </div>
-      </fieldset>
+      </div>
 
       <div className={c.field}>
         <label htmlFor="missed"><span className={c.step}>2</span>Missed calls last month</label>
@@ -58,17 +65,17 @@ export function MissedCallCalculator() {
       </div>
 
       <div className={c.field}>
-        <label htmlFor="ticket"><span className={c.step}>3</span>Average job value</label>
-        <p className={c.hint}>What a typical booked job is worth to you. We filled in a typical figure for your trade.</p>
+        <label htmlFor="ticket"><span className={c.step}>3</span>{group.value}</label>
+        <p className={c.hint}>{group.hint} {custom ? <button type="button" className={c.reset} onClick={() => { setCustom(false); if (current.ticket) setTicket(current.ticket); }}>Use the typical figure</button> : current.ticket ? "We filled in a typical figure. Use your own if you know it." : "Enter your own figure."}</p>
         <div className={c.money}>
           <span aria-hidden="true">$</span>
-          <input id="ticket" type="number" inputMode="numeric" min={0} max={100000} value={ticket} onChange={(e) => { setTicket(clamp(e.target.valueAsNumber, 0, 100000)); setTrade(TRADES.find((t) => t.ticket === e.target.valueAsNumber)?.id ?? "other"); touched(); }} />
+          <input id="ticket" type="number" inputMode="numeric" min={0} max={100000} value={ticket} onChange={(e) => { setTicket(clamp(e.target.valueAsNumber, 0, 100000)); setCustom(true); touched(); }} />
         </div>
       </div>
 
       <fieldset className={c.field}>
         <legend><span className={c.step}>4</span>How many of those callers would have booked?</legend>
-        <p className={c.hint}>Not every caller is a job. 1 in 4 is a careful guess for service calls.</p>
+        <p className={c.hint}>Not every caller becomes a customer. 1 in 4 is a careful starting point.</p>
         <div className={c.segments}>
           {BOOKING_RATES.map((b) => <button key={b.rate} type="button" aria-pressed={rate === b.rate} onClick={() => { setRate(b.rate); touched(); }}>{b.label}</button>)}
         </div>
@@ -86,7 +93,7 @@ export function MissedCallCalculator() {
 
       <ol className={c.chain} aria-label="How we got there">
         <li><b>{missed.toLocaleString("en-US")}</b><span>missed calls</span></li>
-        <li><b>{fewJobs(r.jobs)}</b><span>lost {r.jobs === 1 ? "job" : "jobs"}</span></li>
+        <li><b>{fewJobs(r.jobs)}</b><span>lost {r.jobs === 1 ? "booking" : "bookings"}</span></li>
         <li><b>{money(r.monthly)}</b><span>lost revenue</span></li>
       </ol>
 

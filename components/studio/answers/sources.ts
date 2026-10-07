@@ -128,6 +128,84 @@ export const SOURCES = {
     url: "https://get.partstech.com/report2025",
     note: "Survey of 752 shops: the most common average repair order was $500 to $749.",
   },
+  haCleaning: {
+    label: "House cleaning prices and rates",
+    publisher: "HomeAdvisor, June 2026",
+    url: "https://www.homeadvisor.com/cost/cleaning-services",
+    note: "A standard house cleaning runs about $100 to $200; we use $150.",
+  },
+  haLawn: {
+    label: "Lawn care and mowing cost",
+    publisher: "HomeAdvisor, June 2026",
+    url: "https://www.homeadvisor.com/cost/lawn-and-garden/maintain-a-lawn",
+    note: "National average $123 per lawn care visit.",
+  },
+  clioRates: {
+    label: "Compare average lawyer hourly rates",
+    publisher: "Clio Legal Trends, March 2026",
+    url: "https://www.clio.com/resources/legal-trends/compare-lawyer-rates/",
+    note: "Average lawyer rate about $349 an hour. Our $3,000 case value assumes a small matter of roughly nine hours; it is our estimate.",
+  },
+  natpFees: {
+    label: "What do tax preparers charge?",
+    publisher: "Accounting Today (NATP 2025 fee study), December 2025",
+    url: "https://www.accountingtoday.com/news/what-do-tax-preparers-charge",
+    note: "Form 1040 with schedules 1 to 3: $185 from a non-credentialed preparer, $228 from an enrolled agent, $280 from a CPA. We use $250.",
+  },
+  naicAuto: {
+    label: "2023 auto insurance database average premium supplement",
+    publisher: "NAIC, July 2025",
+    url: "https://content.naic.org/article/naic-releases-2023-auto-insurance-database-average-premium-supplement",
+    note: "Average auto insurance spend of $1,282 a year.",
+  },
+  agentCommission: {
+    label: "How much do independent insurance agents make?",
+    publisher: "Insurance Business, June 2023",
+    url: "https://www.insurancebusinessmag.com/us/guides/how-much-do-independent-insurance-agents-make-448246.aspx",
+    note: "Independent agents earn up to 15% on new auto and home business, captive agents 5% to 10%. We use about 12% of an average auto premium: $150.",
+  },
+  pearlDental: {
+    label: "How much does a dental exam cost?",
+    publisher: "Pearl, May 2026",
+    url: "https://dentalcosts.hellopearl.com/procedure/dental-exam",
+    note: "Exam about $100, cleaning about $155 and X-rays about $195 (Pearl's cleaning and X-ray pages): about $450 for a new patient's first visit.",
+  },
+  chiroFees: {
+    label: "28th annual fees and reimbursements survey",
+    publisher: "Chiropractic Economics, September 2024",
+    url: "https://www.chiroeco.com/equilibrium-achieved-whats-next-results-of-the-28th-annual-fees-and-reimbursements-survey-2024/",
+    note: "Average US fee of about $80 per chiropractic visit.",
+  },
+  forbesPT: {
+    label: "How much does physical therapy cost?",
+    publisher: "Forbes Health, January 2024",
+    url: "https://www.forbes.com/health/wellness/how-much-does-physical-therapy-cost/",
+    note: "A first evaluation at a private clinic costs $150 to $200; follow-up visits $80 to $120.",
+  },
+  vetVisits: {
+    label: "Cats gain ground in US vet clinics as visit volumes decline",
+    publisher: "GlobalPETS, August 2026",
+    url: "https://globalpetindustry.com/news/2023-2025-cats-gain-ground-in-us-vet-clinics-as-visit-volumes-decline/",
+    note: "Transaction data from 19,000 practices: about $161 per puppy visit and $246 per cat clinical visit. We use $200.",
+  },
+  aspsBotox: {
+    label: "Botulinum toxin cost",
+    publisher: "American Society of Plastic Surgeons (2023 statistics)",
+    url: "https://www.plasticsurgery.org/cosmetic-procedures/botulinum-toxin/cost",
+    note: "Average fee of $435 for a botulinum toxin treatment.",
+  },
+  fashSalon: {
+    label: "How much does a hair stylist cost?",
+    publisher: "Fash, June 2026",
+    url: "https://fash.com/costs/hair-stylist-cost",
+    note: "A stylist service typically costs $40 to $150; we use $95.",
+  },
+  mmipMassage: {
+    label: "How much does a massage session cost?",
+    publisher: "Massage Magazine Insurance Plus, October 2023",
+    url: "https://www.massageliabilityinsurancegroup.com/massage-therapist/session/cost/",
+    note: "A standard 60-minute massage runs $85 to $135; we use $110.",
+  },
 } satisfies Record<string, Source>;
 
 export type SourceKey = keyof typeof SOURCES;

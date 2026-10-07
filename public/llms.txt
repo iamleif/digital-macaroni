@@ -11,7 +11,7 @@
 
 ## Free tools
 
-- [Missed call calculator](https://digitalmacaroni.io/missed-call-calculator/): estimates the revenue a business loses each month from missed calls (missed calls × share who would have booked × average job value), with typical job values by trade and sources.
+- [Missed call calculator](https://digitalmacaroni.io/missed-call-calculator/): estimates the revenue a business loses each month from missed calls (missed calls × share who would have booked × average job value), with typical values for home services, law firms, accountants, insurance agencies, clinics and salons, and sources.
 
 ## Answers
 

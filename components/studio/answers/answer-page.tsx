@@ -169,7 +169,7 @@ export function AnswersHub() {
           <a href="/missed-call-calculator/" className={`${a.card} ${a.toolCard}`}>
             <span className={a.cardLabel}>Calculator</span>
             <b>Missed call calculator</b>
-            <p>See what unanswered calls cost your business each month and year, with typical job values for your trade.</p>
+            <p>See what unanswered calls cost your business each month and year, with typical values for your kind of business.</p>
             <span className={a.cardArrow}><ArrowUpRight size={14} /></span>
           </a>
         </div>
