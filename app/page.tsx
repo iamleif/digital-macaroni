@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Agents } from "@/components/studio/agents";
 import { HeroApp } from "@/components/studio/hero-app";
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, LinkedIn, Plug, Sparkle, Wave, YouTube } from "@/components/studio/icons";
+import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, LinkedIn, Phone, Plug, Sparkle, Wave, YouTube } from "@/components/studio/icons";
 import { Places } from "@/components/studio/location";
 import { CookieSettings } from "@/components/studio/consent";
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { answerBySlug } from "@/components/studio/answers/content";
 import { COMPANY_LINKEDIN, COMPANY_YOUTUBE, pageMeta } from "@/components/studio/site";
+import { DEFAULT_MISSED, DEFAULT_RATE, TRADES, lostRevenue } from "@/components/studio/calculator/math";
 import h from "@/components/studio/home.module.css";
 
 export const metadata: Metadata = pageMeta({
@@ -103,6 +104,12 @@ const steps = [
   { title: "We write back", copy: "We read it properly and reply by email with questions and ideas for your business." },
   { title: "A clear proposal", copy: "Scope, price and timeline in writing, agreed before any work begins." },
 ];
+
+// The homepage card shows the calculator's own default example, so the two always agree.
+const EXAMPLE = (() => {
+  const trade = TRADES[0];
+  return { trade, lost: lostRevenue({ missed: DEFAULT_MISSED, ticket: trade.ticket, rate: DEFAULT_RATE }).monthly };
+})();
 
 export default function HomePage() {
   return <div className={h.page}>
@@ -201,6 +208,35 @@ export default function HomePage() {
             </div>
           </Reveal>)}
         </div>
+      </div>
+    </section>
+
+    {/* Missed call calculator */}
+    <section id="calculator" className={h.sheet} aria-labelledby="calculator-heading">
+      <div className={`${h.sheetInner} ${h.calcPromo}`}>
+        <Reveal>
+          <p className={h.kicker}>Free tool</p>
+          <h2 id="calculator-heading" className={h.h2}>What are missed calls <span className={h.chip} data-tone="yellow"><Phone size={22} /></span> costing you?</h2>
+          <p className={h.lede}>Pick your kind of business, enter last month&rsquo;s missed calls, and see what they cost you in a few seconds. Typical values for home services, law firms, clinics, salons and more, with sources. No signup.</p>
+          <div className={h.ctaActions}>
+            <a className={h.pillDark} href="/missed-call-calculator/">Run your numbers<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
+          </div>
+        </Reveal>
+        <Reveal delay={120}>
+          <a href="/missed-call-calculator/" className={h.calcMini} aria-label="Open the missed call calculator">
+            <div className={h.calcMiniRows}>
+              <div><span>Kind of business</span><b>{EXAMPLE.trade.label}</b></div>
+              <div><span>Missed calls last month</span><b>{DEFAULT_MISSED}</b></div>
+              <div><span>Average job value</span><b>${EXAMPLE.trade.ticket}</b></div>
+              <div><span>Would have booked</span><b>1 in 4</b></div>
+            </div>
+            <div className={h.calcMiniResult}>
+              <span>Missed calls are costing about</span>
+              <b>${Math.round(EXAMPLE.lost).toLocaleString("en-US")} a month</b>
+              <small>${Math.round(EXAMPLE.lost * 12).toLocaleString("en-US")} a year. Try it with your numbers.</small>
+            </div>
+          </a>
+        </Reveal>
       </div>
     </section>
 

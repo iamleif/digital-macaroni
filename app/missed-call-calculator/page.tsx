@@ -147,14 +147,14 @@ export default function MissedCallCalculatorPage() {
         {FAQS.map((f) => <details key={f.q}><summary>{f.q}</summary><p>{f.a}</p></details>)}
       </section>
 
-      <section className={a.sources} aria-labelledby="sources-heading">
-        <h2 id="sources-heading">Sources</h2>
+      <details className={`${a.sources} ${c.sourcesFold}`}>
+        <summary><h2 id="sources-heading">Sources</h2><span>{SOURCE_KEYS.length} sources, checked {CALC_UPDATED}</span></summary>
         <ol>{SOURCE_KEYS.map((k) => {
           const s = SOURCES[k];
           return <li key={k}><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a><span>{s.publisher}</span><p>{s.note}</p></li>;
         })}</ol>
         <p className={a.sourcesNote}>Checked against the original sources on {CALC_UPDATED}. Industry figures are estimates; your own numbers are better.</p>
-      </section>
+      </details>
 
       <section className={a.related} aria-labelledby="related-heading">
         <h2 id="related-heading">Related answers</h2>

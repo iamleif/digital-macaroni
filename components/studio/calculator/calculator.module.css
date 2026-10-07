@@ -92,3 +92,12 @@
   .actions { grid-template-columns: 1fr; }
   .segments button { font-size: 13px; }
 }
+
+/* Sources fold shut; the count and date stay visible. */
+.sourcesFold summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; cursor: pointer; list-style: none; padding-right: 28px; position: relative; }
+.sourcesFold summary::-webkit-details-marker { display: none; }
+.sourcesFold summary::after { content: "+"; position: absolute; right: 2px; top: -2px; font-size: 22px; color: var(--muted); transition: transform 0.3s var(--ease); }
+.sourcesFold[open] summary::after { transform: rotate(45deg); }
+.sourcesFold summary h2 { margin: 0 !important; }
+.sourcesFold summary span { font-size: 13px; color: var(--muted); }
+.sourcesFold[open] summary { margin-bottom: 14px; }
