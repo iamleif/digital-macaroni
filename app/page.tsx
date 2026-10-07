@@ -105,11 +105,11 @@ const steps = [
   { title: "A clear proposal", copy: "Scope, price and timeline in writing, agreed before any work begins." },
 ];
 
-// The homepage card shows the calculator's own default example, so the two always agree.
-const EXAMPLE = (() => {
-  const trade = TRADES[0];
-  return { trade, lost: lostRevenue({ missed: DEFAULT_MISSED, ticket: trade.ticket, rate: DEFAULT_RATE }).monthly };
-})();
+// The homepage card runs the calculator's own defaults across very different businesses, so the two always agree.
+const EXAMPLES = ["law", "dental", "medspa", "hvac", "salon"].map((id) => {
+  const trade = TRADES.find((t) => t.id === id)!;
+  return { label: trade.label, lost: lostRevenue({ missed: DEFAULT_MISSED, ticket: trade.ticket, rate: DEFAULT_RATE }).monthly };
+});
 
 export default function HomePage() {
   return <div className={h.page}>
@@ -224,16 +224,13 @@ export default function HomePage() {
         </Reveal>
         <Reveal delay={120}>
           <a href="/missed-call-calculator/" className={h.calcMini} aria-label="Open the missed call calculator">
-            <div className={h.calcMiniRows}>
-              <div><span>Kind of business</span><b>{EXAMPLE.trade.label}</b></div>
-              <div><span>Missed calls last month</span><b>{DEFAULT_MISSED}</b></div>
-              <div><span>Average job value</span><b>${EXAMPLE.trade.ticket}</b></div>
-              <div><span>Would have booked</span><b>1 in 4</b></div>
-            </div>
+            <p className={h.calcMiniHead}>{DEFAULT_MISSED} missed calls a month, 1 in 4 would have booked</p>
+            <ul className={h.calcMiniRows}>
+              {EXAMPLES.map((x) => <li key={x.label}><span>{x.label}</span><b>${Math.round(x.lost).toLocaleString("en-US")}<small> a month</small></b></li>)}
+            </ul>
             <div className={h.calcMiniResult}>
-              <span>Missed calls are costing about</span>
-              <b>${Math.round(EXAMPLE.lost).toLocaleString("en-US")} a month</b>
-              <small>${Math.round(EXAMPLE.lost * 12).toLocaleString("en-US")} a year. Try it with your numbers.</small>
+              <b>What&rsquo;s yours?</b>
+              <span>Pick your business and run your own numbers<ArrowUpRight size={15} /></span>
             </div>
           </a>
         </Reveal>

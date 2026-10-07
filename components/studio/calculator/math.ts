@@ -50,6 +50,8 @@ export const BOOKING_RATES = [
 ];
 
 export const DEFAULT_MISSED = 20;
+/** Before a business is picked: a neutral example value, the same as the page's worked example. */
+export const STARTING_VALUE = 350;
 export const DEFAULT_RATE = 0.25;
 
 /** Answering cost: an average call length and an all-in AI phone agent rate (phone line, speech and model). */

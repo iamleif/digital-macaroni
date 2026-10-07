@@ -3,22 +3,24 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight, Phone } from "../icons";
 import { track } from "../consent";
-import { AI_MINUTES_PER_CALL, AI_RATE_PER_MINUTE, BOOKING_RATES, DEFAULT_MISSED, GROUPS, DEFAULT_RATE, HOSTED_PLAN, TRADES, type Group, lostRevenue } from "./math";
+import { AI_MINUTES_PER_CALL, AI_RATE_PER_MINUTE, BOOKING_RATES, DEFAULT_MISSED, GROUPS, DEFAULT_RATE, HOSTED_PLAN, STARTING_VALUE, TRADES, type Group, lostRevenue } from "./math";
 import c from "./calculator.module.css";
 
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
 const fewJobs = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(1));
 
-/** The calculator itself: three inputs, the answer updating as they type. */
+/** The calculator itself: four inputs, the answer updating as they type. */
 export function MissedCallCalculator() {
-  const [trade, setTrade] = useState(TRADES[0].id);
+  const [trade, setTrade] = useState("");
   const [missed, setMissed] = useState(DEFAULT_MISSED);
-  const [ticket, setTicket] = useState(TRADES[0].ticket);
+  const [ticket, setTicket] = useState(STARTING_VALUE);
   const [rate, setRate] = useState(DEFAULT_RATE);
   const [custom, setCustom] = useState(false);
   const used = useRef(false);
-  const current = TRADES.find((t) => t.id === trade)!;
-  const group = { ...GROUPS[current.group], ...(current.value ? { value: current.value } : {}), ...(current.hint ? { hint: current.hint } : {}) };
+  const current = TRADES.find((t) => t.id === trade);
+  const group = current
+    ? { ...GROUPS[current.group], ...(current.value ? { value: current.value } : {}), ...(current.hint ? { hint: current.hint } : {}) }
+    : { ...GROUPS.other, hint: "What one booking or new customer is worth to you." };
 
   const touched = () => {
     if (used.current) return;
@@ -45,7 +47,8 @@ export function MissedCallCalculator() {
       <div className={c.field}>
         <label htmlFor="business"><span className={c.step}>1</span>Your kind of business</label>
         <div className={c.select}>
-          <select id="business" value={trade} onChange={(e) => pickTrade(e.target.value)}>
+          <select id="business" value={trade} data-empty={trade ? undefined : ""} onChange={(e) => pickTrade(e.target.value)}>
+            <option value="" disabled>Choose your kind of business</option>
             {(Object.keys(GROUPS) as Group[]).map((g) => <optgroup key={g} label={GROUPS[g].label}>
               {TRADES.filter((t) => t.group === g).map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
             </optgroup>)}
@@ -66,7 +69,7 @@ export function MissedCallCalculator() {
 
       <div className={c.field}>
         <label htmlFor="ticket"><span className={c.step}>3</span>{group.value}</label>
-        <p className={c.hint}>{group.hint} {custom ? <button type="button" className={c.reset} onClick={() => { setCustom(false); if (current.ticket) setTicket(current.ticket); }}>Use the typical figure</button> : current.ticket ? "We filled in a typical figure. Use your own if you know it." : "Enter your own figure."}</p>
+        <p className={c.hint}>{group.hint} {custom && current?.ticket ? <button type="button" className={c.reset} onClick={() => { setCustom(false); setTicket(current.ticket); }}>Use the typical figure</button> : !current ? "Pick your business above for a typical figure, or enter your own." : current.ticket && !custom ? "We filled in a typical figure. Use your own if you know it." : "Enter your own figure."}</p>
         <div className={c.money}>
           <span aria-hidden="true">$</span>
           <input id="ticket" type="number" inputMode="numeric" min={0} max={100000} value={ticket} onChange={(e) => { setTicket(clamp(e.target.valueAsNumber, 0, 100000)); setCustom(true); touched(); }} />
