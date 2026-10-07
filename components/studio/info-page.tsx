@@ -19,6 +19,7 @@ export function InfoPage({ title, intro, updated, children }: { title: string; i
     </main>
     <footer className={i.foot}>
       <a href="/about/">About</a>
+      <a href="/missed-call-calculator/">Missed call calculator</a>
       <a href="/architecture/">Architecture</a>
       <a href="/llm-info.txt"><Sparkle size={14} />Hey AI, learn about Digital Macaroni</a>
       <a href="/privacy/">Privacy</a>

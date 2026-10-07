@@ -62,6 +62,72 @@ export const SOURCES = {
     url: "https://www.hhs.gov/hipaa/for-professionals/covered-entities/index.html",
     note: "Who HIPAA applies to: health plans, health care clearinghouses and health care providers for people, plus their business associates.",
   },
+  servicetitanBooking: {
+    label: "Call booking rates: data from 3,000+ trade businesses",
+    publisher: "ServiceTitan, October 2022",
+    url: "https://www.servicetitan.com/blog/data-call-booking-rates",
+    note: "A typical shop booked 42% of calls in June 2022 (HVAC 38%, plumbing 43%, electrical 41%, garage door 31%). Shops with fewer than five technicians booked 24%.",
+  },
+  callrailConsumers: {
+    label: "Missed calls cost businesses more than ever",
+    publisher: "CallRail, September 2025",
+    url: "https://www.callrail.com/blog/missed-calls-cost-businesses-more-than-ever",
+    note: "Survey of 1,000 US consumers: 78% have abandoned a business after an unanswered call, 82% say they'll call a competitor, and 42% leave a voicemail.",
+  },
+  callrailBenchmark: {
+    label: "CallRail benchmark report",
+    publisher: "CallRail, January 2025",
+    url: "https://www.callrail.com/blog/callrail-releases-benchmark-report",
+    note: "From 1.1 million conversations: home services businesses missed 14% of calls, legal 28% and healthcare 32%.",
+  },
+  quoCallbacks: {
+    label: "Small business callback statistics",
+    publisher: "Quo, August 2026",
+    url: "https://www.quo.com/blog/small-business-callback-statistics/",
+    note: "From 16.7 million missed business calls over three months: 69% didn't get a callback within 48 hours.",
+  },
+  haHvac: {
+    label: "HVAC repair cost",
+    publisher: "HomeAdvisor, June 2026",
+    url: "https://www.homeadvisor.com/cost/heating-and-cooling/repair-an-hvac-system/",
+    note: "National average $350 for an HVAC repair.",
+  },
+  haPlumber: {
+    label: "Cost to hire a plumber",
+    publisher: "HomeAdvisor, June 2026",
+    url: "https://www.homeadvisor.com/cost/plumbing/hire-a-plumber/",
+    note: "National average $341 for a plumbing job.",
+  },
+  haElectrician: {
+    label: "Cost to hire an electrician",
+    publisher: "HomeAdvisor, June 2026",
+    url: "https://www.homeadvisor.com/cost/electrical/hire-an-electrician/",
+    note: "National average $351 for an electrical job.",
+  },
+  haRoof: {
+    label: "Roof repair cost",
+    publisher: "HomeAdvisor, June 2026",
+    url: "https://www.homeadvisor.com/cost/roofing/repair-a-roof/",
+    note: "National average $1,174 for a roof repair.",
+  },
+  haGarage: {
+    label: "Garage door repair cost",
+    publisher: "HomeAdvisor, June 2026",
+    url: "https://www.homeadvisor.com/cost/garages/repair-a-garage-door/",
+    note: "National average $265 for a garage door repair.",
+  },
+  haPest: {
+    label: "Pest control cost",
+    publisher: "HomeAdvisor, June 2026",
+    url: "https://www.homeadvisor.com/cost/environmental-safety/hire-an-insect-control-service/",
+    note: "National average $172 per pest control visit.",
+  },
+  partstech: {
+    label: "State of general auto repair shops 2025",
+    publisher: "PartsTech, 2025",
+    url: "https://get.partstech.com/report2025",
+    note: "Survey of 752 shops: the most common average repair order was $500 to $749.",
+  },
 } satisfies Record<string, Source>;
 
 export type SourceKey = keyof typeof SOURCES;

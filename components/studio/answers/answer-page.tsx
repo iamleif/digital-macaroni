@@ -23,6 +23,7 @@ export function AnswersShell({ children }: { children: ReactNode }) {
     <main id="content" className={a.sheet}>{children}</main>
     <footer className={a.foot}>
       <a href="/answers/">All answers</a>
+      <a href="/missed-call-calculator/">Missed call calculator</a>
       <a href="/architecture/">Architecture</a>
       <a href="/about/">About</a>
       <a href="/llm-info.txt">For AI assistants</a>
@@ -151,7 +152,10 @@ export function AnswersHub() {
     "@type": "CollectionPage",
     name: "Answers about AI phone agents",
     url: `${SITE}/answers/`,
-    hasPart: ANSWERS.map((x) => ({ "@type": "Article", headline: x.title, url: `${SITE}/answers/${x.slug}/` })),
+    hasPart: [
+      { "@type": "WebApplication", name: "Missed call calculator", url: `${SITE}/missed-call-calculator/` },
+      ...ANSWERS.map((x) => ({ "@type": "Article", headline: x.title, url: `${SITE}/answers/${x.slug}/` })),
+    ],
   };
   return <AnswersShell>
     <JsonLd data={structured} />
@@ -159,6 +163,17 @@ export function AnswersHub() {
       <p className={a.hubKicker}>Answers</p>
       <h1>Straight answers about AI phone agents.</h1>
       <p className={a.hubLede}>What they cost, what they do for your kind of business, and how they handle the details. Written by the team that builds them, with sources for every outside figure.</p>
+      <section className={a.hubGroup} aria-labelledby="cat-tools">
+        <div className={a.hubGroupHead}><h2 id="cat-tools">Free tools</h2><p>Run your own numbers before you spend anything.</p></div>
+        <div className={a.cards}>
+          <a href="/missed-call-calculator/" className={`${a.card} ${a.toolCard}`}>
+            <span className={a.cardLabel}>Calculator</span>
+            <b>Missed call calculator</b>
+            <p>See what unanswered calls cost your business each month and year, with typical job values for your trade.</p>
+            <span className={a.cardArrow}><ArrowUpRight size={14} /></span>
+          </a>
+        </div>
+      </section>
       {(Object.keys(CATEGORIES) as (keyof typeof CATEGORIES)[]).map((c) => <section key={c} className={a.hubGroup} aria-labelledby={`cat-${c}`}>
         <div className={a.hubGroupHead}><h2 id={`cat-${c}`}>{CATEGORIES[c].title}</h2><p>{CATEGORIES[c].blurb}</p></div>
         <div className={a.cards}>{ANSWERS.filter((x) => x.category === c).map((x) => <a key={x.slug} href={`/answers/${x.slug}/`} className={a.card}>

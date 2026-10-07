@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     { url: `${base}/about/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
     { url: `${base}/contact/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
+    { url: `${base}/missed-call-calculator/`, lastModified: "2026-10-07", changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/answers/`, lastModified: UPDATED_ISO, changeFrequency: "monthly", priority: 0.8 },
     ...ANSWERS.map((x) => ({ url: `${base}/answers/${x.slug}/`, lastModified: UPDATED_ISO, changeFrequency: "monthly" as const, priority: 0.7 })),
     { url: `${base}/privacy/`, lastModified: updated, changeFrequency: "yearly", priority: 0.2 },

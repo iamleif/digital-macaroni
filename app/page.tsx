@@ -326,6 +326,7 @@ export default function HomePage() {
       <nav aria-label="Site information" className={h.footerLinks}>
         <a href="/about/">About</a>
         <a href="/answers/">Answers</a>
+        <a href="/missed-call-calculator/">Missed call calculator</a>
         <a href="/architecture/">Architecture</a>
         <a href="/privacy/">Privacy</a>
         <a href="/demo-terms/">Demo terms</a>

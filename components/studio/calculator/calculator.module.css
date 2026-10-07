@@ -1,0 +1,82 @@
+/* Missed call calculator: inputs on the left, the answer in a dark card on the right. */
+.tool { max-width: 1120px; margin: 0 auto 40px; }
+.title { font-size: clamp(36px, 5vw, 60px); font-weight: 500; letter-spacing: -0.05em; line-height: 1.04; margin: 0; }
+.lede { font-size: 18px; line-height: 1.6; color: var(--muted); max-width: 620px; margin: 16px 0 0; }
+.calc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr); gap: 16px; margin: 34px 0 8px; align-items: start; }
+.visuallyHidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.inputs { display: grid; gap: 10px; }
+.field { margin: 0; padding: 20px 22px; border: 0; border-radius: 22px; background: var(--tint); box-shadow: inset 0 0 0 1px var(--hair-2); min-width: 0; }
+.field legend, .field label { display: flex; align-items: center; gap: 10px; padding: 0; font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+.field legend { float: left; width: 100%; margin-bottom: 4px; }
+.field legend + * { clear: both; }
+.step { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; font-size: 12px; font-weight: 600; }
+.hint { margin: 6px 0 12px 34px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.field legend + .chips { margin-top: 12px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { min-height: 38px; padding: 0 14px; border-radius: 999px; border: 0; background: #fff; color: var(--ink-2); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 0 0 1px var(--hair); transition: background-color 0.25s var(--ease), color 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+.chip:hover { box-shadow: 0 0 0 1px rgba(15, 15, 13, 0.22); }
+.chip[aria-pressed="true"] { background: var(--ink); color: #fff; box-shadow: none; }
+
+.stepper { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 8px; }
+.stepper button { height: 52px; border: 0; border-radius: 14px; background: #fff; font: inherit; font-size: 22px; color: var(--ink); cursor: pointer; box-shadow: 0 0 0 1px var(--hair); }
+.stepper button:hover { box-shadow: 0 0 0 1px rgba(15, 15, 13, 0.22); }
+.stepper input, .money input { width: 100%; min-width: 0; height: 52px; border: 0; border-radius: 14px; background: #fff; font: inherit; font-size: 24px; font-weight: 600; letter-spacing: -0.02em; text-align: center; color: var(--ink); font-variant-numeric: tabular-nums; box-shadow: 0 0 0 1px var(--hair); -moz-appearance: textfield; appearance: textfield; }
+.stepper input::-webkit-inner-spin-button, .money input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.stepper input:focus-visible, .money input:focus-visible, .chip:focus-visible, .stepper button:focus-visible, .segments button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.range { width: 100%; margin: 14px 0 2px; accent-color: var(--ink); }
+
+.money { position: relative; }
+.money span { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 22px; font-weight: 600; color: var(--muted); pointer-events: none; }
+.money input { text-align: left; padding-left: 38px; }
+
+.segments { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 4px; border-radius: 16px; background: #fff; box-shadow: 0 0 0 1px var(--hair); }
+.segments button { min-height: 42px; border: 0; border-radius: 12px; background: none; font: inherit; font-size: 14px; font-weight: 500; color: var(--ink-2); cursor: pointer; transition: background-color 0.25s var(--ease), color 0.25s var(--ease); }
+.segments button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+
+/* The answer */
+.result { position: sticky; top: 16px; padding: 28px; border-radius: 26px; background: radial-gradient(120% 70% at 100% 0%, #2c2a20, #121210 62%); color: #f4f2ec; }
+.resultKicker { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--yellow); }
+.resultBig { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; margin: 10px 0 0; font-size: clamp(44px, 6vw, 64px); font-weight: 600; letter-spacing: -0.05em; line-height: 1; font-variant-numeric: tabular-nums; }
+.resultBig span { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; color: #c9c6bc; }
+.resultYear { margin: 12px 0 0; font-size: 16px; color: #c9c6bc; }
+.resultYear b { color: #fff; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.chain { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 22px 0 0; padding: 0; list-style: none; }
+.chain li { position: relative; padding: 12px 12px 11px; border-radius: 14px; background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); min-width: 0; }
+.chain b { display: block; font-size: 19px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chain span { display: block; margin-top: 2px; font-size: 12px; color: #a9a69c; }
+
+.compare { margin-top: 14px; padding: 16px 18px; border-radius: 18px; background: rgba(246, 207, 74, 0.08); box-shadow: inset 0 0 0 1px rgba(246, 207, 74, 0.22); }
+.compareLabel { margin: 0; font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; color: #e9dcae; }
+.compareBig { margin: 4px 0 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; color: var(--yellow); font-variant-numeric: tabular-nums; }
+.compareBig span { font-size: 14px; font-weight: 500; letter-spacing: 0; color: #c9c6bc; }
+.compareNote { margin: 8px 0 0; font-size: 13.5px; line-height: 1.55; color: #c9c6bc; }
+.compareNote b { color: #fff; }
+
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; }
+.primary, .secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 16px; border-radius: 999px; font-size: 14.5px; font-weight: 500; text-decoration: none; text-align: center; transition: background-color 0.3s var(--ease); }
+.primary { background: var(--yellow); color: var(--ink) !important; }
+.primary:hover { background: #ffd95e; }
+.secondary { background: rgba(255, 255, 255, 0.08); color: #f4f2ec !important; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14); }
+.secondary:hover { background: rgba(255, 255, 255, 0.14); }
+
+/* Phones: the running total follows the inputs until the full answer scrolls into view. */
+.mobileBar { display: none; }
+@media (max-width: 920px) {
+  .calc { grid-template-columns: 1fr; }
+  .result { position: static; scroll-margin-top: 16px; }
+  .mobileBar { position: sticky; bottom: 10px; z-index: 2; display: flex; align-items: center; gap: 10px; margin-top: 4px; padding: 12px 14px 12px 18px; border-radius: 999px; background: #121210; color: #f4f2ec !important; text-decoration: none; box-shadow: 0 12px 28px -12px rgba(15, 15, 13, 0.55); }
+  .mobileBar span { font-size: 13px; color: #c9c6bc; }
+  .mobileBar b { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; color: var(--yellow); font-variant-numeric: tabular-nums; }
+  .mobileBar small { font-size: 12px; font-weight: 500; color: #c9c6bc; margin-left: 2px; }
+  .mobileBarMore { margin-left: auto; padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.1); color: #f4f2ec !important; }
+}
+@media (max-width: 520px) {
+  .field { padding: 18px; }
+  .hint { margin-left: 0; }
+  .result { padding: 22px 20px; }
+  .actions { grid-template-columns: 1fr; }
+  .segments button { font-size: 13px; }
+}

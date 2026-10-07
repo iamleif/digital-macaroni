@@ -59,7 +59,7 @@ export const ANSWERS: Answer[] = [
         <li><strong>Reschedules and cancellations.</strong> It moves the existing visit rather than creating a duplicate, so your board stays clean.</li>
         <li><strong>Questions.</strong> Service area, call-out fees, what you do and don&rsquo;t fix, opening hours. It only quotes what you&rsquo;ve given it.</li>
         <li><strong>Messages and callbacks.</strong> When nothing fits or the caller wants a person, it takes a message with the details and sends it to your team.</li>
-        <li><strong>After-hours calls.</strong> The calls that used to go to voicemail get answered and booked.</li>
+        <li><strong>After-hours calls.</strong> The calls that used to go to voicemail get answered and booked. The <a href="/missed-call-calculator/">missed call calculator</a> shows what those calls are worth to you.</li>
       </ul>
       <h2>Emergencies and safety</h2>
       <p>You decide what counts as an emergency and what happens next. Our demo agent, Ellie, is set up so that anyone reporting a gas smell, sparking or flooding near electrics is told to leave and call 911 first. You can also route true emergencies straight to your on-call technician.</p>
@@ -276,6 +276,7 @@ export const ANSWERS: Answer[] = [
         </tbody>
       </table>
       <p>Extras: $50 one-time to register your number for business texting, premium voices from $80 a month, and extra minutes or texts at the rate in your proposal. See the <a href="/#pricing">pricing section</a> and <a href="/answers/hosted-vs-managed-vs-self-hosted-ai-phone-agent/">how the running plans differ</a>.</p>
+      <p>Before you compare prices, run your own numbers in the <a href="/missed-call-calculator/">missed call calculator</a>: it shows what unanswered calls cost you each month.</p>
       <h2>What actually drives the price</h2>
       <ul>
         <li><strong>Integrations.</strong> Each system the agent reads from or writes to adds build and testing time.</li>

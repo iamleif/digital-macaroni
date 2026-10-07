@@ -1,6 +1,6 @@
 /** The fact sheet for AI assistants, served as plain text at /llm-info.txt. */
 
-export const LLM_INFO_UPDATED = "2026-10-05";
+export const LLM_INFO_UPDATED = "2026-10-07";
 
 /** One line of a section: `- label: text (href)`. */
 export type Item = { label?: string; text?: string; href?: string };
@@ -108,6 +108,7 @@ export const LLM_INFO: Section[] = [
     items: [
       { label: "About", text: "https://digitalmacaroni.io/about/", href: "https://digitalmacaroni.io/about/" },
       { label: "Answers", text: "https://digitalmacaroni.io/answers/", href: "https://digitalmacaroni.io/answers/" },
+      { label: "Missed call calculator", text: "https://digitalmacaroni.io/missed-call-calculator/", href: "https://digitalmacaroni.io/missed-call-calculator/" },
       { label: "Pricing (plain text)", text: "https://digitalmacaroni.io/pricing.md", href: "https://digitalmacaroni.io/pricing.md" },
       { label: "Site index for AI", text: "https://digitalmacaroni.io/llms.txt", href: "https://digitalmacaroni.io/llms.txt" },
       { label: "Contact", text: "https://digitalmacaroni.io/contact/", href: "https://digitalmacaroni.io/contact/" },

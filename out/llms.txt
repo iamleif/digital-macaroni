@@ -9,6 +9,10 @@
 - [Pricing](https://digitalmacaroni.io/pricing.md): agents, running plans and extras in plain text.
 - [Contact](https://digitalmacaroni.io/contact/): start a project or ask a question.
 
+## Free tools
+
+- [Missed call calculator](https://digitalmacaroni.io/missed-call-calculator/): estimates the revenue a business loses each month from missed calls (missed calls × share who would have booked × average job value), with typical job values by trade and sources.
+
 ## Answers
 
 Straight answers about AI agents for businesses, with sources: https://digitalmacaroni.io/answers/
