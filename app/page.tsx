@@ -63,7 +63,7 @@ const languages: [string, string][] = [
 ];
 
 /** A short sample of tools with documented APIs (checked against their developer docs, 2026-10-04). Examples, not partnerships. */
-const tools = ["Google Calendar", "Outlook", "HubSpot", "Salesforce", "ServiceTitan", "Jobber", "Housecall Pro", "Clio", "Shopify", "Square", "QuickBooks", "Slack"];
+const tools = ["Calendly", "HubSpot", "Salesforce", "GoHighLevel", "Keap", "ServiceTitan", "Housecall Pro", "AccuLynx", "Clio", "Lawmatics", "Applied Epic", "Shopify", "Square", "QuickBooks", "Slack", "WhatsApp"];
 
 /** Homepage questions: each links to its full answer page. */
 const homeFaqs = ["how-much-does-an-ai-phone-agent-cost", "what-happens-when-an-ai-phone-agent-gets-something-wrong", "can-i-keep-my-business-phone-number", "will-callers-know-they-are-talking-to-an-ai", "hosted-vs-managed-vs-self-hosted-ai-phone-agent", "custom-ai-phone-agent-vs-template-build"]
@@ -141,6 +141,7 @@ export default function HomePage() {
           <p className={h.lede}>Your agent checks your calendar, updates your CRM and sends the follow-up, in the systems your team already works in.</p>
         </Reveal>
         <Reveal delay={80} className={h.toolCloud}>
+          <p className={h.toolNote}><Sparkle size={13} />Just a few examples. If you can think of it, we can connect to it.</p>
           <ul aria-label="Examples of tools we connect to">
             {tools.map((t) => <li key={t}>{t}</li>)}
             <li data-any>Anything with an API</li>
