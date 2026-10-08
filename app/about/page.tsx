@@ -5,30 +5,30 @@ import { JsonLd, ORG_REF, SITE, pageMeta } from "@/components/studio/site";
 export const metadata: Metadata = pageMeta({
   title: "About — Digital Macaroni",
   shareTitle: "About Digital Macaroni",
-  description: "Digital Macaroni builds AI agents that take action inside real business workflows: voice agents, software and automations that turn conversations into completed work.",
+  description: "Digital Macaroni builds AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team.",
   path: "/about/",
   ownImage: true,
 });
 
 export default function AboutPage() {
-  return <InfoPage title="About Digital Macaroni." intro="We build AI agents that take action inside real business workflows.">
+  return <InfoPage title="About Digital Macaroni." intro="We build AI voice agents that do the work.">
     <JsonLd data={{ "@context": "https://schema.org", "@type": "AboutPage", url: `${SITE}/about/`, name: "About Digital Macaroni", about: ORG_REF, mainEntity: ORG_REF }} />
     <section>
       <h2>What we do</h2>
-      <p>Voice agents, software and automations that turn conversations into completed work.</p>
-      <p>A conversation is where the work starts, not where it ends. Our agents connect to the tools your business already runs and carry each request through to done: updating records, coordinating schedules and teams, triggering the next step in a workflow, and closing the loop with the customer.</p>
+      <p>AI voice agents that answer every call and complete the work behind it.</p>
+      <p>A phone call is where the work starts, not where it ends. Our agents connect to the tools your business already runs and carry each request through to done: booking the visit, updating the record, sending the confirmation, and handing off to your team when a person should take over.</p>
     </section>
     <section>
       <h2>Who we build for</h2>
-      <p>Businesses that run on conversations: home services, clinics and practices, shops, travel, and teams spread across locations. Every agent is built for one business, around its customers, its rules and the tools it already uses.</p>
+      <p>Businesses that live on the phone: home services, clinics and practices, law firms, shops, travel, and teams spread across locations. Every agent is built for one business, around its callers, its rules and the tools it already uses.</p>
     </section>
     <section>
-      <h2>What we build</h2>
+      <h2>What you get</h2>
       <ul>
-        <li><strong>Voice agents</strong> that answer calls and complete the work behind them.</li>
-        <li><strong>Business software and dashboards</strong> where your team sees every conversation and what was done.</li>
-        <li><strong>Automations and integrations</strong> that connect agents to your scheduling, ordering, records and messaging.</li>
-        <li><strong>Apps</strong> for the web and mobile, from an early prototype to a working product.</li>
+        <li><strong>A voice agent</strong> that answers every call and completes the work behind it, in your name and voice.</li>
+        <li><strong>Connections to your tools</strong>: scheduling, CRM, ordering, records and messaging.</li>
+        <li><strong>A dashboard</strong> with every call&rsquo;s transcript, summary and the actions your agent took.</li>
+        <li><strong>Voice AI consulting</strong> for bigger projects. <a href="/consulting/">See how it works</a>.</li>
       </ul>
     </section>
     <section>

@@ -36,7 +36,7 @@ export function pageMeta({ title, description, path, shareTitle, type = "website
 }): Metadata {
   const share = shareTitle ?? title;
   // A page's own card when it has one, otherwise the site-wide card.
-  const images = [{ url: ownImage ? `${path}opengraph-image` : "/opengraph-image", width: 1200, height: 630, alt: ownImage ? share : `${NAME}: AI agents that take action inside real business workflows`, type: "image/png" }];
+  const images = [{ url: ownImage ? `${path}opengraph-image` : "/opengraph-image", width: 1200, height: 630, alt: ownImage ? share : `${NAME}: AI voice agents that do the work`, type: "image/png" }];
   return {
     title: { absolute: title },
     description,

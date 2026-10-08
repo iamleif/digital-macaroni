@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { Agents } from "@/components/studio/agents";
 import { HeroApp } from "@/components/studio/hero-app";
-import { ArrowDown, ArrowUpRight, Device, Globe, Grid, Phone, Plug, Sparkle, Wave } from "@/components/studio/icons";
+import { ArrowDown, ArrowUpRight, Globe, Grid, Phone, Plug, Sparkle, Users, Wave } from "@/components/studio/icons";
 import { StudioAskBand, StudioFooter, StudioNav } from "@/components/studio/chrome";
 import { ConsultingCard, PlanCards } from "@/components/studio/pricing";
 import { Intro, Reveal } from "@/components/studio/reveal";
@@ -12,14 +13,21 @@ import { DEFAULT_MISSED, DEFAULT_RATE, TRADES, lostRevenue } from "@/components/
 import h from "@/components/studio/home.module.css";
 
 export const metadata: Metadata = pageMeta({
-  title: "Digital Macaroni — AI voice agents and software that get to work",
-  shareTitle: "Digital Macaroni — AI agents that take action inside real business workflows",
-  description: "Digital Macaroni builds AI agents that take action inside real business workflows: voice agents, software and automations that turn conversations into completed work. Call a live demo agent and watch it work.",
+  title: "Digital Macaroni — AI voice agents that get to work",
+  shareTitle: "Digital Macaroni — AI voice agents that do the work",
+  description: "Digital Macaroni builds AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team. Call a live demo agent and watch it work.",
   path: "/",
   ownImage: true,
 });
 
-const services = [
+/** A service card; the ones with their own page link to it. */
+function ServiceCard({ href, dark, children }: { href?: string; dark?: boolean; children: ReactNode }) {
+  return href
+    ? <a href={href} className={h.serviceCard} data-dark={dark || undefined}>{children}</a>
+    : <div className={h.serviceCard} data-dark={dark || undefined}>{children}</div>;
+}
+
+const services: { id: string; dark?: boolean; icon: ReactNode; title: string; copy: string; tags: string[]; href?: string }[] = [
   {
     id: "voice",
     dark: true,
@@ -31,23 +39,24 @@ const services = [
   {
     id: "automations",
     icon: <Plug size={20} />,
-    title: "Automations & integrations",
-    copy: "Connect the tools you already run, so a conversation turns into a booking, a record, an invoice or a message to the right person.",
+    title: "Connected to your tools",
+    copy: "Your agent works inside the systems you already run, so every call ends in a booking, a record, an invoice or a message to the right person.",
     tags: ["CRM updates", "Calendars & scheduling", "Text & email follow-ups", "Slack & Teams alerts", "Invoices & payments", "APIs & webhooks"],
   },
   {
-    id: "software",
+    id: "dashboard",
     icon: <Grid size={20} />,
-    title: "Business software",
-    copy: "Dashboards and back-office tools shaped around how your team actually works.",
-    tags: ["Dashboards", "Internal tools", "Admin panels", "Reporting", "Scheduling & dispatch", "Customer records"],
+    title: "Your agent’s dashboard",
+    copy: "Every call in one place: what was said, what your agent did, and what your team needs to pick up.",
+    tags: ["Call transcripts", "Call summaries", "Actions taken", "Handoffs to your team", "Reporting", "Every location"],
   },
   {
-    id: "apps",
-    icon: <Device size={20} />,
-    title: "Apps",
-    copy: "Web and mobile apps for your customers and your team, from first prototype to the App Store.",
-    tags: ["iOS", "Android", "Web apps", "Customer portals", "Booking apps", "Prototypes & MVPs"],
+    id: "consulting",
+    icon: <Users size={20} />,
+    title: "Voice AI consulting",
+    copy: "A bigger project? We come in and build alongside your team: voice inside your product, or your phones and support moved to AI agents.",
+    tags: ["Voice in your product", "Phones & support to AI", "Build reviews", "Build sprints", "Team training", "Long-term projects"],
+    href: "/consulting/",
   },
 ];
 
@@ -92,10 +101,10 @@ export default function HomePage() {
       <div>
         <div className={h.heroCopy}>
           <Intro delay={80}><h1 id="hero-heading" className={h.heroTitle}>
-            Voice agents <span className={h.chip} data-tone="yellow"><Wave size={26} /></span> and software
+            Voice agents <span className={h.chip} data-tone="yellow"><Wave size={26} /></span>
             <br className={h.brDesk} /> that <span className={h.stickerWrap}>get to work<span className={h.sticker}>Live</span></span>
           </h1></Intro>
-          <Intro delay={160}><p className={h.heroSub}>We design and build custom AI voice agents, dashboards and apps, made to look, sound and run like your business.</p></Intro>
+          <Intro delay={160}><p className={h.heroSub}>We design and build custom AI voice agents that answer every call and do the work, made to look, sound and run like your business.</p></Intro>
           <Intro delay={240} className={h.heroActions}>
             <a className={h.pillDark} href="#agents">Try a live demo<span className={h.pillIcon}><ArrowDown size={14} /></span></a>
             <a className={h.pillLight} href="#pricing">See pricing</a>
@@ -155,16 +164,16 @@ export default function HomePage() {
     <section id="services" className={h.sheet} aria-labelledby="services-heading">
       <div className={h.sheetInner}>
         <div className={h.sectionHead}>
-          <Reveal><h2 id="services-heading" className={h.h2}>What we <span className={h.chip} data-tone="orange"><Sparkle size={20} /></span> build<br />for your business</h2><p className={h.lede}>Voice agents, automations, software and apps, made properly by one team.</p></Reveal>
+          <Reveal><h2 id="services-heading" className={h.h2}>What we <span className={h.chip} data-tone="orange"><Sparkle size={20} /></span> build<br />for your business</h2><p className={h.lede}>Everything your agent needs to do the job, made properly by one team.</p></Reveal>
         </div>
         <div className={h.serviceGrid}>
           {services.map((sv, i) => <Reveal key={sv.id} as="article" delay={i * 80} className={h.service} >
-            <div className={h.serviceCard} data-dark={sv.dark || undefined}>
+            <ServiceCard href={sv.href} dark={sv.dark}>
               <span className={h.serviceIcon}>{sv.icon}</span>
               <h3>{sv.title}</h3>
               <p>{sv.copy}</p>
               <div className={h.serviceTags}>{sv.tags.map((t) => <span key={t}>{t}</span>)}</div>
-            </div>
+            </ServiceCard>
           </Reveal>)}
         </div>
       </div>

@@ -11,7 +11,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: "Digital Macaroni — AI voice agents and software that get to work",
+    default: "Digital Macaroni — AI voice agents that get to work",
     template: "%s — Digital Macaroni",
   },
   description: DESCRIPTION,
