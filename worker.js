@@ -64,11 +64,19 @@ export default {
     if (source) {
       return Response.redirect(`${url.origin}/try/?utm_source=${source}&utm_medium=social`, 302);
     }
-    // Per-episode YouTube links: /yt1, /yt2… also tag which video sent the visitor.
+    // Per-episode YouTube links: /yt1, /yt2… tag the long-form episode that sent the visitor.
     const episode = path.match(/^\/yt(\d{1,3})$/);
     if (episode) {
       const ep = "ep" + episode[1].padStart(2, "0");
       return Response.redirect(`${url.origin}/try/?utm_source=youtube&utm_medium=video&utm_campaign=${ep}`, 302);
+    }
+    // Per-short links: /yt1-4 (YouTube Short), /fb1-4 (Facebook Reel) tag episode 1, short #4.
+    const short = path.match(/^\/(yt|fb)(\d{1,3})-(\d{1,3})$/);
+    if (short) {
+      const src = short[1] === "yt" ? "youtube" : "facebook";
+      const ep = "ep" + short[2].padStart(2, "0");
+      const s = "s" + short[3].padStart(2, "0");
+      return Response.redirect(`${url.origin}/try/?utm_source=${src}&utm_medium=short&utm_campaign=${ep}&utm_content=${s}`, 302);
     }
 
     if (url.pathname !== "/api/contact") {

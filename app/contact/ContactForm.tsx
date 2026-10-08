@@ -10,9 +10,14 @@ type Status = {
 
 const initialStatus: Status = { state: "idle", message: "" };
 
-/** The bio link a visitor arrived through (?utm_source=tiktok…), read from the address only: nothing is stored on the device. */
+/** The link a visitor arrived through, read from the address only: nothing is stored on the device.
+ *  "youtube" for a bio link, "youtube · short · ep01 · s04" for a link in a short's description. */
 function bioSource(): string {
-  return new URLSearchParams(window.location.search).get("utm_source")?.trim().slice(0, 40) ?? "";
+  const q = new URLSearchParams(window.location.search);
+  return ["utm_source", "utm_medium", "utm_campaign", "utm_content"]
+    .map((k) => q.get(k)?.trim().slice(0, 40) ?? "")
+    .filter((v) => v && v !== "social")
+    .join(" · ");
 }
 
 const TOPICS = [
