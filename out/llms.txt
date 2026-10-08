@@ -1,6 +1,6 @@
 # Digital Macaroni
 
-> Digital Macaroni builds AI agents that take action inside real business workflows: voice agents, software and automations that turn conversations into completed work.
+> Digital Macaroni builds AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team. Each agent is built for one business and connected to the tools it already runs.
 
 ## Start here
 
@@ -43,8 +43,3 @@ How AI voice agents are built, with a live demo of each architecture: https://di
 - [Northline](https://digitalmacaroni.io/demo/northline/): example voice agent for a fictional home-services business.
 - [Form & Field](https://digitalmacaroni.io/demo/formfield/): example voice agent for a fictional shop.
 - [Waypoint Travel](https://digitalmacaroni.io/demo/travel/): example voice agent for a fictional travel agency.
-
-## Our own products
-
-- [Hey Anders](https://heyanders.com): an AI assistant and workspace for appointment-based practices.
-- [TwoTop](https://twotop.app): hospitality scheduling, communication and team operations.
