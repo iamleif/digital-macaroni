@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Image from "next/image";
-import { StudioFooter, StudioNav } from "@/components/studio/chrome";
+import { StudioAskBand, StudioFooter, StudioNav } from "@/components/studio/chrome";
 import { ArrowUpRight, Bolt, Calendar, Check, Mic, Phone, Search, Sparkle, Users } from "@/components/studio/icons";
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { JsonLd, ORG_REF, SITE, pageMeta } from "@/components/studio/site";
@@ -158,6 +158,7 @@ export default function ConsultingPage() {
         </div>
       </section>
     </main>
+    <StudioAskBand />
     <StudioFooter />
   </div>;
 }

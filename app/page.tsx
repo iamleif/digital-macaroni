@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Agents } from "@/components/studio/agents";
 import { HeroApp } from "@/components/studio/hero-app";
-import { ArrowDown, ArrowUpRight, Device, Globe, Grid, LinkedIn, Phone, Plug, Sparkle, Wave, YouTube } from "@/components/studio/icons";
-import { StudioFooter, StudioNav } from "@/components/studio/chrome";
+import { ArrowDown, ArrowUpRight, Device, Globe, Grid, Phone, Plug, Sparkle, Wave } from "@/components/studio/icons";
+import { StudioAskBand, StudioFooter, StudioNav } from "@/components/studio/chrome";
 import { ConsultingCard, PlanCards } from "@/components/studio/pricing";
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { answerBySlug } from "@/components/studio/answers/content";
-import { COMPANY_LINKEDIN, COMPANY_YOUTUBE, pageMeta } from "@/components/studio/site";
+import { pageMeta } from "@/components/studio/site";
 import { DEFAULT_MISSED, DEFAULT_RATE, TRADES, lostRevenue } from "@/components/studio/calculator/math";
 import h from "@/components/studio/home.module.css";
 
@@ -69,17 +69,6 @@ const tools = ["Google Calendar", "Outlook", "HubSpot", "Salesforce", "ServiceTi
 const homeFaqs = ["how-much-does-an-ai-phone-agent-cost", "what-happens-when-an-ai-phone-agent-gets-something-wrong", "can-i-keep-my-business-phone-number", "will-callers-know-they-are-talking-to-an-ai", "hosted-vs-managed-vs-self-hosted-ai-phone-agent", "custom-ai-phone-agent-vs-template-build"]
   .map((slug) => answerBySlug(slug)!)
   .filter(Boolean);
-
-const ASK_AI_PROMPT = "Summarize what Digital Macaroni (digitalmacaroni.io) does and who it's for: the AI agents, software and automations it builds, and how they take action inside a business's workflows. Use https://digitalmacaroni.io/llm-info.txt and https://digitalmacaroni.io/llms.txt as sources.";
-/** Each assistant opens with the prompt above; icon file in /studio/ai/. */
-const askAi: [string, string, string][] = [
-  ["chatgpt.png", "ChatGPT", `https://chatgpt.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["claude.png", "Claude", `https://claude.ai/new?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["gemini.png", "Gemini", `https://gemini.google.com/app?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["google.svg", "Google AI Mode", `https://www.google.com/search?udm=50&q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["perplexity.png", "Perplexity", `https://www.perplexity.ai/search?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-  ["grok.png", "Grok", `https://grok.com/?q=${encodeURIComponent(ASK_AI_PROMPT)}`],
-];
 
 const steps = [
   { title: "Tell us what you need", copy: "A few questions about your business and the calls you get. It takes a couple of minutes." },
@@ -262,16 +251,7 @@ export default function HomePage() {
 
     </main>
 
-    <section className={h.askAi} aria-labelledby="ask-ai-heading">
-      <nav aria-label="Digital Macaroni on social media" className={h.socials}>
-        <a href={COMPANY_YOUTUBE} target="_blank" rel="noopener noreferrer"><YouTube size={17} />YouTube</a>
-        <a href={COMPANY_LINKEDIN} target="_blank" rel="noopener noreferrer"><LinkedIn size={15} />LinkedIn</a>
-      </nav>
-      <div className={h.askAiGroup}>
-        <h2 id="ask-ai-heading" className={h.askAiHeading}><Sparkle size={15} />Ask AI about Digital Macaroni</h2>
-        <div className={h.askAiIcons}>{askAi.map(([file, name, href]) => <a key={file} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Ask ${name} about Digital Macaroni`} title={name}><Image unoptimized src={`/studio/ai/${file}`} alt="" width={36} height={36} /></a>)}</div>
-      </div>
-    </section>
+    <StudioAskBand />
 
     <StudioFooter />
   </div>;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { answerBySlug } from "@/components/studio/answers/content";
-import { StudioFooter, StudioNav } from "@/components/studio/chrome";
+import { StudioAskBand, StudioFooter, StudioNav } from "@/components/studio/chrome";
 import { ArrowUpRight } from "@/components/studio/icons";
 import { ConsultingCard, PlanCards, RunningCosts } from "@/components/studio/pricing";
 import { Intro, Reveal } from "@/components/studio/reveal";
@@ -116,6 +116,7 @@ export default function PricingPage() {
         </div>
       </section>
     </main>
+    <StudioAskBand />
     <StudioFooter />
   </div>;
 }
