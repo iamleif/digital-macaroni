@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 /** One place for who we are: page metadata and the structured data on every page read from here. */
 export const SITE = "https://digitalmacaroni.io";
 export const NAME = "Digital Macaroni";
-export const TAGLINE = "AI agents that take action inside real business workflows.";
+export const TAGLINE = "AI voice agents that do the work.";
 export const DESCRIPTION =
-  "Digital Macaroni builds AI agents that take action inside real business workflows: voice agents, software and automations that turn conversations into completed work.";
+  "Digital Macaroni builds AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team. Each agent is built for one business and connected to the tools it already runs.";
 export const COMPANY_LINKEDIN = "https://www.linkedin.com/company/digitalmacaroni/";
 export const COMPANY_YOUTUBE = "https://www.youtube.com/@DigitalMacaroni";
 export const COMPANY_TIKTOK = "https://www.tiktok.com/@costume.spark";
@@ -73,7 +73,7 @@ export const siteGraph = {
       founder: FOUNDER_REF,
       sameAs: [COMPANY_LINKEDIN, COMPANY_YOUTUBE, COMPANY_TIKTOK, COMPANY_INSTAGRAM, COMPANY_FACEBOOK],
       contactPoint: { "@type": "ContactPoint", contactType: "sales", url: `${SITE}/contact/`, availableLanguage: "English" },
-      knowsAbout: ["AI agents", "AI voice agents", "Workflow automation", "System integrations", "Business software", "Conversational AI"],
+      knowsAbout: ["AI voice agents", "AI phone agents", "Conversational AI", "Phone automation", "System integrations", "Voice AI consulting"],
       makesOffer: [
         {
           "@type": "Offer",
@@ -92,10 +92,6 @@ export const siteGraph = {
           url: `${SITE}/pricing/`,
           itemOffered: { "@type": "Service", serviceType: "AI voice agent", name: "Custom AI voice agent", provider: ORG_REF },
         },
-      ],
-      owns: [
-        { "@type": "Product", name: "Hey Anders", url: "https://heyanders.com", description: "An AI assistant and workspace for appointment-based practices." },
-        { "@type": "Product", name: "TwoTop", url: "https://twotop.app", description: "Hospitality scheduling, communication and team operations." },
       ],
     },
     {
