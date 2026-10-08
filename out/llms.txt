@@ -6,7 +6,8 @@
 
 - [Official information](https://digitalmacaroni.io/llm-info.txt): the full fact sheet: what we build, use cases by business type, integrations, pricing and example projects.
 - [About](https://digitalmacaroni.io/about/): what Digital Macaroni does and who it builds for.
-- [Pricing](https://digitalmacaroni.io/pricing.md): agents, running plans and extras in plain text.
+- [Pricing](https://digitalmacaroni.io/pricing/): agents, running plans and extras ([plain text](https://digitalmacaroni.io/pricing.md)).
+- [Consulting](https://digitalmacaroni.io/consulting/): voice AI consulting for bigger projects, scoped and priced per engagement.
 - [Contact](https://digitalmacaroni.io/contact/): start a project or ask a question.
 
 ## Free tools

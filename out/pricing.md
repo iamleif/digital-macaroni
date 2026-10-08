@@ -1,7 +1,7 @@
 # Pricing - Digital Macaroni
 
 Custom AI phone agents for businesses. Prices in USD. Updated 2026-10-04.
-Full details: https://digitalmacaroni.io/#pricing and https://digitalmacaroni.io/answers/how-much-does-an-ai-phone-agent-cost/
+Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io/answers/how-much-does-an-ai-phone-agent-cost/
 
 ## Agents (one-time build)
 
@@ -36,6 +36,12 @@ Full details: https://digitalmacaroni.io/#pricing and https://digitalmacaroni.io
 - Texting registration (A2P 10DLC): $50 one-time, required for business texting in the US
 - Premium voices: +$80/month on Hosted, +$100/month on Managed
 - Extra minutes and texts: billed at the rate in the proposal
+
+## Consulting
+- For companies putting voice AI into a product, moving phones or support to AI agents, reviewing an existing build, or training a team
+- Engagements: a few days (billed by the day), a project of weeks to months (fixed scope and price), or ongoing month to month
+- Price: scoped and priced per engagement after a call
+- Details: https://digitalmacaroni.io/consulting/
 
 ## Contact
 - https://digitalmacaroni.io/contact/

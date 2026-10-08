@@ -59,7 +59,8 @@ Examples of tools with documented APIs that agents can connect to. These are exa
 - Custom agent: from $5,000, live in 2 to 4 weeks, connected to the business’s systems.
 - Running plans: self-hosted (no monthly fee from us, $500 one-time setup), hosted from $149/month, or managed from $399/month.
 - Software, integrations and apps: scoped and priced per project in a proposal.
-- Full pricing: https://digitalmacaroni.io/pricing.md
+- Consulting: for companies putting voice AI into a product, moving phones or support to AI agents, or reviewing an existing build: a few days, a project of weeks to months, or ongoing. Scoped and priced per engagement. (https://digitalmacaroni.io/consulting/)
+- Full pricing: https://digitalmacaroni.io/pricing/
 
 ## Example projects
 
@@ -80,6 +81,8 @@ Three example voice agents on the site show the kind of work the studio builds. 
 - About: https://digitalmacaroni.io/about/
 - Answers: https://digitalmacaroni.io/answers/
 - Missed call calculator: https://digitalmacaroni.io/missed-call-calculator/
+- Pricing: https://digitalmacaroni.io/pricing/
+- Consulting: https://digitalmacaroni.io/consulting/
 - Pricing (plain text): https://digitalmacaroni.io/pricing.md
 - Site index for AI: https://digitalmacaroni.io/llms.txt
 - Contact: https://digitalmacaroni.io/contact/
