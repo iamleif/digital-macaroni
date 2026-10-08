@@ -9,7 +9,7 @@ import { ContactForm } from "./ContactForm";
 export const metadata: Metadata = pageMeta({
   title: "Contact — Digital Macaroni",
   shareTitle: "Tell Digital Macaroni what your business needs",
-  description: "Tell Digital Macaroni about your business and the calls you get. AI voice agents that do the work: ready-made from $2,500, custom from $5,000, and consulting for bigger projects.",
+  description: "Tell Digital Macaroni about your business and the calls you get. AI voice agents that do the work, and consulting for bigger projects.",
   path: "/contact/",
 });
 
@@ -30,8 +30,8 @@ export default function ContactPage() {
           <p>A new idea, a tricky workflow, or something you wish worked better. Tell us what’s on your mind and we’ll figure out the right thing to make.</p>
           <ul>
             <li><Check size={15} />AI voice agents that answer every call and do the work</li>
-            <li><Check size={15} />Ready-made agents from $2,500; custom from $5,000</li>
             <li><Check size={15} />Consulting on bigger projects, scoped together</li>
+            <li><Check size={15} />A clear proposal with scope and timeline before any work begins</li>
           </ul>
         </section>
         <div className={c.formCard}><ContactForm /></div>

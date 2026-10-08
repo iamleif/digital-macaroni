@@ -3,9 +3,9 @@ import { ArchitectureHub } from "@/components/studio/agent-pages/architecture-hu
 import { pageMeta } from "@/components/studio/site";
 
 export const metadata: Metadata = pageMeta({
-  title: "Voice agent architecture: speech-to-speech, voice platforms and cascades compared · Digital Macaroni",
+  title: "Voice Agent Architecture Compared · Digital Macaroni",
   shareTitle: "Voice agent architecture, compared",
-  description: "How AI voice agents are built: speech-to-speech models, managed voice platforms and speech-to-text, LLM and text-to-speech cascades. Compare speed, accuracy, voices and cost, and call a live demo of each.",
+  description: "How AI voice agents are built: speech-to-speech, managed voice platforms and STT-LLM-TTS cascades. Compare speed, voices and cost, and call a demo of each.",
   path: "/architecture/",
 });
 

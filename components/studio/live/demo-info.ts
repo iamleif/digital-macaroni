@@ -32,6 +32,8 @@ export interface DemoInfo {
   phone: string;
   phoneDisplay: string;
   intro: string;
+  /** Meta description when the intro runs past what search results show. */
+  seoDescription?: string;
   prompts: string[];
   sampleDetails: string;
   /** Sample details to use on the call, shown in their own box so they are easy to find. */
@@ -139,6 +141,7 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
     agentName: "Linda",
     phone: "+17205996395",
     phoneDisplay: "(720) 599-6395",
+    seoDescription: "Talk to Linda, Waypoint Travel’s agent. She searches live airline fares and books the trip with you, fare, seat and bags, right up to payment.",
     intro: "Talk to Linda, Waypoint Travel’s agent. Tell her where and when you’d like to fly: she searches live airline fares, then books it like a travel agent: fare, seat, bags and traveller, right up to payment.",
     prompts: ["I’d like to fly from London to New York next Friday.", "Just me, coming back a week later.", "The first one. A window seat, please.", "Add one checked bag."],
     sampleDetails: "Waypoint Travel is fictional. Fares come from an airline booking system’s test environment, so prices are illustrative and nothing is ever booked or charged. Any name will do, such as Alex Taylor.",

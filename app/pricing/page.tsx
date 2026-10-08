@@ -8,9 +8,9 @@ import { JsonLd, ORG_REF, SITE, pageMeta } from "@/components/studio/site";
 import h from "@/components/studio/home.module.css";
 
 export const metadata: Metadata = pageMeta({
-  title: "Pricing — Digital Macaroni",
+  title: "AI Voice Agent Pricing — Digital Macaroni",
   shareTitle: "Digital Macaroni pricing: AI voice agents from $2,500",
-  description: "AI voice agent pricing: ready-made agents $2,500 one-time, custom agents from $5,000. Running plans from $149/mo, or self-host on your own accounts. Consulting priced per engagement.",
+  description: "AI voice agent pricing: ready-made agents $2,500 one-time, custom from $5,000. Running plans from $149/mo, or self-host on your own accounts.",
   path: "/pricing/",
   ownImage: true,
 });

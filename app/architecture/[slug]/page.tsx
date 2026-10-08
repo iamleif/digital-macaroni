@@ -15,9 +15,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const story = storyFor((await params).slug);
   if (!story) return {};
   return pageMeta({
-    title: `${story.seoTitle} · Digital Macaroni`,
+    title: `${story.metaTitle} · Digital Macaroni`,
     shareTitle: story.seoTitle,
-    description: story.description,
+    description: story.metaDescription,
     path: `/architecture/${story.slug}/`,
   });
 }

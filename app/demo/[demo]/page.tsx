@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ demo: str
   return pageMeta({
     title: `${demo.agentName} at ${demo.name} · Live voice demo · Digital Macaroni`,
     shareTitle: `Call ${demo.agentName}, a live AI voice agent · Digital Macaroni`,
-    description: demo.intro,
+    description: demo.seoDescription ?? demo.intro,
     path: `/demo/${id}/`,
     ownImage: true,
   });

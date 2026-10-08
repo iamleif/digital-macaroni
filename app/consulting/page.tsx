@@ -10,7 +10,7 @@ import h from "@/components/studio/home.module.css";
 export const metadata: Metadata = pageMeta({
   title: "Voice AI Consulting — Digital Macaroni",
   shareTitle: "Voice AI consulting: bring Digital Macaroni in on your next big build",
-  description: "Voice AI consulting for companies putting voice agents into a product, moving phones and support to AI agents, or rescuing a stalled build. Days on site or months alongside your team, scoped and priced per engagement.",
+  description: "Voice AI consulting for companies putting voice agents into a product or moving phones and support to AI agents. Days on site or months with your team.",
   path: "/consulting/",
   ownImage: true,
 });

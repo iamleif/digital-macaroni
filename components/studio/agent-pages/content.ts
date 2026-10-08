@@ -34,6 +34,9 @@ export interface ArchitectureStory {
   slug: string;
   /** Page title for search results and AI answers. */
   seoTitle: string;
+  /** Shorter <title> and meta description, sized for search results (about 60 and 155 characters). */
+  metaTitle: string;
+  metaDescription: string;
   demo: DemoId;
   tone: "blue" | "sage" | "sand";
   architecture: ArchitectureId;
@@ -78,6 +81,8 @@ export const stackOf = (story: ArchitectureStory) => [...story.stack, CARRIERS[s
 export const STORIES: ArchitectureStory[] = [
   {
     slug: "speech-to-speech",
+    metaTitle: "Speech-to-Speech Voice Agent Architecture",
+    metaDescription: "Speech-to-speech voice agents: one bidirectional model (Gemini 3.8 Live) hears, reasons, calls tools and speaks in one live stream. Call the live demo.",
     seoTitle: "Speech-to-speech voice agent architecture: one bidirectional model (Gemini 3.8 Live)",
     demo: "northline",
     tone: "blue",
@@ -128,6 +133,8 @@ export const STORIES: ArchitectureStory[] = [
   },
   {
     slug: "managed-voice-platform",
+    metaTitle: "Managed Voice Platform Architecture",
+    metaDescription: "Managed voice platform architecture (ElevenLabs Agents): the platform runs the conversation while tools and data stay on your server. Call the live demo.",
     seoTitle: "Managed voice platform architecture for AI voice agents (ElevenLabs Agents)",
     demo: "formfield",
     tone: "sage",
@@ -179,6 +186,8 @@ export const STORIES: ArchitectureStory[] = [
   },
   {
     slug: "stt-llm-tts-cascade",
+    metaTitle: "Cascading Voice Agent Architecture",
+    metaDescription: "Cascading voice agents: separate models hear (AssemblyAI), think (Gemini) and speak, with our own turn-taking. Compare the trade-offs and call the live demo.",
     seoTitle: "Cascading voice agent architecture: speech-to-text, LLM and text-to-speech",
     demo: "travel",
     tone: "sand",

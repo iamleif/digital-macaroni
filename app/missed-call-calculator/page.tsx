@@ -18,7 +18,7 @@ const CALC_UPDATED_ISO = "2026-10-07";
 export const metadata: Metadata = pageMeta({
   title: "Missed Call Calculator: What Missed Calls Cost Your Business",
   shareTitle: "Missed call calculator: what are missed calls costing you?",
-  description: "Free missed call calculator for home services, law firms, clinics, salons and more. Enter your missed calls and what a booking is worth to see the revenue you lose each month and year.",
+  description: "Free missed call calculator for home services, law firms, clinics and salons. See the revenue missed calls cost your business each month and year.",
   path: PATH,
   ownImage: true,
 });

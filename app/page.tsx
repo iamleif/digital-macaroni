@@ -15,7 +15,7 @@ import h from "@/components/studio/home.module.css";
 export const metadata: Metadata = pageMeta({
   title: "Digital Macaroni — AI voice agents that get to work",
   shareTitle: "Digital Macaroni — AI voice agents that do the work",
-  description: "Digital Macaroni builds AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team. Call a live demo agent and watch it work.",
+  description: "AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team. Call a live demo and watch it work.",
   path: "/",
   ownImage: true,
 });
