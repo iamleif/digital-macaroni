@@ -141,7 +141,7 @@ export default function HomePage() {
           <p className={h.lede}>Your agent checks your calendar, updates your CRM and sends the follow-up, in the systems your team already works in.</p>
         </Reveal>
         <Reveal delay={80} className={h.toolCloud}>
-          <p className={h.toolNote}><Sparkle size={13} />Just a few examples. If you can think of it, we can connect to it.</p>
+          <p className={h.toolNote}>Just a few examples. If you can think of it, we can connect to it.</p>
           <ul aria-label="Examples of tools we connect to">
             {tools.map((t) => <li key={t}>{t}</li>)}
             <li data-any>Anything with an API</li>

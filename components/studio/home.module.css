@@ -589,7 +589,6 @@
 .toolStrip { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; padding-top: 88px; padding-bottom: 88px; }
 .toolStrip .h2 { font-size: clamp(30px, 3.4vw, 46px); }
 .toolNote { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 14px; padding: 7px 14px; border-radius: 16px; background: var(--ink); color: #fff; font-size: 13.5px; line-height: 1.4; font-weight: 500; }
-.toolNote svg { color: var(--yellow); }
 .toolCloud ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .toolCloud li { font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 999px; background: #fff; color: var(--ink-2); box-shadow: 0 0 0 1px var(--hair), 0 2px 6px -4px rgba(15, 15, 13, 0.25); }
 .toolCloud li[data-any] { background: var(--yellow); color: var(--ink); box-shadow: none; }
@@ -615,6 +614,7 @@
 @media (max-width: 860px) {
   .calcPromo { grid-template-columns: 1fr; gap: 36px; }
   .toolStrip { grid-template-columns: 1fr; gap: 32px; }
+  .toolNote { display: flex; justify-content: center; text-align: center; }
   .navLinks { display: none; }
   .nav { justify-content: space-between; }
   .sheetInner { padding: 80px 32px; }
