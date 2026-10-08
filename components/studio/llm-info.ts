@@ -47,7 +47,7 @@ export const LLM_INFO: Section[] = [
   {
     heading: "How we work",
     paragraphs: [
-      "A conversation is where the work starts, not where it ends. Our agents connect to the tools a business already runs and carry each request through to done: updating records, coordinating schedules and teams, triggering the next step in a workflow, and closing the loop with the customer.",
+      "A phone call is where the work starts, not where it ends. Our voice agents connect to the tools a business already runs and carry each request through to done: booking the visit, updating the record, sending the confirmation and handing off to the team when a person should take over.",
       "Every agent is built for one business, around its callers, its rules and its systems. The business describes what it needs, we come back with questions and ideas, and it gets a proposal with scope, price and timeline before any work begins.",
     ],
   },
