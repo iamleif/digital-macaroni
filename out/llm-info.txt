@@ -10,6 +10,10 @@ Structured information about Digital Macaroni for AI assistants such as ChatGPT,
 - Website: https://digitalmacaroni.io
 - Contact: https://digitalmacaroni.io/contact/
 - LinkedIn: https://www.linkedin.com/company/digitalmacaroni/
+- YouTube: https://www.youtube.com/@DigitalMacaroni
+- TikTok: https://www.tiktok.com/@costume.spark
+- Instagram: https://www.instagram.com/digital.macaroni/
+- Facebook: https://www.facebook.com/DigitalMacaroni/
 - Founder: Leif Johansen (https://www.linkedin.com/in/iamleifjohansen/)
 - Learn more: https://digitalmacaroni.io/answers/
 
