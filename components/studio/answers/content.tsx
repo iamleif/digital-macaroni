@@ -275,7 +275,7 @@ export const ANSWERS: Answer[] = [
           <tr><td>Managed</td><td>From $399</td><td>1,000 call minutes, 1,000 texts, changes on request, tuning, monthly report</td></tr>
         </tbody>
       </table>
-      <p>Extras: $50 one-time to register your number for business texting, premium voices from $80 a month, and extra minutes or texts at the rate in your proposal. See the <a href="/#pricing">pricing section</a> and <a href="/answers/hosted-vs-managed-vs-self-hosted-ai-phone-agent/">how the running plans differ</a>.</p>
+      <p>Extras: $50 one-time to register your number for business texting, premium voices from $80 a month, and extra minutes or texts at the rate in your proposal. See the <a href="/pricing/">pricing page</a> and <a href="/answers/hosted-vs-managed-vs-self-hosted-ai-phone-agent/">how the running plans differ</a>.</p>
       <p>Before you compare prices, run your own numbers in the <a href="/missed-call-calculator/">missed call calculator</a>: it shows what unanswered calls cost you each month.</p>
       <h2>What actually drives the price</h2>
       <ul>

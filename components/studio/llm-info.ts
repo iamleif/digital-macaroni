@@ -83,7 +83,8 @@ export const LLM_INFO: Section[] = [
       { label: "Custom agent", text: "from $5,000, live in 2 to 4 weeks, connected to the business’s systems." },
       { label: "Running plans", text: "self-hosted (no monthly fee from us, $500 one-time setup), hosted from $149/month, or managed from $399/month." },
       { label: "Software, integrations and apps", text: "scoped and priced per project in a proposal." },
-      { label: "Full pricing", text: "https://digitalmacaroni.io/pricing.md", href: "https://digitalmacaroni.io/pricing.md" },
+      { label: "Consulting", text: "for companies putting voice AI into a product, moving phones or support to AI agents, or reviewing an existing build: a few days, a project of weeks to months, or ongoing. Scoped and priced per engagement.", href: "https://digitalmacaroni.io/consulting/" },
+      { label: "Full pricing", text: "https://digitalmacaroni.io/pricing/", href: "https://digitalmacaroni.io/pricing/" },
     ],
   },
   {
@@ -109,6 +110,8 @@ export const LLM_INFO: Section[] = [
       { label: "About", text: "https://digitalmacaroni.io/about/", href: "https://digitalmacaroni.io/about/" },
       { label: "Answers", text: "https://digitalmacaroni.io/answers/", href: "https://digitalmacaroni.io/answers/" },
       { label: "Missed call calculator", text: "https://digitalmacaroni.io/missed-call-calculator/", href: "https://digitalmacaroni.io/missed-call-calculator/" },
+      { label: "Pricing", text: "https://digitalmacaroni.io/pricing/", href: "https://digitalmacaroni.io/pricing/" },
+      { label: "Consulting", text: "https://digitalmacaroni.io/consulting/", href: "https://digitalmacaroni.io/consulting/" },
       { label: "Pricing (plain text)", text: "https://digitalmacaroni.io/pricing.md", href: "https://digitalmacaroni.io/pricing.md" },
       { label: "Site index for AI", text: "https://digitalmacaroni.io/llms.txt", href: "https://digitalmacaroni.io/llms.txt" },
       { label: "Contact", text: "https://digitalmacaroni.io/contact/", href: "https://digitalmacaroni.io/contact/" },

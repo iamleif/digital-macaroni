@@ -10,10 +10,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const updated = "2026-10-05";
 
   return [
-    { url: `${base}/`, lastModified: "2026-10-07", changeFrequency: "monthly", priority: 1 },
+    { url: `${base}/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 1 },
     ...["northline", "formfield", "travel"].map((demo) => ({
       url: `${base}/demo/${demo}/`,
-      lastModified: updated,
+      lastModified: "2026-10-08",
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
@@ -24,8 +24,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
+    { url: `${base}/pricing/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/consulting/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/about/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
-    { url: `${base}/contact/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
+    { url: `${base}/contact/`, lastModified: "2026-10-08", changeFrequency: "yearly", priority: 0.7 },
     { url: `${base}/missed-call-calculator/`, lastModified: "2026-10-07", changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/answers/`, lastModified: UPDATED_ISO, changeFrequency: "monthly", priority: 0.8 },
     ...ANSWERS.map((x) => ({ url: `${base}/answers/${x.slug}/`, lastModified: UPDATED_ISO, changeFrequency: "monthly" as const, priority: 0.7 })),

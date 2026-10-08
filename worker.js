@@ -4,6 +4,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TOPICS = new Map([
   ["ready-made", "Ready-made voice agent"],
   ["custom-agent", "Custom voice agent"],
+  ["consulting", "Consulting on a project"],
   ["software", "Business software or dashboard"],
   ["app", "An app"],
   ["question", "General question"],

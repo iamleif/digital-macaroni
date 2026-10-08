@@ -23,6 +23,7 @@ function bioSource(): string {
 const TOPICS = [
   ["ready-made", "A ready-made voice agent"],
   ["custom-agent", "A custom voice agent"],
+  ["consulting", "Consulting on a project"],
   ["software", "Business software or a dashboard"],
   ["app", "An app"],
   ["question", "A general question"],
@@ -34,10 +35,13 @@ const BUSINESS_TYPES = ["Home services", "Shop or retail", "Health or clinic", "
 const CALL_VOLUMES = ["Under 100", "100 to 500", "500 to 2,000", "Over 2,000", "Not sure"];
 const TIMELINES = ["As soon as possible", "Within a month", "In 1 to 3 months", "Just exploring"];
 const BUDGETS = ["$5,000 to $10,000", "$10,000 to $25,000", "Over $25,000", "Not sure yet"];
+const CONSULTING_TIMELINES = ["As soon as possible", "Within a month", "This quarter", "Later this year", "Just exploring"];
+const CONSULTING_BUDGETS = ["Under $10,000", "$10,000 to $25,000", "$25,000 to $50,000", "$50,000 to $100,000", "Over $100,000", "Not sure yet"];
 
 const MESSAGE: Record<string, { label: string; placeholder: string }> = {
   "ready-made": { label: "Anything we should know?", placeholder: "What should callers be able to do? Book a visit, check stock, leave a message…" },
   "custom-agent": { label: "What should your agent do?", placeholder: "The calls you get, what should happen on them, and where the details should end up." },
+  consulting: { label: "Tell us about the project", placeholder: "What you’re changing, from what to what, the team involved, and when you’d like it done." },
   software: { label: "Tell us about it", placeholder: "Who uses it, what it replaces, and what a good day with it looks like." },
   app: { label: "Tell us about it", placeholder: "Who it’s for, what they’ll do with it, and where it should run (web, iPhone, Android)." },
 };
@@ -168,6 +172,13 @@ export function ContactForm() {
             <Select name="budget" label="Budget" options={BUDGETS} />
           </Row>
         </>}
+      </div> : null}
+
+      {topic === "consulting" ? <div className="field-group" key={topic}>
+        <Row>
+          <Select name="timeline" label="When should it start?" options={CONSULTING_TIMELINES} />
+          <Select name="budget" label="Budget" options={CONSULTING_BUDGETS} />
+        </Row>
       </div> : null}
 
       {topic === "software" || topic === "app" ? <div className="field-group" key={topic}>

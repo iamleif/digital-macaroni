@@ -78,7 +78,7 @@ export const siteGraph = {
           description: "A proven inbound phone agent, rebuilt for your business: answers every call, books appointments, answers questions, takes messages and transfers urgent calls.",
           price: 2500,
           priceCurrency: "USD",
-          url: `${SITE}/#pricing`,
+          url: `${SITE}/pricing/`,
           itemOffered: { "@type": "Service", serviceType: "AI voice agent", name: "Ready-made AI voice agent", provider: ORG_REF },
         },
         {
@@ -86,7 +86,7 @@ export const siteGraph = {
           name: "Custom AI voice agent",
           description: "An AI voice agent designed around your business and connected to the tools you already use through their APIs.",
           priceSpecification: { "@type": "PriceSpecification", minPrice: 5000, priceCurrency: "USD" },
-          url: `${SITE}/#pricing`,
+          url: `${SITE}/pricing/`,
           itemOffered: { "@type": "Service", serviceType: "AI voice agent", name: "Custom AI voice agent", provider: ORG_REF },
         },
       ],

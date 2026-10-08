@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ArrowUpRight, Check } from "@/components/studio/icons";
 import c from "@/components/studio/contact.module.css";
 import { CookieSettings } from "@/components/studio/consent";
-import { pageMeta } from "@/components/studio/site";
+import { JsonLd, ORG_REF, SITE, pageMeta } from "@/components/studio/site";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = pageMeta({
@@ -16,6 +16,10 @@ export const metadata: Metadata = pageMeta({
 export default function ContactPage() {
   return (
     <div className={c.page}>
+      <JsonLd data={[
+        { "@context": "https://schema.org", "@type": "ContactPage", url: `${SITE}/contact/`, name: "Contact Digital Macaroni", description: metadata.description, isPartOf: { "@id": `${SITE}/#website` }, about: ORG_REF, mainEntity: ORG_REF },
+        { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/` }, { "@type": "ListItem", position: 2, name: "Contact", item: `${SITE}/contact/` }] },
+      ]} />
       <header className={c.top}>
         <a href="/" className={c.brand} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} />Digital Macaroni</a>
         <a href="/" className={c.back}>Back to the studio<ArrowUpRight size={14} /></a>
@@ -27,6 +31,7 @@ export default function ContactPage() {
           <ul>
             <li><Check size={15} />Voice agents, business software and apps</li>
             <li><Check size={15} />Ready-made agents from $2,500; custom from $5,000</li>
+            <li><Check size={15} />Consulting on bigger projects, scoped together</li>
           </ul>
         </section>
         <div className={c.formCard}><ContactForm /></div>

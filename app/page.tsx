@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Agents } from "@/components/studio/agents";
 import { HeroApp } from "@/components/studio/hero-app";
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code, Device, Globe, Grid, LinkedIn, Phone, Plug, Sparkle, Wave, YouTube } from "@/components/studio/icons";
-import { Places } from "@/components/studio/location";
-import { CookieSettings } from "@/components/studio/consent";
+import { ArrowDown, ArrowUpRight, Device, Globe, Grid, LinkedIn, Phone, Plug, Sparkle, Wave, YouTube } from "@/components/studio/icons";
+import { StudioFooter, StudioNav } from "@/components/studio/chrome";
+import { ConsultingCard, PlanCards } from "@/components/studio/pricing";
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { answerBySlug } from "@/components/studio/answers/content";
 import { COMPANY_LINKEDIN, COMPANY_YOUTUBE, pageMeta } from "@/components/studio/site";
@@ -62,26 +62,8 @@ const languages: [string, string][] = [
   ["Tamil", "தமிழ்"], ["Chinese", "中文"], ["Japanese", "日本語"], ["Korean", "한국어"], ["Vietnamese", "Tiếng Việt"], ["Indonesian", "Bahasa Indonesia"], ["Malay", "Bahasa Melayu"], ["Filipino", "Tagalog"],
 ];
 
-/** Tools with documented APIs (each checked against its developer docs, 2026-10-04), grouped the way an owner thinks about them. Examples, not partnerships. */
-const integrations: { group: string; tools: string[] }[] = [
-  { group: "Calendars & booking", tools: ["Google Calendar", "Outlook", "Calendly", "Acuity", "SimplyBook.me"] },
-  { group: "CRM", tools: ["HubSpot", "Salesforce", "Pipedrive", "Zoho CRM", "GoHighLevel", "Keap", "Close", "Teamleader", "Dynamics 365"] },
-  { group: "Legal", tools: ["Clio", "MyCase", "PracticePanther", "Lawmatics", "Smokeball"] },
-  { group: "Trades & repair", tools: ["ServiceTitan", "Jobber", "Housecall Pro", "simPRO", "ServiceM8", "AccuLynx", "JobNimbus", "Shopmonkey", "Tekmetric"] },
-  { group: "Vet & pet care", tools: ["ezyVet", "Vetspire", "MoeGo"] },
-  { group: "Commerce & payments", tools: ["Shopify", "WooCommerce", "Square", "Stripe", "PayPal", "Clover", "Toast", "Lightspeed", "SumUp", "Mollie"] },
-  { group: "Accounting", tools: ["QuickBooks", "Xero", "Sage", "FreshBooks", "FreeAgent", "Zoho Books"] },
-  { group: "Messages", tools: ["SMS", "WhatsApp", "Email", "Slack", "Microsoft Teams"] },
-  { group: "Data", tools: ["Google Sheets", "Airtable", "Notion", "Your database"] },
-];
-
-/** An example call: what the agent did, and where each action landed. */
-const exampleActions: [string, string, string][] = [
-  ["check_availability", "Checked the schedule", "Google Calendar"],
-  ["find_customer", "Found the customer", "HubSpot"],
-  ["book_job", "Booked the job", "Jobber"],
-  ["send_confirmation", "Texted a confirmation", "SMS"],
-];
+/** A short sample of tools with documented APIs (checked against their developer docs, 2026-10-04). Examples, not partnerships. */
+const tools = ["Google Calendar", "Outlook", "HubSpot", "Salesforce", "ServiceTitan", "Jobber", "Housecall Pro", "Clio", "Shopify", "Square", "QuickBooks", "Slack"];
 
 /** Homepage questions: each links to its full answer page. */
 const homeFaqs = ["how-much-does-an-ai-phone-agent-cost", "what-happens-when-an-ai-phone-agent-gets-something-wrong", "can-i-keep-my-business-phone-number", "will-callers-know-they-are-talking-to-an-ai", "hosted-vs-managed-vs-self-hosted-ai-phone-agent", "custom-ai-phone-agent-vs-template-build"]
@@ -116,11 +98,7 @@ export default function HomePage() {
     <main id="content" className={h.contents}>
     {/* Hero */}
     <section className={`${h.sheet} ${h.heroSheet}`} aria-labelledby="hero-heading">
-      <header className={h.nav}>
-        <a href="#" className={h.brand} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={30} height={30} priority />Digital Macaroni</a>
-        <nav aria-label="Studio navigation" className={h.navLinks}><a href="#agents">Voice demos</a><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="/answers/">Answers</a></nav>
-        <a className={h.navCta} href="/contact/">Let’s talk</a>
-      </header>
+      <StudioNav home />
 
       <div>
         <div className={h.heroCopy}>
@@ -168,27 +146,18 @@ export default function HomePage() {
 
     {/* Integrations */}
     <section id="integrations" className={h.sheet} aria-labelledby="integrations-heading">
-      <div className={h.sheetInner}>
-        <div className={h.sectionHead}>
-          <Reveal><h2 id="integrations-heading" className={h.h2}>Works with the tools <span className={h.chip} data-tone="blue"><Plug size={21} /></span><br />you already run</h2><p className={h.lede}>Your agent doesn’t just talk. It checks your calendar, updates your CRM and sends the follow-up, in the systems your team already works in.</p></Reveal>
-        </div>
-        <div className={h.connect}>
-          <Reveal className={h.flowShell}>
-            <div className={h.flow} aria-label="Example: what an agent does on one call">
-              <div className={h.flowTop}><span className={h.flowOrb} /><div><b>One call, four systems</b><small>Example booking call</small></div><span className={h.flowLive}><i />On a call</span></div>
-              <ol>{exampleActions.map(([tool, did, where]) => <li key={tool}><span className={h.flowCheck}><Check size={12} /></span><div><b>{did}</b><code>{tool}</code></div><ArrowRight size={14} /><em>{where}</em></li>)}</ol>
-            </div>
-          </Reveal>
-          <Reveal delay={80} className={h.apiBand}>
-            <span className={h.apiIcon}><Code size={20} /></span>
-            <div><b>If it has an API, we can connect to it.</b><p>In-house systems, industry software, webhooks, REST or GraphQL APIs, even a shared spreadsheet. If your system has a way in, your agent can use it.</p></div>
-            <a className={h.pillDark} href="/contact/?topic=custom-agent">Ask about your tools<span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
-          </Reveal>
-        </div>
-        <div className={h.toolGroups}>
-          {integrations.map((g, i) => <Reveal key={g.group} delay={(i % 3) * 50} className={h.toolGroup}><p>{g.group}</p><div>{g.tools.map((t) => <span key={t}>{t}</span>)}</div></Reveal>)}
-        </div>
-        <p className={h.tmNote}>Tools shown are examples of systems with APIs we can connect to. Names are trademarks of their owners and don’t imply a partnership.</p>
+      <div className={`${h.sheetInner} ${h.toolStrip}`}>
+        <Reveal>
+          <h2 id="integrations-heading" className={h.h2}>Works with the tools <span className={h.chip} data-tone="blue"><Plug size={21} /></span> you already run</h2>
+          <p className={h.lede}>Your agent checks your calendar, updates your CRM and sends the follow-up, in the systems your team already works in.</p>
+        </Reveal>
+        <Reveal delay={80} className={h.toolCloud}>
+          <ul aria-label="Examples of tools we connect to">
+            {tools.map((t) => <li key={t}>{t}</li>)}
+            <li data-any>Anything with an API</li>
+          </ul>
+          <a className={h.toolAsk} href="/contact/?topic=custom-agent">Ask about your tools<ArrowUpRight size={14} /></a>
+        </Reveal>
       </div>
     </section>
 
@@ -215,7 +184,6 @@ export default function HomePage() {
     <section id="calculator" className={h.sheet} aria-labelledby="calculator-heading">
       <div className={`${h.sheetInner} ${h.calcPromo}`}>
         <Reveal>
-          <p className={h.kicker}>Free tool</p>
           <h2 id="calculator-heading" className={h.h2}>What are missed calls <span className={h.chip} data-tone="yellow"><Phone size={22} /></span> costing you?</h2>
           <p className={h.lede}>Pick your kind of business, enter last month&rsquo;s missed calls, and see what they cost you in a few seconds. Typical values for home services, law firms, clinics, salons and more, with sources. No signup.</p>
           <div className={h.ctaActions}>
@@ -257,67 +225,18 @@ export default function HomePage() {
       </div>
     </section>
 
-    {/* Pricing */}
+    {/* Pricing: the two plans and consulting; the full breakdown lives on /pricing/. */}
     <section id="pricing" className={`${h.sheet} ${h.darkSheet}`} aria-labelledby="pricing-heading">
       <div className={h.sheetInner}>
         <div className={h.priceHead}>
-          <Reveal><p className={h.kickerDark}>Pricing</p><h2 id="pricing-heading" className={h.h2}>Clear pricing.<br /><span>Built around your business.</span></h2></Reveal>
+          <Reveal><h2 id="pricing-heading" className={h.h2}>Clear pricing.<br /><span>Built around your business.</span></h2></Reveal>
           <Reveal delay={80}><p className={h.pricingLede}>Start with a proven agent, or have one built around your systems. Either way, you know the price before any work begins.</p></Reveal>
         </div>
-
-        <div className={h.plans}>
-          <Reveal className={h.planShell}>
-            <article className={h.plan}>
-              <p className={h.planName}>Ready-made agent</p>
-              <p className={h.planPrice}>$2,500<span>one-time</span></p>
-              <p className={h.planPitch}>One of our proven agents, rebuilt for your business to answer every inbound call.</p>
-              <ul>
-                <li><Check size={15} />Answers every call, day or night</li>
-                <li><Check size={15} />Books appointments, answers questions and takes messages</li>
-                <li><Check size={15} />Texts callers confirmations and links</li>
-                <li><Check size={15} />Texts you a summary after every call</li>
-                <li><Check size={15} />Transfers urgent calls to you or your team</li>
-                <li><Check size={15} />Your name, voice, hours and services</li>
-                <li><Check size={15} />Every call’s transcript and summary in your dashboard</li>
-              </ul>
-              <a className={h.pillOutline} href="/contact/?topic=ready-made">Start with a ready-made agent <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
-            </article>
-          </Reveal>
-          <Reveal delay={90} className={h.planShell} >
-            <article className={h.plan} data-featured>
-              <p className={h.planName}>Custom agent<em>Most flexible</em></p>
-              <p className={h.planPrice}><small>from</small>$5,000</p>
-              <p className={h.planPitch}>Everything in the ready-made agent, built around your business and connected to the tools you already use.</p>
-              <ul>
-                <li><Check size={15} />Everything in the ready-made agent</li>
-                <li><Check size={15} />Connects to your systems through their APIs: calendar, CRM, booking or field-service software</li>
-                <li><Check size={15} />Two-way texting: reminders, follow-ups and replies</li>
-                <li><Check size={15} />Your own rules, call flows and handoffs</li>
-                <li><Check size={15} />Designed and tested on your real calls</li>
-                <li><Check size={15} />Fixed scope and price, agreed up front</li>
-              </ul>
-              <a className={h.pillYellow} href="/contact/?topic=custom-agent">Shape a custom project <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
-            </article>
-          </Reveal>
-        </div>
-
-        <Reveal className={h.running}>
-          <div className={h.runningHead}><h3>Keeping it running</h3><p>Every agent needs a phone line, call minutes and texts. Run it yourself, or let us handle it.</p></div>
-          <div className={h.runningPlans}>
-            <div><p className={h.runName}>Self-hosted</p><p className={h.runPrice}>Free<span>/mo from us</span></p><p>We get you set up with your own phone and AI accounts and build your agent there. You run it yourself, with 30 days of fixes included. One-time $500 setup.</p></div>
-            <div><p className={h.runName}>Hosted</p><p className={h.runPrice}>from $149<span>/mo</span></p><p>We keep it running: your number, 500 call minutes, 500 texts and your dashboard. Changes are quoted when you need them.</p></div>
-            <div data-featured><p className={h.runName}>Managed<em>Hands-off</em></p><p className={h.runPrice}>from $399<span>/mo</span></p><p>We run it for you: 1,000 call minutes, 1,000 texts, changes on request, tuning from real calls and a monthly report.</p></div>
-          </div>
-          <div className={h.extras}>
-            <div className={h.runningHead}><h3>Extras</h3><p>Add-ons for either agent, ready-made or custom.</p></div>
-            <div className={h.extraList}>
-              <div><p className={h.runName}>Self-hosted setup</p><p className={h.extraPrice}>$500<span>one-time</span></p><p>Setting up your own accounts, building and testing your agent in them, and a short guide for running it.</p></div>
-              <div><p className={h.runName}>Texting registration</p><p className={h.extraPrice}>$50<span>one-time</span></p><p>Registers your number and business with the carriers (A2P 10DLC), so your agent’s texts reach your customers. Needed for texting in the US, on either plan.</p></div>
-              <div><p className={h.runName}>Premium voices</p><p className={h.extraPrice}>+$80<span>/mo Hosted</span></p><p>Our most natural voices: +$100/mo on Managed. On Self-hosted, you pay the voice provider’s rate.</p></div>
-              <div><p className={h.runName}>Extra minutes &amp; texts</p><p className={h.extraPrice}>As needed</p><p>Billed at the rate in your proposal if you go over your plan’s minutes or texts.</p></div>
-            </div>
-          </div>
-          <p className={h.offerNote}>Need several agents or outbound calling? <a href="/contact/">Let’s talk</a>.</p>
+        <PlanCards />
+        <ConsultingCard />
+        <Reveal className={h.pricingMore}>
+          <p>Running plans from $149/mo, extras and everything that&rsquo;s included.</p>
+          <a className={h.pillOutline} href="/pricing/">See full pricing <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
         </Reveal>
       </div>
     </section>
@@ -354,20 +273,6 @@ export default function HomePage() {
       </div>
     </section>
 
-    <footer className={h.footer}>
-      <a href="/" className={h.brand}><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} />Digital Macaroni</a>
-      <nav aria-label="Site information" className={h.footerLinks}>
-        <a href="/about/">About</a>
-        <a href="/answers/">Answers</a>
-        <a href="/missed-call-calculator/">Missed call calculator</a>
-        <a href="/architecture/">Architecture</a>
-        <a href="/privacy/">Privacy</a>
-        <a href="/demo-terms/">Demo terms</a>
-        <CookieSettings />
-      </nav>
-      <div className={h.footerPlaces}><Places /></div>
-      <a href="/llm-info.txt" className={h.footerAi}><span aria-hidden="true">👋</span> Hey AI, learn about us</a>
-      <p className={h.footerCopy}>© 2026 Digital Macaroni</p>
-    </footer>
+    <StudioFooter />
   </div>;
 }
