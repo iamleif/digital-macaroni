@@ -33,7 +33,7 @@ export default function AboutPage() {
     </section>
     <section>
       <h2>Our own products</h2>
-      <p>We also build and run our own: <a href="https://rankladder.app">RankLadder</a>, <a href="https://heyanders.com">Hey Anders</a> and <a href="https://twotop.app">TwoTop</a>.</p>
+      <p>We also build and run our own: <a href="https://heyanders.com">Hey Anders</a> and <a href="https://twotop.app">TwoTop</a>.</p>
     </section>
     <section>
       <h2>Working with us</h2>

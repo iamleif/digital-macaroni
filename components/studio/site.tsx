@@ -94,7 +94,6 @@ export const siteGraph = {
         },
       ],
       owns: [
-        { "@type": "Product", name: "RankLadder", url: "https://rankladder.app", description: "Customer conversations and front-office tools for local businesses." },
         { "@type": "Product", name: "Hey Anders", url: "https://heyanders.com", description: "An AI assistant and workspace for appointment-based practices." },
         { "@type": "Product", name: "TwoTop", url: "https://twotop.app", description: "Hospitality scheduling, communication and team operations." },
       ],

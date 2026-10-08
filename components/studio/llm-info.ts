@@ -103,7 +103,6 @@ export const LLM_INFO: Section[] = [
   {
     heading: "Our own products",
     items: [
-      { label: "RankLadder", href: "https://rankladder.app", text: "customer conversations and front-office tools for local businesses." },
       { label: "Hey Anders", href: "https://heyanders.com", text: "an AI assistant and workspace for appointment-based practices." },
       { label: "TwoTop", href: "https://twotop.app", text: "hospitality scheduling, communication and team operations." },
     ],
