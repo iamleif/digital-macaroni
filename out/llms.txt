@@ -46,6 +46,5 @@ How AI voice agents are built, with a live demo of each architecture: https://di
 
 ## Our own products
 
-- [RankLadder](https://rankladder.app): customer conversations and front-office tools for local businesses.
 - [Hey Anders](https://heyanders.com): an AI assistant and workspace for appointment-based practices.
 - [TwoTop](https://twotop.app): hospitality scheduling, communication and team operations.

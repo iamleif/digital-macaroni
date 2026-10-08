@@ -76,7 +76,6 @@ Three example voice agents on the site show the kind of work the studio builds. 
 
 ## Our own products
 
-- RankLadder: customer conversations and front-office tools for local businesses. (https://rankladder.app)
 - Hey Anders: an AI assistant and workspace for appointment-based practices. (https://heyanders.com)
 - TwoTop: hospitality scheduling, communication and team operations. (https://twotop.app)
 
