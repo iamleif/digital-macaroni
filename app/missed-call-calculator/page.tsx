@@ -134,8 +134,8 @@ export default function MissedCallCalculatorPage() {
       <aside className={a.test} aria-label="Try a live demo">
         <div>
           <p className={a.testKicker}>Hear it for yourself</p>
-          <h2>Call Ellie at Northline and book a heating repair.</h2>
-          <p>Ask what the visit costs. Push back on the fee. Change your mind about the time. The live demo shows every step she takes while you talk.</p>
+          <h2>Call the home-services demo and book a heating repair.</h2>
+          <p>Ask what the visit costs. Push back on the fee. Change your mind about the time. The live demo shows every step the agent takes while you talk.</p>
         </div>
         <div className={a.testActions}>
           <a className={a.testCall} href="/demo/northline/"><Phone size={15} />Open the live demo</a>

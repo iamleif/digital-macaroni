@@ -118,7 +118,7 @@ export default function HomePage() {
     <section id="agents" className={h.sheet} aria-labelledby="agents-heading">
       <div className={h.sheetInner}>
         <div className={h.sectionHead}>
-          <Reveal><h2 id="agents-heading" className={h.h2}>Meet the agents <span className={h.chip} data-tone="purple"><Wave size={20} /></span><br />then give one a call</h2><p className={h.lede}>Three sample businesses, three voice agents. Call one from your phone and watch it work on screen.</p></Reveal>
+          <Reveal><h2 id="agents-heading" className={h.h2}>Three examples of what we can build. <span className={h.chip} data-tone="purple"><Wave size={20} /></span><br />Call one.</h2><p className={h.lede}>Three sample businesses, three voice agents. Call one from your phone and watch it work on screen. Yours gets built around your business, your rules and your software.</p></Reveal>
         </div>
         <Agents />
         <p className={h.note}>Live AI agents on fictional businesses. Nothing is really booked, sold or charged. <a href="/demo-terms/">Demo terms</a></p>

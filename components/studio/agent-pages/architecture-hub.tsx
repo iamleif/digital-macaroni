@@ -102,7 +102,7 @@ export function ArchitectureHub() {
             <p className={s.guideBuilt}><span>Our build</span>{builtWith(x).map((id) => <span key={id} className={s.guideLogo}><Logo id={id} size={14} />{LOGOS[id].name}</span>)}</p>
             <div className={s.guideLinks}>
               <a href={`/architecture/${x.slug}/`}>Full breakdown<ArrowRight size={14} /></a>
-              <a href={`/demo/${x.demo}/`}>See it live: {d.agentName} at {d.name}<ArrowUpRight size={14} /></a>
+              <a href={`/demo/${x.demo}/`}>See it live: the {d.name} demo<ArrowUpRight size={14} /></a>
             </div>
           </section>;
         })}

@@ -95,7 +95,6 @@ export function ArchitecturePage({ story }: { story: ArchitectureStory }) {
   const arch = ARCHITECTURES[story.architecture];
   const url = `${SITE}/architecture/${story.slug}/`;
   const others = STORIES.filter((x) => x.demo !== story.demo);
-  const [, her] = story.pronouns;
   return <AnswersShell>
     <JsonLd data={{
       "@context": "https://schema.org",
@@ -180,7 +179,7 @@ export function ArchitecturePage({ story }: { story: ArchitectureStory }) {
       <aside className={a.test} aria-label="Try the live demo">
         <div>
           <p className={a.testKicker}>Hear the architecture</p>
-          <h2>Call the {demo.name} demo and watch {demo.agentName} work on {her} screen.</h2>
+          <h2>Call the {demo.name} demo and watch the agent work on screen.</h2>
           <p>Interrupt, change your mind, ask for something off-limits. The live screen shows every tool call as it happens.</p>
         </div>
         <div className={a.testActions}>

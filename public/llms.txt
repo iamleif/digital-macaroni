@@ -40,6 +40,8 @@ How AI voice agents are built, with a live demo of each architecture: https://di
 
 ## Example projects
 
-- [Northline](https://digitalmacaroni.io/demo/northline/): example voice agent for a fictional home-services business.
-- [Form & Field](https://digitalmacaroni.io/demo/formfield/): example voice agent for a fictional shop.
-- [Waypoint Travel](https://digitalmacaroni.io/demo/travel/): example voice agent for a fictional travel agency.
+Three example voice agents show the kind of work the studio builds. They are demos, not products for sale: each client's agent is built around their business, rules and software.
+
+- [Book a service visit](https://digitalmacaroni.io/demo/northline/): Northline, a fictional home-services business. The agent books, moves and cancels service visits.
+- [Help a shop's callers](https://digitalmacaroni.io/demo/formfield/): Form & Field, a fictional shop. The agent answers product questions, checks stock and holds items for pickup.
+- [Search and book a flight](https://digitalmacaroni.io/demo/travel/): Waypoint Travel, a fictional travel agency. The agent searches live fares and books up to payment.

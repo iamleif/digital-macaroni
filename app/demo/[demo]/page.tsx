@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ demo: str
   const demo = voiceDemos[id as DemoId];
   if (!demo) return {};
   return pageMeta({
-    title: `${demo.agentName} at ${demo.name} · Live voice demo · Digital Macaroni`,
-    shareTitle: `Call ${demo.agentName}, a live AI voice agent · Digital Macaroni`,
+    title: `${demo.job} · Live AI voice agent demo · Digital Macaroni`,
+    shareTitle: `${demo.job}: call a live AI voice agent demo · Digital Macaroni`,
     description: demo.seoDescription ?? demo.intro,
     path: `/demo/${id}/`,
     ownImage: true,
@@ -35,13 +35,13 @@ export default async function LiveDemoPage({ params }: { params: Promise<{ demo:
         "@context": "https://schema.org",
         "@type": "WebPage",
         url,
-        name: `${demo.agentName} at ${demo.name}: live AI voice agent demo`,
+        name: `${demo.job}: live AI voice agent demo`,
         description: demo.intro,
         isPartOf: { "@id": `${SITE}/#website` },
         publisher: ORG_REF,
         about: {
           "@type": "SoftwareApplication",
-          name: `${demo.agentName}, an AI voice agent for ${demo.name}`,
+          name: `Example AI voice agent: ${demo.job.toLowerCase()}`,
           description: `An example AI voice agent built by Digital Macaroni for a fictional business (${demo.role.toLowerCase()}). Call it from any phone and watch it work on screen.`,
           applicationCategory: "BusinessApplication",
           operatingSystem: "Any phone",

@@ -58,7 +58,7 @@ function TestItYourself({ answer }: { answer: Answer }) {
   return <aside className={a.test} aria-label="Try a live demo">
     <div>
       <p className={a.testKicker}>Test it yourself</p>
-      <h2>Try {demo.agentName} at {demo.name} and see if you can trip it up.</h2>
+      <h2>Try the {demo.name} demo and see if you can trip it up.</h2>
       <p>Spell an email address. Change your mind about the time. Ask for something it shouldn&rsquo;t do, then ask for a person. The live demo shows every step it takes while you talk.</p>
     </div>
     <div className={a.testActions}>

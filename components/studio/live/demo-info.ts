@@ -28,6 +28,8 @@ export interface DemoInfo {
   id: DemoId;
   name: string;
   role: string;
+  /** What the demo does, phrased as the job. Leads every surface; the agent name is just who answers. */
+  job: string;
   agentName: string;
   phone: string;
   phoneDisplay: string;
@@ -47,10 +49,11 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
     id: "northline",
     name: "Northline",
     role: "Home services booking",
+    job: "Book a service visit",
     agentName: "Ellie",
     phone: "+12068879619",
     phoneDisplay: "(206) 887-9619",
-    intro: "Talk to Ellie, Northline’s booking assistant. Book a heating or cooling visit, change it, or leave a message, and watch the schedule change as she works.",
+    intro: "Book a heating or cooling visit by phone, change it, or leave a message, and watch the schedule change as the agent works. Northline is a fictional home-services company; its agent answers as Ellie.",
     prompts: ["Can someone look at my furnace tomorrow afternoon?", "Actually, can we make it a bit later?", "Could someone call me back instead?"],
     sampleDetails: "Use any name and address you like. Northline, its technicians and its schedule are fictional; nobody will visit.",
     design: {
@@ -89,10 +92,11 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
     id: "formfield",
     name: "Form & Field",
     role: "Shop assistant",
+    job: "Help a shop’s callers",
     agentName: "Theo",
     phone: "+18302392110",
     phoneDisplay: "(830) 239-2110",
-    intro: "Talk to Theo, Form & Field’s shop assistant. Describe what you’re after, ask about the details, and reserve something for pickup while the shop’s stock updates.",
+    intro: "Describe what you’re after, ask about the details, and reserve something for pickup while the shop’s stock updates. Form & Field is a fictional homeware shop; its agent answers as Theo.",
     prompts: ["I’m looking for a green table lamp under a hundred dollars.", "What’s it made of?", "Can you hold one for me to pick up?", "Where’s my order? It’s 1042, emilia@example.com."],
     sampleDetails: "Form & Field is a fictional shop. Nothing is charged, sold or shipped. For order help, use order 1042 with emilia@example.com.",
     sampleCard: { title: "Checking on an order? Use these", items: [{ label: "Order number", value: "1042" }, { label: "Email", value: "emilia@example.com" }] },
@@ -138,11 +142,12 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
     id: "travel",
     name: "Waypoint Travel",
     role: "Flight search & booking",
+    job: "Search and book a flight",
     agentName: "Linda",
     phone: "+17205996395",
     phoneDisplay: "(720) 599-6395",
-    seoDescription: "Talk to Linda, Waypoint Travel’s agent. She searches live airline fares and books the trip with you, fare, seat and bags, right up to payment.",
-    intro: "Talk to Linda, Waypoint Travel’s agent. Tell her where and when you’d like to fly: she searches live airline fares, then books it like a travel agent: fare, seat, bags and traveller, right up to payment.",
+    seoDescription: "Search live airline fares by phone and book the trip, fare, seat and bags, right up to payment. Waypoint Travel is fictional; its agent answers as Linda.",
+    intro: "Say where and when you’d like to fly. The agent searches live airline fares, then books it like a travel agent: fare, seat, bags and traveller, right up to payment. Waypoint Travel is fictional; its agent answers as Linda.",
     prompts: ["I’d like to fly from London to New York next Friday.", "Just me, coming back a week later.", "The first one. A window seat, please.", "Add one checked bag."],
     sampleDetails: "Waypoint Travel is fictional. Fares come from an airline booking system’s test environment, so prices are illustrative and nothing is ever booked or charged. Any name will do, such as Alex Taylor.",
     design: {

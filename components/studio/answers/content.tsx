@@ -32,8 +32,8 @@ export const CATEGORIES: Record<Category, { title: string; blurb: string }> = {
   "how-it-works": { title: "How it works", blurb: "Reliability, disclosure, your phone number and the rest of the details." },
 };
 
-export const UPDATED = "October 4, 2026";
-export const UPDATED_ISO = "2026-10-04";
+export const UPDATED = "October 9, 2026";
+export const UPDATED_ISO = "2026-10-09";
 
 /** An inline citation: links the claim to its source, which also appears in the page's source list. */
 function Cite({ k, children }: { k: SourceKey; children: ReactNode }) {

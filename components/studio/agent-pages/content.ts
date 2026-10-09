@@ -42,8 +42,6 @@ export interface ArchitectureStory {
   architecture: ArchitectureId;
   /** The phone carrier in front of the call service. */
   carrier: "twilio" | "telnyx";
-  /** Subject and possessive pronouns for the demo agent. */
-  pronouns: [string, string];
   headline: string;
   lede: string;
   /** The engine in the diagram: one block, a platform frame, or a chain. */
@@ -88,9 +86,8 @@ export const STORIES: ArchitectureStory[] = [
     tone: "blue",
     architecture: "bidirectional",
     carrier: "twilio",
-    pronouns: ["she", "her"],
     headline: "One model, streaming both ways.",
-    lede: "Northline is our home-services example. We built Ellie to show how a voice agent can book, move and cancel service visits from a live schedule, quote fees, handle a caller who changes their mind, and take a message when nothing fits. She runs on a single bidirectional, speech-to-speech model, Google’s Gemini 3.8 Live, which hears the caller, reasons, calls tools and answers out loud in one continuous stream.",
+    lede: "Northline is our home-services example. We built it to show how a voice agent can book, move and cancel service visits from a live schedule, quote fees, handle a caller who changes their mind, and take a message when nothing fits. The agent answers as Ellie and runs on a single bidirectional, speech-to-speech model, Google’s Gemini 3.8 Live, which hears the caller, reasons, calls tools and answers out loud in one continuous stream.",
     engine: { label: "Gemini 3.8 Live", logo: "gemini", parts: [{ role: "Hears", name: "native audio in" }, { role: "Thinks", name: "and calls tools" }, { role: "Speaks", name: "native audio out" }] },
     stack: [
       { role: "Hears, thinks and speaks", name: "Google Gemini 3.8 Live", logo: "gemini", note: "A native-audio model: sound goes in and sound comes out, with no separate transcription or voice step." },
@@ -116,7 +113,7 @@ export const STORIES: ArchitectureStory[] = [
       "Hearing, reasoning and speech all come from one provider.",
     ],
     businesses: {
-      intro: "Ellie answers for a home-services company, but the same build suits any phone line where callers interrupt, change their minds and want something booked. A few ideas:",
+      intro: "This one answers for a home-services company, but the same build suits any phone line where callers interrupt, change their minds and want something booked. A few ideas:",
       list: [
         { name: "Plumbing, HVAC and electrical", idea: "Books repair visits from the live schedule and flags emergencies to the on-call tech.", icon: "Wrench" },
         { name: "Roofing and contractors", idea: "Qualifies storm-damage and quote calls and books the inspection.", icon: "HardHat" },
@@ -140,9 +137,8 @@ export const STORIES: ArchitectureStory[] = [
     tone: "sage",
     architecture: "platform",
     carrier: "twilio",
-    pronouns: ["he", "his"],
     headline: "A voice platform in front, our tools behind.",
-    lede: "Form & Field is our retail example. We built Theo to show how a voice agent can answer product questions, check live stock, reserve items for pickup, look up orders and open support requests. He runs on a managed voice platform, ElevenLabs Agents, which handles the real-time conversation while the catalogue, stock and orders stay on our own server.",
+    lede: "Form & Field is our retail example. We built it to show how a voice agent can answer product questions, check live stock, reserve items for pickup, look up orders and open support requests. The agent answers as Theo and runs on a managed voice platform, ElevenLabs Agents, which handles the real-time conversation while the catalogue, stock and orders stay on our own server.",
     engine: { label: "ElevenLabs Agents", logo: "elevenlabs", parts: [{ role: "Hears", name: "Scribe Realtime", logo: "elevenlabs" }, { role: "Thinks", name: "Gemini 3.7 Flash", logo: "gemini" }, { role: "Speaks", name: "Eleven v4 Turbo", logo: "elevenlabs" }] },
     stack: [
       { role: "Hears", name: "ElevenLabs Scribe Realtime", logo: "elevenlabs", note: "Streaming speech recognition, run by the platform." },
@@ -169,7 +165,7 @@ export const STORIES: ArchitectureStory[] = [
       "One more service in the path of every call.",
     ],
     businesses: {
-      intro: "Theo answers for a homeware shop, but the same build suits any business whose calls are about products, orders and accounts, especially teams that want to own and run the agent themselves. A few ideas:",
+      intro: "This one answers for a homeware shop, but the same build suits any business whose calls are about products, orders and accounts, especially teams that want to own and run the agent themselves. A few ideas:",
       list: [
         { name: "Retail and boutiques", idea: "Checks stock across locations, holds items for pickup and answers product questions.", icon: "Storefront" },
         { name: "E-commerce brands", idea: "Handles “where’s my order?”, returns and delivery questions around the clock.", icon: "Package" },
@@ -193,9 +189,8 @@ export const STORIES: ArchitectureStory[] = [
     tone: "sand",
     architecture: "cascade",
     carrier: "telnyx",
-    pronouns: ["she", "her"],
     headline: "Three specialists in a row.",
-    lede: "Waypoint Travel is our booking example. We built Linda to show how a voice agent can handle a long, detailed booking: searching live airline fares, explaining fare levels, choosing seats and bags, and reading everything back before payment. She runs on a cascade (speech-to-text, then a language model, then text-to-speech), where one model hears, another reasons and calls tools, and a third speaks, with our own code deciding when each turn starts and ends.",
+    lede: "Waypoint Travel is our booking example. We built it to show how a voice agent can handle a long, detailed booking: searching live airline fares, explaining fare levels, choosing seats and bags, and reading everything back before payment. The agent answers as Linda and runs on a cascade (speech-to-text, then a language model, then text-to-speech), where one model hears, another reasons and calls tools, and a third speaks, with our own code deciding when each turn starts and ends.",
     engine: { label: "Cascade", logo: "gemini", parts: [{ role: "Hears", name: "AssemblyAI Universal-3.6 Pro", logo: "assemblyai" }, { role: "Thinks", name: "Gemini 3.5 Flash-Lite", logo: "gemini" }, { role: "Speaks", name: "Gemini 3.8 Flash-Lite TTS", logo: "gemini" }] },
     stack: [
       { role: "Hears", name: "AssemblyAI Universal-3.6 Pro", logo: "assemblyai", note: "Streaming transcription, primed with the words that matter (airports, cities) and with its own end-of-turn detection." },
@@ -222,7 +217,7 @@ export const STORIES: ArchitectureStory[] = [
       "More engineering to build and to maintain.",
     ],
     businesses: {
-      intro: "Linda books flights, but the same build suits any call full of names, numbers and codes that have to be exactly right, and any booking that takes several steps. A few ideas:",
+      intro: "This one books flights, but the same build suits any call full of names, numbers and codes that have to be exactly right, and any booking that takes several steps. A few ideas:",
       list: [
         { name: "Travel agencies", idea: "Searches and builds flights, hotels and full itineraries.", icon: "Airplane" },
         { name: "Hotels and vacation rentals", idea: "Takes dates, room types and guest details, and handles changes.", icon: "Bed" },

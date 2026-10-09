@@ -1,6 +1,6 @@
 /** The fact sheet for AI assistants, served as plain text at /llm-info.txt. */
 
-export const LLM_INFO_UPDATED = "2026-10-08";
+export const LLM_INFO_UPDATED = "2026-10-09";
 
 /** One line of a section: `- label: text (href)`. */
 export type Item = { label?: string; text?: string; href?: string };
@@ -93,11 +93,11 @@ export const LLM_INFO: Section[] = [
   },
   {
     heading: "Example projects",
-    paragraphs: ["Three example voice agents on the site show the kind of work the studio builds. You can call each one from any phone."],
+    paragraphs: ["Three example voice agents on the site show the kind of work the studio builds. They are demos, not products for sale: each client’s agent is built around their business, rules and software. You can call each one from any phone."],
     items: [
-      { label: "Northline", href: "https://digitalmacaroni.io/demo/northline/", text: "a fictional home-services business, scheduling and rescheduling service visits." },
-      { label: "Form & Field", href: "https://digitalmacaroni.io/demo/formfield/", text: "a fictional shop, handling product questions, stock and pickup holds." },
-      { label: "Waypoint Travel", href: "https://digitalmacaroni.io/demo/travel/", text: "a fictional travel agency, searching flights and booking up to payment." },
+      { label: "Book a service visit", href: "https://digitalmacaroni.io/demo/northline/", text: "Northline, a fictional home-services business. The agent books, moves and cancels service visits." },
+      { label: "Help a shop’s callers", href: "https://digitalmacaroni.io/demo/formfield/", text: "Form & Field, a fictional shop. The agent answers product questions, checks stock and holds items for pickup." },
+      { label: "Search and book a flight", href: "https://digitalmacaroni.io/demo/travel/", text: "Waypoint Travel, a fictional travel agency. The agent searches live fares and books up to payment." },
     ],
   },
   {

@@ -10,17 +10,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const updated = "2026-10-05";
 
   return [
-    { url: `${base}/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 1 },
+    { url: `${base}/`, lastModified: "2026-10-09", changeFrequency: "monthly", priority: 1 },
     ...["northline", "formfield", "travel"].map((demo) => ({
       url: `${base}/demo/${demo}/`,
-      lastModified: "2026-10-08",
+      lastModified: "2026-10-09",
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    { url: `${base}/architecture/`, lastModified: "2026-10-05", changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/architecture/`, lastModified: "2026-10-09", changeFrequency: "monthly", priority: 0.8 },
     ...["speech-to-speech", "managed-voice-platform", "stt-llm-tts-cascade"].map((slug) => ({
       url: `${base}/architecture/${slug}/`,
-      lastModified: "2026-10-05",
+      lastModified: "2026-10-09",
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
@@ -28,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/consulting/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/about/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
     { url: `${base}/contact/`, lastModified: "2026-10-08", changeFrequency: "yearly", priority: 0.7 },
-    { url: `${base}/missed-call-calculator/`, lastModified: "2026-10-07", changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/missed-call-calculator/`, lastModified: "2026-10-09", changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/answers/`, lastModified: UPDATED_ISO, changeFrequency: "monthly", priority: 0.8 },
     ...ANSWERS.map((x) => ({ url: `${base}/answers/${x.slug}/`, lastModified: UPDATED_ISO, changeFrequency: "monthly" as const, priority: 0.7 })),
     { url: `${base}/privacy/`, lastModified: updated, changeFrequency: "yearly", priority: 0.2 },

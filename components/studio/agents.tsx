@@ -4,7 +4,7 @@ import type { DemoId } from "./live/types";
 import { FormFieldPreview, NorthlinePreview, WaypointPreview } from "./agent-previews";
 import { architecturePath } from "./agent-pages/content";
 import { BrandLockup } from "./brand-marks";
-import { ArrowRight, ArrowUpRight, Phone, Wave } from "./icons";
+import { ArrowRight, ArrowUpRight, Phone } from "./icons";
 import { Reveal } from "./reveal";
 import h from "./home.module.css";
 
@@ -13,19 +13,19 @@ const PERSONAS: Record<DemoId, { tone: string; preview: ReactNode; voice: string
   northline: {
     tone: "blue",
     preview: <NorthlinePreview />,
-    voice: "Gentle & reassuring",
+    voice: "gentle and reassuring voice",
     pitch: "Books service visits from real availability, moves them when plans change, and takes a message when nothing fits.",
   },
   formfield: {
     tone: "sage",
     preview: <FormFieldPreview />,
-    voice: "Polished & personable",
+    voice: "polished and personable voice",
     pitch: "Finds the right piece, checks what’s actually in stock, reserves it for pickup and answers order questions.",
   },
   travel: {
     tone: "sand",
     preview: <WaypointPreview />,
-    voice: "Friendly & efficient",
+    voice: "friendly and efficient voice",
     pitch: "Searches live airline fares, explains the options and the fine print, and walks you right up to booking.",
   },
 };
@@ -37,7 +37,7 @@ function AgentCard({ id, index }: { id: DemoId; index: number }) {
   const p = PERSONAS[id];
   const href = `/demo/${id}/`;
   return <Reveal as="article" className={h.agent} delay={index * 90}>
-    <a className={h.agentLink} href={href} target="_blank" rel="noopener" aria-label={`${demo.agentName} at ${demo.name}, ${demo.role}. Open the live demo (opens in a new tab)`}>
+    <a className={h.agentLink} href={href} target="_blank" rel="noopener" aria-label={`${demo.job}: ${demo.agentName} at ${demo.name}. Open the live demo (opens in a new tab)`}>
     <div className={h.agentStage} data-tone={p.tone}>
       <div className={h.stageTop}>
         <BrandLockup id={id} />
@@ -51,14 +51,13 @@ function AgentCard({ id, index }: { id: DemoId; index: number }) {
       </div>
     </div>
     <div className={h.agentInfo}>
-      <p className={h.agentRole}>{demo.role}</p>
       <div className={h.agentTitle}>
-        <h3>{demo.agentName}</h3>
+        <h3>{demo.job}</h3>
         <span className={h.agentArrow} aria-hidden="true"><ArrowUpRight size={16} /></span>
       </div>
+      <p className={h.agentAs}>Answers as {demo.agentName} · {p.voice}</p>
       <p className={h.agentPitch}>{p.pitch}</p>
       <dl className={h.specs}>
-        <div><dt><Wave size={14} />Voice</dt><dd>{p.voice}</dd></div>
         <div><dt><Phone size={14} />Try it</dt><dd>Call from any phone</dd></div>
       </dl>
     </div>
