@@ -121,6 +121,25 @@ class TestNorthline:
         assert res(run("take_message", msg))["duplicate"]
         assert len(state.messages) == 1
 
+    def test_an_urgent_message_goes_to_the_on_call_technician(self):
+        state, run = runner(northline)
+        r = run("take_message", {"name": "Jamie", "callbackNumber": "555-0142", "summary": "No heat at 12 Orchard Road", "urgent": True})
+        assert r.ok and res(r)["onCallCallsBackWithin"] == "15 minutes"
+        assert northline.view(state)["messages"][0]["urgent"]
+
+    def test_business_info_covers_emergencies_the_club_and_financing(self):
+        _, run = runner(northline)
+        info = res(run("get_business_info"))
+        assert "$149" in info["emergency"]["fee"] and "$19" in info["comfortClub"]["price"] and "$99" in info["financing"]
+
+    def test_knows_whether_the_business_is_open_right_now(self):
+        state, _ = runner(northline)
+        # 7 AM Pacific on a Thursday is after hours; 2 PM is open.
+        early = OpContext(now=datetime(2026, 10, 1, 14, 0, tzinfo=timezone.utc), channel="phone")
+        midday = OpContext(now=datetime(2026, 10, 1, 21, 0, tzinfo=timezone.utc), channel="phone")
+        assert "closed right now" in northline.instruction(state, early)
+        assert "we are open" in northline.instruction(state, midday)
+
     def test_shows_openings_only_for_technicians_who_do_that_work(self):
         state, run = runner(northline)
         run("check_availability", {"service": "heating_repair", "date": "2026-10-03"})
@@ -133,6 +152,11 @@ class TestNorthline:
 
 
 class TestFormField:
+    def test_shop_info_covers_returns_shipping_and_gift_cards(self):
+        _, run = runner(formfield)
+        info = res(run("get_shop_info"))
+        assert info["address"] and "30 days" in info["returns"] and "$9" in info["shipping"] and "$25" in info["giftCards"]
+
     def test_finds_a_green_lamp_under_100(self):
         _, run = runner(formfield)
         r = run("search_products", {"query": "table lamp", "color": "green", "maxPrice": 100})

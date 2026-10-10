@@ -55,6 +55,48 @@ FEE_COVERS = (
     "a flat, upfront price for the repair, and nothing is done without the customer's okay. If they go ahead, the fee "
     "goes toward the repair; if they decide not to, the fee is all they pay."
 )
+AFTER_HOURS_FEE = 149
+CLUB_PRICE = 19
+OPEN_HOURS = (8, 18)
+
+# Everything Ellie may tell a caller about Northline, in one place. Her instructions carry only what
+# she needs to run a call; get_business_info returns this, and she answers from it.
+BUSINESS: dict[str, Any] = {
+    "name": "Northline Home Services",
+    "trade": "Heating and cooling: furnaces, heat pumps, boilers, ductless mini-splits and air conditioning. No plumbing, water heaters or electrical work.",
+    "city": "Seattle, WA",
+    "area": ["Seattle", "West Seattle", "North Seattle", "Bellevue", "Kirkland", "Redmond", "Renton", "Burien", "SeaTac"],
+    "phone": "(206) 887-9619",
+    "hours": "Visits Monday to Saturday, arrival windows from 8 AM to 6 PM Pacific Time. Closed Sunday.",
+    "services": [{"service": s["id"], "name": s["name"], "price": f"${s['fee']}" if s["fee"] else "Free", "covers": s["about"]} for s in SERVICES],
+    "serviceFee": f"Repair visits have a ${REPAIR_FEE} service fee. {FEE_COVERS}",
+    "emergency": {
+        "counts": "No heat in cold weather, no cooling in extreme heat, water leaking from the system, or a system that won't shut off.",
+        "duringHours": "Urgent jobs are fitted in the same day whenever a technician is free.",
+        "afterHours": "Evenings, overnight and Sundays, an on-call technician covers emergencies and calls back within 15 minutes.",
+        "fee": f"After-hours visits have a ${AFTER_HOURS_FEE} service fee instead of ${REPAIR_FEE}; it goes toward the repair. Comfort Club members pay the regular ${REPAIR_FEE}.",
+    },
+    "comfortClub": {
+        "price": f"${CLUB_PRICE} a month, cancel any time.",
+        "includes": [
+            "A heating tune-up every fall and an AC tune-up every spring",
+            "Priority scheduling, ahead of non-members",
+            f"No ${REPAIR_FEE} service fee on repair visits",
+            "15% off repairs",
+            f"The regular ${REPAIR_FEE} fee after hours instead of ${AFTER_HOURS_FEE}",
+        ],
+        "value": f"Two tune-ups alone are $258 a year; the Club is ${CLUB_PRICE * 12}.",
+        "joining": "The technician signs them up at any visit, in a couple of minutes.",
+    },
+    "financing": "Financing on new systems with approved credit, from about $99 a month. The technician goes through the options and exact numbers at the free estimate.",
+    "policies": [
+        "No repair or new-system prices over the phone: the technician has to see the system first, then gives a flat price before any work starts.",
+        "Customers can change or cancel a visit free of charge.",
+        "Technicians call 30 minutes before arriving.",
+        "Licensed, bonded and insured technicians. Repairs carry a one-year parts and labor warranty.",
+        "Payment by card, check or cash after the work is done.",
+    ],
+}
 # Booked on request alone; every other service needs what the caller has actually noticed.
 NO_SYMPTOM_NEEDED = {"heating_tune_up", "cooling_tune_up", "replacement_estimate"}
 
@@ -93,6 +135,7 @@ class Message:
     summary: str
     preferred_time: Optional[str]
     created_at: str
+    urgent: bool = False
 
 
 @dataclass
@@ -222,16 +265,17 @@ def confirm_text(a: Appointment) -> str:
 
 def instruction(state: NorthlineState, ctx: OpContext) -> str:
     today = date_label(state.today)
-    fee_line = f"Repair visits have a ${REPAIR_FEE} service fee. {FEE_COVERS}"
-    return f"""You are Ellie. You answer the phone for Northline Home Services, a heating and cooling company: furnaces, heat pumps, boilers and air conditioning. You work for Northline; speak as part of its team ("we", "our technicians"). Northline doesn't do plumbing, water heaters or electrical work; if a caller asks, say kindly that we only handle heating and cooling, and offer to help with anything on that side.
+    _, hour, minute = date_in(TIME_ZONE, ctx.now)
+    clock = f"{hour % 12 or 12}:{minute:02d} {'AM' if hour < 12 else 'PM'}"
+    open_now = weekday(state.today) != 0 and OPEN_HOURS[0] <= hour < OPEN_HOURS[1]
+    fee_line = BUSINESS["serviceFee"]
+    return f"""You are Ellie. You answer the phone for {BUSINESS['name']}, a heating and cooling company. You work for Northline; speak as part of its team ("we", "our technicians"). Northline doesn't do plumbing, water heaters or electrical work; if a caller asks, say kindly that we only handle heating and cooling, and offer to help with anything on that side.
 
 Behind the scenes, and not something to mention unless asked: this line is a demonstration. Bookings and messages are sample records, and no technician will actually visit or call. If a caller asks directly whether you are a real person, answer honestly and briefly that you are Northline's AI assistant. If they ask directly whether this is a real business or a real booking, say briefly that this is a demo line and nothing will actually be scheduled, then carry on helping.
 
-Northline: Seattle, WA. Serves Seattle, West Seattle, North Seattle, Bellevue, Kirkland, Redmond, Renton, Burien and SeaTac.
-Phone: (206) 887-9619
-Open for visits Monday–Saturday, arrival windows 8 AM–6 PM Pacific. Closed Sunday: never check availability for a Sunday. If the caller wants today or the soonest visit and today is Sunday, check Monday.
+What you know about Northline (services, prices, service area, hours, emergencies, the Comfort Club, financing, warranty, payment) comes from get_business_info. Call it before answering any question about the business, and answer only from what it returns. {BUSINESS['hours']} Never check availability for a Sunday; if the caller wants today or the soonest visit and today is Sunday, check Monday.
 
-Today is {today} ({state.today}), Pacific Time. Use this to resolve "today", "tomorrow" and weekdays.
+Today is {today} ({state.today}), and it is {clock} Pacific Time: we are {'open' if open_now else 'closed right now (after hours)'}. Use this to resolve "today", "tomorrow" and weekdays.
 
 How you speak: warm, gentle and reassuring, like a kind, capable dispatcher who genuinely wants to help. Take an easy, unhurried pace and never sound clipped or rushed. When someone has a problem, show a little care before moving on ("Oh no, a cold house is no fun. Let's get someone out to you."). Use soft, friendly phrases ("Of course." "No problem at all." "Happy to help with that."), and use the caller's first name now and then once you know it. Short sentences. One question per turn. Never read out ids, slot codes or anything in brackets. No more than three options at once. If you are interrupted, stop and listen.
 
@@ -264,9 +308,14 @@ The service fee. {fee_line}
 - When a caller asks what a visit costs, answer that first, before any other question: the fee and what it covers, in one or two short sentences.
 - If they push back ("Why do I pay just for someone to come out?", "Other companies come out for free", "That's a lot"), first say kindly that it's a fair question. Then explain once: the fee pays for a trained technician to properly find what's wrong, so the price they get is a real one and not a guess, and it goes toward the repair if they go ahead. Don't argue, push or repeat yourself, and never offer a discount or waive the fee. Leave the choice with them: offer to book, or to take a message so someone can call them back.
 - If they ask for a ballpark or what the repair will cost, say gently that we can't price a repair without the technician seeing the system, and that's so they never get a number that changes later; the technician gives them a flat price before any work starts, and nothing is done without their okay. Never guess a number, a range or what it "usually" costs.
-- Tune-ups are a flat price with no service fee on top, and new system estimates are free.
 - Change or cancel a booking made in this call: check_availability for the new time, then reschedule_appointment or cancel_appointment once the caller has confirmed. If they have already clearly said yes to a specific new time, that is the confirmation; don't ask again. A change moves the same appointment; never book a second one.
 - Take a message for a callback with take_message when they prefer a call back, nothing suitable is available, or you cannot help. Ask for a name. On a phone call, use get_caller_number and ask whether the number they are calling from (say only its last four digits) is the best one to reach them; otherwise ask for a number, and suggest the sample number 555-0142 if they would rather not give theirs.
+
+Emergencies (no heat in the cold, no cooling in extreme heat, water leaking from the system, a system that won't shut off): safety comes first. For a heating emergency, your first question is whether they smell gas or have a carbon monoxide alarm going off (and if so, the safety rule below applies). Then, while we are open, check today's availability and offer the soonest window; if nothing is free today, offer an urgent message for the on-call technician. When we are closed, don't offer a booking first: say that our on-call technician handles emergencies after hours and will call them back within 15 minutes, mention the after-hours fee once from get_business_info, then get their name, the address, and a confirmed callback number (the same way as for any message, below), one question at a time. Only then call take_message with urgent true, with the address and what's happening in the summary. After it is taken, tell them the on-call technician will call within 15 minutes. Something that can wait (a tune-up, a noise, an estimate) is not an emergency: book the next regular window as usual.
+
+The Comfort Club: our maintenance plan. Mention it once per call at most, in one or two sentences, only when it fits: the caller books a tune-up, asks about the service fee, or asks about keeping their system in shape. Say what it is from get_business_info (the monthly price and its two best perks for them), and that the technician can sign them up at the visit. If they aren't interested, drop it. Never push and never bring it up during an emergency.
+
+Financing: when a caller asks about paying for a new system or about payment plans, say from get_business_info that financing is available and roughly from what monthly amount, and that the technician goes through the options at the free estimate. Offer to book the estimate. Never quote the price of a system.
 
 Rules: never say something is booked, moved or cancelled unless the tool returned ok true. For a callback, call take_message only after the caller has confirmed the number. If a tool says something is missing, just ask the caller for it; if it fails for another reason, explain simply and offer what it suggests. Asking about a time is not a request to book it. If the caller mentions gas, a carbon monoxide alarm, burning smells, sparking, or water near electrics, tell them to leave the area and call 911 or their gas utility first, and remind them this is a demo line.
 Email: once a visit is booked (or moved), offer once to email a confirmation. If they want it, ask for their email address and read it back carefully: spell the part before the @ letter by letter, then say the rest ("j, a, m, i, e, at gmail dot com"). Only when they clearly confirm it is right, call email_confirmation with callerConfirmed true. Say it is on its way only if the tool returns ok. If they decline, that's fine.
@@ -278,23 +327,7 @@ Ending: after you finish something for the caller, ask whether there is anything
 
 
 def get_business_info(state: NorthlineState, _: Any, ctx: OpContext) -> OpResult:
-    return ok(
-        "Services and hours",
-        {
-            "services": [{"service": s["id"], "name": s["name"], "price": f"${s['fee']}" if s["fee"] else "Free", "covers": s["about"]} for s in SERVICES],
-            "hours": "Visits Monday to Saturday, arrival windows from 8 AM to 6 PM Pacific Time. Closed Sunday.",
-            "area": "Seattle, Washington: Seattle, West Seattle, North Seattle, Bellevue, Kirkland, Redmond, Renton, Burien and SeaTac.",
-            "phone": "(206) 887-9619",
-            "policies": [
-                f"Repair visits have a ${REPAIR_FEE} service fee. {FEE_COVERS}",
-                "Tune-ups are a flat price with no service fee on top. New system estimates are free.",
-                "No repair prices over the phone: the technician has to see the system first.",
-                "Customers can change or cancel a visit free of charge.",
-                "Technicians call ahead 30 minutes before arriving.",
-            ],
-            "today": state.today,
-        },
-    )
+    return ok("Services, hours and policies", {**BUSINESS, "today": state.today})
 
 
 class NoteRequestDetails(BaseModel):
@@ -460,6 +493,7 @@ class TakeMessage(BaseModel):
     callbackNumber: str = Field(min_length=7, max_length=20)
     summary: str = Field(min_length=3, max_length=300, description="What the caller needs, in a sentence or two.")
     preferredTime: Optional[str] = Field(None, max_length=80, description="When they would like a call back, in their words.")
+    urgent: bool = Field(False, description="True for an emergency after hours (or when nothing is free today): it goes to the on-call technician.")
 
 
 def take_message(state: NorthlineState, i: TakeMessage, ctx: OpContext) -> OpResult:
@@ -468,7 +502,9 @@ def take_message(state: NorthlineState, i: TakeMessage, ctx: OpContext) -> OpRes
         return ok(f"Message already left · {dup.id}", {"messageId": dup.id, "duplicate": True})
     mid = reference("MSG", state.seq, state.seed)
     state.seq += 1
-    state.messages.append(Message(id=mid, name=i.name.strip(), callback_number=i.callbackNumber.strip(), summary=i.summary.strip(), preferred_time=(i.preferredTime or "").strip() or None, created_at=ctx.now.isoformat()))
+    state.messages.append(Message(id=mid, name=i.name.strip(), callback_number=i.callbackNumber.strip(), summary=i.summary.strip(), preferred_time=(i.preferredTime or "").strip() or None, created_at=ctx.now.isoformat(), urgent=i.urgent))
+    if i.urgent:
+        return ok(f"Urgent · sent to the on-call technician · {mid}", {"messageId": mid, "onCallCallsBackWithin": "15 minutes"}, True)
     return ok(f"Message for the team · {mid}", {"messageId": mid}, True)
 
 
@@ -537,7 +573,7 @@ def view(state: NorthlineState) -> dict[str, Any]:
             {"id": a.id, "status": a.status, "service": service(a.service_id)["name"], **describe_slot(a.slot_id), "technician": tech_name(a.tech_id), "name": a.name, "address": a.address, "changes": len(a.history) - 1}
             for a in state.appointments
         ],
-        "messages": [{"id": m.id, "name": m.name, "summary": m.summary, "preferredTime": m.preferred_time, "callback": mask_number(m.callback_number)} for m in state.messages],
+        "messages": [{"id": m.id, "name": m.name, "summary": m.summary, "preferredTime": m.preferred_time, "callback": mask_number(m.callback_number), "urgent": m.urgent} for m in state.messages],
         "emailed": state.emailed,
     }
 
@@ -550,7 +586,7 @@ northline: DemoDefinition[NorthlineState] = DemoDefinition(
     instruction=instruction,
     view=view,
     operations={
-        "get_business_info": Operation("Looking up Northline's services", "Northline's services with fees, hours, service area and policies. Use before answering any question about the business.", get_business_info),
+        "get_business_info": Operation("Looking up Northline's services", "Everything about Northline: services and prices, service area, hours, emergencies and the after-hours fee, the Comfort Club, financing, warranty, payment and policies. Use before answering any question about the business.", get_business_info),
         "note_request_details": Operation(
             "Updating the service request",
             "Record details the caller has given or confirmed so the request card fills in. Send only the fields that are new or changed. proposedSlotId must be a slot check_availability returned.",

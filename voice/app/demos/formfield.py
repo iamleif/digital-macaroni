@@ -18,6 +18,21 @@ from .types import Confirmed, DemoDefinition, OpContext, OpResult, Operation, ad
 
 TIME_ZONE = "America/Chicago"
 HOLD_DAYS = 2
+
+# Everything Theo may tell a caller about the shop, in one place. His instructions carry only what he
+# needs to run a call; get_shop_info returns this, and he answers from it.
+SHOP: dict[str, Any] = {
+    "name": "Form & Field",
+    "what": "A small home-goods shop: lighting, tableware, textiles, small furniture and planters.",
+    "address": "210 Market Street",
+    "hours": "10 AM to 6 PM, Monday to Saturday. Closed Sunday.",
+    "pickup": f"Reserved items are held for {HOLD_DAYS} days and paid for in store when collected.",
+    "shipping": "We ship anywhere in the US: $9 flat, free on orders over $150, usually 3 to 5 business days.",
+    "localDelivery": "Furniture and floor lamps can be delivered locally for $35, free on orders over $250, usually within a week.",
+    "returns": "Returns within 30 days, unused and with the receipt, refunded to the original payment. Sale items are final sale.",
+    "giftCards": "Gift cards in store and online, from $25. Gift wrapping is free in the shop.",
+    "payment": "Card, cash, Apple Pay and Google Pay in store.",
+}
 Category = Literal["lighting", "tableware", "textiles", "furniture", "planters"]
 
 
@@ -126,7 +141,9 @@ def instruction(state: FormFieldState, ctx: OpContext) -> str:
 
 Behind the scenes, and not something to mention unless asked: this line is a demonstration. Reservations, orders and requests are sample records; nothing is charged, held, sold or shipped. If a caller asks directly whether you are a real person, answer honestly and briefly that you are Form & Field's AI assistant. If they ask directly whether this is a real shop or a real reservation, say briefly that this is a demo line and nothing will actually be held or charged, then carry on helping.
 
-Today is {date_label(state.today)}. The shop is at 210 Market Street and open 10 AM to 6 PM, Monday to Saturday. Reserved items are held for {HOLD_DAYS} days for pickup and paid for in store.
+Today is {date_label(state.today)}.
+
+What you know about the shop (address, hours, pickup, shipping, local delivery, returns, gift cards, payment) comes from get_shop_info. Call it before answering any question about the shop, and answer only from what it returns. Never invent a policy; if it isn't there, offer to take a message so the team can answer.
 
 How you speak: calm, helpful and endearing. You are unhurried and warm, with a gentle, slightly playful charm: the shop assistant people remember because you made them feel looked after, never pushy or salesy. Show real delight when something suits them, and be kind and reassuring when something is out of stock or not quite right. Speak at an easy pace in short sentences, one question at a time. Describe products the way a good shop assistant would, using only catalogue facts. Never read out ids. Say prices naturally ("eighty-nine dollars"). Offer at most three items at once. If you are interrupted, stop and listen.
 
@@ -299,6 +316,10 @@ def take_message(state: FormFieldState, i: TakeMessage, ctx: OpContext) -> OpRes
     return ok(f"Message for the team · {mid}", {"messageId": mid}, True)
 
 
+def get_shop_info(state: FormFieldState, _: Any, ctx: OpContext) -> OpResult:
+    return ok("Shop hours and policies", {**SHOP, "today": state.today})
+
+
 # Product pictures for the email: studio photographs where they exist, drawings for the rest.
 PHOTOS = {"ridge-lamp", "everyday-mugs", "field-planter", "linen-throw"}
 
@@ -318,7 +339,7 @@ async def email_reservation(state: FormFieldState, i: EmailReservation, ctx: OpC
     r = held[-1]
     p, v = variant_of(r.variant_id)  # type: ignore[misc]
     image = email.asset(f"products/{p['id']}.{'jpg' if p['id'] in PHOTOS else 'png'}")
-    details = {"product": p["name"], "option": v["option"], "quantity": r.quantity, "price": price(p["price"] * r.quantity), "pickupBy": date_label(r.pickup_by), "shop": "210 Market Street", "hours": "10 AM – 6 PM, Monday to Saturday", "name": r.name, "reference": r.id, "image": image}
+    details = {"product": p["name"], "option": v["option"], "quantity": r.quantity, "price": price(p["price"] * r.quantity), "pickupBy": date_label(r.pickup_by), "shop": SHOP["address"], "hours": "10 AM – 6 PM, Monday to Saturday", "name": r.name, "reference": r.id, "image": image}
     masked, why = await email.confirm(i.email, email.pickup_reservation(details), "Theo at Form & Field")
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
@@ -359,6 +380,7 @@ formfield: DemoDefinition[FormFieldState] = DemoDefinition(
     instruction=instruction,
     view=view,
     operations={
+        "get_shop_info": Operation("Checking the shop's policies", "Everything about the shop: address, hours, pickup, shipping, local delivery, returns, gift cards and payment. Use before answering any question about the shop.", get_shop_info),
         "search_products": Operation("Searching the catalogue", "Find catalogue items. Returns up to five matches with price and stock by option.", search_products, SearchProducts),
         "get_product_details": Operation("Checking product details", "Full catalogue facts for one product: description, materials, size and stock by option.", get_product_details, GetProductDetails),
         "reserve_item": Operation("Reserving for pickup", "Hold an in-stock option for pickup, after the caller said yes to the read-back.", reserve_item, ReserveItem),
