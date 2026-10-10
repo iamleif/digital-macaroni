@@ -104,7 +104,7 @@ export default function HomePage() {
             Voice agents <span className={h.chip} data-tone="yellow"><Wave size={26} /></span>
             <br className={h.brDesk} /> that <span className={h.stickerWrap}>get to work<span className={h.sticker}>Live</span></span>
           </h1></Intro>
-          <Intro delay={160}><p className={h.heroSub}>We design and build custom AI voice agents that answer every call and do the work, made to look, sound and run like your business.</p></Intro>
+          <Intro delay={160}><p className={h.heroSub}><b>Turn every call into revenue.</b> We design and build custom AI voice agents that answer every call and do the work, made to look, sound and run like your business.</p></Intro>
           <Intro delay={240} className={h.heroActions}>
             <a className={h.pillDark} href="#agents">Try a live demo<span className={h.pillIcon}><ArrowDown size={14} /></span></a>
             <a className={h.pillLight} href="#pricing">See pricing</a>

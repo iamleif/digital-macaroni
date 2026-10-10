@@ -150,6 +150,7 @@
 }
 .brDesk { display: block; }
 .heroSub { font-size: 18px; line-height: 1.6; color: var(--muted); max-width: 540px; margin: 26px auto 0; text-wrap: balance; }
+.heroSub b { display: block; color: #0f0f0d; font-weight: 600; margin-bottom: 4px; }
 .heroActions { display: flex; gap: 10px; justify-content: center; margin-top: 34px; }
 
 
