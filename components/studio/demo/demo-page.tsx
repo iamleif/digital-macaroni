@@ -15,6 +15,7 @@ import { FormFieldOffice, NorthlineOffice, TravelOffice, type LiveState } from "
 import { REPLAYS } from "./replay";
 import { CookieSettings, track } from "../consent";
 import { VoiceBars } from "./voice-bars";
+import { SetupCard, ToolsLane, readSetup, type Setup } from "./funnel";
 import d from "./demo.module.css";
 
 type Action = Extract<Entry, { kind: "action" }>;
@@ -34,11 +35,18 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   const receive = useCallback((e: DemoEvent) => { if (!voice.take(e)) push(e); }, [voice, push]);
 
   const [replaying, setReplaying] = useState(false);
+  // Preview of the setup flow (business, tools, report email): only with ?funnel until it goes live.
+  const [funnel, setFunnel] = useState(false);
+  const [setup, setSetup] = useState<Setup | null>(null);
   useEffect(() => {
-    const replay = new URLSearchParams(window.location.search).has("replay");
+    const q = new URLSearchParams(window.location.search);
+    const replay = q.has("replay");
     setReplaying(replay);
+    setFunnel(q.has("funnel") && demo.id === "northline");
+    setSetup(readSetup());
     if (!replay) track("demo_viewed", { demo: demo.id });
   }, [demo.id]);
+  const gated = funnel && !setup;
   // The finished call's numbers for the funnel, read when the call ends.
   const feedRef = useRef(feed);
   feedRef.current = feed;
@@ -59,10 +67,10 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   function newCode() { reset(); voice.clear(); setWatch({ status: "requesting" }); startWatcher(); }
 
   useEffect(() => {
-    if (replaying) return;
+    if (replaying || gated) return;
     startWatcher();
     return () => watcher.current?.stop();
-  }, [replaying, startWatcher]);
+  }, [replaying, gated, startWatcher]);
 
   // When a call ends, go straight back to the normal screen with a fresh code. The finished call's
   // results stay on screen until the next call links.
@@ -81,17 +89,17 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
 
   // Sample replay: scripted events through the real feed.
   useEffect(() => {
-    if (!replaying) return;
+    if (!replaying || gated) return;
     reset();
     const timers = REPLAYS[demo.id].map(({ at, event }) => window.setTimeout(() => push(event as DemoEvent), at));
     return () => timers.forEach((t) => window.clearTimeout(t));
-  }, [replaying, demo.id, push, reset]);
+  }, [replaying, gated, demo.id, push, reset]);
 
   const onCall = !feed.ended && (watch.status === "linked" || (replaying && feed.entries.length > 0));
   const view = feed.view ?? EMPTY[demo.id];
   const state: LiveState = feed.view ? (feed.ended ? "finished" : "live") : "sample";
 
-  return <div className={d.page}>
+  return <div className={d.page} data-gated={gated || undefined}>
     <header className={d.top}>
       <a href="/" className={d.dm} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} /><span>Digital Macaroni</span></a>
       <span className={d.slash} aria-hidden="true">/</span>
@@ -132,8 +140,10 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
           : <FormFieldOffice view={view as FormFieldView} state={state} agentName={demo.agentName} />}
       </section>
 
-      <BehindTheCall demo={demo} feed={feed} />
+      <BehindTheCall demo={demo} feed={feed} setup={funnel ? setup : null} />
     </main>
+
+    {gated ? <SetupCard demo={demo} onDone={setSetup} /> : null}
 
     <footer className={d.foot}>
       <span>{demo.name} is a fictional business. Nothing is really booked, sold or charged.</span>
@@ -271,7 +281,7 @@ function Conversation({ entries, agentName, demoId }: { entries: Entry[]; agentN
 const clock = (t: number) => new Date(t).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
 const took = (ms: number) => (ms < 1000 ? `${Math.max(1, ms)} ms` : `${(ms / 1000).toFixed(1)} s`);
 
-function BehindTheCall({ demo, feed }: { demo: DemoInfo; feed: Feed }) {
+function BehindTheCall({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; setup: Setup | null }) {
   const actions = feed.entries.filter((e): e is Action => e.kind === "action");
   const done = actions.filter((a) => a.status === "done" || isTestStop(a));
   const uses = (tool: string) =>
@@ -286,6 +296,8 @@ function BehindTheCall({ demo, feed }: { demo: DemoInfo; feed: Feed }) {
 
   return <aside className={d.right} aria-label="Behind the call">
     <div className={d.sectionHead}><h2>Behind the call</h2></div>
+
+    {setup ? <ToolsLane demo={demo} feed={feed} setup={setup} /> : null}
 
     {feed.ended ? <Summary demo={demo} feed={feed} done={done} /> : null}
 

@@ -40,6 +40,9 @@
 .page :is(a, button):focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .page code { font-family: var(--font-geist-mono), ui-monospace, monospace; }
 
+/* While the setup card is open, the demo behind it is blurred and inert. */
+.page[data-gated] > :is(header, main, footer) { filter: blur(10px) saturate(0.9); opacity: 0.7; pointer-events: none; user-select: none; transition: filter 0.4s var(--ease), opacity 0.4s var(--ease); }
+
 /* ---------- Top bar ---------- */
 .top { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 0 8px; }
 .dm { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14.5px; letter-spacing: -0.02em; white-space: nowrap; }
