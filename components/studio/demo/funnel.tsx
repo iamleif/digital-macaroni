@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import type { Feed, Entry } from "../live/use-demo-feed";
 import type { DemoInfo } from "../live/demo-info";
+import type { BookingSkin, BrandId } from "../live/types";
+import { BrandMark } from "../brand-marks";
 import { ArrowRight, Check, Code, Lock } from "../icons";
 import { track } from "../consent";
 import f from "./funnel.module.css";
@@ -14,22 +16,37 @@ import f from "./funnel.module.css";
  * ones from each vendor's developer docs (Docs/studio-preview/INTEGRATION_MAP.md in the Macaroni repo).
  */
 
-type Trade = { id: string; label: string; example: string; ready: boolean };
+type Trade = { id: BookingSkin; label: string; example: string; ready: boolean };
 type Op = { what: string; op: string };
-type Tool = { id: string; name: string; note?: string; ops: Partial<Record<string, Op[]>>; confirmation: string };
+type Tool = { id: string; name: string; skins: BookingSkin[]; ops: Partial<Record<string, Op[]>>; confirmation: string };
 
 const KEY = "dm-demo-setup";
 
-export type Setup = { trade: string; tool: string; email: string; record: boolean; updates: boolean };
+export type Setup = { trade: BookingSkin; tool: string; email: string; record: boolean; updates: boolean };
 
-/** Ellie's trades. Only heating and cooling is wired up today; the rest are on the way. */
+/** The businesses Ellie can answer for: one appointment engine, three front desks. */
 const TRADES: Trade[] = [
-  { id: "hvac", label: "Heating & cooling", example: "Furnace, AC, heat pumps", ready: true },
-  { id: "plumbing", label: "Plumbing", example: "Leaks, drains, water heaters", ready: false },
-  { id: "electrical", label: "Electrical", example: "Panels, outlets, EV chargers", ready: false },
-  { id: "roofing", label: "Roofing", example: "Leaks, storm damage, inspections", ready: false },
-  { id: "pest", label: "Pest control", example: "One-off and quarterly plans", ready: false },
+  { id: "salon", label: "Salon & med spa", example: "Cuts, colour, nails, facials, injectables", ready: true },
+  { id: "clinic", label: "Wellness clinic", example: "Chiropractic, physio, massage", ready: true },
+  { id: "home", label: "Home services", example: "Heating & cooling visits", ready: true },
 ];
+
+/** How each business appears on the demo page. */
+export const SKINS: Record<BookingSkin, { brand: BrandId; name: string; role: string; intro: string; prompts: string[]; sampleDetails: string }> = {
+  home: { brand: "northline", name: "Northline", role: "Home services booking", intro: "", prompts: [], sampleDetails: "" },
+  salon: {
+    brand: "lune", name: "Lune Salon & Med Spa", role: "Salon & med spa booking",
+    intro: "Book a cut, colour, nails or a med-spa treatment with a specific stylist, and watch the day fill in as Ellie works. Lune is a fictional salon and med spa.",
+    prompts: ["Can I get a cut with Maria on Saturday afternoon?", "What does a balayage cost, and how long does it take?", "Could you add a gloss to that?"],
+    sampleDetails: "Use any name you like. Lune, its team and its schedule are fictional; nothing is charged.",
+  },
+  clinic: {
+    brand: "tidewell", name: "Tidewell Clinic", role: "Clinic booking",
+    intro: "Book a first visit or a follow-up with the right practitioner, and watch the clinic's day and intake fill in. Tidewell is a fictional chiropractic, physio and massage clinic.",
+    prompts: ["I hurt my back lifting. Can I see someone this week?", "Do you do direct billing?", "Is there a package if I need a few visits?"],
+    sampleDetails: "Use any name you like and don't share real health details. Tidewell and its practitioners are fictional.",
+  },
+};
 
 const CUSTOM = "custom";
 
@@ -38,6 +55,7 @@ const TOOLS: Tool[] = [
   {
     id: "housecallpro",
     name: "Housecall Pro",
+    skins: ["home"],
     confirmation: "Housecall Pro texts the customer its own booking confirmation",
     ops: {
       get_caller_number: [{ what: "Find the customer by phone", op: "GET /customers?q=" }],
@@ -55,6 +73,7 @@ const TOOLS: Tool[] = [
   {
     id: "jobber",
     name: "Jobber",
+    skins: ["home"],
     confirmation: "Jobber's visit reminders go to the customer",
     ops: {
       get_caller_number: [{ what: "Find the client", op: "query clients(searchTerm)" }],
@@ -71,6 +90,7 @@ const TOOLS: Tool[] = [
   {
     id: "servicetitan",
     name: "ServiceTitan",
+    skins: ["home"],
     confirmation: "ServiceTitan's appointment notifications go to the customer",
     ops: {
       get_caller_number: [{ what: "Find the customer by phone", op: "GET /crm/v2/…/customers?phone=" }],
@@ -87,6 +107,7 @@ const TOOLS: Tool[] = [
   {
     id: "workiz",
     name: "Workiz",
+    skins: ["home"],
     confirmation: "Workiz automations send the confirmation",
     ops: {
       get_caller_number: [{ what: "Find the client", op: "GET /v2/clients?searchQuery=" }],
@@ -96,6 +117,35 @@ const TOOLS: Tool[] = [
         { what: "Assign the technician", op: "POST /v2/jobs/{id}/team" },
       ],
       take_message: [{ what: "Log a lead for a callback", op: "POST /v2/leads" }],
+    },
+  },
+  {
+    id: "square",
+    name: "Square Appointments",
+    skins: ["salon", "clinic"],
+    confirmation: "Square Appointments sends its own confirmation and reminders",
+    ops: {
+      get_caller_number: [{ what: "Find the client by phone", op: "POST /v2/customers/search" }],
+      check_availability: [{ what: "Search open times for the service and staff member", op: "POST /v2/bookings/availability/search" }],
+      book_appointment: [
+        { what: "Create the client", op: "POST /v2/customers" },
+        { what: "Book the service with the staff member", op: "POST /v2/bookings" },
+        { what: "Attach the call summary", op: "booking.seller_note" },
+      ],
+    },
+  },
+  { id: "boulevard", name: "Boulevard", skins: ["salon"], confirmation: "", ops: {} },
+  { id: "vagaro", name: "Vagaro", skins: ["salon"], confirmation: "", ops: {} },
+  { id: "mindbody", name: "Mindbody", skins: ["salon", "clinic"], confirmation: "", ops: {} },
+  { id: "jane", name: "Jane", skins: ["clinic"], confirmation: "", ops: {} },
+  {
+    id: "gcal",
+    name: "Google Calendar",
+    skins: ["salon", "clinic", "home"],
+    confirmation: "Google emails the calendar invite",
+    ops: {
+      check_availability: [{ what: "Check free and busy time", op: "POST /freeBusy" }],
+      book_appointment: [{ what: "Create the appointment and invite the client", op: "POST /calendars/{id}/events?sendUpdates=all" }],
     },
   },
 ];
@@ -115,7 +165,7 @@ export function readSetup(): Setup | null {
 
 export function SetupCard({ demo, onDone }: { demo: DemoInfo; onDone: (s: Setup) => void }) {
   const [step, setStep] = useState(0);
-  const [trade, setTrade] = useState("hvac");
+  const [trade, setTrade] = useState<BookingSkin>("salon");
   const [tool, setTool] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [record, setRecord] = useState(true);
@@ -141,7 +191,8 @@ export function SetupCard({ demo, onDone }: { demo: DemoInfo; onDone: (s: Setup)
         <h2 id="setup-title">What kind of business should {demo.agentName} answer for?</h2>
         <p className={f.lede}>She’ll take the call the way she would for you: your services, your schedule, your rules.</p>
         <div className={f.trades}>
-          {TRADES.map((t) => <button key={t.id} type="button" className={f.trade} data-selected={trade === t.id || undefined} disabled={!t.ready} onClick={() => setTrade(t.id)}>
+          {TRADES.map((t) => <button key={t.id} type="button" className={f.trade} data-selected={trade === t.id || undefined} disabled={!t.ready} onClick={() => { setTrade(t.id); setTool(null); }}>
+            <span className={f.tradeMark}><BrandMark id={SKINS[t.id].brand} size={26} /></span>
             <b>{t.label}</b><span>{t.example}</span>{t.ready ? null : <em>Soon</em>}
           </button>)}
         </div>
@@ -156,7 +207,7 @@ export function SetupCard({ demo, onDone }: { demo: DemoInfo; onDone: (s: Setup)
           <span><b>Something custom, or nothing yet</b><small>We build the agent and your own back office around how you work.</small></span>
         </button>
         <div className={f.tools}>
-          {TOOLS.map((t) => <button key={t.id} type="button" className={f.tool} data-selected={tool === t.id || undefined} onClick={() => setTool(t.id)}>{t.name}</button>)}
+          {TOOLS.filter((t) => t.skins.includes(trade)).map((t) => <button key={t.id} type="button" className={f.tool} data-selected={tool === t.id || undefined} onClick={() => setTool(t.id)}>{t.name}</button>)}
           <button type="button" className={f.tool} data-selected={tool === OTHER || undefined} onClick={() => setTool(OTHER)}>Something else</button>
         </div>
         <div className={f.actions}>
@@ -202,6 +253,6 @@ export function ToolsLane({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; s
     {rows.length ? <ol>
       {rows.map((r) => <li key={r.key}><i><Check size={11} /></i><span>{r.what}<code>{r.op}</code></span></li>)}
       {!custom && booked ? <li data-kind="native"><i><Check size={11} /></i><span>{tool.confirmation}</span></li> : null}
-    </ol> : <p className={f.laneEmpty}>{custom ? `Each record ${demo.agentName} creates appears here.` : `Each call ${demo.agentName} would make to ${tool.name} appears here as she works.`}</p>}
+    </ol> : <p className={f.laneEmpty}>{custom ? `Each record ${demo.agentName} creates appears here.` : Object.keys(tool.ops).length ? `Each call ${demo.agentName} would make to ${tool.name} appears here as she works.` : `We connect ${demo.agentName} to ${tool.name} through its API when we build yours.`}</p>}
   </section>;
 }

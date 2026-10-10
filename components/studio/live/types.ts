@@ -122,4 +122,32 @@ export interface TravelView {
   emailed?: { to: string; total: string } | null;
 }
 
-export type DemoView = NorthlineView | FormFieldView | TravelView;
+/** The businesses Ellie can answer for. Northline uses NorthlineView; the others share AppointmentView. */
+export type BookingSkin = "home" | "salon" | "clinic";
+export type BrandId = DemoId | "lune" | "tidewell";
+
+/**
+ * A front-desk day for businesses that book people into fixed times with a named staff member
+ * (salons, med spas, clinics). Same engine as Northline, different words and one signature panel.
+ */
+export interface AppointmentView {
+  skin: "salon" | "clinic";
+  timeZone: string;
+  day: { label: string };
+  staff: { id: string; name: string; role: string }[];
+  hours: { hour: number; label: string }[];
+  /** Booked time; `span` is how many hour columns it covers. */
+  schedule: { staffId: string; hour: number; span: number; kind: "existing" | "demo"; title: string; ref?: string; name?: string }[];
+  open: { staffId: string; hour: number }[];
+  proposed: { staffId: string; hour: number } | null;
+  /** Salon: the service menu. Clinic: visit types. `chosen` marks the one being booked. */
+  menu: { id: string; name: string; price: string; minutes: number; staff: string[]; group: string; chosen?: boolean }[];
+  request: { label: string; value: string | null; note?: string }[];
+  /** The signature panel's extra facts: deposit and add-on (salon), intake and coverage (clinic). */
+  extras: { title: string; rows: { label: string; value: string; tone?: "good" | "warn" }[] } | null;
+  appointments: { id: string; status: "booked" | "cancelled"; service: string; when: string; staff: string; name: string; changes: number }[];
+  messages: { id: string; name: string; summary: string }[];
+  emailed?: { to: string; reference: string } | null;
+}
+
+export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView;

@@ -11,11 +11,13 @@ import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
 import { ArrowUpRight, Check, Phone } from "../icons";
 import { COMPANY_INSTAGRAM, COMPANY_LINKEDIN, COMPANY_TIKTOK, COMPANY_YOUTUBE } from "../site";
-import { FormFieldOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
+import { AppointmentOffice, FormFieldOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
 import { CookieSettings, track } from "../consent";
 import { VoiceBars } from "./voice-bars";
-import { SetupCard, ToolsLane, readSetup, type Setup } from "./funnel";
+import { SKINS, SetupCard, ToolsLane, readSetup, type Setup } from "./funnel";
+import { luneSample, tidewellSample } from "../live/sample-views";
+import type { AppointmentView } from "../live/types";
 import d from "./demo.module.css";
 
 type Action = Extract<Entry, { kind: "action" }>;
@@ -47,6 +49,13 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     if (!replay) track("demo_viewed", { demo: demo.id });
   }, [demo.id]);
   const gated = funnel && !setup;
+  // Which business Ellie answers for. Salon and clinic are front-end previews until the voice side is wired.
+  const skin = funnel && setup ? setup.trade : "home";
+  const look = SKINS[skin];
+  const shown: DemoInfo = skin === "home" ? demo : {
+    ...demo, name: look.name, role: look.role, intro: look.intro, prompts: look.prompts, sampleDetails: look.sampleDetails, sampleCard: undefined,
+    design: { ...demo.design, tools: demo.design.tools.map((t) => ({ ...t, label: t.label.replace("Fill in the service request", "Fill in the booking").replace(" a visit", " an appointment").replace("services and fees", "services and prices") })), rules: demo.design.rules.map((r) => r.replace("visit", "appointment")) },
+  };
   // The finished call's numbers for the funnel, read when the call ends.
   const feedRef = useRef(feed);
   feedRef.current = feed;
@@ -103,8 +112,8 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     <header className={d.top}>
       <a href="/" className={d.dm} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} /><span>Digital Macaroni</span></a>
       <span className={d.slash} aria-hidden="true">/</span>
-      <BrandLockup id={demo.id} />
-      <span className={d.topRole}>{demo.role} · live demo</span>
+      <BrandLockup id={look.brand} />
+      <span className={d.topRole}>{shown.role} · live demo</span>
       <div className={d.topStatus} role="status">
         {replaying ? <span className={d.replayPill}>Sample replay · not a live call</span> : null}
         {onCall ? <CallBadge demo={demo} feed={feed} voice={voice} /> : null}
@@ -115,38 +124,39 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     <main id="content" className={d.layout}>
       <aside className={d.left}>
         {/* Once the call links, the card folds into the top-bar badge to give the conversation room. */}
-        {onCall ? null : <CallCard demo={demo} feed={feed} voice={voice} onCall={onCall} watch={watch} replaying={replaying} onNewCode={newCode} />}
+        {onCall ? null : <CallCard demo={shown} feed={feed} voice={voice} onCall={onCall} watch={watch} replaying={replaying} onNewCode={newCode} />}
 
-        {demo.sampleCard ? <section className={d.sample} aria-label={demo.sampleCard.title}>
-          <h2>{demo.sampleCard.title}</h2>
-          <dl>{demo.sampleCard.items.map((i) => <div key={i.label}><dt>{i.label}</dt><dd>{i.value}</dd></div>)}</dl>
+        {shown.sampleCard ? <section className={d.sample} aria-label={shown.sampleCard.title}>
+          <h2>{shown.sampleCard.title}</h2>
+          <dl>{shown.sampleCard.items.map((i) => <div key={i.label}><dt>{i.label}</dt><dd>{i.value}</dd></div>)}</dl>
         </section> : null}
 
         <section className={d.convo} aria-label="Conversation" aria-live="polite">
           <div className={d.sectionHead}><h2>Conversation</h2>{feed.entries.length ? <span>{feed.entries.filter((e) => e.kind === "say").length} turns</span> : null}</div>
           {feed.entries.length ? <Conversation entries={feed.entries} agentName={demo.agentName} demoId={demo.id} />
             : <div className={d.prompts}>
-              <p>{demo.intro}</p>
+              <p>{shown.intro}</p>
               <span>Try saying</span>
-              <ul>{demo.prompts.map((p) => <li key={p}>“{p}”</li>)}</ul>
-              <small>{demo.sampleDetails}</small>
+              <ul>{shown.prompts.map((p) => <li key={p}>“{p}”</li>)}</ul>
+              <small>{shown.sampleDetails}</small>
             </div>}
         </section>
       </aside>
 
-      <section className={d.center} aria-label={`${demo.name} back office`}>
-        {demo.id === "northline" ? <NorthlineOffice view={view as NorthlineView} state={state} agentName={demo.agentName} />
+      <section className={d.center} aria-label={`${shown.name} back office`}>
+        {skin !== "home" ? <AppointmentOffice view={(skin === "salon" ? luneSample : tidewellSample) as AppointmentView} state="sample" agentName={demo.agentName} />
+          : demo.id === "northline" ? <NorthlineOffice view={view as NorthlineView} state={state} agentName={demo.agentName} />
           : demo.id === "travel" ? <TravelOffice view={view as TravelView} state={state} agentName={demo.agentName} />
           : <FormFieldOffice view={view as FormFieldView} state={state} agentName={demo.agentName} />}
       </section>
 
-      <BehindTheCall demo={demo} feed={feed} setup={funnel ? setup : null} />
+      <BehindTheCall demo={shown} feed={feed} setup={funnel ? setup : null} />
     </main>
 
     {gated ? <SetupCard demo={demo} onDone={setSetup} /> : null}
 
     <footer className={d.foot}>
-      <span>{demo.name} is a fictional business. Nothing is really booked, sold or charged.</span>
+      <span>{shown.name} is a fictional business. Nothing is really booked, sold or charged.</span>
       <a href="/privacy/">Privacy</a><a href="/demo-terms/">Demo terms</a><CookieSettings />
     </footer>
   </div>;

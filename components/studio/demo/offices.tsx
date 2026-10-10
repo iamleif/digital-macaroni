@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ProductArt, swatch } from "../live/product-art";
 import { formfieldEmpty } from "../live/sample-views";
-import type { DemoId, FormFieldView, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
+import type { AppointmentView, BrandId, FormFieldView, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
 import { BrandMark } from "../brand-marks";
 import { ArrowRight, Calendar, Check, Home, Inbox, Lock, Phone, Search, Seat, Settings, Suitcase, User, Users } from "../icons";
 import d from "./demo.module.css";
@@ -16,7 +16,7 @@ export type LiveState = "sample" | "live" | "finished";
 
 const STATE_LABEL: Record<LiveState, string> = { sample: "Sample data", live: "Your call · live", finished: "Your call · finished" };
 
-function Shell({ id, nav, title, kicker, tools, state, children }: { id: DemoId; nav: number; title: string; kicker: string; tools?: ReactNode; state: LiveState; children: ReactNode }) {
+function Shell({ id, nav, title, kicker, tools, state, children }: { id: BrandId; nav: number; title: string; kicker: string; tools?: ReactNode; state: LiveState; children: ReactNode }) {
   const icons = [Home, Calendar, Inbox, Users];
   return <div className={d.app} data-demo={id}>
     <nav className={d.rail} aria-hidden="true">
@@ -133,6 +133,83 @@ export function NorthlineOffice({ view, state, agentName }: { view: NorthlineVie
             <span className={d.listIcon}><Phone size={15} /></span>
             <div><b>{m.name} · {m.id}</b><small>{m.summary}</small>{m.preferredTime ? <small>Call back {m.preferredTime}</small> : null}</div>
           </li>)}</ul> : <Empty>Callback requests for the team land here.</Empty>}
+        </Card>
+      </div>
+    </div>
+  </Shell>;
+}
+
+/* ---------------- Ellie's other front desks: salon / med spa and clinic ---------------- */
+
+const WORDS = {
+  salon: { brand: "lune" as const, kicker: "Front desk", staff: "Stylist", staffs: "Team today", menu: "Service menu", request: "New booking", list: "Appointments", mine: "Your appointment" },
+  clinic: { brand: "tidewell" as const, kicker: "Reception", staff: "Practitioner", staffs: "Practitioners", menu: "Visit types", request: "Patient booking", list: "Visits", mine: "Your visit" },
+};
+
+export function AppointmentOffice({ view, state, agentName }: { view: AppointmentView; state: LiveState; agentName: string }) {
+  const w = WORDS[view.skin];
+  const booked = [...view.appointments].reverse().find((a) => a.status === "booked");
+  const filled = view.request.filter((r) => r.value).length;
+  const busyHours = view.schedule.reduce((n, j) => n + j.span, 0);
+  const isOpen = (staffId: string, hour: number) => view.open.some((o) => o.staffId === staffId && o.hour === hour);
+  const groups = [...new Set(view.menu.map((m) => m.group))];
+
+  return <Shell id={w.brand} nav={1} kicker={`${w.kicker} · ${view.timeZone}`} title={view.day.label} state={state}
+    tools={<span className={d.seg}><b>Day</b><span>Week</span></span>}>
+    <div className={d.kpis}>
+      <div><span>{w.staffs}</span><strong>{view.staff.length}</strong></div>
+      <div><span>Hours booked</span><strong>{busyHours}<small>/{view.staff.length * view.hours.length}</small></strong></div>
+      <div data-hot={view.open.length > 0 || undefined}><span>Open for this</span><strong>{view.open.length || "—"}</strong></div>
+      <div data-hot={Boolean(booked) || undefined}><span>{w.mine}</span><strong>{booked ? booked.id : "—"}</strong></div>
+    </div>
+
+    <section className={d.board} aria-label={`${w.staff} schedule`}>
+      <div className={d.boardGrid} style={{ gridTemplateColumns: `140px repeat(${view.hours.length}, minmax(96px, 1fr))` }}>
+        <span className={d.boardCorner}>{w.staff}</span>
+        {view.hours.map((h) => <span key={h.hour} className={d.boardHour}>{h.label}</span>)}
+        {view.staff.map((s, row) => {
+          const cells: ReactNode[] = [<span key={s.id} className={d.tech}><i data-tone={TONES[row % 4]}>{initials(s.name.replace("Dr. ", ""))}</i><span className={d.techWho}><b>{s.name}</b><small>{s.role}</small></span></span>];
+          for (let i = 0; i < view.hours.length; i++) {
+            const hour = view.hours[i]!.hour;
+            const j = view.schedule.find((x) => x.staffId === s.id && x.hour === hour);
+            const span = j ? Math.min(j.span, view.hours.length - i) : 1;
+            let content: ReactNode = null;
+            if (j?.kind === "demo") content = <div className={d.jobMine}><span className={d.jobTag}>{j.ref} · by {agentName}</span><b>{j.title}</b><small>{j.name}</small></div>;
+            else if (j) content = <div className={d.jobBusy}><b>{j.title}</b><small>Booked</small></div>;
+            else if (view.proposed && view.proposed.staffId === s.id && view.proposed.hour === hour) content = <div className={d.jobProposed}><b>Proposed</b><small>Waiting for a yes</small></div>;
+            else if (isOpen(s.id, hour)) content = <div className={d.jobOpen}>Open</div>;
+            cells.push(<div key={`${s.id}${hour}`} className={d.slot} style={span > 1 ? { gridColumn: `span ${span}` } : undefined}>{content}</div>);
+            i += span - 1;
+          }
+          return <Fragment key={s.id}>{cells}</Fragment>;
+        })}
+      </div>
+    </section>
+
+    <div className={d.cards}>
+      <Card title={w.menu} meta={`${view.menu.length} options`}>
+        <div className={d.menu}>{groups.map((g) => <div key={g}>
+          <small>{g}</small>
+          <ul>{view.menu.filter((m) => m.group === g).map((m) => <li key={m.id} data-chosen={m.chosen || undefined}>
+            <div><b>{m.name}</b><span>{m.minutes} min · {m.staff.join(", ")}</span></div>
+            <strong>{m.price}</strong>
+          </li>)}</ul>
+        </div>)}</div>
+      </Card>
+      <div className={d.stack}>
+        <Card title={w.request} meta={<span className={d.progress}><i style={{ width: `${(filled / view.request.length) * 100}%` }} />{filled}/{view.request.length}</span>}>
+          <dl className={d.fields}>{view.request.map((r) => <Field key={r.label} label={r.label} value={r.value} note={r.note} />)}</dl>
+        </Card>
+        {view.extras ? <Card title={view.extras.title}>
+          <ul className={d.extras}>{view.extras.rows.map((r) => <li key={r.label} data-tone={r.tone}><span>{r.label}</span><b>{r.value}</b></li>)}</ul>
+        </Card> : null}
+        <Card title={w.list} meta={view.appointments.length || "None yet"}>
+          {view.appointments.length ? <ul className={d.list}>{view.appointments.map((a) => <li key={a.id} data-status={a.status}>
+            <span className={d.listIcon}><Calendar size={15} /></span>
+            <div><b>{a.service} · {a.id}</b><small>{a.when} · {a.staff}</small><small>{a.name}</small></div>
+            <em data-status={a.status}>{a.status === "cancelled" ? "Cancelled" : a.changes ? `Moved ${a.changes}×` : "Booked"}</em>
+          </li>)}</ul> : <Empty>{view.skin === "salon" ? "An appointment" : "A visit"} appears here once {agentName} books it.</Empty>}
+          {view.emailed ? <Emailed to={view.emailed.to} what={`Confirmation for ${view.emailed.reference}`} /> : null}
         </Card>
       </div>
     </div>

@@ -1,8 +1,19 @@
-import type { DemoId } from "./live/types";
+import type { BrandId } from "./live/types";
 import h from "./home.module.css";
 
 /** Logo marks for the three fictional demo businesses. Shared by the homepage cards and, later, the demo pages. */
-export function BrandMark({ id, size = 22 }: { id: DemoId; size?: number }) {
+export function BrandMark({ id, size = 22 }: { id: BrandId; size?: number }) {
+  if (id === "lune") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <defs><linearGradient id="ln-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#c9739a" /><stop offset="1" stopColor="#7a3b66" /></linearGradient></defs>
+    <circle cx="12" cy="12" r="12" fill="url(#ln-g)" />
+    <path d="M14.6 6.2a6.2 6.2 0 1 0 3.4 10.9 5 5 0 1 1-3.4-10.9Z" fill="#fdeef4" />
+  </svg>;
+  if (id === "tidewell") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <defs><linearGradient id="tw-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3fb3ad" /><stop offset="1" stopColor="#1f7a78" /></linearGradient></defs>
+    <rect width="24" height="24" rx="7" fill="url(#tw-g)" />
+    <path d="M5 13.5c1.6 0 1.6-1.6 3.2-1.6s1.6 1.6 3.2 1.6 1.6-1.6 3.2-1.6 1.6 1.6 3.2 1.6M5 17c1.6 0 1.6-1.6 3.2-1.6s1.6 1.6 3.2 1.6 1.6-1.6 3.2-1.6 1.6 1.6 3.2 1.6" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" fill="none" />
+    <circle cx="12" cy="7.5" r="1.8" fill="#fff" />
+  </svg>;
   if (id === "northline") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <defs><linearGradient id="nl-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#5b93e6" /><stop offset="1" stopColor="#2a5aa8" /></linearGradient></defs>
     <rect width="24" height="24" rx="7" fill="url(#nl-g)" />
@@ -20,13 +31,15 @@ export function BrandMark({ id, size = 22 }: { id: DemoId; size?: number }) {
   </svg>;
 }
 
-const WORDMARK: Record<DemoId, { text: string; className: string }> = {
+const WORDMARK: Record<BrandId, { text: string; className: string }> = {
   northline: { text: "Northline", className: h.wmNorthline },
   formfield: { text: "Form & Field", className: h.wmFormfield },
   travel: { text: "Waypoint", className: h.wmWaypoint },
+  lune: { text: "lune", className: h.wmLune },
+  tidewell: { text: "Tidewell", className: h.wmTidewell },
 };
 
-export function BrandLockup({ id }: { id: DemoId }) {
+export function BrandLockup({ id }: { id: BrandId }) {
   const w = WORDMARK[id];
   return <span className={h.lockup}><BrandMark id={id} /><span className={w.className}>{w.text}</span></span>;
 }

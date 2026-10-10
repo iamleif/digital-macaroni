@@ -1,4 +1,4 @@
-import type { FormFieldView, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
+import type { AppointmentView, FormFieldView, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
 
 /**
  * Representative records for the homepage cards and the demo window before a conversation starts.
@@ -136,3 +136,124 @@ export const travelSample: TravelView = {
 };
 
 export const travelEmpty: TravelView = { stage: "trip", search: null, options: [], selected: null, details: null, fareLevels: [], seatMap: null, seat: null, bags: null, traveller: null, review: null, readBack: null, booking: null };
+
+/* ---------------- Ellie's other businesses (front-end preview data) ---------------- */
+
+const dayHours = (from: number, to: number) =>
+  Array.from({ length: to - from }, (_, i) => from + i).map((hour) => ({ hour, label: `${hour % 12 || 12}${hour < 12 ? " AM" : " PM"}` }));
+
+/** Lune Salon & Med Spa: stylists and an injector, a service menu with prices and times, deposits. */
+export const luneSample: AppointmentView = {
+  skin: "salon",
+  timeZone: "Pacific Time",
+  day: { label: "Saturday" },
+  staff: [
+    { id: "maria", name: "Maria", role: "Senior stylist" },
+    { id: "ava", name: "Ava", role: "Colourist" },
+    { id: "jules", name: "Jules", role: "Nail artist" },
+    { id: "noor", name: "Noor", role: "Nurse injector" },
+  ],
+  hours: dayHours(9, 18),
+  schedule: [
+    { staffId: "maria", hour: 9, span: 1, kind: "existing", title: "Cut & style" },
+    { staffId: "maria", hour: 12, span: 2, kind: "existing", title: "Blowout + treatment" },
+    { staffId: "ava", hour: 9, span: 3, kind: "existing", title: "Balayage" },
+    { staffId: "ava", hour: 15, span: 2, kind: "existing", title: "Root colour" },
+    { staffId: "jules", hour: 10, span: 1, kind: "existing", title: "Gel manicure" },
+    { staffId: "jules", hour: 13, span: 1, kind: "existing", title: "Pedicure" },
+    { staffId: "noor", hour: 11, span: 1, kind: "existing", title: "Hydrafacial" },
+    { staffId: "noor", hour: 14, span: 1, kind: "existing", title: "Consultation" },
+    { staffId: "maria", hour: 15, span: 1, kind: "demo", title: "Cut & style", ref: "LN-218", name: "Priya Shah" },
+  ],
+  open: [{ staffId: "maria", hour: 10 }, { staffId: "maria", hour: 15 }, { staffId: "maria", hour: 16 }],
+  proposed: null,
+  menu: [
+    { id: "cut", name: "Cut & style", price: "$85", minutes: 60, staff: ["Maria", "Ava"], group: "Hair", chosen: true },
+    { id: "balayage", name: "Balayage", price: "$220", minutes: 180, staff: ["Ava"], group: "Hair" },
+    { id: "gloss", name: "Gloss add-on", price: "$35", minutes: 20, staff: ["Maria", "Ava"], group: "Hair" },
+    { id: "gel", name: "Gel manicure", price: "$45", minutes: 45, staff: ["Jules"], group: "Nails" },
+    { id: "hydrafacial", name: "Hydrafacial", price: "$199", minutes: 60, staff: ["Noor"], group: "Med spa" },
+    { id: "consult", name: "Injectables consultation", price: "Free", minutes: 30, staff: ["Noor"], group: "Med spa" },
+  ],
+  request: [
+    { label: "Service", value: "Cut & style" },
+    { label: "Stylist", value: "Maria" },
+    { label: "Name", value: "Priya Shah" },
+    { label: "Mobile", value: "•••• 0142" },
+    { label: "Time", value: "Saturday, 3 PM", note: "Booked" },
+  ],
+  extras: { title: "Deposit & add-ons", rows: [
+    { label: "Deposit", value: "$25 held on card · applied at checkout", tone: "good" },
+    { label: "Add-on offered", value: "Gloss · $35 · accepted", tone: "good" },
+    { label: "Cancellation", value: "Free up to 24 hours before" },
+  ] },
+  appointments: [{ id: "LN-218", status: "booked", service: "Cut & style + gloss", when: "Saturday, 3 PM", staff: "Maria", name: "Priya Shah", changes: 0 }],
+  messages: [],
+};
+
+export const luneEmpty: AppointmentView = {
+  ...luneSample,
+  schedule: luneSample.schedule.filter((j) => j.kind === "existing"),
+  open: [],
+  menu: luneSample.menu.map((m) => ({ ...m, chosen: false })),
+  request: luneSample.request.map((r) => ({ label: r.label, value: null })),
+  extras: null,
+  appointments: [],
+};
+
+/** Tidewell Clinic: chiropractic, physio and massage; new vs returning patients, coverage, packages. */
+export const tidewellSample: AppointmentView = {
+  skin: "clinic",
+  timeZone: "Pacific Time",
+  day: { label: "Tuesday" },
+  staff: [
+    { id: "lee", name: "Dr. Lee", role: "Chiropractor" },
+    { id: "sam", name: "Sam Patel", role: "Physiotherapist" },
+    { id: "nina", name: "Nina", role: "Massage therapist" },
+  ],
+  hours: dayHours(8, 18),
+  schedule: [
+    { staffId: "lee", hour: 8, span: 1, kind: "existing", title: "Adjustment" },
+    { staffId: "lee", hour: 9, span: 1, kind: "existing", title: "Adjustment" },
+    { staffId: "lee", hour: 13, span: 1, kind: "existing", title: "New patient" },
+    { staffId: "sam", hour: 10, span: 1, kind: "existing", title: "Follow-up" },
+    { staffId: "sam", hour: 14, span: 2, kind: "existing", title: "Post-op rehab" },
+    { staffId: "nina", hour: 9, span: 2, kind: "existing", title: "Massage · 90" },
+    { staffId: "nina", hour: 15, span: 1, kind: "existing", title: "Massage · 60" },
+    { staffId: "lee", hour: 11, span: 1, kind: "demo", title: "New patient assessment", ref: "TW-407", name: "Jordan Reyes" },
+  ],
+  open: [{ staffId: "lee", hour: 10 }, { staffId: "lee", hour: 11 }, { staffId: "lee", hour: 16 }],
+  proposed: null,
+  menu: [
+    { id: "chiro-new", name: "Chiropractic · new patient", price: "$120", minutes: 60, staff: ["Dr. Lee"], group: "Chiropractic", chosen: true },
+    { id: "chiro-follow", name: "Chiropractic · follow-up", price: "$65", minutes: 30, staff: ["Dr. Lee"], group: "Chiropractic" },
+    { id: "physio-new", name: "Physio assessment", price: "$130", minutes: 60, staff: ["Sam Patel"], group: "Physiotherapy" },
+    { id: "massage-60", name: "Massage · 60 min", price: "$110", minutes: 60, staff: ["Nina"], group: "Massage" },
+    { id: "package", name: "5-visit package", price: "$300", minutes: 30, staff: ["Dr. Lee"], group: "Packages" },
+  ],
+  request: [
+    { label: "Patient", value: "Jordan Reyes" },
+    { label: "Visit", value: "New patient · chiropractic" },
+    { label: "Reason", value: "Lower back pain after lifting, 1 week" },
+    { label: "Practitioner", value: "Dr. Lee" },
+    { label: "Time", value: "Tuesday, 11 AM", note: "Booked" },
+  ],
+  extras: { title: "Intake & coverage", rows: [
+    { label: "Patient type", value: "New · intake forms sent by email", tone: "good" },
+    { label: "Coverage", value: "Insurance on file · direct billing, verified at the visit" },
+    { label: "Red flags", value: "None mentioned (no numbness, no fall)", tone: "good" },
+    { label: "Package", value: "5-visit package offered · thinking about it" },
+  ] },
+  appointments: [{ id: "TW-407", status: "booked", service: "New patient assessment", when: "Tuesday, 11 AM", staff: "Dr. Lee", name: "Jordan Reyes", changes: 0 }],
+  messages: [],
+};
+
+export const tidewellEmpty: AppointmentView = {
+  ...tidewellSample,
+  schedule: tidewellSample.schedule.filter((j) => j.kind === "existing"),
+  open: [],
+  menu: tidewellSample.menu.map((m) => ({ ...m, chosen: false })),
+  request: tidewellSample.request.map((r) => ({ label: r.label, value: null })),
+  extras: null,
+  appointments: [],
+};

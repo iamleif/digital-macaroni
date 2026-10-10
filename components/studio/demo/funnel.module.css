@@ -89,3 +89,4 @@
   .card h2 { font-size: 22px; }
   .trades { grid-template-columns: 1fr 1fr; }
 }
+.tradeMark { display: block; margin-bottom: 8px; }
