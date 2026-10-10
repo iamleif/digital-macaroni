@@ -9,7 +9,7 @@ import { ContactForm } from "./ContactForm";
 export const metadata: Metadata = pageMeta({
   title: "Contact — Digital Macaroni",
   shareTitle: "Tell Digital Macaroni what your business needs",
-  description: "Tell Digital Macaroni about your business and the calls you get. AI voice agents that do the work, and consulting for bigger projects.",
+  description: "Tell Digital Macaroni about your business and the calls you get. AI voice agents that get to work and grow your revenue, and consulting for bigger projects.",
   path: "/contact/",
 });
 

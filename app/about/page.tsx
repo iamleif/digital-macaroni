@@ -5,13 +5,13 @@ import { JsonLd, ORG_REF, SITE, pageMeta } from "@/components/studio/site";
 export const metadata: Metadata = pageMeta({
   title: "About — Digital Macaroni",
   shareTitle: "About Digital Macaroni",
-  description: "Digital Macaroni builds AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team.",
+  description: "Digital Macaroni builds AI voice agents that get to work and grow your revenue: they answer every call, book the job, update your systems and hand off to your team.",
   path: "/about/",
   ownImage: true,
 });
 
 export default function AboutPage() {
-  return <InfoPage title="About Digital Macaroni." intro="We build AI voice agents that do the work.">
+  return <InfoPage title="About Digital Macaroni." intro="We build AI voice agents that get to work and grow your revenue.">
     <JsonLd data={{ "@context": "https://schema.org", "@type": "AboutPage", url: `${SITE}/about/`, name: "About Digital Macaroni", about: ORG_REF, mainEntity: ORG_REF }} />
     <section>
       <h2>What we do</h2>

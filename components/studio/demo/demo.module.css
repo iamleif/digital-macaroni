@@ -115,6 +115,11 @@
 .code small { display: block; font-size: 12.5px; line-height: 1.5; color: #a3a097; margin-top: 10px; }
 .callNote { font-size: 13.5px; line-height: 1.55; color: #c9c6bc; }
 .callNote b { color: #fff; font-weight: 600; }
+.follow { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255, 255, 255, 0.06); font-size: 13px; line-height: 1.5; color: #c9c6bc; }
+.follow b { color: #fff; font-weight: 600; }
+.follow div { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.follow a { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.18); color: #fff; text-decoration: none; font-weight: 500; }
+.follow a:hover { border-color: rgba(255, 255, 255, 0.4); }
 .yellowBtn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 999px; font-size: 14.5px; font-weight: 500; transition: transform 0.4s var(--ease), background-color 0.3s var(--ease); width: 100%; }
 .yellowBtn { background: var(--yellow); color: var(--ink); }
 .yellowBtn:hover { background: #ffd95e; }

@@ -124,8 +124,8 @@ export function ContactForm() {
 
   return (
     <form
-      // rr-block: Grain's session recordings show the form as a blank box, never what people type.
-      className="contact-form rr-block"
+      // rr-block and ph-no-capture: Grain's and PostHog's session recordings show the form as a blank box, never what people type.
+      className="contact-form rr-block ph-no-capture"
       action="/api/contact"
       method="post"
       onSubmit={handleSubmit}

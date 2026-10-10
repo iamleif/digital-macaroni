@@ -1,6 +1,6 @@
 # Digital Macaroni
 
-> Digital Macaroni builds AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team. Each agent is built for one business and connected to the tools it already runs.
+> Digital Macaroni builds AI voice agents that get to work and grow your revenue: they answer every call, book the job, update your systems and hand off to your team. Each agent is built for one business and connected to the tools it already runs.
 
 ## Start here
 

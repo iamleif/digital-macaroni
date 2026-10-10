@@ -10,6 +10,7 @@ import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
 import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
 import { ArrowUpRight, Check, Phone } from "../icons";
+import { COMPANY_INSTAGRAM, COMPANY_LINKEDIN, COMPANY_TIKTOK, COMPANY_YOUTUBE } from "../site";
 import { FormFieldOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
 import { CookieSettings, track } from "../consent";
@@ -33,7 +34,14 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   const receive = useCallback((e: DemoEvent) => { if (!voice.take(e)) push(e); }, [voice, push]);
 
   const [replaying, setReplaying] = useState(false);
-  useEffect(() => { setReplaying(new URLSearchParams(window.location.search).has("replay")); }, []);
+  useEffect(() => {
+    const replay = new URLSearchParams(window.location.search).has("replay");
+    setReplaying(replay);
+    if (!replay) track("demo_viewed", { demo: demo.id });
+  }, [demo.id]);
+  // The finished call's numbers for the funnel, read when the call ends.
+  const feedRef = useRef(feed);
+  feedRef.current = feed;
 
   const [watch, setWatch] = useState<{ status: WatchStatus; code?: string }>({ status: "requesting" });
   const watcher = useRef<CallWatcher | null>(null);
@@ -59,8 +67,17 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   // When a call ends, go straight back to the normal screen with a fresh code. The finished call's
   // results stay on screen until the next call links.
   useEffect(() => {
-    if (!replaying && watch.status === "ended") { voice.clear(); startWatcher(); }
-  }, [replaying, watch.status, startWatcher, voice]);
+    if (!replaying && watch.status === "ended") {
+      const f = feedRef.current;
+      track("demo_call_finished", {
+        demo: demo.id,
+        turns: f.entries.filter((e) => e.kind === "say").length,
+        actions: f.entries.filter((e) => e.kind === "action" && e.status === "done").length,
+      });
+      voice.clear();
+      startWatcher();
+    }
+  }, [replaying, watch.status, startWatcher, voice, demo.id]);
 
   // Sample replay: scripted events through the real feed.
   useEffect(() => {
@@ -154,7 +171,10 @@ const WAVE = [8, 14, 10, 20, 15, 26, 18, 11, 17, 24, 30, 19, 13, 22, 27, 16, 21,
 
 function CallCard({ demo, feed, voice, onCall, watch, replaying, onNewCode }: { demo: DemoInfo; feed: Feed; voice: VoiceLevels; onCall: boolean; watch: { status: WatchStatus; code?: string }; replaying: boolean; onNewCode: () => void }) {
   // After a call, the card is back to normal with a fresh code; the last call's results stay below.
-  const lastCall = feed.ended ? <p className={d.callNote}><b>Call finished.</b> Your results stay on screen. Call again with a new code.</p> : null;
+  const lastCall = feed.ended ? <>
+    <p className={d.callNote}><b>Call finished.</b> Your results stay on screen. Call again with a new code.</p>
+    <FollowCard demo={demo} />
+  </> : null;
   // On a phone, the dial link carries the code: the dialer waits (",,") then sends it as keypad tones.
   const dial = watch.status === "waiting" && watch.code ? `tel:${demo.phone},,${watch.code}` : `tel:${demo.phone}`;
 
@@ -189,6 +209,20 @@ function CallCard({ demo, feed, voice, onCall, watch, replaying, onNewCode }: { 
     {!onCall ? <a className={d.number} href={dial}><Phone size={20} />{demo.phoneDisplay}</a> : null}
     {body}
   </section>;
+}
+
+/** After a call: where to see how the agents are built, while the visitor is most curious. */
+function FollowCard({ demo }: { demo: DemoInfo }) {
+  const links = [
+    { label: "YouTube", href: `${COMPANY_YOUTUBE}?sub_confirmation=1` },
+    { label: "TikTok", href: COMPANY_TIKTOK },
+    { label: "Instagram", href: COMPANY_INSTAGRAM },
+    { label: "LinkedIn", href: COMPANY_LINKEDIN },
+  ];
+  return <div className={d.follow}>
+    <p><b>See how {demo.agentName} was built.</b> We break down our agents, and how voice AI works, on YouTube.</p>
+    <div>{links.map((l) => <a key={l.label} href={l.href} target="_blank" rel="noopener" onClick={() => track("demo_social_click", { demo: demo.id, target: l.label.toLowerCase() })}>{l.label}<ArrowUpRight size={12} /></a>)}</div>
+  </div>;
 }
 
 /* ---------------- Conversation ---------------- */

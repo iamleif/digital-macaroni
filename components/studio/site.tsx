@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 /** One place for who we are: page metadata and the structured data on every page read from here. */
 export const SITE = "https://digitalmacaroni.io";
 export const NAME = "Digital Macaroni";
-export const TAGLINE = "AI voice agents that do the work.";
+export const TAGLINE = "AI voice agents that get to work and grow your revenue.";
 export const DESCRIPTION =
-  "Digital Macaroni builds AI voice agents that do the work: they answer every call, book the job, update your systems and hand off to your team. Each agent is built for one business and connected to the tools it already runs.";
+  "Digital Macaroni builds AI voice agents that get to work and grow your revenue: they answer every call, book the job, update your systems and hand off to your team. Each agent is built for one business and connected to the tools it already runs.";
 export const COMPANY_LINKEDIN = "https://www.linkedin.com/company/digitalmacaroni/";
 export const COMPANY_YOUTUBE = "https://www.youtube.com/@DigitalMacaroni";
 export const COMPANY_TIKTOK = "https://www.tiktok.com/@costume.spark";
@@ -36,7 +36,7 @@ export function pageMeta({ title, description, path, shareTitle, type = "website
 }): Metadata {
   const share = shareTitle ?? title;
   // A page's own card when it has one, otherwise the site-wide card.
-  const images = [{ url: ownImage ? `${path}opengraph-image` : "/opengraph-image", width: 1200, height: 630, alt: ownImage ? share : `${NAME}: AI voice agents that do the work`, type: "image/png" }];
+  const images = [{ url: ownImage ? `${path}opengraph-image` : "/opengraph-image", width: 1200, height: 630, alt: ownImage ? share : `${NAME}: AI voice agents that get to work and grow your revenue`, type: "image/png" }];
   return {
     title: { absolute: title },
     description,
