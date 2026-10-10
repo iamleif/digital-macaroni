@@ -59,7 +59,7 @@ export const AI_MINUTES_PER_CALL = 3;
 export const AI_RATE_PER_MINUTE = 0.15;
 
 /** Our entry running plan, as on the pricing section. */
-export const HOSTED_PLAN = { price: 149, minutes: 500 };
+export const HOSTED_PLAN = { price: 249, minutes: 500 };
 
 export function lostRevenue({ missed, ticket, rate }: { missed: number; ticket: number; rate: number }) {
   const jobs = Math.round(missed * rate * 10) / 10;

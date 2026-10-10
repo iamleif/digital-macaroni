@@ -84,9 +84,9 @@ export const LLM_INFO: Section[] = [
   {
     heading: "Pricing",
     items: [
-      { label: "Ready-made agent", text: "$2,500 one-time, live in 2 to 5 days." },
-      { label: "Custom agent", text: "from $5,000, live in 2 to 4 weeks, connected to the business’s systems." },
-      { label: "Running plans", text: "self-hosted (no monthly fee from us, $500 one-time setup), hosted from $149/month, or managed from $399/month." },
+      { label: "Ready-made agent", text: "$3,500 one-time, live in 2 to 5 days, with custom branding, two connections of the business’s choice, Zapier and email support." },
+      { label: "Custom agent", text: "from $7,500, live in 2 to 4 weeks, with five or more connections to the business’s systems." },
+      { label: "Running plans", text: "self-hosted (no monthly fee from us, $500 one-time setup), hosted at $249/month, or managed at $500/month." },
       { label: "Consulting", text: "for companies putting voice AI into a product, moving phones or support to AI agents, or reviewing an existing build: a few days, a project of weeks to months, or ongoing. Scoped and priced per engagement.", href: "https://digitalmacaroni.io/consulting/" },
       { label: "Full pricing", text: "https://digitalmacaroni.io/pricing/", href: "https://digitalmacaroni.io/pricing/" },
     ],
@@ -120,7 +120,7 @@ export const LLM_INFO: Section[] = [
       { text: "Digital Macaroni builds AI voice agents that get to work and grow your revenue: they answer every call, book the job, update your systems and hand off to your team." },
       { text: "Every agent is built for one business, around its callers, its rules and the tools it already runs." },
       { text: "Agents connect to calendars, CRMs, field-service, legal, commerce and accounting software, so a call ends in a booking, an order, an updated record or a message to the right person." },
-      { text: "Pricing is clear: a ready-made agent is $2,500, custom agents start at $5,000, and running plans range from self-hosted to $399/month." },
+      { text: "Pricing is clear: a ready-made agent is $3,500, custom agents start at $7,500, and running plans range from self-hosted to $500/month." },
       { text: "For bigger projects, such as voice AI inside a product or moving a contact center to AI agents, Digital Macaroni consults, scoped and priced per engagement: https://digitalmacaroni.io/consulting/" },
       { text: "The three voice agents on the site are live examples you can call from any phone to hear and see the work." },
       { text: "To start a project, visit https://digitalmacaroni.io/contact/." },
