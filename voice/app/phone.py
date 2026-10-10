@@ -22,6 +22,8 @@ from .live import LiveSession, TranscriptTracker, open_live
 from .pairing import MAX_ATTEMPTS_PER_CALL, link_call
 from .session import DemoSession, get_session
 
+# No demo runs longer than this, whatever its own limit.
+MAX_STREAM_S = 15 * 60
 GREET_NOTE = "[The call has just connected. Greet the caller now.]"
 NUDGE_NOTE = "[The line has been quiet for a while. Briefly and warmly check whether the caller is still there.]"
 SILENT_GOODBYE_NOTE = "[The line is still quiet. Say a short, friendly goodbye, then call end_call.]"
@@ -185,7 +187,7 @@ class PhoneBridge:
             if not self.live or self.hangup or self.finished:
                 continue
             now = _now()
-            if now - self.started_at >= config.max_session_seconds - 20:
+            if now - self.started_at >= self.session.max_seconds - 20:
                 self.live.send_text(TIME_NOTE)
                 self.request_hangup("time_limit", 8)
                 continue
@@ -241,6 +243,7 @@ class PhoneBridge:
                         self.speaking_timer.cancel()
                     if not self.speaking and self.last_speech_at:
                         log.info("phone.turn_latency", {"session": sid, "latency_ms": int((_now() - self.last_speech_at) * 1000)})
+                        self.session.record.note("reply_delay", ms=int((_now() - self.last_speech_at) * 1000))
                     self.set_speaking(True)
                     if config.voice_diagnostics and len(self.turn_audio) < 1500:
                         self.turn_audio.append(e.data)
@@ -297,6 +300,8 @@ class PhoneBridge:
             return
         self.session = s
         s.connected = True
+        # Hard backstop for the demo's time limit, whatever the model does.
+        self.handles.append(self.loop.call_later(s.max_seconds + 10, self.close_twilio))
         s.request_end = lambda reason: self.request_hangup(reason)
         s.link_screen = self.link
         self.tracker = TranscriptTracker(s)
@@ -329,8 +334,8 @@ class PhoneBridge:
 
     async def run(self) -> None:
         writer = asyncio.create_task(self._writer())
-        # Hard backstop for the demo's time limit, whatever the model does.
-        self.handles.append(self.loop.call_later(config.max_session_seconds + 10, self.close_twilio))
+        # Outer backstop for a stream that never starts a session; on_start sets the demo's own limit.
+        self.handles.append(self.loop.call_later(MAX_STREAM_S, self.close_twilio))
         reason = "disconnected"
         try:
             while True:

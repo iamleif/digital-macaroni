@@ -176,6 +176,13 @@ async def test_seat_map_offers_real_seats_and_books_by_number_or_kind(fake_duffe
     paid = await run("choose_seat", {"seat": "10a"})
     assert paid.ok and state.seat["seat"] == "10A" and state.seat["position"] == "window" and state.seat["price"] == "$25"
     assert "ase_" not in str(travel.view(state))
+    # Never a different seat than the one asked for: no seat named means no change.
+    nothing = await run("choose_seat", {})
+    assert not nothing.ok and nothing.error == "no_seat_named" and state.seat["seat"] == "10A"
+
+
+def test_linda_gets_eight_minutes():
+    assert travel.max_seconds == 480
 
 
 async def test_an_airline_without_a_seat_map_assigns_seats_at_check_in(fake_duffel):

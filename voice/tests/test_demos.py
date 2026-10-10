@@ -193,3 +193,18 @@ class TestFormField:
         assert run("lookup_order", {"orderNumber": "order 1042", "email": "Emilia at example dot com"}).ok
         assert res(run("create_support_request", {"issue": "Mug arrived chipped"}))["status"] == "pending review"
         assert len(state.support_requests) == 1
+
+
+class TestCallRecord:
+    def test_keeps_the_latest_words_per_utterance_and_masks_contact_details(self):
+        from app.calllog import CallRecord
+
+        r = CallRecord()
+        r.said("u1", "visitor", "my furn")
+        r.said("u1", "visitor", "my furnace died")
+        r.said("u2", "agent", "Oh no.")
+        r.tool("take_message", {"name": "Jamie", "callbackNumber": "+12065550142", "email": "jamie.fox@gmail.com"}, True, {"messageId": "MSG-1"}, 3)
+        said = [e for e in r.entries if e["kind"] == "say"]
+        assert [e["text"] for e in said] == ["my furnace died", "Oh no."]
+        args = next(e for e in r.entries if e["kind"] == "tool")["args"]
+        assert args["callbackNumber"] == "•••0142" and args["email"] == "j•••@gmail.com"

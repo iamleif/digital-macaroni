@@ -124,7 +124,7 @@ class BrowserBridge:
             if not self.live or self.ending or self.finished:
                 continue
             now = _now()
-            if now - self.started_at >= config.max_session_seconds - 20:
+            if now - self.started_at >= self.session.max_seconds - 20:
                 self.live.send_text(TIME_NOTE)
                 self.request_end("time_limit", 12)
                 continue
@@ -168,6 +168,7 @@ class BrowserBridge:
                         log.info("browser.first_audio", {"session": sid, "latency_ms": int((_now() - self.started_at) * 1000)})
                     if not self.speaking and self.last_speech_at:
                         log.info("browser.turn_latency", {"session": sid, "latency_ms": int((_now() - self.last_speech_at) * 1000)})
+                        self.session.record.note("reply_delay", ms=int((_now() - self.last_speech_at) * 1000))
                     if self.speaking_timer:
                         self.speaking_timer.cancel()
                     self.set_speaking(True)
@@ -220,7 +221,7 @@ class BrowserBridge:
         await self.socket.accept()
         writer = asyncio.create_task(self._writer())
         self.session.request_end = lambda reason: self.request_end(reason, 2.5 if reason == "agent_ended" else 9)
-        self.handles.append(self.loop.call_later(config.max_session_seconds + 10, self.finish, "time_limit"))
+        self.handles.append(self.loop.call_later(self.session.max_seconds + 10, self.finish, "time_limit"))
         self.session.connected = True
         for e in self.session.snapshot():
             self.send_json(e)

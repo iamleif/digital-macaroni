@@ -371,7 +371,7 @@ How you work, step by step, always through your tools:
 1. The trip. You need where from, where to, the date, one way or return (and the return date), and how many travellers. Assume economy unless the caller says otherwise; never suggest premium, business or first class yourself. Before searching, if the caller has not said what matters to them, ask one short open question such as "Anything that matters most, like the price or the time of day?" and accept whatever they say, including "no". Let the caller lead; do not quiz them. When a city or airport is unclear, call find_places.
 2. Search: call search_flights with what you know (if they said nothing about priorities, use the best balance). It returns a short list of up to three options, each with a label (cheapest, fastest, best value). Never say how many fares exist in total. Keep it to three short sentences at most: the option that fits what they care about (airline, departure time, nonstop or stops, price), then the alternatives in a few words each ("or Lufthansa at six thirty for three ninety"), then ask which they would like. Only describe options the tool returned; never invent flights, times or prices.
 3. The flight: when they pick one, call choose_flight and say in one sentence what the fare includes (bags, changes). Mention other fare levels only if the caller asks about them or about changing the fare; switch with choose_fare if they want to.
-4. Seats: ask once whether they would like to choose a seat; if not, move on. If yes, call get_seats. Offer the best window and aisle seats and say which are free or what they cost; mention the exit row for extra legroom if there is one. Book their choice with choose_seat (a seat number, or a preference such as window or aisle). If the airline has no seat map, say seats are assigned at check-in.
+4. Seats: ask once whether they would like to choose a seat; if not, move on. If yes, call get_seats. Offer the best window and aisle seats and say which are free or what they cost; mention the exit row for extra legroom if there is one. Book their choice with choose_seat: when they name a seat, pass that exact number; pass a preference (window, aisle) only when they didn't name one. If you are not sure of the number you heard, check it with them first ("twenty-eight A?"). After choosing, say the seat back once. If they correct you, choose the seat they meant; don't argue or repeat the old one. If the airline has no seat map, say seats are assigned at check-in.
 5. Bags: ask once whether they need an extra checked bag, giving the price the tool gives; add it with add_bags only if they want it.
 6. The traveller: ask for the lead traveller's full name and call set_traveller. Do not ask for date of birth, email, phone, passport or payment details: in this demo the other details the airline needs are filled with clearly marked samples, and you can say so in a few words.
 7. Review: call review_booking. It re-checks the price live and returns the whole booking. Read it back clearly, starting with "Here's your booking": the flights, the fare, the seat, the bags, the traveller's name, and the total. Nothing is booked yet, so never say "you are booked" or "you're all set". Ask whether everything is correct.
@@ -570,8 +570,8 @@ async def get_seats(state: TravelState, i: NoArgs, ctx: OpContext) -> OpResult:
 
 
 class ChooseSeat(BaseModel):
-    seat: Optional[str] = Field(None, pattern=r"^\d{1,2}[A-Ka-k]$", description="A seat number, e.g. '28A'.")
-    preference: Optional[Literal["window", "aisle", "middle", "exit_row"]] = Field(None, description="Or a kind of seat, if the caller did not name one.")
+    seat: Optional[str] = Field(None, pattern=r"^\d{1,2}[A-Ka-k]$", description="The seat number the caller named, e.g. '28A'. Whenever they name a seat, pass it here, never a preference.")
+    preference: Optional[Literal["window", "aisle", "middle", "exit_row"]] = Field(None, description="Only when the caller asked for a kind of seat without naming one.")
 
 
 async def choose_seat(state: TravelState, i: ChooseSeat, ctx: OpContext) -> OpResult:
@@ -584,16 +584,19 @@ async def choose_seat(state: TravelState, i: ChooseSeat, ctx: OpContext) -> OpRe
         if pick_seat is None:
             sug = seat_suggestions(state.seat_map)
             return fail("seat_unavailable", "That seat is taken or does not exist. Offer one of these instead.", {"bestWindow": sug["bestWindow"], "bestAisle": sug["bestAisle"]})
-    else:
+    elif i.preference:
         sug = seat_suggestions(state.seat_map)
-        pick_seat = {"window": sug["bestWindow"], "aisle": sug["bestAisle"], "exit_row": sug["exitRow"]}.get(i.preference or "", None) or next((s for s in open_seats if s["position"] == "middle"), None)
+        # Never a different kind of seat than the one asked for.
+        pick_seat = {"window": sug["bestWindow"], "aisle": sug["bestAisle"], "exit_row": sug["exitRow"]}.get(i.preference) if i.preference != "middle" else next((s for s in open_seats if s["position"] == "middle"), None)
         if pick_seat is None:
             return fail("no_such_seat", "No open seat of that kind. Offer what is open instead.", {"bestWindow": sug["bestWindow"], "bestAisle": sug["bestAisle"]})
+    else:
+        return fail("no_seat_named", "Pass the seat number the caller named, or the kind of seat they asked for.")
     service_id, amount, currency = state.seat_services[pick_seat["seat"]]
     state.seat = {**pick_seat, "amount": amount, "currency": currency}
     state.review, state.read_back = None, None
     state.stage = "seat"
-    return ok(f"Seat {pick_seat['seat']} · {pick_seat['position']} · {pick_seat['price']}", {"seat": pick_seat["seat"], "position": pick_seat["position"], "exitRow": pick_seat["exitRow"], "price": pick_seat["price"], "next": "Confirm the seat in a few words, then ask about bags."}, True)
+    return ok(f"Seat {pick_seat['seat']} · {pick_seat['position']} · {pick_seat['price']}", {"seat": pick_seat["seat"], "position": pick_seat["position"], "exitRow": pick_seat["exitRow"], "price": pick_seat["price"], "next": "Say the seat back in a few words (number, window or aisle, price) so the caller can correct it, then ask about bags."}, True)
 
 
 class AddBags(BaseModel):
@@ -734,6 +737,8 @@ travel: DemoDefinition[TravelState] = DemoDefinition(
     instruction=instruction,
     view=view,
     voice_style="friendly, warm and efficient, at an easy conversational pace",
+    # The whole booking (trip, options, fare, seat, bags, traveller, review, payment, email) needs more than five minutes.
+    max_seconds=480,
     fixed_lines=[OPENING_PHONE, OPENING_WEB, PAYMENT_LINE],
     vocabulary=["Waypoint", "Heathrow", "Gatwick", "Stansted", "JFK", "LaGuardia", "Newark", "LAX", "O'Hare", "Lufthansa", "British Airways", "economy", "premium economy", "business class", "first class", "one way", "round trip", "nonstop", "layover", "window", "aisle", "exit row", "checked bag", "carry-on"],
     operations={

@@ -73,6 +73,8 @@ class DemoDefinition(Generic[S]):
     vocabulary: list[str] = field(default_factory=list)
     # Lines the agent says word for word (its openings); their audio is synthesised once and reused.
     fixed_lines: list[str] = field(default_factory=list)
+    # Longest conversation in seconds; 0 uses the service-wide DEMO_MAX_SESSION_SECONDS.
+    max_seconds: int = 0
 
 
 def Confirmed() -> Any:

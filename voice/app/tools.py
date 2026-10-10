@@ -79,6 +79,7 @@ def _operation_spec(name: str, op: Any) -> ToolSpec:
         # A failure can change records too (the travel demo notes a booking it stopped).
         if r.changed:
             session.publish_state()
+        session.record.tool(name, args, r.ok, r.result if r.ok else {"error": r.error, "message": r.message, **r.result}, int((time.monotonic() - started) * 1000))
         if r.ok:
             session.emit({"type": "tool.succeeded", "callId": call_id, "tool": name, "label": op.label, "summary": r.summary, "version": session.version})
             return {"ok": True, **r.result}

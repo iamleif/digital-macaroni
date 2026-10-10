@@ -14,7 +14,7 @@ import time
 import uuid
 from typing import Any, Callable, Optional
 
-from . import log
+from . import calllog, log
 from .config import config
 from .demos import demos
 from .demos.types import DemoDefinition
@@ -57,8 +57,16 @@ class DemoSession:
         self.caller_number: Optional[str] = None
         self._listeners: list[Listener] = []
         self._history: list[Event] = []
+        # The words of the call, saved when it ends (calllog.py).
+        self.record = calllog.CallRecord()
+
+    @property
+    def max_seconds(self) -> int:
+        return self.demo.max_seconds or config.max_session_seconds
 
     def emit(self, e: Event) -> None:
+        if e["type"] == "transcript":
+            self.record.said(e["id"], e["speaker"], e["text"])
         if e["type"] not in ("audio", "audio.interrupted", "agent.levels"):
             self._history.append(e)
             if len(self._history) > HISTORY_CAP:
@@ -111,6 +119,10 @@ class DemoSession:
         self.ended_at = time.monotonic()
         self.emit({"type": "session.ended", "reason": reason})
         log.info("session.ended", {"session": self.id, "demo": self.demo_id, "channel": self.channel, "outcome": reason, "duration_ms": int((self.ended_at - self.created_at) * 1000), "version": self.version})
+        try:
+            asyncio.get_running_loop().create_task(calllog.save(self))
+        except RuntimeError:
+            pass
 
 
 def _utc_now():
@@ -152,7 +164,7 @@ async def sweeper() -> None:
             if not s.ended and not s.connected and now - s.created_at > CONNECT_TIMEOUT_S:
                 s.end("disconnected")
             # The transport enforces the limit gracefully; this is the backstop.
-            elif not s.ended and now - s.created_at > config.max_session_seconds + 30:
+            elif not s.ended and now - s.created_at > s.max_seconds + 30:
                 s.end("time_limit")
             elif s.ended and now - s.ended_at > KEEP_ENDED_S:
                 sessions.pop(s.id, None)

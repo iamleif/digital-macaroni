@@ -206,7 +206,7 @@ async def browser_sessions(request: Request) -> JSONResponse:
     if session is None:
         message = "Our demo agents are all busy. Please try again in a minute or two." if refused == "busy" else "The demo is paused right now."
         return JSONResponse({"error": refused, "message": message}, status_code=503)
-    return JSONResponse({"sessionId": session.id, "token": session.token, "maxSeconds": config.max_session_seconds})
+    return JSONResponse({"sessionId": session.id, "token": session.token, "maxSeconds": session.max_seconds})
 
 
 @app.websocket("/browser/sessions/{sid}")

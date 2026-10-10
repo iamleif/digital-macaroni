@@ -63,6 +63,10 @@ class Config:
     # Immediate server-side stop for new sessions.
     enabled: bool = env.get("DEMO_ENABLED") != "0"
     max_session_seconds: int = int(env.get("DEMO_MAX_SESSION_SECONDS", "300"))
+    # Cloud Storage bucket for call records (calllog.py); unset locally, so nothing is written.
+    call_log_bucket: str = env.get("DEMO_CALL_LOG_BUCKET", "")
+    # Local runs: write call records to this folder instead.
+    call_log_dir: str = env.get("DEMO_CALL_LOG_DIR", "")
     max_concurrent: int = int(env.get("DEMO_MAX_CONCURRENT_SESSIONS", "8"))
     # Exact website origins allowed to start browser sessions.
     allowed_origins: list[str] = field(default_factory=_origins)
