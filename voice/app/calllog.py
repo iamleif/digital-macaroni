@@ -152,6 +152,9 @@ async def get(name: str, byte_range: Optional[str] = None) -> Optional[tuple[int
         r = await http.get(f"https://storage.googleapis.com/storage/v1/b/{config.call_log_bucket}/o/{quote(name, safe='')}?alt=media", headers=headers)
     if r.status_code == 404:
         return None
+    if r.status_code >= 400:
+        log.warn("calllog.read_failed", {"outcome": r.status_code})
+        return None
     keep = {k: v for k, v in r.headers.items() if k.lower() in ("content-length", "content-range", "accept-ranges")}
     return r.status_code, r.content, keep
 
