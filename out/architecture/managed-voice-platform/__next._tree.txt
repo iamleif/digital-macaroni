@@ -1,12 +1,12 @@
 :HL["/_next/static/media/22a5144ee8d83bca-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/media/7d4881bb7e1bf84d-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/css/e4f35023043adb74.css","style"]
-:HL["/_next/static/css/9562ef936f43c29f.css","style"]
-:HL["/_next/static/css/cdd149b359986906.css","style"]
+:HL["/_next/static/css/5214d8baf8bf3609.css","style"]
+:HL["/_next/static/css/b2537c8f3dd5a574.css","style"]
 :HL["/_next/static/css/03c5203c8fb574c8.css","style"]
 :HL["/studio/logos/elevenlabs.svg","image"]
 :HL["/studio/logos/gemini.svg","image"]
 :HL["/studio/logos/twilio.svg","image"]
 :HL["/studio/logos/google-cloud.svg","image"]
 :HL["/studio/logos/resend.svg","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"architecture","param":null,"prefetchHints":4192,"slots":{"children":{"name":"slug","param":{"type":"d","key":"managed-voice-platform","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"DyOWuQtNZRxpKylbVX0Bv"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"architecture","param":null,"prefetchHints":4192,"slots":{"children":{"name":"slug","param":{"type":"d","key":"managed-voice-platform","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"sdWoStqXCUchIl8jLs0xv"}
