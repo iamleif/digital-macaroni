@@ -488,7 +488,7 @@ def summary_email(business: str, m: dict[str, Any], demo: bool) -> tuple[str, st
     urgent = '<p style="display:inline-block;background:#fde8e4;color:#a8321f;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;margin:0 0 12px">URGENT</p><br>' if m.get("urgent") else ""
     inner = f'{urgent}<p style="margin:0 0 14px">{e(m["summary"])}</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{table}</table>{msgs}'
     if demo:
-        inner += _dark_card("That was the demo call.", "This summary is what you'd get after every call your agent takes, the moment it ends.", f"30 minutes on setting this up for {business}: your own number, connected to your calendar or software, and what it costs.")
+        inner += _dark_card("That was your demo call. This is just the tip of the iceberg.", "This summary is what you'd get after every call your agent takes, the moment it ends. It can also book, reschedule, take orders and plug into the tools you already use.", f"30 minutes on setting this up for {business}: your own number, connected to your calendar or software, and what it costs.")
     foot = "Sent by Digital Macaroni after a demo call you asked for." if demo else f"Sent by your AI agent for {e(business)}, built by Digital Macaroni. Reply to this email for help."
     subject = f"{'URGENT · ' if m.get('urgent') else ''}{who} called {business}" + (f" · {m['reason']}" if m.get("reason") else "")
     return subject, _shell(m["summary"], f"New call: {who}", inner, foot), summary_text(business, m, demo)
@@ -511,7 +511,7 @@ async def send_meeting_email(name: str, to: str, business: str) -> bool:
     """Instant demo: the link to book a meeting, sent while the prospect is still on the call."""
     e = html.escape
     first = (name or "").split(" ")[0]
-    inner = f"""<p style="margin:0 0 6px">Thanks for trying the demo{', ' + e(first) if first else ''}. What you're hearing was built from {e(business)}'s website in under a minute.</p>""" + _dark_card("Want it answering your real calls?", "We set it up on its own number, connected to your calendar or software, with a summary to you after every call.", f"30 minutes on how an agent like this would work for {business}, and what it costs.") + '<p style="margin:18px 0 0;color:#6b645a;font-size:14px">Or just reply to this email. It comes straight to Leif.</p>'
+    inner = f"""<p style="margin:0 0 6px">Thanks for trying the demo{', ' + e(first) if first else ''}. What you're hearing was built from {e(business)}'s website in under a minute.</p>""" + _dark_card("This is just the tip of the iceberg.", "We set it up on its own number, connected to your calendar or software, with a summary to you after every call.", f"30 minutes on how an agent like this would work for {business}, and what it costs.") + '<p style="margin:18px 0 0;color:#6b645a;font-size:14px">Or just reply to this email. It comes straight to Leif.</p>'
     text = f"Thanks for trying the demo. Book a call with Leif about setting it up for {business}: {config.meeting_url}\nOr just reply to this email."
     return await _resend(to, f"Your AI agent for {business}: book a call with Leif", _shell("Book a call with Leif", "Let's set it up for real", inner, "Digital Macaroni · digitalmacaroni.io"), text, "Digital Macaroni")
 
