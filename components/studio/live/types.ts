@@ -138,6 +138,8 @@ export interface HotelsView {
   guest: { name: string; email: string; phone: string } | null;
   review: { hotel: string; room: string; board: string; dates: string; nights: number; adults: number; guest: string; total: string; taxes: string | null; cancellation: string; priceChanged: boolean } | null;
   booking: { status: "payment_stopped" } | null;
+  /** Callback requests for an agent (several rooms, a long stay, a person). The number is masked. */
+  messages: { id: string; name: string; summary: string; preferredTime: string | null; callback: string }[];
   /** The quote emailed after the payment stop, to a masked address (the full address never reaches the page). */
   emailed: { to: string } | null;
 }

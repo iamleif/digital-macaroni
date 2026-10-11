@@ -977,6 +977,12 @@ export function HotelsOffice({ view, state, agentName }: { view: HotelsView; sta
     <HotelStepper stage={stage} shown={shown} onShow={(s) => setPeek(s === stage ? null : { at: stage, show: s })} view={view} />
     <div className={d.stagePanel} key={shown}>{panel}</div>
     {hotelStep(stage) >= hotelStep("hotel") ? <StaySummary view={view} /> : null}
+    {view.messages?.length ? <Card title="Messages for an agent" meta={view.messages.length}>
+      <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
+        <span className={d.listIcon}><Phone size={15} /></span>
+        <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>Call back on {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
+      </li>)}</ul>
+    </Card> : null}
   </Shell>;
 }
 

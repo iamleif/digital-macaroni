@@ -249,6 +249,8 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
         { name: "review_stay", label: "Re-check the price and review" },
         { name: "book_stay", label: "Book (stops at payment in test mode)" },
         { name: "email_quote", label: "Email the quote" },
+        { name: "take_message", label: "Leave a message for an agent" },
+        { name: "get_caller_number", label: "Read caller ID" },
         { name: "link_screen", label: "Link a call to this screen" },
         { name: "end_call", label: "End the call" },
       ],
@@ -260,7 +262,9 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
         { tools: ["review_stay"], one: "Re-checked the price and read the stay back", many: "Read the stay back {n} times" },
         { tools: ["book_stay"], one: "Took the booking up to payment", many: "Took {n} bookings up to payment" },
         { tools: ["email_quote"], one: "Emailed the quote", many: "Emailed the quote" },
+        { tools: ["take_message"], one: "Took a message for an agent", many: "Took {n} messages for an agent" },
       ],
+      handoffTools: ["take_message"],
       rules: [
         "Answers only from what the hotel search returns: never invents a hotel, price or policy",
         "Says whether a room can be cancelled for free before going ahead",

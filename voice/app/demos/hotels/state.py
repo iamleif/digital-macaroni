@@ -42,6 +42,9 @@ class HotelState:
     review: Optional[dict[str, Any]] = None
     booking: Optional[dict[str, Any]] = None
     stage: str = "trip"
+    # Callback requests for an agent: what the agency can't do on this call (several rooms, a long stay, a person).
+    messages: list[dict[str, Any]] = field(default_factory=list)
+    seq: int = 0
     # The quote email, once sent: only a masked address is kept.
     emailed: Optional[dict[str, Any]] = None
 

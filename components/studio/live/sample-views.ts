@@ -367,7 +367,8 @@ export const hotelsSample: HotelsView = {
     guest: "Alex Taylor", total: "$1,218", taxes: "Resort fee of $40 a night, paid at the hotel", cancellation: "Free cancellation until Tue, Nov 17", priceChanged: false,
   },
   booking: { status: "payment_stopped" },
+  messages: [],
   emailed: null,
 };
 
-export const hotelsEmpty: HotelsView = { stage: "trip", search: null, options: [], selected: null, hotel: null, rooms: [], room: null, guest: null, review: null, booking: null, emailed: null };
+export const hotelsEmpty: HotelsView = { stage: "trip", search: null, options: [], selected: null, hotel: null, rooms: [], room: null, guest: null, review: null, booking: null, messages: [], emailed: null };

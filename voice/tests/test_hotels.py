@@ -200,3 +200,16 @@ def test_opening_lines_and_instruction() -> None:
     assert "Thanks for calling Palmetto Stays, this is Marisol. Please enter your screen code." in text
     assert "receptionist" not in text.lower()
     assert s.today == "2026-10-11"
+
+
+async def test_take_message_records_a_callback_for_an_agent(lite: dict[str, Any]) -> None:
+    s = hotels.create_state(NOW)
+    r = await run(s, "search_hotels", {"area": "miami_beach", "checkin": "2026-12-11", "checkout": "2026-12-31", "adults": 4})
+    assert r.error == "too_long" and "take_message" in r.message
+    m = await run(s, "take_message", {"name": "Leif", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults."})
+    assert m.ok and m.changed and m.result["messageId"].startswith("MSG-")
+    again = await run(s, "take_message", {"name": "Leif", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults."})
+    assert again.result["duplicate"] is True
+    v = hotels.view(s)
+    assert v["messages"] == [{"id": m.result["messageId"], "name": "Leif", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults.", "preferredTime": None, "callback": "•••• 5382"}]
+    assert "Never say you have noted" in hotels.instruction(s, CTX)

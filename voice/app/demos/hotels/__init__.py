@@ -23,6 +23,7 @@ from .tools import (
     RoomRef,
     SearchHotels,
     SetGuest,
+    TakeMessage,
     book_stay,
     choose_hotel,
     choose_room,
@@ -31,6 +32,7 @@ from .tools import (
     review_stay,
     search_hotels,
     set_guest,
+    take_message,
 )
 from .view import view
 
@@ -56,6 +58,7 @@ hotels: DemoDefinition[HotelState] = DemoDefinition(
         "set_guest": Operation("Adding the guest", "The lead guest's full name; the rest is filled with marked samples.", set_guest, SetGuest),
         "review_stay": Operation("Checking the price with the hotel", "Re-check the price live with the hotel and hold it, and return the whole stay with the total, to read back.", review_stay, NoArgs, slow=True),
         "book_stay": Operation("Taking payment", "After the caller confirms the review: complete the booking. In this demo it stops at payment.", book_stay, NoArgs),
+        "take_message": Operation("Leaving a message for an agent", "Leave a callback request for a Palmetto Stays agent: several rooms or a group, a stay longer than we book on a call, or anything else a person must handle. Only after the caller confirmed the number.", take_message, TakeMessage),
         "email_quote": Operation("Emailing the quote", "Email the reviewed stay to the caller, after they confirm the address read back to them. Once per call.", email_quote, EmailQuote),
     },
 )

@@ -8,7 +8,7 @@ from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import Confirmed, OpContext, OpResult, add_days, date_label, fail, ok
+from ..types import Confirmed, OpContext, OpResult, add_days, date_label, fail, mask_number, ok, reference
 from . import store
 from .prompt import PAYMENT_LINE
 from .state import (
@@ -73,7 +73,7 @@ async def search_hotels(state: HotelState, i: SearchHotels, ctx: OpContext) -> O
     if nights < 1:
         return fail("checkout_before_checkin", "Check-out must be after check-in. Check both dates with the caller.")
     if nights > MAX_NIGHTS:
-        return fail("too_long", f"We book up to {MAX_NIGHTS} nights per call. Offer to take a message for a longer stay.")
+        return fail("too_long", f"We book up to {MAX_NIGHTS} nights per call. Offer to take a message so an agent can call back about the longer stay, and use take_message.")
     state.search = {"area": i.area, "checkin": i.checkin, "checkout": i.checkout, "nights": nights, "adults": i.adults, "priority": i.priority, "minStars": i.minStars, "maxPerNight": i.maxPerNight}
     # A new search starts the booking again.
     state.options, state.selected, state.hotel, state.rooms, state.room, state.review, state.booking = [], None, None, [], None, None, None
@@ -235,3 +235,23 @@ async def email_quote(state: HotelState, i: EmailQuote, ctx: OpContext) -> OpRes
     state.emailed = {"to": masked}
     return ok(f"Quote emailed · {masked}", {"sent": True, "to": masked}, True)
 
+
+class TakeMessage(BaseModel):
+    name: str = Field(min_length=1, max_length=80, description="The caller's name as they gave it.")
+    callbackNumber: str = Field(min_length=7, max_length=20, description="The number the caller confirmed for the call back.")
+    summary: str = Field(min_length=3, max_length=300, description="What the caller needs, in a sentence or two: e.g. two rooms for five adults in Miami Beach, December 11 to 31.")
+    preferredTime: Optional[str] = Field(None, max_length=80, description="When they would like a call back, in their words.")
+
+
+def take_message(state: HotelState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    dup = next((m for m in state.messages if m["summary"] == i.summary.strip() and m["name"] == i.name.strip()), None)
+    if dup:
+        return ok(f"Message already left · {dup['id']}", {"messageId": dup["id"], "duplicate": True})
+    mid = reference("MSG", state.seq, state.seed)
+    state.seq += 1
+    state.messages.append({"id": mid, "name": i.name.strip(), "callback": i.callbackNumber.strip(), "summary": i.summary.strip(), "preferredTime": (i.preferredTime or "").strip() or None, "at": ctx.now.isoformat()})
+    return ok(f"Message for an agent · {mid}", {"messageId": mid, "callsBack": "An agent calls back within one business day."}, True)
+
+
+def message_view(m: dict[str, Any]) -> dict[str, Any]:
+    return {"id": m["id"], "name": m["name"], "summary": m["summary"], "preferredTime": m["preferredTime"], "callback": mask_number(m["callback"])}

@@ -6,6 +6,7 @@ from typing import Any
 
 from ..types import date_label
 from .state import HotelState, stay_label
+from .tools import message_view
 from .store import AREAS
 
 
@@ -26,5 +27,6 @@ def view(state: HotelState) -> dict[str, Any]:
         "guest": state.guest,
         "review": state.review,
         "booking": state.booking,
+        "messages": [message_view(m) for m in state.messages],
         "emailed": state.emailed,
     }
