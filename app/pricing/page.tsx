@@ -80,7 +80,7 @@ export default function PricingPage() {
             <Reveal><h2 id="agents-heading" className={h.h2}>Pay once to build it.<br /><span>Then pick how it runs.</span></h2></Reveal>
             <Reveal delay={80}><p className={h.pricingLede}>Start with a proven agent, or have one built around your systems.</p></Reveal>
           </div>
-          <PlanCards full />
+          <PlanCards />
           <RunningCosts />
           <ConsultingCard />
         </div>

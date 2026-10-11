@@ -2,7 +2,7 @@ import { ArrowUpRight, Check } from "./icons";
 import { Reveal } from "./reveal";
 import h from "./home.module.css";
 
-/** Every feature line; the homepage shows the first few of each, /pricing/ shows them all. */
+/** Every feature line, shown in full on the homepage and /pricing/. */
 const READY = [
   "Answers every call, day or night: books appointments, answers questions and takes messages",
   "Knowledge base: trained on your services, prices, FAQs and policies",
@@ -25,7 +25,6 @@ const CUSTOM = [
   "90 days of tuning after launch and priority support",
   "Fixed scope and price, agreed up front",
 ];
-const SHORT = 5;
 
 /** What a company can bring us in for. Shared by the consulting card and /consulting/. */
 export const CONSULTING_AREAS = [
@@ -37,9 +36,9 @@ export const CONSULTING_AREAS = [
   "Long-term projects",
 ];
 
-export function PlanCards({ full = false }: { full?: boolean }) {
-  const ready = full ? READY : READY.slice(0, SHORT);
-  const custom = full ? CUSTOM : CUSTOM.slice(0, SHORT);
+export function PlanCards() {
+  const ready = READY;
+  const custom = CUSTOM;
   return <div className={h.plans}>
     <Reveal className={h.planShell}>
       <article className={h.plan}>
