@@ -52,6 +52,8 @@ class Config:
     tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-lite-tts")
     duffel_token: str = env.get("DUFFEL_ACCESS_TOKEN", "")
     liteapi_key: str = env.get("LITEAPI_KEY", "")
+    # Shared with the website's /voice proxy (Cloudflare worker), which passes on each visitor's address.
+    proxy_key: str = env.get("DEMO_PROXY_KEY", "")
     # Confirmation emails (Resend; the sending domain digitalmacaroni.io is verified there).
     resend_api_key: str = env.get("RESEND_API_KEY", "")
     email_from: str = env.get("DEMO_EMAIL_FROM", "demos@digitalmacaroni.io")

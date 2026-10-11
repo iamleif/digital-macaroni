@@ -7,6 +7,7 @@ the same process (single instance: sessions live in memory).
 from __future__ import annotations
 
 import asyncio
+import hmac
 import json
 import re
 import time
@@ -178,6 +179,12 @@ def allow_start(key: str, limit: int) -> bool:
 
 
 def client_ip(request: Request) -> str:
+    # Through digitalmacaroni.io/voice every visitor arrives from Cloudflare; the site's proxy passes the
+    # visitor's own address, trusted only with the shared key so nobody can spoof it to dodge the limits.
+    if config.proxy_key and hmac.compare_digest(request.headers.get("x-dm-proxy-key", ""), config.proxy_key):
+        visitor = request.headers.get("x-dm-client-ip")
+        if visitor:
+            return visitor
     forwarded = request.headers.get("x-forwarded-for")
     if forwarded:
         return forwarded.split(",")[0].strip()
