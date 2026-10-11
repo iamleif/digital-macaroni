@@ -4,4 +4,4 @@
 :HL["/_next/static/css/f5d96fae0d5583e6.css","style"]
 :HL["/_next/static/css/54e204455912e94e.css","style"]
 :HL["/_next/static/css/49c6a1d82c5e29c7.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"demo","param":null,"prefetchHints":4192,"slots":{"children":{"name":"demo","param":{"type":"d","key":"hotels","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"Rh2kZbVZv2P12H-J6HiQh"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"demo","param":null,"prefetchHints":4192,"slots":{"children":{"name":"demo","param":{"type":"d","key":"hotels","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"lMGxDypiWDvU5nARy-hD9"}

@@ -1,19 +1,19 @@
 # Pricing - Digital Macaroni
 
-Custom AI phone agents for businesses. Prices in USD. Updated 2026-10-10.
+Custom AI phone agents for businesses. Prices in USD. Updated 2026-10-11.
 Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io/answers/how-much-does-an-ai-phone-agent-cost/
 
 ## Agents (one-time build)
 
 ### Ready-made agent
-- Price: $3,500 one-time
+- Price: $3,000 one-time
 - Live in: 2 to 5 days
 - For: inbound calls
-- Includes: answers every call day or night; books appointments, answers questions and takes messages; texts callers confirmations and links; texts the business a summary after every call; transfers urgent calls; custom branding (business name, logo, voice, greeting, hours and services); two connections of the business's choice (calendar, CRM or a custom API); Zapier to reach thousands of other apps; every call's transcript and summary in a dashboard; email support and 30 days of fixes after launch
+- Includes: answers every call day or night; books appointments, answers questions and takes messages; texts callers confirmations and links; texts the business a summary after every call; transfers urgent calls; custom branding (business name, logo, voice, greeting, hours and services); one integration of the business's choice (calendar, CRM or any software with an API); Zapier to reach thousands of other apps; every call's transcript and summary in a dashboard; email support and 30 days of fixes after launch
 - Extra connections: $750 each
 
 ### Custom agent
-- Price: from $7,500
+- Price: from $6,000
 - Live in: 2 to 4 weeks
 - Includes: everything in the ready-made agent; five or more connections to the business's systems through their APIs (calendar, CRM, booking or field-service software); two-way texting with reminders, follow-ups and replies; custom rules, call flows and handoffs; designed and tested on real calls; fixed scope and price agreed up front
 

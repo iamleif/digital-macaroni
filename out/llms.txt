@@ -33,6 +33,7 @@ Straight answers about AI agents for businesses, with sources: https://digitalma
 - [Custom AI phone agent vs a template build](https://digitalmacaroni.io/answers/custom-ai-phone-agent-vs-template-build/)
 - [Will callers know they're talking to an AI?](https://digitalmacaroni.io/answers/will-callers-know-they-are-talking-to-an-ai/)
 - [Can I keep my business phone number?](https://digitalmacaroni.io/answers/can-i-keep-my-business-phone-number/)
+- [What software can an AI phone agent connect to?](https://digitalmacaroni.io/answers/what-software-can-an-ai-phone-agent-connect-to/)
 
 ## Voice agent architecture
 
