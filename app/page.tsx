@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import { Agents } from "@/components/studio/agents";
 import { HeroVideo } from "@/components/studio/hero-video";
-import { ArrowDown, ArrowUpRight, Globe, Grid, Phone, Plug, Sparkle, Users, Wave } from "@/components/studio/icons";
+import { ArrowDown, ArrowUpRight, Check, Globe, Grid, Phone, Plug, Sparkle, Users, Wave } from "@/components/studio/icons";
 import { StudioAskBand, StudioFooter, StudioNav } from "@/components/studio/chrome";
 import { ConsultingCard, PlanCards } from "@/components/studio/pricing";
 import { Intro, Reveal } from "@/components/studio/reveal";
@@ -133,13 +133,17 @@ export default function HomePage() {
     </section>
 
     {/* Your own agent: an instant demo call built from the visitor's website */}
-    <section id="your-agent" className={h.sheet} aria-labelledby="your-agent-heading">
+    {/* Same look as the /your-agent/ page: the big headline, three points and the warm glow. */}
+    <section id="your-agent" className={`${h.sheet} ${f.bandSheet}`} aria-labelledby="your-agent-heading">
       <div className={`${h.sheetInner} ${f.homeBand}`}>
-        <Reveal>
-          {/* Sized like the heading, so the chip matches the others on the page. */}
-          <div className={h.h2} aria-hidden="true" style={{ marginBottom: 16 }}><span className={h.chip} data-tone="yellow" style={{ margin: 0 }}><Phone size={20} /></span></div>
-          <h2 id="your-agent-heading" className={h.h2}>Hear your own agent.<br />In about a minute.</h2>
-          <p className={h.lede}>Give us your website and your mobile. We build a demo agent from your site, and it calls you. Play one of your customers and hear how it would answer your calls.</p>
+        <Reveal className={c.copy}>
+          <h2 id="your-agent-heading" className={f.bandTitle}>Hear your own agent. In about a minute.</h2>
+          <p>Give us your website and your mobile. We build a demo agent from your site, and it calls you. Play one of your customers and hear how it would answer your calls.</p>
+          <ul>
+            <li><Check size={15} />Answers from what’s on your website</li>
+            <li><Check size={15} />Takes a message like your best front desk</li>
+            <li><Check size={15} />Emails you the call summary when you hang up</li>
+          </ul>
         </Reveal>
         <div className={c.formCard}><InstantForm /></div>
       </div>
