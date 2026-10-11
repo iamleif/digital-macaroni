@@ -444,7 +444,7 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onClose, again }: { 
         <a className={f.dial} href={dial}><Phone size={20} />{demo.phoneDisplay}</a>
         {watch.status === "waiting" && watch.code
           ? <div className={f.codeRow} aria-label={`code ${watch.code.split("").join(" ")}`}><span>Your screen code</span><div className={f.codeBox}><div>{watch.code.split("").map((c, i) => <b key={i}>{c}</b>)}</div>{newCodeBtn}</div></div>
-          : <div className={f.codeRow} data-loading><span>Your screen code</span><div className={f.codeBox}><div>{[0, 1, 2, 3].map((i) => <b key={i} />)}</div>{newCodeBtn}</div></div>}
+          : <div className={f.codeRow} data-loading><span>{watch.status === "error" ? "Can’t reach the demo line. Trying again…" : "Getting your screen code…"}</span><div className={f.codeBox}><div>{[0, 1, 2, 3].map((i) => <b key={i} />)}</div>{newCodeBtn}</div></div>}
         <div className={f.actions}>
           {again ? null : <button type="button" className={f.back} onClick={() => setStep(2)}>Back</button>}
         </div>

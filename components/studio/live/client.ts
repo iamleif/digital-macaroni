@@ -188,6 +188,8 @@ export class TalkSession {
   }
 }
 
+const CONNECT_TIMEOUT_MS = 8000;
+
 export type WatchStatus = "requesting" | "waiting" | "linked" | "expired" | "ended" | "error";
 
 /** Shows a phone call on this page once the caller types the code shown here. */
@@ -210,7 +212,12 @@ export class CallWatcher {
       if (this.stopped) return;
       const socket = new WebSocket(`${VOICE_URL.replace(/^http/, "ws")}/pairings/${viewerToken}`);
       this.socket = socket;
+      // A connection that stalls never fails on its own: give up after a few seconds so a fresh code is fetched.
+      let heard = false;
+      const stalled = window.setTimeout(() => { if (!heard && !this.stopped) socket.close(); }, CONNECT_TIMEOUT_MS);
       socket.onmessage = (m) => {
+        heard = true;
+        window.clearTimeout(stalled);
         const e = JSON.parse(m.data as string) as DemoEvent;
         if (e.type === "pairing.waiting") this.onStatus("waiting", e.code);
         else if (e.type === "pairing.linked") this.onStatus("linked");
@@ -219,7 +226,9 @@ export class CallWatcher {
         this.onEvent(e);
       };
       socket.onclose = () => {
-        if (!this.stopped) this.onStatus("ended");
+        window.clearTimeout(stalled);
+        // Closed before the code arrived: an error, so the page tries again; after a call: the call ended.
+        if (!this.stopped) this.onStatus(heard ? "ended" : "error");
       };
     } catch {
       this.onStatus("error");
