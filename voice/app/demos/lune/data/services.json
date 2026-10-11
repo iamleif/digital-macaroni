@@ -1,0 +1,22 @@
+{
+  "services": [
+    {"id": "cut", "name": "Cut & style", "group": "Hair", "price": 85, "priceLabel": "$85", "minutes": 60, "staff": ["maria", "ava"]},
+    {"id": "mens_cut", "name": "Men's cut", "group": "Hair", "price": 55, "priceLabel": "$55", "minutes": 45, "staff": ["maria"]},
+    {"id": "blowout", "name": "Blowout", "group": "Hair", "price": 55, "priceLabel": "$55", "minutes": 45, "staff": ["maria", "ava"]},
+    {"id": "root_colour", "name": "Root colour", "group": "Colour", "price": 120, "priceLabel": "From $120", "minutes": 90, "staff": ["ava"]},
+    {"id": "balayage", "name": "Balayage", "group": "Colour", "price": 240, "priceLabel": "From $240", "minutes": 180, "staff": ["ava"]},
+    {"id": "gel_mani", "name": "Gel manicure", "group": "Nails", "price": 45, "priceLabel": "$45", "minutes": 45, "staff": ["jules"]},
+    {"id": "pedicure", "name": "Spa pedicure", "group": "Nails", "price": 65, "priceLabel": "$65", "minutes": 60, "staff": ["jules"]},
+    {"id": "hydrafacial", "name": "Hydrafacial", "group": "Med spa", "price": 199, "priceLabel": "$199", "minutes": 60, "staff": ["noor"]},
+    {"id": "consult", "name": "Injectables consultation", "group": "Med spa", "price": 0, "priceLabel": "Free", "minutes": 30, "staff": ["noor"]},
+    {"id": "botox", "name": "Botox", "group": "Med spa", "price": 14, "priceLabel": "$14 a unit", "minutes": 30, "staff": ["noor"], "returningOnly": true},
+    {"id": "filler", "name": "Lip filler", "group": "Med spa", "price": 650, "priceLabel": "From $650", "minutes": 60, "staff": ["noor"], "returningOnly": true}
+  ],
+  "addOns": [
+    {"id": "gloss", "name": "Gloss", "price": "$35", "with": ["cut", "root_colour", "balayage"]},
+    {"id": "treatment", "name": "Bond treatment", "price": "$30", "with": ["cut", "blowout", "root_colour", "balayage"]},
+    {"id": "nail_art", "name": "Nail art", "price": "$15", "with": ["gel_mani"]}
+  ],
+  "depositFrom": 100,
+  "deposit": "$25"
+}

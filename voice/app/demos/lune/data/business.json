@@ -1,0 +1,18 @@
+{
+  "name": "Lune Salon & Med Spa",
+  "city": "Los Angeles, CA",
+  "timeZone": "America/Los_Angeles",
+  "phone": "(323) 312-3248",
+  "address": "7421 Melrose Avenue, Los Angeles, CA 90046. Street parking and a small lot behind the building.",
+  "hours": "Tuesday to Saturday, 9 AM to 7 PM Pacific Time. Closed Sunday and Monday. This line answers around the clock.",
+  "deposit": "Services of $100 or more need a $25 deposit to hold the time. We text a secure link to pay it; it comes off the bill at checkout. The assistant never takes card details on the phone.",
+  "cancellation": "Free to cancel or move up to 24 hours before. Inside 24 hours, or a no-show, the deposit is kept.",
+  "medSpa": "Injectables (Botox, dermal filler) are done by Noor Haddad, a registered nurse, under our medical director. New injectable clients start with a free 30-minute consultation; treatment is booked after it. Injectables are for clients 18 and over, and not during pregnancy or breastfeeding.",
+  "colour": "New colour clients and big changes (going lighter, balayage on dark hair) get a quick patch test and consultation at the start of the appointment; no separate visit needed.",
+  "payments": "Card, Apple Pay or cash at checkout. Gift cards are sold at the front desk and online.",
+  "policies": [
+    "The assistant is an AI. It books, moves and cancels appointments and answers from this information only.",
+    "Prices for colour and injectables are starting prices; the stylist or nurse confirms the final price before starting.",
+    "The assistant never gives medical or skin advice; Noor covers that at the consultation."
+  ]
+}

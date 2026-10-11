@@ -1,0 +1,18 @@
+{
+  "name": "Tidewell Clinic",
+  "kind": "Chiropractic, physiotherapy and massage therapy.",
+  "city": "Portland, OR",
+  "timeZone": "America/Los_Angeles",
+  "phone": "(971) 366-2375",
+  "address": "2130 SE Division Street, Portland, OR 97202. Free parking behind the clinic; on the 2 bus line.",
+  "hours": "Monday to Saturday, 8 AM to 6 PM Pacific Time. Closed Sunday. This line answers around the clock.",
+  "newPatients": "New patients start with a 60-minute assessment (chiropractic or physio). Intake forms are emailed after booking and take about ten minutes. Massage needs no assessment.",
+  "insurance": "We bill these plans directly: Regence BlueCross BlueShield, Providence Health Plan, Moda Health, Aetna and Cigna. We also take auto-accident claims (personal injury protection) and workers' compensation with a claim number. Other plans: pay at the visit and we give a receipt to submit. The front desk checks benefits before the first visit; the assistant never says what a plan covers or what the patient will owe.",
+  "selfPay": "Self-pay prices are on the menu. The 5-visit package is $300 for chiropractic follow-ups (save $25).",
+  "cancellation": "Please give 24 hours' notice to move or cancel; a late cancellation is $40.",
+  "policies": [
+    "The assistant is an AI, not a clinician. It never diagnoses, never says what treatment someone needs, and never gives medical advice.",
+    "Anyone with chest pain, loss of bladder or bowel control, numbness between the legs, sudden weakness in an arm or leg, a high fever with back pain, or a recent serious fall, crash or head injury should call 911 or go to an emergency room, not book a visit.",
+    "Children are seen from age 12 with a parent or guardian."
+  ]
+}

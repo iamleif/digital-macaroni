@@ -1,7 +1,7 @@
 # Demo businesses
 
 Every business is its own folder and shares nothing with the others except the engine
-(`types.py` here, and `phone.py`, `cascade.py`, `live.py`, `session.py`, `email.py` in `app/`).
+(`types.py` and the appointment engine `booking.py` here, and `phone.py`, `cascade.py`, `live.py`, `session.py`, `email.py` in `app/`).
 
 ```
 <business>/
@@ -47,8 +47,8 @@ apply. Reply STOP at any time to opt out."
 | Demo (phone line) | Business | Folder | Built |
 |---|---|---|---|
 | Scheduling (Ellie) | Northline, heating & cooling | `northline/` | Yes |
-| | Lune Salon & Med Spa | `lune/` | No |
-| | Tidewell Clinic | `tidewell/` | No |
+| | Lune Salon & Med Spa, Los Angeles | `lune/` | Yes |
+| | Tidewell Clinic, Portland | `tidewell/` | Yes |
 | Law & professional (Nora) | Alder & Finch, personal injury | `lawfirm/` | Yes |
 | | Bluebird Insurance Agency, Macon GA | `insurance/` | Yes |
 | | Juniper Row Realty, Austin (real RentCast listings) | `realestate/` | Yes |

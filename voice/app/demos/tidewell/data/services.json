@@ -1,0 +1,11 @@
+{
+  "services": [
+    {"id": "chiro_new", "name": "Chiropractic · new patient", "group": "Chiropractic", "price": 120, "priceLabel": "$120", "minutes": 60, "staff": ["lee"], "newPatient": true},
+    {"id": "chiro_follow", "name": "Chiropractic · follow-up", "group": "Chiropractic", "price": 65, "priceLabel": "$65", "minutes": 30, "staff": ["lee"], "returningOnly": true},
+    {"id": "physio_new", "name": "Physio assessment", "group": "Physiotherapy", "price": 130, "priceLabel": "$130", "minutes": 60, "staff": ["sam"], "newPatient": true},
+    {"id": "physio_follow", "name": "Physio follow-up", "group": "Physiotherapy", "price": 95, "priceLabel": "$95", "minutes": 45, "staff": ["sam"], "returningOnly": true},
+    {"id": "massage_60", "name": "Massage · 60 min", "group": "Massage", "price": 110, "priceLabel": "$110", "minutes": 60, "staff": ["nina"]},
+    {"id": "massage_90", "name": "Massage · 90 min", "group": "Massage", "price": 150, "priceLabel": "$150", "minutes": 90, "staff": ["nina"]}
+  ],
+  "package": {"name": "5-visit package", "price": "$300", "covers": "Five chiropractic follow-ups; saves $25."}
+}

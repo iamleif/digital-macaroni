@@ -1,0 +1,7 @@
+{
+  "patients": [
+    {"name": "Jordan Reyes", "dateOfBirth": "1988-03-14", "sees": "lee", "plan": "Regence BlueCross BlueShield", "last": "Adjustment with Dr. Lee two weeks ago"},
+    {"name": "Maya Chen", "dateOfBirth": "1979-11-02", "sees": "sam", "plan": "Self-pay", "last": "Physio follow-up with Sam for a knee, last week"},
+    {"name": "Chris Patterson", "dateOfBirth": "1985-04-12", "sees": "lee", "plan": "Moda Health", "last": "5-visit package, 2 visits left"}
+  ]
+}

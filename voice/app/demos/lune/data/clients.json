@@ -1,0 +1,7 @@
+{
+  "clients": [
+    {"name": "Priya Shah", "phoneLast4": "0142", "usual": "Cut & style with Maria every six weeks", "medSpa": false},
+    {"name": "Dana Whitfield", "phoneLast4": "2287", "usual": "Botox with Noor every three months; last visit in July", "medSpa": true},
+    {"name": "Leah Park", "phoneLast4": "9930", "usual": "Root colour with Ava", "medSpa": false}
+  ]
+}

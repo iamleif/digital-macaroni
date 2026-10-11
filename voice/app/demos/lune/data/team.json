@@ -1,0 +1,14 @@
+{
+  "staff": [
+    {"id": "maria", "name": "Maria Lopez", "short": "Maria", "role": "Senior stylist"},
+    {"id": "ava", "name": "Ava Kim", "short": "Ava", "role": "Colourist"},
+    {"id": "jules", "name": "Jules Baptiste", "short": "Jules", "role": "Nail artist"},
+    {"id": "noor", "name": "Noor Haddad", "short": "Noor", "role": "Nurse injector, RN"}
+  ],
+  "busyTitles": {
+    "maria": ["Cut & style", "Blowout", "Men's cut", "Cut & style"],
+    "ava": ["Root colour", "Balayage", "Cut & style", "Gloss"],
+    "jules": ["Gel manicure", "Spa pedicure", "Gel manicure"],
+    "noor": ["Hydrafacial", "Consultation", "Botox"]
+  }
+}

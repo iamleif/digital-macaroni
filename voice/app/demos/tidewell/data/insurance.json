@@ -1,0 +1,5 @@
+{
+  "direct": ["Regence BlueCross BlueShield", "Providence Health Plan", "Moda Health", "Aetna", "Cigna"],
+  "aliases": {"regence": "Regence BlueCross BlueShield", "blue cross": "Regence BlueCross BlueShield", "bluecross": "Regence BlueCross BlueShield", "providence": "Providence Health Plan", "moda": "Moda Health", "aetna": "Aetna", "cigna": "Cigna"},
+  "other": ["auto accident (PIP)", "workers' compensation"]
+}

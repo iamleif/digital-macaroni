@@ -167,6 +167,8 @@ BRANDS = {
     "hotels": Brand("Palmetto", "Palmetto Stays", "palmetto.png", "#1f7a6c", "#e6f4f1", "#173a35"),
     "realestate": Brand("Juniper Row", "Juniper Row Realty", "juniper.png", "#2e6650", "#e8f1ec", "#1b2e27"),
     "insurance": Brand("Bluebird", "Bluebird Insurance Agency", "bluebird.png", "#2563a8", "#e9f1fb", "#172a44"),
+    "lune": Brand("Lune", "Lune Salon & Med Spa", "lune.png", "#9b4a7c", "#f8e9f1", "#3d1a33"),
+    "tidewell": Brand("Tidewell", "Tidewell Clinic", "tidewell.png", "#1f8a85", "#e2f4f2", "#123c3a"),
 }
 
 
@@ -468,3 +470,23 @@ def insurance_id_card(c: dict[str, Any]) -> tuple[str, str, str]:
     body = layout(b, f"{c['carrier']} ID card · {c['policyNumber']}", "Auto ID card", heading, intro, card, "Owen", did)
     lines = [f"Carrier: {c['carrier']}", f"Policy: {c['policyNumber']} ({c['effective']} to {c['expires']})", f"Insured: {c['name']}", "Vehicles: " + ", ".join(c["vehicles"]), f"Claims: {c['claimsLine']}", "Sample only: not proof of insurance."]
     return f"Your Bluebird ID card · {c['carrier']} {c['policyNumber']}", body, _text(b, heading, intro, lines, "Owen", did)
+
+
+def appointment_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:
+    """
+    Any business on the appointment engine (Lune, Tidewell): the booked service, day and time, with the
+    business's own detail rows. v: {brand, agent, service, day, time, zone, name, reference, rows, did, intro?}.
+    Returns (subject, html, text).
+    """
+    b = BRANDS[v["brand"]]
+    card = f"""{_pill(v["service"] + " · " + v["reference"], b)}<div style="height:14px"></div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr><td style="padding:20px 20px 18px;font-family:{FONT}">
+<div style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:{b.accent}">{e(v["day"])}</div>
+<div style="padding:4px 0 2px;font-size:30px;font-weight:800;color:{b.ink};letter-spacing:-.5px">{e(v["time"])} {e(v["zone"])}</div>
+<div style="font-size:14px;color:#5d6875">{e(v["service"])}</div></td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px">{_detail_rows([*v["rows"], ("Name", v["name"]), ("Reference", v["reference"])], b)}</table>"""
+    heading = f"You're booked, {v['name'].split(' ')[0]}"
+    intro = v.get("intro") or f"Here are the details. Need to change it? Call us back and {v['agent']} will move it."
+    body = layout(b, f"{v['service']} · {v['day']}, {v['time']}", "Appointment confirmation", heading, intro, card, v["agent"], v["did"])
+    lines = [f"When: {v['day']}, {v['time']} {v['zone']}", f"What: {v['service']}"] + [f"{k}: {x}" for k, x in v["rows"] if x] + [f"Reference: {v['reference']}"]
+    return f"Your appointment at {b.full} · {v['day']}, {v['time']}", body, _text(b, heading, intro, lines, v["agent"], v["did"])
