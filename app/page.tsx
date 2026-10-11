@@ -136,7 +136,9 @@ export default function HomePage() {
     <section id="your-agent" className={h.sheet} aria-labelledby="your-agent-heading">
       <div className={`${h.sheetInner} ${f.homeBand}`}>
         <Reveal>
-          <h2 id="your-agent-heading" className={h.h2}>Hear your own agent. <span className={h.chip} data-tone="yellow"><Phone size={20} /></span><br />In about a minute.</h2>
+          {/* Sized like the heading, so the chip matches the others on the page. */}
+          <div className={h.h2} aria-hidden="true" style={{ marginBottom: 16 }}><span className={h.chip} data-tone="yellow" style={{ margin: 0 }}><Phone size={20} /></span></div>
+          <h2 id="your-agent-heading" className={h.h2}>Hear your own agent.<br />In about a minute.</h2>
           <p className={h.lede}>Give us your website and your mobile. We build a demo agent from your site, and it calls you. Play one of your customers and hear how it would answer your calls.</p>
         </Reveal>
         <div className={c.formCard}><InstantForm /></div>
