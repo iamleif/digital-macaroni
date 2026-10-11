@@ -55,16 +55,20 @@ def note_patient(state: DentalState, i: NotePatient, ctx: OpContext) -> OpResult
 class FindPatient(BaseModel):
     name: str = Field(min_length=1, max_length=80)
     dateOfBirth: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$")
+    callerSaysTheyAreAPatient: bool = Field(description="True only when the caller said they have been to Aspen Grove before. Never look up someone who is new or hasn't said.")
 
 
 def find_patient(state: DentalState, i: FindPatient, ctx: OpContext) -> OpResult:
+    if not i.callerSaysTheyAreAPatient or state.patient.get("newPatient") is True:
+        state.patient.update({"name": i.name.strip(), "dateOfBirth": i.dateOfBirth, "newPatient": True}) if i.callerSaysTheyAreAPatient is False else None
+        return fail("new_patient", "Don't look them up: they haven't said they've been here before. Ask whether they've been to see us before; if not, carry on as a new patient.")
     if state.lookups >= 3:
         return fail("too_many_tries", "Stop looking them up. Book as a new patient or take a message for the front office.")
     state.lookups += 1
     state.opened = True
     p = store.find_patient(i.name, i.dateOfBirth)
     if not p:
-        return fail("not_found", "No match. Ask once to check the spelling and date; never say which was wrong. Otherwise treat them as a new patient.")
+        return fail("not_found", "No match. They said they've been here, so ask once to check the spelling and date; never say which was wrong. If it still doesn't match, carry on as a new patient without fuss.")
     state.found = p
     state.patient.update({"name": p["name"], "dateOfBirth": p["dateOfBirth"], "newPatient": False})
     state.insurance = {"carrier": p["carrier"], "inNetwork": p["carrier"] in IN_NETWORK, "onFile": True}

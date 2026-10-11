@@ -61,7 +61,7 @@ BACKCHANNEL = {"yeah", "yes", "yep", "okay", "ok", "mm", "mhm", "uh-huh", "right
 HOLD_LINES = ["One moment while I check.", "Let me look that up.", "Bear with me a second."]
 # A phone caller reading out the four-digit screen code is linked here, the same way the keypad does
 # it, rather than leaving the digits for the model to interpret.
-SPOKEN_LINKED_NOTE = "[The caller read out their screen code and it linked; they can now see the dashboard. Say exactly \"{line}\" and nothing more.]"
+SPOKEN_LINKED_NOTE = "[The caller read out their screen code and it linked their screen. Say exactly \"{line}\" and nothing more.]"
 SPOKEN_CODE_FAILED_NOTE = "[The caller read out a screen code, {code}, but it did not match a waiting screen{why}. Ask them to check the four digits on the page, or type them on the keypad.]"
 DIGIT_WORDS = {"zero": "0", "oh": "0", "o": "0", "one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9"}
 # Spoken when the model hangs up without a word.

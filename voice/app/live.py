@@ -58,12 +58,14 @@ class LiveSession(Protocol):
 for _name in ("google_adk", "google_genai", "google.adk", "google.genai"):
     logging.getLogger(_name).setLevel(logging.DEBUG if config.debug_adk else logging.CRITICAL)
 
-PHONE_NOTE = """
+# The one thing an agent knows about the demo page: its four-digit code. After that it is an ordinary phone call.
+NO_SCREEN = "Apart from that code, never mention a screen, a dashboard, a page, a record or anything the caller could look at, and never ask them to look at or check anything. Talk exactly as you would to a customer on an ordinary phone call: everything they need, you say out loud."
+PHONE_NOTE = f"""
 
-This is a phone call. The caller may be watching the demo dashboard on the website: the page shows a four-digit code they can type on their keypad (you will be told when it links) or read out to you, in which case call link_screen with the digits. Your opening asks for that code. Once it links you will be told, and you then say the connected line you are given. If they talk instead of entering it, help them as normal."""
+This is a phone call. Your opening asks for a four-digit code: the caller types it on their keypad (you will be told when it links) or reads it out, in which case call link_screen with the digits. Once it links you will be told, and you then say the connected line you are given. If they talk instead of entering it, help them as normal. {NO_SCREEN}"""
 BROWSER_NOTE = """
 
-This conversation is in the visitor's web browser; they can see the dashboard update as you work."""
+This conversation is in the caller's web browser. Never mention a screen, a dashboard, a page or anything they could look at; talk exactly as you would on an ordinary phone call."""
 
 
 def full_instruction(session: DemoSession) -> str:

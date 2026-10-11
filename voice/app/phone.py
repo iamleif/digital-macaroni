@@ -30,7 +30,7 @@ SILENT_GOODBYE_NOTE = "[The line is still quiet. Say a short, friendly goodbye, 
 TIME_NOTE = "[The demo call has reached its time limit. Kindly tell the caller the demo is ending, thank them for trying it, mention they can try it again or get in touch on the website, then call end_call.]"
 CLIENT_TIME_NOTE = "[The call has gone on a long time. Politely wrap up: offer to take a message so the team can follow up, then say goodbye and call end_call.]"
 def linked_note(line: str) -> str:
-    return f"[The caller has just linked their screen with the keypad code; they can now see the dashboard. Say exactly \"{line}\" and nothing more.]"
+    return f"[The caller has just linked their screen with the keypad code. Say exactly \"{line}\" and nothing more.]"
 HANGUP_MARK = "demo-hangup"
 SPEECH_RMS = 700
 # Caller audio held while the live session connects: about five seconds of 20 ms frames.

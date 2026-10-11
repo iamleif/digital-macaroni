@@ -77,14 +77,14 @@ async def test_knocked_out_tooth_is_within_the_hour():
 
 async def test_a_recall_too_early_for_insurance_is_flagged():
     _, run = runner()
-    assert (await run("find_patient", {"name": "John Edwards", "dateOfBirth": "1968-02-09"})).ok
+    assert (await run("find_patient", {"name": "John Edwards", "dateOfBirth": "1968-02-09", "callerSaysTheyAreAPatient": True})).ok
     r = await run("check_availability", {"type": "cleaning", "date": MONDAY})
     assert "insurance usually covers the next one from" in r.result["frequency"]
 
 
 async def test_an_overdue_recall_books_with_her_usual_hygienist():
     state, run = runner()
-    await run("find_patient", {"name": "Karen Davis", "dateOfBirth": "1979-06-22"})
+    await run("find_patient", {"name": "Karen Davis", "dateOfBirth": "1979-06-22", "callerSaysTheyAreAPatient": True})
     r = await run("check_availability", {"type": "cleaning", "date": MONDAY})
     assert "frequency" not in r.result
     assert r.result["available"][0]["with"] == "Jenna Morris" or r.result["available"]
@@ -124,3 +124,12 @@ async def test_the_email_never_carries_symptoms(monkeypatch):
 def test_the_prompt_never_lets_june_diagnose_or_promise_coverage():
     p = dental.instruction(dental.create_state(NOW), CTX)
     assert "Never diagnose" in p and "Never say a visit is covered" in p and "receptionist" not in p.lower()
+
+
+async def test_never_looks_up_someone_who_is_new_or_has_not_said():
+    state, run = runner()
+    r = await run("find_patient", {"name": "Kevin Sweeney", "dateOfBirth": "1942-02-07", "callerSaysTheyAreAPatient": False})
+    assert r.error == "new_patient" and "Ask whether they've been to see us before" in r.message
+    await run("note_patient", {"name": "Kevin Sweeney", "newPatient": True})
+    assert (await run("find_patient", {"name": "Kevin Sweeney", "dateOfBirth": "1942-02-07", "callerSaysTheyAreAPatient": True})).error == "new_patient"
+    assert state.lookups == 0
