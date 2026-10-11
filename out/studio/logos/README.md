@@ -10,3 +10,14 @@ Used on the architecture pages (`/architecture/{demo}/`) to show what each demo 
 | duffel-wordmark.svg | duffel.com (site header logo, recoloured from currentColor to ink). duffel.svg is its mark, cropped by viewBox |
 | telnyx-wordmark.svg | telnyx.com (site header logo) |
 | telnyx.png | telnyx.com/favicon.ico (its green mark), resized to 128 px. Shown in ink with a CSS filter |
+
+## tools/ (demo setup)
+
+Logos for the "What runs your business today?" step on the demo pages, keyed by tool id in `TOOL_LOGOS` (components/studio/demo/funnel.tsx). Saved 2026-10-11. Trademarks of their owners; shown only to say what the agent connects to.
+
+| File | Source |
+|---|---|
+| square.svg, google-calendar.svg | Simple Icons 16.34.0 (CC0); Google Calendar recoloured to #4285F4 |
+| clio.svg | copied from apps/ |
+| servicetitan.png | the helmeted mascot cropped from ServiceTitan's own logo file on servicetitan.com (black) |
+| *.png (boulevard, vagaro, mindbody, jane, workiz, lawmatics, mycase, practicepanther, cliogrow, housecallpro, jobber) | each company's site icon via Google's favicon service, 128 px. Replace with the official SVG when we have it |

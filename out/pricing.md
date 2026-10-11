@@ -1,21 +1,21 @@
 # Pricing - Digital Macaroni
 
-Custom AI phone agents for businesses. Prices in USD. Updated 2026-10-04.
+Custom AI phone agents for businesses. Prices in USD. Updated 2026-10-10.
 Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io/answers/how-much-does-an-ai-phone-agent-cost/
 
 ## Agents (one-time build)
 
 ### Ready-made agent
-- Price: $2,500 one-time
+- Price: $3,500 one-time
 - Live in: 2 to 5 days
 - For: inbound calls
-- Includes: answers every call day or night; books appointments, answers questions and takes messages; texts callers confirmations and links; texts the business a summary after every call; transfers urgent calls; the business's name, voice, hours and services; every call's transcript and summary in a dashboard
-- Integrations: none needed to go live
+- Includes: answers every call day or night; books appointments, answers questions and takes messages; texts callers confirmations and links; texts the business a summary after every call; transfers urgent calls; custom branding (business name, logo, voice, greeting, hours and services); two connections of the business's choice (calendar, CRM or a custom API); Zapier to reach thousands of other apps; every call's transcript and summary in a dashboard; email support and 30 days of fixes after launch
+- Extra connections: $750 each
 
 ### Custom agent
-- Price: from $5,000
+- Price: from $7,500
 - Live in: 2 to 4 weeks
-- Includes: everything in the ready-made agent; connections to the business's systems through their APIs (calendar, CRM, booking or field-service software); two-way texting with reminders, follow-ups and replies; custom rules, call flows and handoffs; designed and tested on real calls; fixed scope and price agreed up front
+- Includes: everything in the ready-made agent; five or more connections to the business's systems through their APIs (calendar, CRM, booking or field-service software); two-way texting with reminders, follow-ups and replies; custom rules, call flows and handoffs; designed and tested on real calls; fixed scope and price agreed up front
 
 ## Running plans (monthly)
 
@@ -25,17 +25,18 @@ Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io
 - Includes: 30 days of fixes and a guide for running it
 
 ### Hosted
-- Price: from $149/month
-- Includes: phone number, 500 call minutes, 500 texts, dashboard; changes quoted when needed
+- Price: $249/month
+- Includes: phone number, 500 call minutes, 500 texts, dashboard, email support; changes quoted when needed
 
 ### Managed
-- Price: from $399/month
-- Includes: 1,000 call minutes, 1,000 texts, changes on request, tuning from real calls, monthly report
+- Price: $500/month
+- Includes: 1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning from real calls, monthly report, same-day email support
 
 ## Extras
 - Texting registration (A2P 10DLC): $50 one-time, required for business texting in the US
 - Premium voices: +$80/month on Hosted, +$100/month on Managed
-- Extra minutes and texts: billed at the rate in the proposal
+- Extra connections: $750 each
+- Extra minutes and texts: billed per minute and per text at the rate in the proposal
 
 ## Consulting
 - For companies putting voice AI into a product, moving phones or support to AI agents, reviewing an existing build, or training a team
