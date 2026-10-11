@@ -9,7 +9,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import Confirmed, OpContext, OpResult, add_days, date_label, fail, ok
+from ..types import Confirmed, OpContext, OpResult, add_days, date_label, fail, mask_number, ok, reference
 from . import store
 from .prompt import PAYMENT_LINE
 from .state import (
@@ -369,3 +369,23 @@ async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext)
     state.emailed = {"to": masked, "total": r["total"]}
     return ok(f"Itinerary emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"]}, True)
 
+
+class TakeMessage(BaseModel):
+    name: str = Field(min_length=1, max_length=80, description="The caller's name as they gave it.")
+    callbackNumber: str = Field(min_length=7, max_length=20, description="The number the caller confirmed for the call back.")
+    summary: str = Field(min_length=3, max_length=300, description="What the caller needs, in a sentence or two: e.g. a group of nine flying New York to Lisbon in June.")
+    preferredTime: Optional[str] = Field(None, max_length=80, description="When they would like a call back, in their words.")
+
+
+def take_message(state: TravelState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    dup = next((m for m in state.messages if m["summary"] == i.summary.strip() and m["name"] == i.name.strip()), None)
+    if dup:
+        return ok(f"Message already left · {dup['id']}", {"messageId": dup["id"], "duplicate": True})
+    mid = reference("MSG", state.seq, state.seed)
+    state.seq += 1
+    state.messages.append({"id": mid, "name": i.name.strip(), "callback": i.callbackNumber.strip(), "summary": i.summary.strip(), "preferredTime": (i.preferredTime or "").strip() or None, "at": ctx.now.isoformat()})
+    return ok(f"Message for an agent · {mid}", {"messageId": mid, "callsBack": "An agent calls back within one business day."}, True)
+
+
+def message_view(m: dict[str, Any]) -> dict[str, Any]:
+    return {"id": m["id"], "name": m["name"], "summary": m["summary"], "preferredTime": m["preferredTime"], "callback": mask_number(m["callback"])}

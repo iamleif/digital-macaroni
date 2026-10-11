@@ -169,8 +169,10 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
         { name: "review_booking", label: "Re-check the price and review" },
         { name: "book_flight", label: "Book (stops at payment in test mode)" },
         { name: "email_itinerary", label: "Email the itinerary" },
+        { name: "take_message", label: "Leave a message for an agent" },
         ...sharedTools,
       ],
+      handoffTools: ["take_message"],
       rules: [
         "Quotes only flights and prices the airline search returns",
         "Re-checks the fare and reads the booking back before going ahead",

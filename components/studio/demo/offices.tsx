@@ -710,6 +710,12 @@ export function TravelOffice({ view, state, agentName }: { view: TravelView; sta
     <Stepper stage={stage} shown={shown} onShow={(s) => setPeek(s === stage ? null : { at: stage, show: s })} view={view} />
     <div className={d.stagePanel} key={shown}>{panel}</div>
     <TripSummary view={view} stage={stage} />
+    {view.messages?.length ? <Card title="Messages for an agent" meta={view.messages.length}>
+      <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
+        <span className={d.listIcon}><Phone size={15} /></span>
+        <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>Call back on {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
+      </li>)}</ul>
+    </Card> : null}
   </Shell>;
 }
 

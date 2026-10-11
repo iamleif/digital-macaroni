@@ -51,6 +51,9 @@ class TravelState:
     stage: str = "trip"
     # The itinerary email, once sent: only a masked address is kept.
     emailed: Optional[dict[str, Any]] = None
+    # Callback requests for an agent: what Linda can't do on this call (groups, multi-city, hotels, a person).
+    messages: list[dict[str, Any]] = field(default_factory=list)
+    seq: int = 0
     # Names of places the agent looked up, by code, so the dashboard can say "London" rather than "LON".
     places: dict[str, str] = field(default_factory=dict)
 

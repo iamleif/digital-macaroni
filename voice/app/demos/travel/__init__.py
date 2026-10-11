@@ -25,6 +25,7 @@ from .tools import (
     OptionRef,
     SearchFlights,
     SetTraveller,
+    TakeMessage,
     add_bags,
     book_flight,
     choose_fare,
@@ -36,6 +37,7 @@ from .tools import (
     review_booking,
     search_flights,
     set_traveller,
+    take_message,
 )
 from .view import view
 
@@ -65,6 +67,7 @@ travel: DemoDefinition[TravelState] = DemoDefinition(
         "set_traveller": Operation("Adding the traveller", "The lead traveller's full name; the rest is filled with marked samples.", set_traveller, SetTraveller),
         "review_booking": Operation("Reviewing the booking", "Re-check the price live and return the whole booking with the total, to read back.", review_booking, NoArgs),
         "book_flight": Operation("Taking payment", "After the caller confirms the review: complete the booking. In this demo it stops at payment.", book_flight, NoArgs),
+        "take_message": Operation("Leaving a message for an agent", "Leave a callback request for a Waypoint agent: groups, multi-city trips, hotels or packages, changes to an existing booking, or anything else a person must handle. Only after the caller confirmed the number.", take_message, TakeMessage),
         "email_itinerary": Operation("Emailing the itinerary", "Email the reviewed itinerary to the caller, after they confirm the address read back to them. Once per call.", email_itinerary, EmailItinerary),
     },
 )

@@ -301,3 +301,15 @@ def test_email_limits_per_address(monkeypatch):
         assert email.allowed("a@example.com") is None
         email._by_address.setdefault(email._key("a@example.com"), []).append(__import__("time").time())
     assert email.allowed("a@example.com") == "too_many_for_address" and email.allowed("b@example.com") is None
+
+
+def test_take_message_records_a_callback_for_an_agent():
+    state = travel.create_state(NOW)
+    op = travel.operations["take_message"]
+    args = {"name": "Leif", "callbackNumber": "+15555555382", "summary": "A group of nine, New York to Lisbon in June."}
+    r = op.run(state, op.params.model_validate(args), CTX)  # type: ignore[union-attr]
+    assert r.ok and r.changed and r.result["messageId"].startswith("MSG-")  # type: ignore[union-attr]
+    again = op.run(state, op.params.model_validate(args), CTX)  # type: ignore[union-attr]
+    assert again.result["duplicate"] is True  # type: ignore[union-attr]
+    assert travel.view(state)["messages"][0]["callback"] == "•••• 5382"
+    assert "Never say you have noted" in travel.instruction(state, CTX)

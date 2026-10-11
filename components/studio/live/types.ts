@@ -120,6 +120,8 @@ export interface TravelView {
   booking: { option: number; travellerName: string; price: string; status: "not_booked_test_mode" } | null;
   /** The itinerary emailed after the payment stop, to a masked address (the full address never reaches the page). */
   emailed?: { to: string; total: string } | null;
+  /** Callback requests for an agent (groups, multi-city, hotels, a person). The number is masked. */
+  messages?: { id: string; name: string; summary: string; preferredTime: string | null; callback: string }[];
 }
 
 export type HotelsStage = "trip" | "options" | "hotel" | "room" | "guest" | "review" | "payment";

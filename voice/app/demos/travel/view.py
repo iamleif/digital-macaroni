@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from .state import TravelState, search_label
+from .tools import message_view
 
 
 def view(state: TravelState) -> dict[str, Any]:
@@ -22,5 +23,6 @@ def view(state: TravelState) -> dict[str, Any]:
         "review": state.review and {k: v for k, v in state.review.items() if k != "amount"},
         "readBack": state.read_back,
         "booking": state.booking,
+        "messages": [message_view(m) for m in state.messages],
         "emailed": state.emailed,
     }
