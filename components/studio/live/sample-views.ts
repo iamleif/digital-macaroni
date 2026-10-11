@@ -390,15 +390,15 @@ export function realestateRecord(v: Partial<Record<string, string | string[]>> =
   ];
 }
 
-/* Sample homes for the screen before a call; a live call shows real active Austin listings. */
+/* Real active Austin listings (RentCast, October 11, 2026), one per area: the screen before a call. */
 const home = (id: string, address: string, area: string, type: string, price: string, beds: number, baths: number, sqft: number, days: number, standout: string): RealEstateHome => ({ id, address, area, type, price, beds, baths, sqft, daysOnMarket: days, standout, matched: false, read: false, focus: false, booked: false });
 export const realestateHomes: RealEstateHome[] = [
-  home("S1", "Sample home · Hyde Park", "Central Austin", "House", "$689,000", 3, 2, 1610, 12, "built in 1938"),
-  home("S2", "Sample home · Mueller", "East Austin", "Townhouse", "$524,000", 3, 2.5, 1720, 4, "just listed this week"),
-  home("S3", "Sample home · Travis Heights", "South Austin", "House", "$1,150,000", 3, 2.5, 2050, 45, "a big lot, about 0.22 acres"),
-  home("S4", "Sample home · Rollingwood", "Westlake", "House", "$1,895,000", 4, 3.5, 3310, 22, "built in 2019"),
-  home("S5", "Sample home · Crestview", "North Austin", "House", "$615,000", 3, 2, 1480, 9, "about $416 a square foot"),
-  home("S6", "Sample home · Great Hills", "Northwest Austin", "Condo", "$349,000", 2, 2, 1090, 31, "no HOA fee listed"),
+  home("JR-564", "2003 Woodmont Ave", "Central Austin", "House", "$769,900", 3, 2, 1974, 60, "about $390 a square foot"),
+  home("JR-375", "1166 Ridgeway Dr", "East Austin", "House", "$450,000", 3, 2, 1250, 54, "about $360 a square foot"),
+  home("JR-750", "1600 Grayford Dr", "South Austin", "House", "$465,000", 3, 1, 1171, 40, "about $397 a square foot"),
+  home("JR-2057", "9820 Timber Ridge Pass", "Westlake", "House", "$635,000", 3, 2, 1556, 66, "a big lot, about 0.41 acres"),
+  home("JR-1647", "13301 Slow Poke Dr", "North Austin", "House", "$450,000", 4, 2.5, 2371, 74, "about $190 a square foot"),
+  home("JR-1571", "11625 Sweet Basil Ct", "Northwest Austin", "House", "$575,000", 4, 2, 1965, 101, "about $293 a square foot"),
 ];
 
 export const realestateEmpty: RealEstateView = {
@@ -409,20 +409,20 @@ export const realestateEmpty: RealEstateView = {
   focus: null, estimate: null, calendar: null, appointments: [], messages: [], note: null, tasks: [], emailed: null,
 };
 
-export const realestateStory = { intent: "Buying", areas: ["Central Austin"], price: "Up to $700,000", beds: "3+", type: "House", timeline: "Within 3 months", financing: "Pre-approved", lender: "Amplify Credit Union", first: "Yes", agent: "No" };
+export const realestateStory = { intent: "Buying", areas: ["Central Austin"], price: "Up to $800,000", beds: "3+", type: "House", timeline: "Within 3 months", financing: "Pre-approved", lender: "Amplify Credit Union", first: "Yes", agent: "No" };
 export const realestateNamed = { ...realestateStory, name: "Jamie Cole", phone: "•••• 0142", email: "j•••e@example.com" };
 
 export const realestateSample: RealEstateView = {
   ...realestateEmpty,
   record: { opened: true, number: "L-418", title: "Jamie Cole", stage: "booked", sections: realestateRecord(realestateNamed) },
   lead: { tier: "A", tierNote: "Hot · call back today", score: 8, points: ["Within 3 months", "Pre-approved · Amplify Credit Union", "First-time buyer", "Showing booked"], flags: [], agent: { name: "Priya Shah", role: "Buyer's agent" }, known: null },
-  listings: { criteria: "Central Austin · Up to $700,000 · 3+ beds · House", total: 2, snapshot: null, homes: realestateHomes.map((h, i) => ({ ...h, matched: i === 0 || i === 4, read: i === 0 || i === 4, focus: i === 0, booked: i === 0 })) },
-  focus: { id: "S1", address: "Sample home · Hyde Park", area: "Central Austin", zip: "78751", price: "$689,000", agent: "Priya Shah", facts: [{ label: "Type", value: "House" }, { label: "Beds", value: "3" }, { label: "Baths", value: "2" }, { label: "Square feet", value: "1,610" }, { label: "Built", value: "1938" }, { label: "On market", value: "12 days" }] },
+  listings: { criteria: "Central Austin · Up to $800,000 · 3+ beds · House", total: 16, snapshot: "2026-10-11", homes: realestateHomes.map((h, i) => ({ ...h, matched: i === 0, read: i === 0, focus: i === 0, booked: i === 0 })) },
+  focus: { id: "JR-564", address: "2003 Woodmont Ave", area: "Central Austin", zip: "78703", price: "$769,900", agent: "Priya Shah", facts: [{ label: "Type", value: "House" }, { label: "Beds", value: "3" }, { label: "Baths", value: "2" }, { label: "Square feet", value: "1,974" }, { label: "Built", value: "1957" }, { label: "On market", value: "60 days" }] },
   calendar: { purpose: "showing", agent: "Priya Shah", openTimes: [] },
-  appointments: [{ id: "JR-418", purpose: "showing", status: "booked", address: "Sample home · Hyde Park", name: "Jamie Cole", changes: 0, day: "Saturday", time: "10 AM", agent: "Priya Shah" }],
-  note: "Jamie Cole called the brokerage line, buying. Areas: Central Austin. Budget: Up to $700,000. 3+ bedrooms. Timeline: within 3 months. Pre-approved with Amplify Credit Union. Asked about the Hyde Park home ($689,000). Showing booked with Priya Shah, Saturday at 10 AM.",
+  appointments: [{ id: "JR-418", purpose: "showing", status: "booked", address: "2003 Woodmont Ave", name: "Jamie Cole", changes: 0, day: "Saturday", time: "10 AM", agent: "Priya Shah" }],
+  note: "Jamie Cole called the brokerage line, buying. Areas: Central Austin. Budget: Up to $800,000. 3+ bedrooms. Timeline: within 3 months. Pre-approved with Amplify Credit Union. Asked about 2003 Woodmont Ave ($769,900). Showing booked with Priya Shah, Saturday at 10 AM.",
   tasks: [
-    { title: "Showing · Hyde Park", who: "Priya Shah", due: "Saturday, 10 AM" },
+    { title: "Showing · 2003 Woodmont Ave", who: "Priya Shah", due: "Saturday, 10 AM" },
     { title: "Call the lead back", who: "Priya Shah", due: "Today" },
     { title: "Set up a saved search with new-listing alerts", who: "Juniper Row CRM", due: "Now" },
   ],

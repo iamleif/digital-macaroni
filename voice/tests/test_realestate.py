@@ -119,15 +119,16 @@ class TestShowing:
 
 
 class TestSeller:
-    async def test_estimate_is_a_range_and_books_a_valuation_with_dana(self, monkeypatch):
-        async def avm(address):
-            return {"price": 820000, "low": 760000, "high": 880000, "comparables": 10, "address": address}
-
-        monkeypatch.setattr(store, "estimate_value", avm)
+    async def test_estimate_is_a_range_from_our_listings_and_books_a_valuation_with_dana(self, monkeypatch):
+        homes = HOMES + [
+            {**HOMES[3], "id": "JR-6", "address": "1500 Kenwood Ave", "street": "Kenwood Ave", "price": 980000, "sqft": 1900},
+            {**HOMES[3], "id": "JR-7", "address": "1810 Newning Ave", "street": "Newning Ave", "price": 1240000, "sqft": 2300},
+        ]
+        monkeypatch.setattr(store, "LISTINGS", homes)
         state, run = runner()
         await run("note_lead", {"name": "Sam Lee", "timeline": "six_months"})
-        r = await run("estimate_value", {"address": "2209 S Gilpin St"})
-        assert r.ok and r.result["low"] == "$760,000" and r.result["high"] == "$880,000" and "price" not in r.result
+        r = await run("estimate_value", {"address": "2209 S Gilpin St, 78704", "squareFeet": 2000})
+        assert r.ok and r.result["low"].startswith("$") and "price" not in r.result and r.result["comparables"] == 3
         assert state.lead["intent"] == "sell"
         slot = await first_open(run, "valuation")
         b = await run("book_appointment", {"purpose": "valuation", "slotId": slot, "callerConfirmed": True})
@@ -135,11 +136,7 @@ class TestSeller:
         v = realestate.view(state)
         assert v["estimate"]["status"] == "ok" and any(s["id"] == "selling" for s in v["record"]["sections"])
 
-    async def test_no_estimate_falls_back_to_the_valuation(self, monkeypatch):
-        async def none(address):
-            raise store.EstimateError("quota")
-
-        monkeypatch.setattr(store, "estimate_value", none)
+    async def test_too_few_comparables_falls_back_to_the_valuation(self):
         state, run = runner()
         r = await run("estimate_value", {"address": "12 Nowhere Lane"})
         assert r.ok and r.result["estimate"] is None and "Dana" in r.result["say"]

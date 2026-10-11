@@ -60,10 +60,6 @@ class Config:
     tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-lite-tts")
     duffel_token: str = env.get("DUFFEL_ACCESS_TOKEN", "")
     liteapi_key: str = env.get("LITEAPI_KEY", "")
-    # Juniper Row Realty's home-value estimates (RentCast AVM; listings are a cached file, never fetched on a call).
-    rentcast_api_key: str = env.get("RENTCAST_API_KEY", "")
-    # Live estimates this process may spend before falling back to "Dana will run a full valuation" (free plan: 50 a month).
-    rentcast_max_estimates: int = int(env.get("RENTCAST_MAX_ESTIMATES", "30"))
     # Shared with the website's /voice proxy (Cloudflare worker), which passes on each visitor's address.
     proxy_key: str = env.get("DEMO_PROXY_KEY", "")
     # Confirmation emails (Resend; the sending domain digitalmacaroni.io is verified there).

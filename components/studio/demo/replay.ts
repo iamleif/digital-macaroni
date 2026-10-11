@@ -396,7 +396,7 @@ const reView = (values: Record<string, string | string[]>, patch: Partial<RealEs
   ...realestateEmpty, ...patch,
   record: { opened: true, number: "L-418", title: (values.name as string) ?? null, stage, sections: realestateRecord(values) },
 });
-const reSearch = reView({ intent: "Buying", areas: ["Central Austin"], price: "Up to $700,000", beds: "3+" }, { listings: { ...realestateSample.listings, homes: realestateHomes.map((h, i) => ({ ...h, matched: i === 0 || i === 4, read: i === 0 || i === 4 })) } });
+const reSearch = reView({ intent: "Buying", areas: ["Central Austin"], price: "Up to $800,000", beds: "3+" }, { listings: { ...realestateSample.listings, homes: realestateHomes.map((h, i) => ({ ...h, matched: i === 0, read: i === 0 })) } });
 const reFocus = reView({ ...realestateNamed }, { listings: { ...realestateSample.listings, homes: realestateSample.listings.homes.map((h) => ({ ...h, booked: false })) }, focus: realestateSample.focus, lead: { ...realestateSample.lead, tier: "A", points: realestateSample.lead.points.slice(0, 3) } }, "qualified");
 const reOpen = { ...reFocus, calendar: { purpose: "showing" as const, agent: "Priya Shah", openTimes: [{ slotId: "a", day: "Saturday", time: "10 AM", agent: "Priya Shah" }, { slotId: "b", day: "Saturday", time: "11 AM", agent: "Priya Shah" }] } };
 
@@ -407,24 +407,24 @@ const realestate = timeline([
   say("agent", "Thanks for calling Juniper Row Realty, this is Miles. Are you looking to buy or sell?"),
   speaking(false),
   1500,
-  say("visitor", "Buying. Anything three bedrooms under 700 in Hyde Park?"),
+  say("visitor", "Buying. Anything three bedrooms under 800 in Tarrytown?"),
   tool("c1", "search_listings", "Search real Austin listings"),
   700,
-  ok("c1", "search_listings", "Search real Austin listings", "2 matches · reading 2"),
+  ok("c1", "search_listings", "Search real Austin listings", "16 matches · reading 3"),
   state(1, reSearch),
   speaking(true),
-  say("agent", "There’s a 1938 house in Hyde Park at six eighty-nine, three beds and two baths, and one in Crestview at six fifteen. Want to hear more about either?"),
+  say("agent", "There’s a three-bed house on Woodmont Avenue at seven sixty-nine nine, almost two thousand square feet. I have a couple more close by. Want to hear more about that one?"),
   speaking(false),
   1600,
-  say("visitor", "The Hyde Park one. I’m Jamie, pre-approved with my credit union, hoping to move in the next couple of months. First home."),
+  say("visitor", "That one. I’m Jamie, pre-approved with my credit union, hoping to move in the next couple of months. First home."),
   tool("c2", "get_listing", "Open a listing"),
   tool("c3", "note_lead", "Fill in the lead record"),
   700,
-  ok("c2", "get_listing", "Open a listing", "Sample home · Hyde Park · $689,000"),
+  ok("c2", "get_listing", "Open a listing", "2003 Woodmont Ave · $769,900"),
   ok("c3", "note_lead", "Fill in the lead record", "Noted 6 details"),
   state(2, reFocus),
   speaking(true),
-  say("agent", "Congratulations on the first home. It’s 1,610 square feet and has been on the market twelve days. Would you like to see it?"),
+  say("agent", "Congratulations on the first home. It was built in 1957 and has been on the market about two months. Would you like to see it?"),
   speaking(false),
   1500,
   say("visitor", "Saturday morning?"),

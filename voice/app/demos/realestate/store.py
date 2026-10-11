@@ -1,10 +1,11 @@
 """
 Juniper Row Realty's business data and its outside sources. The only module that reads data/*.json
-and the only one that asks RentCast for a home-value estimate: the tools ask here, so a live install
-can swap these reads for its own CRM and MLS feed without touching the agent.
+the tools ask here, so a live install can swap these reads for its own CRM and MLS feed without
+touching the agent.
 
-Listings are real active Austin sale listings, cached in data/listings.json by
-scripts/refresh_listings.py. Searching never spends RentCast quota; only estimate_value does.
+Listings are real active Austin sale listings, pulled once into data/listings.json by
+scripts/refresh_listings.py. A call never reaches RentCast: searches and value estimates both work
+from that file.
 """
 
 from __future__ import annotations
@@ -13,8 +14,6 @@ import json
 import re
 from pathlib import Path
 from typing import Any, Optional
-
-from ... import rentcast
 
 _DATA = Path(__file__).parent / "data"
 
@@ -142,9 +141,36 @@ def known_contact(name: str) -> Optional[dict[str, Any]]:
     return next((c for c in CONTACTS if name_matches(name, c["name"])), None)
 
 
-EstimateError = rentcast.EstimateError
+class EstimateError(Exception):
+    """Not enough comparable homes in our listings to give a range."""
 
 
-async def estimate_value(address: str) -> dict[str, Any]:
-    """RentCast's automated valuation for a full street address. Raises EstimateError when there is none."""
-    return await rentcast.value(address)
+def _zip_in(text: str) -> Optional[str]:
+    m = re.search(r"\b(7\d{4})\b", text)
+    return m.group(1) if m else None
+
+
+def estimate_value(address: str, beds: Optional[float] = None, sqft: Optional[int] = None) -> dict[str, Any]:
+    """
+    A value range for the caller's home from comparable homes in our listings: the same zip code (or
+    area), the same kind of home, priced per square foot when we know the size, otherwise by bedrooms.
+    Raises EstimateError when there are too few comparables.
+    """
+    zip_code = _zip_in(address)
+    area = next((a["id"] for a in AREAS if zip_code in a["zips"]), None) if zip_code else area_of(address)
+    pool = [x for x in LISTINGS if x["type"] == "Single Family"]
+    near = [x for x in pool if zip_code and x["zip"] == zip_code]
+    if len(near) < 3 and area:
+        near = [x for x in pool if x["area"] == area]
+    if len(near) < 3:
+        raise EstimateError("too_few")
+    if sqft:
+        per = sorted(x["price"] / x["sqft"] for x in near if x.get("sqft"))
+        mid = per[len(per) // 2] * sqft
+    else:
+        alike = [x for x in near if beds is None or abs(x["beds"] - beds) <= 1] or near
+        prices = sorted(x["price"] for x in alike)
+        mid = prices[len(prices) // 2]
+        near = alike
+    rnd = lambda n: int(round(n / 5000) * 5000)  # noqa: E731
+    return {"price": rnd(mid), "low": rnd(mid * 0.93), "high": rnd(mid * 1.07), "comparables": len(near), "address": address, "area": AREA_NAME[near[0]["area"]]}

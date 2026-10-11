@@ -1,7 +1,7 @@
 """
 Juniper Row Realty: a fictional residential brokerage in Austin, Texas, answering for real active
-Austin listings (cached from RentCast). Buyers ask about a home or search, and book a showing with
-the agent for that area; sellers get an automated value estimate and a free in-person valuation.
+Austin listings (pulled once from RentCast, stored in data/listings.json). Buyers ask about a home or search, and book a showing with
+the agent for that area; sellers get a value range from comparable listings and a free in-person valuation.
 Every caller becomes a lead on the brokerage's screen, ranked for the team (never told to the caller).
 
 Folder: data/*.json (the brokerage, its agents, areas, calendar, contacts and listings), store.py (the
@@ -55,7 +55,7 @@ realestate: DemoDefinition[RealEstateState] = DemoDefinition(
         "note_lead": Operation("Updating the lead record", "Record what the caller has told you about themselves and what they want, so the lead record fills in. Send only what is new or changed.", note_lead, NoteLead),
         "search_listings": Operation("Searching listings", "Search our active Austin listings by area, price, bedrooms, bathrooms and type. Returns the total and the best few to read out.", search_listings, SearchListings),
         "get_listing": Operation("Opening the listing", "One home's details, by listingId or by the street the caller named.", get_listing, GetListing),
-        "estimate_value": Operation("Running a value estimate", "An automated value estimate for the caller's home from recent sales nearby, as a range. Needs the full street address.", estimate_value, EstimateValue, slow=True),
+        "estimate_value": Operation("Running a value estimate", "A rough value range for the caller's home from comparable homes for sale nearby. Needs the address with the neighbourhood or zip code; bedrooms and square feet make it better.", estimate_value, EstimateValue),
         "check_availability": Operation("Checking the agent's calendar", "Open times on a date (YYYY-MM-DD, Central Time) for a showing of a listing, or a valuation at the caller's home. If that day has none, returns the next openings.", check_availability, CheckAvailability),
         "book_appointment": Operation("Booking it", "Book the showing or valuation after the caller clearly said yes to the read-back. slotId must come from check_availability.", book_appointment, BookAppointment),
         "reschedule_appointment": Operation("Moving the booking", "Move an existing showing or valuation to a new time from check_availability, after the caller confirmed.", reschedule_appointment, RescheduleAppointment),

@@ -237,8 +237,8 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
     phoneDisplay: "(512) 645-1952",
     seoDescription: "Call a live AI agent for a real estate brokerage. It answers questions about real Austin listings, books showings with the right agent, gives sellers an automated value estimate and books a valuation, and turns every caller into a ranked lead. Juniper Row Realty is fictional; its agent answers as Miles.",
     intro: "Ask about a home for sale in Austin, or what yours is worth. The agent searches real active listings, books a showing with the right agent or a valuation for sellers, and turns the call into a ranked lead while the brokerage’s screen fills in. Juniper Row Realty is fictional; its agent answers as Miles.",
-    prompts: ["Anything three bedrooms under 700 in Hyde Park?", "Can I see it Saturday morning?", "I’m pre-approved with my credit union.", "What’s my house worth? It’s on South Gilpin."],
-    sampleDetails: "The listings are real active Austin homes, but Juniper Row and its agents are fictional: nobody will call you and no showing is booked. Use any name you like.",
+    prompts: ["Anything three bedrooms under 800 in Tarrytown?", "Tell me about the house on Woodmont.", "Can I see it Saturday morning?", "What’s my house worth? It’s in 78704, about 1,800 square feet."],
+    sampleDetails: "The listings are real Austin homes for sale (October 2026), but Juniper Row and its agents are fictional: nobody will call you and no showing is booked. Use any name you like.",
     design: {
       platform: "Gemini Live",
       stack: [{ role: "All three", value: "Google Gemini Live hears, thinks and speaks in one speech-to-speech model: no separate transcription or voice step" }],

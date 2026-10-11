@@ -140,10 +140,12 @@ def get_listing(state: RealEstateState, i: GetListing, ctx: OpContext) -> OpResu
 
 
 class EstimateValue(BaseModel):
-    address: str = Field(min_length=8, max_length=140, description="The caller's full street address: number, street, city and zip if they gave it, e.g. '2103 S Gilpin St, Austin, TX'.")
+    address: str = Field(min_length=8, max_length=140, description="The caller's street address, with the neighbourhood or zip code if they gave it, e.g. '2103 S Gilpin St, 78704'.")
+    beds: Optional[float] = Field(None, ge=0, le=10, description="Bedrooms, if they said.")
+    squareFeet: Optional[int] = Field(None, ge=300, le=20000, description="Square footage, if they know it roughly.")
 
 
-async def estimate_value(state: RealEstateState, i: EstimateValue, ctx: OpContext) -> OpResult:
+def estimate_value(state: RealEstateState, i: EstimateValue, ctx: OpContext) -> OpResult:
     address = i.address.strip()
     if "austin" not in address.lower() and not any(z in address for a in store.AREAS for z in a["zips"]):
         address += ", Austin, TX"
@@ -151,14 +153,14 @@ async def estimate_value(state: RealEstateState, i: EstimateValue, ctx: OpContex
     state.lead.setdefault("intent", "sell")
     state.opened = True
     try:
-        e = await store.estimate_value(address)
+        e = store.estimate_value(address, i.beds, i.squareFeet)
     except store.EstimateError:
         state.estimate = {"status": "unavailable", "address": i.address.strip()}
-        return ok("No automated estimate · full valuation instead", {"estimate": None, "say": f"Say an automated estimate isn't available for that address, and that {first_name(store.SELLER_AGENT)} can give a much better number in person with a free valuation."}, True)
+        return ok("No estimate · full valuation instead", {"estimate": None, "say": f"Say you can't give a range for that address over the phone (ask for the neighbourhood or zip code once if they didn't give it), and that {first_name(store.SELLER_AGENT)} gives a real number in person with a free valuation."}, True)
     state.estimate = {"status": "ok", **e}
     return ok(
-        f"Automated estimate {money(e['low'])} to {money(e['high'])}",
-        {"low": money(e["low"]), "high": money(e["high"]), "comparables": e["comparables"], "say": f"Give it as a range, call it an automated estimate from recent sales nearby, and say {first_name(store.SELLER_AGENT)} can firm it up with a free in-person valuation. Never give a single number or your own opinion of the price."},
+        f"Estimate {money(e['low'])} to {money(e['high'])}",
+        {"low": money(e["low"]), "high": money(e["high"]), "comparables": e["comparables"], "say": f"Give it as a range, call it a rough estimate from comparable homes for sale nearby, and say {first_name(store.SELLER_AGENT)} can firm it up with a free in-person valuation. Never give a single number or your own opinion of the price."},
         True,
     )
 
