@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { track } from "@/components/studio/consent";
-import { Check } from "@/components/studio/icons";
+import { Check, Globe, Phone } from "@/components/studio/icons";
 import { VOICE_URL } from "@/components/studio/live/client";
 import f from "./factory.module.css";
 import { Turnstile } from "./Turnstile";
@@ -88,25 +88,32 @@ export function InstantForm() {
     const at = AT[job.step] ?? 0;
     const failed = job.step === "failed" || job.step === "no_answer";
     const done = job.step === "done";
+    const title = done ? "That was your demo call." : failed ? "We couldn’t reach you." : at >= 1 ? "Calling you now" : "Building your agent now";
+    const note = done
+      ? job.message || "Check your email for the call summary, the same one you’d get after every real call, and a link to book a discovery call with Leif."
+      : failed ? job.message : at >= 1 ? "Pick up when your phone rings and play one of your customers." : "Stay close to your phone. It calls you in under a minute.";
     return (
-      <div className={f.progress} role="status" aria-live="polite">
-        <h2 className={f.title}>{done ? "That was your demo call." : failed ? "We couldn’t reach you." : at >= 1 ? "Calling you now" : "Building your agent now"}{done || failed ? null : <span className={f.spinner} aria-hidden="true" />}</h2>
-        <p>{done ? (job.message || "Check your email for the call summary, the same one you’d get after every real call, and a link to book a discovery call with Leif.") : failed ? job.message : at >= 1 ? "Pick up when your phone rings. Pretend you’re one of your customers." : "Stay close to your phone. We’re reading your website and it calls you in under a minute."}</p>
-        {failed ? null : (
-          <ol className={f.steps}>
-            {STEPS.map((s, i) => (
-              <li key={s.key} className={f.step} data-state={i < at || done ? "done" : i === at ? "active" : "todo"}>
-                <i>{i < at || done ? <Check size={13} /> : null}</i>{s.label}
+      <div className={f.call} data-state={done ? "done" : failed ? "failed" : "live"} role="status" aria-live="polite">
+        <div className={f.callHead}>
+          <span className={f.callIcon} aria-hidden="true">{done ? <Check size={20} /> : <Phone size={20} />}</span>
+          <div>
+            <h2 className={f.callTitle}>{title}</h2>
+            {job.business ? <span className={f.callBusiness}><Globe size={13} />{job.business}</span> : null}
+          </div>
+        </div>
+        <p className={f.callNote}>{note}</p>
+        {failed ? (
+          <button className={f.callRetry} type="button" onClick={() => { setJob(null); shownAt.current = Date.now(); }}>Try again</button>
+        ) : (
+          <ol className={f.timeline}>
+            {STEPS.map((step, i) => (
+              <li key={step.key} data-state={i < at || done ? "done" : i === at ? "active" : "todo"}>
+                <i>{i < at || done ? <Check size={12} /> : null}</i>
+                <span>{step.label}</span>
               </li>
             ))}
           </ol>
         )}
-        {done || failed ? (
-          <div className={f.actions}>
-            <a className={`${f.primary} ${f.callButton}`} href={MEETING_URL} target="_blank" rel="noopener">Book a discovery call</a>
-            <button className={f.secondary} type="button" onClick={() => { setJob(null); shownAt.current = Date.now(); }}>Try again</button>
-          </div>
-        ) : null}
       </div>
     );
   }
