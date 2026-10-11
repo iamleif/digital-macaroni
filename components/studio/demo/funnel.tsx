@@ -6,7 +6,8 @@ import type { DemoInfo } from "../live/demo-info";
 import type { BookingSkin, BrandId, DemoId } from "../live/types";
 import { BrandMark, KindMark, type KindId } from "../brand-marks";
 import { ArrowRight, Check, Close, Code, Lock, Phone } from "../icons";
-import type { WatchStatus } from "../live/client";
+import { VOICE_URL, type WatchStatus } from "../live/client";
+import { Turnstile } from "../factory/Turnstile";
 import { track } from "../consent";
 import f from "./funnel.module.css";
 
@@ -28,7 +29,7 @@ type TradeCard = { id: Trade; label: string; example: string; ready: boolean; de
 export type Op = { what: string; op: string; when?: "qualified" | "declined" };
 export type Tool = { id: string; name: string; skins: Trade[]; ops: Partial<Record<string, Op[]>>; confirmation: string };
 
-export type Setup = { trade: Trade; tool: string; email: string; record: boolean; updates: boolean };
+export type Setup = { trade: Trade; tool: string; email: string; record: boolean; updates: boolean; pass?: string };
 
 /** The businesses Ellie can answer for: one appointment engine, three front desks. */
 const TRADES: TradeCard[] = [
@@ -474,6 +475,12 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onSaved, onClose, ag
   const [record, setRecord] = useState(again?.record ?? true);
   const [updates, setUpdates] = useState(again?.updates ?? false);
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+  // Verify you are human, and a reachable, non-throwaway address: checked by the voice service, which hands back a pass.
+  const [human, setHuman] = useState("");
+  const [checks, setChecks] = useState(0);
+  const [checking, setChecking] = useState(false);
+  const [emailProblem, setEmailProblem] = useState("");
+  const [pass, setPass] = useState(again?.pass ?? "");
 
   useEffect(() => { if (!again) track("demo_setup_viewed", { demo: demo.id }); }, [demo.id, again]);
   // The marker has done its job once the card is open: clear it so a reload starts at the beginning.
@@ -484,9 +491,26 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onSaved, onClose, ag
     window.history.replaceState(window.history.state, "", url.pathname + url.search.replace(/=(?=&|$)/g, "") + url.hash);
   }, []);
 
-  function currentSetup(): Setup { return { trade, tool: tool ?? CUSTOM, email: email.trim(), record, updates }; }
-  function saveAndContinue() {
-    const s = currentSetup();
+  function currentSetup(withPass = pass): Setup { return { trade, tool: tool ?? CUSTOM, email: email.trim(), record, updates, pass: withPass }; }
+  async function checkAndContinue() {
+    if (!human) { setEmailProblem("Please tick “Verify you are human” first."); return; }
+    setChecking(true);
+    setEmailProblem("");
+    try {
+      const r = await fetch(`${VOICE_URL}/check-email`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: email.trim(), turnstileToken: human }) });
+      const out = (await r.json()) as { ok: boolean; pass?: string; message?: string };
+      if (!out.ok || !out.pass) { setEmailProblem(out.message || "Please check your email address."); return; }
+      setPass(out.pass);
+      saveAndContinue(out.pass);
+    } catch {
+      setEmailProblem("We couldn’t check that just now. Please try again.");
+    } finally {
+      setChecking(false);
+      setChecks((n) => n + 1);
+    }
+  }
+  function saveAndContinue(withPass = pass) {
+    const s = currentSetup(withPass);
     track("demo_setup_done", { demo: demo.id, trade, tool: s.tool, record: record ? 1 : 0, updates: updates ? 1 : 0 });
     onSaved?.(s);
     setStep(3);
@@ -554,9 +578,11 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onSaved, onClose, ag
         <label className={f.check}><input type="checkbox" checked={record} onChange={(e) => setRecord(e.target.checked)} /><span>Record the call so I can listen back in my report</span></label>
         <label className={f.check}><input type="checkbox" checked={updates} onChange={(e) => setUpdates(e.target.checked)} /><span>Send me occasional updates from Digital Macaroni</span></label>
         <p className={f.fine}><Lock size={12} /><span>Kept 30 days, then deleted. See our <a href="/privacy/">privacy policy</a>.</span></p>
+        <div style={{ marginTop: 14 }}><Turnstile onToken={setHuman} resetKey={checks} /></div>
+        {emailProblem ? <p className={f.fine} role="alert" style={{ color: "#b03a26" }}>{emailProblem}</p> : null}
         <div className={f.actions}>
           <button type="button" className={f.back} onClick={() => setStep(1)}>Back</button>
-          <button type="button" className={f.primary} disabled={!emailOk} onClick={saveAndContinue}>Continue<ArrowRight size={14} /></button>
+          <button type="button" className={f.primary} disabled={!emailOk || checking} onClick={() => void checkAndContinue()}>{checking ? "Checking…" : "Continue"}<ArrowRight size={14} /></button>
         </div>
       </> : null}
 

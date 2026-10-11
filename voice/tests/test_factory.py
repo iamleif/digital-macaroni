@@ -226,3 +226,11 @@ class TestEmailCheck:
         assert await email_problem("someone@mailinator.com") == "disposable"
         assert await email_problem("not an email") == "invalid"
         assert await email_problem("a@b") == "invalid"
+
+
+class TestEmailPass:
+    def test_pass_matches_only_its_email(self):
+        from app.verify import email_pass, pass_ok
+
+        p = email_pass("Jess@Example.com")
+        assert pass_ok("jess@example.com", p) and not pass_ok("other@example.com", p) and not pass_ok("jess@example.com", "")

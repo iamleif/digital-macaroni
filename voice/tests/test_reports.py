@@ -60,8 +60,13 @@ def test_setup_needs_the_site_origin(stored: Any) -> None:
     client = TestClient(main.app)
     p = pairing.create_pairing("hotels")
     assert client.post(f"/pairings/{p.viewer_token}/setup", json={"tool": "x"}, headers={"origin": "https://evil.example"}).status_code == 403
-    ok = client.post(f"/pairings/{p.viewer_token}/setup", json={"tool": "mews", "record": False, "email": "a@b.co", "junk": "x" * 999}, headers={"origin": "https://digitalmacaroni.io"})
+    from app.verify import email_pass
+
+    ok = client.post(f"/pairings/{p.viewer_token}/setup", json={"tool": "mews", "record": False, "email": "a@b.co", "pass": email_pass("a@b.co"), "junk": "x" * 999}, headers={"origin": "https://digitalmacaroni.io"})
     assert ok.json() == {"ok": True} and p.setup == {"tool": "mews", "email": "a@b.co", "record": False}
+    # An email that didn't pass /check-email (a real person, a reachable address) is not kept.
+    client.post(f"/pairings/{p.viewer_token}/setup", json={"tool": "mews", "email": "x@mailinator.com"}, headers={"origin": "https://digitalmacaroni.io"})
+    assert "email" not in p.setup
 
 
 async def test_recorded_only_when_chosen_and_the_agent_says_so(stored: Any, monkeypatch: pytest.MonkeyPatch) -> None:

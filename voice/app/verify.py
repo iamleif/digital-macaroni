@@ -7,7 +7,10 @@ throwaway inbox). The throwaway domains come from github.com/disposable-email-do
 
 from __future__ import annotations
 
+import hashlib
+import hmac
 import re
+import time
 from pathlib import Path
 from typing import Optional
 
@@ -64,3 +67,16 @@ async def human(token: str, ip: str) -> bool:
     except (httpx.HTTPError, ValueError) as err:
         log.warn("verify.turnstile_failed", {}, err)
         return False
+
+
+# A checked email's pass: the demo setup card checks the address and the visitor once (/check-email), then
+# sends this with its setup; the pairing keeps the email only when the pass matches it. Valid ~2 hours.
+def email_pass(address: str, at: Optional[float] = None) -> str:
+    slot = int((at or time.time()) // 3600)
+    key = (config.admin_token or config.proxy_key or "local").encode()
+    return hmac.new(key, f"{address.strip().lower()}|{slot}".encode(), hashlib.sha256).hexdigest()[:32]
+
+
+def pass_ok(address: str, given: str) -> bool:
+    now = time.time()
+    return bool(given) and any(hmac.compare_digest(email_pass(address, now - h * 3600), given) for h in (0, 1))

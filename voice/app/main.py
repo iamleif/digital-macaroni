@@ -20,7 +20,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect
 
-from . import agents_store, calllog, factory, log, recording
+from . import agents_store, calllog, factory, log, recording, verify
 from .browser import bridge_browser
 from .config import config
 from .demos import is_demo_id
@@ -187,7 +187,7 @@ def allowed_origin(origin: Optional[str]) -> bool:
 @app.middleware("http")
 async def cors(request: Request, call_next):
     path = request.url.path
-    if not (path.startswith("/browser/") or path.startswith("/pairings") or path.startswith("/reports/") or path.startswith("/instant") or path.startswith("/onboard")):
+    if not (path.startswith("/browser/") or path.startswith("/pairings") or path.startswith("/reports/") or path.startswith("/instant") or path.startswith("/onboard") or path.startswith("/check-email")):
         return await call_next(request)
     origin = request.headers.get("origin")
     response = Response(status_code=204) if request.method == "OPTIONS" else await call_next(request)
@@ -294,7 +294,27 @@ async def pairing_setup(request: Request, token: str) -> JSONResponse:
             setup[key] = v.strip()[:cap]
         elif not cap and isinstance(v, bool):
             setup[key] = v
+    # The report email is kept only when /check-email cleared it (a real person, an address we can reach).
+    if setup.get("email") and not verify.pass_ok(setup["email"], str(body.get("pass") or "")):
+        setup.pop("email")
     return JSONResponse({"ok": set_setup(token, setup)})
+
+
+@app.post("/check-email")
+async def check_email(request: Request) -> JSONResponse:
+    """The demo setup card: Verify you are human, and an email we can really send the report to."""
+    if not allowed_origin(request.headers.get("origin")):
+        return JSONResponse({"error": "origin"}, status_code=403)
+    if not allow_start(f"check:{client_ip(request)}", 20):
+        return JSONResponse({"ok": False, "message": "Please wait a few minutes and try again."}, status_code=429)
+    body = await _json(request)
+    if not await verify.human(str(body.get("turnstileToken") or ""), client_ip(request)):
+        return JSONResponse({"ok": False, "message": "Please tick “Verify you are human” and try again."}, status_code=400)
+    address = str(body.get("email") or "").strip().lower()
+    bad = await verify.email_problem(address)
+    if bad:
+        return JSONResponse({"ok": False, "message": verify.EMAIL_MESSAGES[bad]}, status_code=400)
+    return JSONResponse({"ok": True, "pass": verify.email_pass(address)})
 
 
 @app.post("/twilio/recording")

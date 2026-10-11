@@ -82,7 +82,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   }, [demo.id, demo.agentName, receive, reset, voice]);
   /** The setup card's answers, stored on the pairing so the call (and its page) know them. */
   const sendSetup = useCallback((s: Setup) => {
-    choices.current = { trade: s.trade, tool: s.tool, email: s.email, record: s.record, updates: s.updates };
+    choices.current = { trade: s.trade, tool: s.tool, email: s.email, record: s.record, updates: s.updates, pass: s.pass };
     watcher.current?.sendSetup(choices.current);
   }, []);
   /** "Call again" / "Get a new code": clear the last call's results, then ask for a fresh code. */

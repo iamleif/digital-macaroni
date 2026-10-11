@@ -202,7 +202,8 @@ const CONNECT_TIMEOUT_MS = 8000;
 export type WatchStatus = "requesting" | "waiting" | "linked" | "expired" | "ended" | "error";
 
 /** The setup card's choices as the voice service stores them on a pairing. */
-export type SetupChoices = { trade: string; tool: string; email: string; record: boolean; updates: boolean };
+/** pass: from /check-email; without it the service drops the email. */
+export type SetupChoices = { trade: string; tool: string; email: string; record: boolean; updates: boolean; pass?: string };
 
 /** Shows a phone call on this page once the caller types the code shown here. */
 export class CallWatcher {
