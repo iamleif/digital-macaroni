@@ -133,7 +133,7 @@ export default function HomePage() {
     </section>
 
     {/* Your own agent: an instant demo call built from the visitor's website */}
-    <section id="your-agent" className={`${h.sheet} ${h.ctaSheet}`} aria-labelledby="your-agent-heading">
+    <section id="your-agent" className={h.sheet} aria-labelledby="your-agent-heading">
       <div className={`${h.sheetInner} ${f.homeBand}`}>
         <Reveal>
           <h2 id="your-agent-heading" className={h.h2}>Hear your own agent. <span className={h.chip} data-tone="yellow"><Phone size={20} /></span><br />In about a minute.</h2>
