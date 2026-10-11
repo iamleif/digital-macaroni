@@ -1,0 +1,9 @@
+{
+  "staff": [
+    {"id": "tasha", "name": "Tasha Greene", "role": "Licensed agent", "does": ["quotes", "coverage reviews"]},
+    {"id": "robert", "name": "Robert Hale", "role": "Licensed agent", "does": ["quotes", "coverage reviews"]},
+    {"id": "lily", "name": "Lily Chen", "role": "Account manager", "does": ["policy changes", "billing", "claims follow-up"]}
+  ],
+  "licensed": ["tasha", "robert"],
+  "service": "lily"
+}

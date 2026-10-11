@@ -1,0 +1,7 @@
+{
+  "intent": {"buy": "Buying", "sell": "Selling", "both": "Buying and selling"},
+  "timeline": {"now": "Ready now", "three_months": "Within 3 months", "six_months": "3 to 6 months", "later": "6 months or more", "browsing": "Just looking"},
+  "financing": {"pre_approved": "Pre-approved", "cash": "Cash buyer", "talking_to_lender": "Talking to a lender", "not_yet": "Not yet"},
+  "propertyTypes": {"Single Family": "House", "Condo": "Condo", "Townhouse": "Townhouse"},
+  "sellerReason": {"moving": "Moving away", "upsizing": "Needs more space", "downsizing": "Downsizing", "investment": "Selling an investment", "other": "Other"}
+}

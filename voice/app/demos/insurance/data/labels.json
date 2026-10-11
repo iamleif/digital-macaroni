@@ -1,0 +1,6 @@
+{
+  "lines": {"auto": "Auto", "home": "Home", "renters": "Renters"},
+  "coverageWanted": {"liability_only": "Liability only", "full_coverage": "Full coverage", "higher_limits": "Higher limits", "lower_deductible": "Lower deductible", "roadside": "Roadside", "rental": "Rental car", "umbrella": "Umbrella", "flood": "Flood"},
+  "changeTypes": {"add_vehicle": "Add a vehicle", "remove_vehicle": "Remove a vehicle", "add_driver": "Add a driver", "remove_driver": "Remove a driver", "change_address": "Change of address", "change_mortgagee": "Mortgage company change", "other": "Other change"},
+  "claimTypes": {"collision": "Auto collision", "hit_while_parked": "Hit while parked", "glass": "Glass / windshield", "theft": "Theft or break-in", "weather": "Storm, wind or hail", "water": "Water damage", "fire": "Fire", "liability": "Someone was hurt", "other": "Other"}
+}

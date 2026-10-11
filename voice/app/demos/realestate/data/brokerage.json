@@ -1,0 +1,18 @@
+{
+  "name": "Juniper Row Realty",
+  "city": "Austin, TX",
+  "timeZone": "America/Chicago",
+  "phone": "(512) 645-1952",
+  "office": "1610 South Congress Avenue, Austin, TX 78704",
+  "hours": "This line answers around the clock. The office is open Monday to Saturday, 9 AM to 6 PM Central Time. Showings run every day from 9 AM to 6 PM.",
+  "serves": "Homes for sale across Austin: Central, East, South and North Austin, plus Westlake. Buying and selling; property management is not handled on this line.",
+  "showings": "A showing is about 30 minutes at the home with one of our agents. Buyers do not need to be pre-approved to see a home, but the agent may ask.",
+  "valuation": "A free home valuation is about 45 minutes at the home with Dana Reyes, our listing specialist. She walks the house and prepares a full market analysis. No obligation.",
+  "commission": "Commission and fees are agreed in writing with your agent; the agent covers that in person. Never quote a percentage or an amount.",
+  "policies": [
+    "Juniper Row agents are licensed in Texas.",
+    "Answers about a home come only from the listing data. A home that is not in the listings gets checked by an agent.",
+    "Juniper Row follows fair housing law: it never describes a neighbourhood by who lives there and never calls an area safe or unsafe. For crime figures, the City of Austin publishes crime maps; for schools, the Texas Education Agency publishes school ratings.",
+    "No advice on offers, negotiation, mortgages, taxes or law. The agent or a lender covers those."
+  ]
+}

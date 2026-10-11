@@ -1,0 +1,7 @@
+{
+  "contacts": [
+    {"name": "Megan Alvarez", "phoneLast4": "4417", "intent": "buy", "areas": ["east"], "agent": "priya", "lastContact": "Spoke with Priya last week about townhomes near Mueller under $550,000. Pre-approved with Amplify Credit Union."},
+    {"name": "David Kim", "phoneLast4": "9082", "intent": "sell", "areas": ["south"], "agent": "dana", "lastContact": "Asked Dana in September about selling his house in Travis Heights in the spring."},
+    {"name": "Rachel Okafor", "phoneLast4": "2210", "intent": "buy", "areas": ["north", "northwest"], "agent": "jordan", "lastContact": "Saw two homes in Crestview with Jordan on Saturday; wants three bedrooms with a yard."}
+  ]
+}

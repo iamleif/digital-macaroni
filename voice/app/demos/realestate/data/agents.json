@@ -1,0 +1,9 @@
+{
+  "agents": [
+    {"id": "dana", "name": "Dana Reyes", "role": "Listing specialist", "focus": "Sellers and home valuations, all of Austin", "areas": []},
+    {"id": "priya", "name": "Priya Shah", "role": "Buyer's agent", "focus": "Central and East Austin", "areas": ["central", "east"]},
+    {"id": "caleb", "name": "Caleb Ortiz", "role": "Buyer's agent", "focus": "South Austin and Westlake", "areas": ["south", "westlake"]},
+    {"id": "jordan", "name": "Jordan Ellis", "role": "Buyer's agent", "focus": "North and Northwest Austin", "areas": ["north", "northwest"]}
+  ],
+  "sellerAgent": "dana"
+}

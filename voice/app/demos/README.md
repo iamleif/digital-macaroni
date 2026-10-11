@@ -50,8 +50,8 @@ apply. Reply STOP at any time to opt out."
 | | Lune Salon & Med Spa | `lune/` | No |
 | | Tidewell Clinic | `tidewell/` | No |
 | Law & professional (Nora) | Alder & Finch, personal injury | `lawfirm/` | Yes |
-| | Bluebird Insurance Agency | `insurance/` | No |
-| | Juniper Row Realty | `realestate/` | No |
+| | Bluebird Insurance Agency, Macon GA | `insurance/` | Yes |
+| | Juniper Row Realty, Austin (real RentCast listings) | `realestate/` | Yes |
 | Retail (Theo) | Form & Field, home goods | `formfield/` | Yes |
 | | Woodward Motor Co., auto dealership | `dealership/` | No |
 | | Furniture showroom | `furniture/` | No |

@@ -15,13 +15,15 @@ if TYPE_CHECKING:
     from .session import DemoSession
 
 # Steps that are plumbing or look-ups, not something the caller would call an outcome.
-QUIET = {"link_screen", "get_caller_number", "end_call", "get_business_info", "get_firm_info", "get_shop_info", "get_agency_info", "note_request_details", "note_intake", "find_places"}
+QUIET = {"link_screen", "get_caller_number", "end_call", "get_business_info", "get_firm_info", "get_shop_info", "get_agency_info", "note_request_details", "note_intake", "find_places", "get_brokerage_info", "note_lead", "note_account"}
 DID = {
     "northline": "checked the live schedule and looked after your call",
     "lawfirm": "took your call, listened to what happened and passed it to the right attorney",
     "formfield": "searched the shop, checked live stock and looked after your call",
     "travel": "searched live airline fares and looked after your call",
     "hotels": "searched real hotels with live rates and looked after your call",
+    "realestate": "searched real Austin listings and passed your details to the right agent",
+    "insurance": "looked after your call and logged everything for our licensed agents",
 }
 # How long to wait for a recording before sending the report without it.
 RECORDING_WAIT_S = 90

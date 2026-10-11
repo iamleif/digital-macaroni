@@ -160,6 +160,8 @@ BRANDS = {
     "lawfirm": Brand("Alder & Finch", "Alder & Finch Injury Law", "lawfirm.png", "#1f3459", "#eaeff8", "#1a2540"),
     "formfield": Brand("Form & Field", "Form & Field", "formfield.png", "#4f6a4a", "#eef2ea", "#2b3226", serif=True),
     "hotels": Brand("Palmetto", "Palmetto Stays", "palmetto.png", "#1f7a6c", "#e6f4f1", "#173a35"),
+    "realestate": Brand("Juniper Row", "Juniper Row Realty", "juniper.png", "#2e6650", "#e8f1ec", "#1b2e27"),
+    "insurance": Brand("Bluebird", "Bluebird Insurance Agency", "bluebird.png", "#2563a8", "#e9f1fb", "#172a44"),
 }
 
 
@@ -402,3 +404,62 @@ def consult_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:
     body = layout(b, f"Free consultation with {v['attorney']} · {v['day']}, {v['time']}", "Consultation confirmation", heading, intro, card, "Nora", did)
     lines = [f"When: {v['day']}, {v['time']} Mountain", f"With: {v['attorney']} ({v['format']})", "Cost: free, no obligation", f"Reference: {v['reference']}"]
     return f"Your free consultation with Alder & Finch · {v['day']}, {v['time']}", body, _text(b, heading, intro, lines, "Nora", did)
+
+
+def realestate_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:
+    """Juniper Row Realty: a booked showing or home valuation. Returns (subject, html, text)."""
+    b = BRANDS["realestate"]
+    showing = v["purpose"] == "showing"
+    what = "Showing" if showing else "Home valuation"
+    sub = f"{e(v['price'])} &middot; {e(v['home'])}" if showing and v.get("price") else "Free valuation &middot; about 45 minutes at the home"
+    card = f"""{_pill(what + " · " + v["reference"], b)}<div style="height:14px"></div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr><td style="padding:20px 20px 18px;font-family:{FONT}">
+<div style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:{b.accent}">{e(v["day"])} &middot; {e(v["time"])} Central</div>
+<div style="padding:6px 0 2px;font-size:24px;font-weight:800;color:{b.ink};letter-spacing:-.3px">{e(v["address"])}</div>
+<div style="font-size:14px;color:#56655f">{sub}</div></td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px">{_detail_rows([("Agent", v["agent"]), ("Name", v["name"]), ("Where", v["address"]), ("Reference", v["reference"])], b)}</table>"""
+    did = "found the home, checked the agent's calendar and booked your showing" if showing else "ran an automated estimate and booked your free valuation"
+    first = v["name"].split(" ")[0]
+    heading = f"You're booked, {first}"
+    intro = f"{v['agent'].split(' ')[0]} will meet you at the home. Need another time? Call back and Miles will move it." if showing else f"{v['agent'].split(' ')[0]} will walk the home with you and put together a full market analysis. No obligation."
+    body = layout(b, f"{what} · {v['address']} · {v['day']}, {v['time']}", what + " confirmation", heading, intro, card, "Miles", did)
+    lines = [f"When: {v['day']}, {v['time']} Central", f"Where: {v['address']}", f"With: {v['agent']}", f"Reference: {v['reference']}"]
+    return f"Your {what.lower()} with Juniper Row · {v['day']}, {v['time']}", body, _text(b, heading, intro, lines, "Miles", did)
+
+
+def insurance_call_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:
+    """Bluebird Insurance: a booked call with a licensed agent. Returns (subject, html, text)."""
+    b = BRANDS["insurance"]
+    card = f"""{_pill("Call with a licensed agent · " + v["reference"], b)}<div style="height:14px"></div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr><td style="padding:20px 20px 18px;font-family:{FONT}">
+<div style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:{b.accent}">{e(v["day"])}</div>
+<div style="padding:4px 0 2px;font-size:30px;font-weight:800;color:{b.ink};letter-spacing:-.5px">{e(v["time"])} Eastern</div>
+<div style="font-size:14px;color:#56637a">{e(v["agent"])} calls you &middot; {e(v["topic"])}</div></td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px">{_detail_rows([("Licensed agent", v["agent"]), ("About", v["topic"]), ("Name", v["name"]), ("Reference", v["reference"])], b)}</table>"""
+    did = "took your details and booked a licensed agent to go through your options"
+    heading = f"Talk soon, {v['name'].split(' ')[0]}"
+    intro = f"{v['agent'].split(' ')[0]} will call you with real numbers from our carriers. Nothing is bound or changed until you say yes to a licensed agent."
+    body = layout(b, f"Call with {v['agent']} · {v['day']}, {v['time']}", "Call confirmation", heading, intro, card, "Owen", did)
+    lines = [f"When: {v['day']}, {v['time']} Eastern", f"Who: {v['agent']}, licensed agent", f"About: {v['topic']}", f"Reference: {v['reference']}"]
+    return f"Your call with Bluebird Insurance · {v['day']}, {v['time']}", body, _text(b, heading, intro, lines, "Owen", did)
+
+
+def insurance_id_card(c: dict[str, Any]) -> tuple[str, str, str]:
+    """Bluebird Insurance: an auto ID card, in the email. Returns (subject, html, text)."""
+    b = BRANDS["insurance"]
+    vehicles = "".join(f'<div style="font-size:15px;color:{b.ink};padding:2px 0">{e(x)}</div>' for x in c["vehicles"])
+    card = f"""{_pill("Auto ID card · sample", b)}<div style="height:14px"></div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff;border:2px solid {b.accent};border-radius:14px"><tr><td style="padding:18px 20px;font-family:{FONT}">
+<div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:{b.accent}">State of Georgia &middot; Insurance identification card</div>
+<div style="padding:8px 0 2px;font-size:22px;font-weight:800;color:{b.ink}">{e(c["carrier"])}</div>
+<div style="font-size:14px;color:#56637a;padding-bottom:10px">Policy {e(c["policyNumber"])} &middot; {e(c["effective"])} to {e(c["expires"])}</div>
+<div style="font-size:13px;color:#56637a">Insured</div><div style="font-size:15px;color:{b.ink};padding-bottom:8px">{e(c["name"])}</div>
+<div style="font-size:13px;color:#56637a">Vehicles</div>{vehicles}
+<div style="font-size:13px;color:#56637a;padding-top:8px">Claims</div><div style="font-size:15px;color:{b.ink}">{e(c["claimsLine"])}</div>
+</td></tr></table>"""
+    did = "found your policy and sent your ID card"
+    heading = f"Your ID card, {c['name'].split(' ')[0]}"
+    intro = "Here's your auto ID card. In this demo it's a sample: the policy and agency are fictional, so it isn't proof of insurance."
+    body = layout(b, f"{c['carrier']} ID card · {c['policyNumber']}", "Auto ID card", heading, intro, card, "Owen", did)
+    lines = [f"Carrier: {c['carrier']}", f"Policy: {c['policyNumber']} ({c['effective']} to {c['expires']})", f"Insured: {c['name']}", "Vehicles: " + ", ".join(c["vehicles"]), f"Claims: {c['claimsLine']}", "Sample only: not proof of insurance."]
+    return f"Your Bluebird ID card · {c['carrier']} {c['policyNumber']}", body, _text(b, heading, intro, lines, "Owen", did)

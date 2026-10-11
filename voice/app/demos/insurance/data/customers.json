@@ -1,0 +1,7 @@
+{
+  "customers": [
+    {"id": "C-1041", "name": "Chris Patterson", "dateOfBirth": "1985-04-12", "phoneLast4": "3318", "address": "118 Ingleside Ave, Macon, GA 31204", "accountManager": "lily", "policies": ["PA-48211", "HO-30977"]},
+    {"id": "C-1187", "name": "Alicia Moreno", "dateOfBirth": "1992-09-03", "phoneLast4": "7720", "address": "2280 Vineville Ave Apt 3B, Macon, GA 31204", "accountManager": "lily", "policies": ["RN-11804", "PA-50392"]},
+    {"id": "C-0962", "name": "Henry Boyd", "dateOfBirth": "1958-01-20", "phoneLast4": "1046", "address": "5410 Forsyth Rd, Macon, GA 31210", "accountManager": "lily", "policies": ["HO-28812", "PA-39017"]}
+  ]
+}

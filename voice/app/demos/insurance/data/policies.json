@@ -1,0 +1,73 @@
+{
+  "policies": [
+    {"number": "PA-48211", "line": "auto", "carrier": "progressive", "effective": "2026-03-15", "renewal": "2027-03-15", "term": "12 months",
+     "billing": {"plan": "Monthly automatic draft", "nextDue": "2026-10-15", "amount": "$142.60", "status": "Current"},
+     "vehicles": ["2021 Toyota RAV4", "2016 Honda Civic"], "drivers": ["Chris Patterson", "Jenna Patterson"],
+     "coverages": [
+       {"name": "Bodily injury liability", "limit": "$100,000 per person / $300,000 per accident"},
+       {"name": "Property damage liability", "limit": "$100,000 per accident"},
+       {"name": "Uninsured motorist", "limit": "$100,000 / $300,000"},
+       {"name": "Collision", "deductible": "$500"},
+       {"name": "Comprehensive", "deductible": "$250"},
+       {"name": "Rental reimbursement", "limit": "$40 a day, up to 30 days"},
+       {"name": "Roadside assistance", "limit": "Included"}
+     ]},
+    {"number": "HO-30977", "line": "home", "carrier": "travelers", "effective": "2026-06-01", "renewal": "2027-06-01", "term": "12 months",
+     "billing": {"plan": "Paid by mortgage escrow", "nextDue": "2027-06-01", "amount": "$1,986.00 a year", "status": "Paid in full"},
+     "property": "118 Ingleside Ave, Macon, GA 31204",
+     "coverages": [
+       {"name": "Dwelling", "limit": "$385,000"},
+       {"name": "Other structures", "limit": "$38,500"},
+       {"name": "Personal property", "limit": "$192,500"},
+       {"name": "Loss of use", "limit": "$77,000"},
+       {"name": "Personal liability", "limit": "$300,000"},
+       {"name": "Medical payments to others", "limit": "$5,000"},
+       {"name": "All-peril deductible", "deductible": "$1,000"},
+       {"name": "Wind and hail deductible", "deductible": "1% of dwelling ($3,850)"}
+     ]},
+    {"number": "RN-11804", "line": "renters", "carrier": "safeco", "effective": "2026-01-09", "renewal": "2027-01-09", "term": "12 months",
+     "billing": {"plan": "Paid annually", "nextDue": "2027-01-09", "amount": "$168.00 a year", "status": "Paid in full"},
+     "property": "2280 Vineville Ave Apt 3B, Macon, GA 31204",
+     "coverages": [
+       {"name": "Personal property", "limit": "$30,000"},
+       {"name": "Loss of use", "limit": "$9,000"},
+       {"name": "Personal liability", "limit": "$100,000"},
+       {"name": "Medical payments to others", "limit": "$1,000"},
+       {"name": "Deductible", "deductible": "$500"}
+     ]},
+    {"number": "PA-50392", "line": "auto", "carrier": "nationwide", "effective": "2026-07-22", "renewal": "2027-01-22", "term": "6 months",
+     "billing": {"plan": "Monthly", "nextDue": "2026-10-22", "amount": "$118.40", "status": "Current"},
+     "vehicles": ["2019 Mazda CX-5"], "drivers": ["Alicia Moreno"],
+     "coverages": [
+       {"name": "Bodily injury liability", "limit": "$50,000 per person / $100,000 per accident"},
+       {"name": "Property damage liability", "limit": "$50,000 per accident"},
+       {"name": "Uninsured motorist", "limit": "$50,000 / $100,000"},
+       {"name": "Collision", "deductible": "$1,000"},
+       {"name": "Comprehensive", "deductible": "$500"}
+     ]},
+    {"number": "HO-28812", "line": "home", "carrier": "travelers", "effective": "2025-11-04", "renewal": "2026-11-04", "term": "12 months",
+     "billing": {"plan": "Paid annually", "nextDue": "2026-11-04", "amount": "$2,412.00 renewal", "status": "Renewal bill sent"},
+     "property": "5410 Forsyth Rd, Macon, GA 31210",
+     "coverages": [
+       {"name": "Dwelling", "limit": "$462,000"},
+       {"name": "Other structures", "limit": "$46,200"},
+       {"name": "Personal property", "limit": "$231,000"},
+       {"name": "Loss of use", "limit": "$92,400"},
+       {"name": "Personal liability", "limit": "$500,000"},
+       {"name": "Medical payments to others", "limit": "$5,000"},
+       {"name": "All-peril deductible", "deductible": "$2,500"},
+       {"name": "Wind and hail deductible", "deductible": "2% of dwelling ($9,240)"}
+     ]},
+    {"number": "PA-39017", "line": "auto", "carrier": "progressive", "effective": "2026-05-02", "renewal": "2026-11-02", "term": "6 months",
+     "billing": {"plan": "Paid in full", "nextDue": "2026-11-02", "amount": "$684.00 renewal", "status": "Renewal bill sent"},
+     "vehicles": ["2023 Ford F-150", "2012 Buick LaCrosse"], "drivers": ["Henry Boyd", "Carol Boyd"],
+     "coverages": [
+       {"name": "Bodily injury liability", "limit": "$250,000 per person / $500,000 per accident"},
+       {"name": "Property damage liability", "limit": "$100,000 per accident"},
+       {"name": "Uninsured motorist", "limit": "$250,000 / $500,000"},
+       {"name": "Collision", "deductible": "$500"},
+       {"name": "Comprehensive", "deductible": "$500"},
+       {"name": "Roadside assistance", "limit": "Included"}
+     ]}
+  ]
+}

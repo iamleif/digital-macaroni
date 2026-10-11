@@ -1,0 +1,17 @@
+{
+  "required": [
+    {"key": "name", "ask": "the caller's name"},
+    {"key": "intent", "ask": "whether they are buying, selling or both"},
+    {"key": "timeline", "ask": "when they hope to move"}
+  ],
+  "points": {
+    "timeline": {"now": 4, "three_months": 3, "six_months": 2, "later": 1, "browsing": 0},
+    "financing": {"cash": 3, "pre_approved": 3, "talking_to_lender": 1, "not_yet": 0},
+    "showingBooked": 2,
+    "valuationBooked": 3,
+    "hasAgent": -4
+  },
+  "tiers": {"A": 6, "B": 3},
+  "otherwiseTier": "C",
+  "tierNote": {"A": "Hot · call back today", "B": "Warm · follow up this week", "C": "Nurture · monthly market emails"}
+}

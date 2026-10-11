@@ -1,0 +1,10 @@
+{
+  "areas": [
+    {"id": "central", "name": "Central Austin", "places": ["Downtown", "Clarksville", "Tarrytown", "Hyde Park", "Rosedale", "Bryker Woods", "Old West Austin"], "zips": ["78701", "78703", "78705", "78751", "78756"]},
+    {"id": "east", "name": "East Austin", "places": ["East Cesar Chavez", "Holly", "Cherrywood", "Mueller", "Windsor Park", "Govalle", "MLK"], "zips": ["78702", "78721", "78722", "78723", "78724", "78725"]},
+    {"id": "south", "name": "South Austin", "places": ["South Congress", "Bouldin Creek", "Travis Heights", "Zilker", "Barton Hills", "South Lamar", "Westgate", "Circle C", "Onion Creek"], "zips": ["78704", "78741", "78744", "78745", "78747", "78748", "78749"]},
+    {"id": "westlake", "name": "Westlake", "places": ["West Lake Hills", "Rollingwood", "Lake Austin"], "zips": ["78733", "78735", "78746"]},
+    {"id": "north", "name": "North Austin", "places": ["Crestview", "Allandale", "Brentwood", "North Loop", "The Domain", "Wells Branch", "Gracywoods"], "zips": ["78752", "78753", "78754", "78757", "78758", "78727", "78728", "78729"]},
+    {"id": "northwest", "name": "Northwest Austin", "places": ["Northwest Hills", "Great Hills", "Arboretum", "Jollyville", "Steiner Ranch", "Four Points"], "zips": ["78726", "78730", "78731", "78732", "78750", "78759"]}
+  ]
+}

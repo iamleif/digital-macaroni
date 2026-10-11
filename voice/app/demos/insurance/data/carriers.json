@@ -1,0 +1,8 @@
+{
+  "carriers": [
+    {"id": "progressive", "name": "Progressive", "claimsLine": "1-800-776-4737", "claimsOnline": "progressive.com/claims"},
+    {"id": "travelers", "name": "Travelers", "claimsLine": "1-800-252-4633", "claimsOnline": "travelers.com/claims"},
+    {"id": "safeco", "name": "Safeco", "claimsLine": "1-800-332-3226", "claimsOnline": "safeco.com/claims"},
+    {"id": "nationwide", "name": "Nationwide", "claimsLine": "1-800-421-3535", "claimsOnline": "nationwide.com/claims"}
+  ]
+}

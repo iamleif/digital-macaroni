@@ -1,0 +1,20 @@
+{
+  "name": "Bluebird Insurance Agency",
+  "kind": "An independent insurance agency: we shop several carriers for personal auto, home and renters insurance.",
+  "city": "Macon, GA",
+  "timeZone": "America/New_York",
+  "phone": "(478) 707-3907",
+  "office": "472 Cherry Street, Macon, GA 31201",
+  "hours": "This line answers around the clock. The office is open Monday to Friday, 8:30 AM to 5:30 PM Eastern. Calls with a licensed agent are Monday to Friday, 9 AM to 4 PM.",
+  "licensed": "Our agents are licensed in Georgia.",
+  "lines": "Personal auto, homeowners and renters insurance. Commercial insurance and life and health are handled by a licensed agent on a callback.",
+  "quotes": "A licensed agent prepares every quote and calls the customer back with options from several carriers, usually the same or next business day. The assistant never quotes a price.",
+  "payments": "Bills are paid to the carrier: online, by phone, or by automatic draft. We never take card or bank details on this line.",
+  "policies": [
+    "The assistant is an AI, not a licensed agent. Only a licensed agent can quote, bind or change coverage.",
+    "Coverage questions are answered by reading the policy's declared coverages. Whether a particular loss is covered is decided by the carrier's claims team.",
+    "Claims are filed with the carrier. We log the details for our team and give the carrier's claims line.",
+    "Changes to a policy are confirmed by our staff before they take effect.",
+    "We never ask for a Social Security number, card or bank details by phone."
+  ]
+}

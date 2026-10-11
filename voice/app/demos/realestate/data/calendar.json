@@ -1,0 +1,6 @@
+{
+  "showingHours": [9, 10, 11, 12, 13, 14, 15, 16, 17],
+  "valuationHours": [9, 11, 13, 15, 17],
+  "daysAhead": 10,
+  "closedWeekdays": []
+}
