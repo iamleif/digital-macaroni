@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import asyncio
 import inspect
+import re
 import time
 import uuid
 from dataclasses import dataclass
@@ -220,7 +221,13 @@ class DemoTool(BaseTool):
             return {"ok": False, "error": "session_ended"}
         if self.spec.background and not self.live:
             tool_context.actions.skip_summarization = True
-        return await self.spec.run(session, args or {})
+        said = re.sub(r"\s+", " ", session.said_this_turn).strip() if self.live and not self.spec.background else ""
+        result = await self.spec.run(session, args or {})
+        if said and isinstance(result, dict):
+            # Called part-way through a reply: this result will make the agent speak again.
+            result["alreadySaid"] = said
+            result["afterThis"] = "The caller has already heard alreadySaid in this reply. Do not repeat it or ask it again. Add only what this result changes, in a sentence, or say nothing more and wait for the caller."
+        return result
 
 
 def demo_tools(demo: DemoDefinition[Any], live: bool = True) -> list[BaseTool]:

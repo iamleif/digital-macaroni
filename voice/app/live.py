@@ -68,6 +68,14 @@ BROWSER_NOTE = """
 This conversation is in the caller's web browser. Never mention a screen, a dashboard, a page or anything they could look at; talk exactly as you would on an ordinary phone call."""
 
 
+# Gemini Live starts talking as soon as it can and may call a tool part-way through a reply. Every tool
+# result makes it speak again, so a tool called after it has spoken gives the caller two answers to one
+# turn (Wes, 2026-10-11: "SUV or a sedan?", a search, then "We have a bunch of great SUVs…").
+LIVE_NOTE = """
+
+Tools come before words. When the caller has finished speaking, first make every tool call your reply needs (anything you look up, check, search, book or note down), and only then speak, once, from the results. Never say something and then call a tool in the same reply, and never ask a question and then look something up before they answer."""
+
+
 def full_instruction(session: DemoSession) -> str:
     from datetime import datetime, timezone
 
@@ -82,7 +90,7 @@ def _instruction_for(demo_id: str):
         s = get_session(ctx.session.id)
         if s is None:
             return "The session has ended. Say goodbye."
-        return full_instruction(s)
+        return full_instruction(s) + LIVE_NOTE
 
     return provide
 
@@ -145,6 +153,10 @@ class GeminiLive:
         try:
             async for event in stream:
                 for e in _map_event(event):
+                    if e.type == "transcript" and e.speaker == "agent":
+                        self.session.said_this_turn += e.text
+                    elif e.type in ("turn_complete", "interrupted") or (e.type == "transcript" and e.speaker == "visitor"):
+                        self.session.said_this_turn = ""
                     self.out.put_nowait(e)
         except asyncio.CancelledError:
             pass

@@ -48,3 +48,8 @@ Palmetto Stays needs `studio-demo-liteapi-key` as `LITEAPI_KEY`.
 spoken starts a second turn (the agent repeats itself). Every tool here declares its behaviour in
 `app/tools.py`: BLOCKING for anything the agent needs before it speaks, NON_BLOCKING with SILENT
 scheduling only for `end_call`. A SILENT result on a tool called before the agent speaks leaves it silent.
+
+Blocking doesn't stop the model talking first and calling a tool part-way through its reply, and every
+result makes it speak again: two answers to one caller turn. So every Gemini Live agent is told to make its
+tool calls before it speaks (`LIVE_NOTE` in `app/live.py`), and a tool called mid-reply returns what the
+caller already heard (`alreadySaid`) with an instruction not to repeat it (`app/tools.py`).

@@ -72,3 +72,30 @@ def test_level_meter_frames_carry_across_chunks_and_silence_is_flat():
     assert frames[0].argmax() < frames[-1].argmax()
     assert LevelMeter().feed(bytes(LevelMeter.FRAME * 2 * 3)) == bytes(3 * LevelMeter.BANDS)
     assert m.feed(tone(300, 0.01)) == b"" and m.pending == 240
+
+
+def test_a_tool_called_mid_reply_is_told_what_the_caller_already_heard():
+    import asyncio
+    from types import SimpleNamespace
+
+    from app.session import DemoSession, sessions
+
+    s = DemoSession("dealership", "phone")
+    sessions[s.id] = s
+    try:
+        tools = {t.name: t for t in (DemoTool(spec) for spec in tool_specs(demos["dealership"]))}
+        ctx = SimpleNamespace(session=SimpleNamespace(id=s.id))
+
+        def run(name: str, args: dict) -> dict:
+            return asyncio.run(tools[name].run_async(args=args, tool_context=ctx))  # type: ignore[arg-type]
+
+        # Tools first, then words: an ordinary result.
+        assert "alreadySaid" not in run("search_inventory", {"body": "SUV"})
+        # Wes on 2026-10-11: he asked a question, then searched.
+        s.said_this_turn = " Are you leaning towards an SUV   or a sedan?"
+        r = run("search_inventory", {"body": "SUV"})
+        assert r["ok"] and r["alreadySaid"] == "Are you leaning towards an SUV or a sedan?" and "Do not repeat" in r["afterThis"]
+        # Hanging up after the goodbye stays silent and gets no note.
+        assert "alreadySaid" not in run("end_call", {})
+    finally:
+        sessions.pop(s.id, None)

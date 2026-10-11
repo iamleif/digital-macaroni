@@ -64,6 +64,9 @@ class DemoSession:
         self.client = False
         self.agent_id: Optional[str] = None
         self.after_call: Optional[Callable[["DemoSession"], Awaitable[None]]] = None
+        # Gemini Live: the words the agent has spoken in its current turn (cleared when the caller speaks
+        # or the turn ends). A tool called after this is not empty is a call made mid-reply (tools.py).
+        self.said_this_turn = ""
         self._listeners: list[Listener] = []
         self._history: list[Event] = []
         # The words of the call, saved when it ends (calllog.py).
