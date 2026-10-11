@@ -65,10 +65,23 @@ class DemoSession:
         self.setup: Optional[dict[str, Any]] = None
         # When the recording started, in ms from the start of the call (Twilio phone calls only).
         self.recording_offset_ms: Optional[int] = None
+        # Twilio's id for this phone call: recording starts on it once the caller's screen links (and they chose recording).
+        self.call_sid: Optional[str] = None
+        # The call report email to the address on the setup card goes once.
+        self.report_sent = False
 
     @property
     def report_url(self) -> str:
         return f"{config.site_url}/call/?r={self.report_token}"
+
+    def connected_line(self) -> str:
+        """What the agent says once the caller's screen links: it says the call is recorded only when they chose that on the form."""
+        setup = self.setup or {}
+        if setup.get("record"):
+            middle = " This demo is being recorded, and I'll email you the recording afterwards." if setup.get("email") else " This demo is being recorded."
+        else:
+            middle = " I'll email you a summary afterwards." if setup.get("email") else ""
+        return f"Great, you're connected.{middle} How can I help you today?"
 
     @property
     def max_seconds(self) -> int:

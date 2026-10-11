@@ -177,3 +177,7 @@ async def save(session: "DemoSession") -> None:
             log.warn("calllog.save_failed", {"session": session.id})
     except Exception as err:  # noqa: BLE001
         log.warn("calllog.save_failed", {"session": session.id}, err)
+    # The report promised on the setup card: now, or once the recording is stored.
+    from . import recording, report_email
+
+    await report_email.after_call(session, recording.pending(session.id))

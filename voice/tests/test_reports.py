@@ -62,3 +62,53 @@ def test_setup_needs_the_site_origin(stored: Any) -> None:
     assert client.post(f"/pairings/{p.viewer_token}/setup", json={"tool": "x"}, headers={"origin": "https://evil.example"}).status_code == 403
     ok = client.post(f"/pairings/{p.viewer_token}/setup", json={"tool": "mews", "record": False, "email": "a@b.co", "junk": "x" * 999}, headers={"origin": "https://digitalmacaroni.io"})
     assert ok.json() == {"ok": True} and p.setup == {"tool": "mews", "email": "a@b.co", "record": False}
+
+
+async def test_recorded_only_when_chosen_and_the_agent_says_so(stored: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+    started: list[str] = []
+
+    async def start(session: Any, call_sid: str) -> None:
+        started.append(call_sid)
+
+    monkeypatch.setattr(recording, "start", start)
+    for record, expect in ((True, "Great, you're connected. This demo is being recorded, and I'll email you the recording afterwards. How can I help you today?"), (False, "Great, you're connected. I'll email you a summary afterwards. How can I help you today?")):
+        s, _ = admit("northline", "phone")
+        assert s is not None
+        s.call_sid = f"CA{record}"
+        p = pairing.create_pairing("northline")
+        pairing.set_setup(p.viewer_token, {"email": "a@b.co", "record": record, "tool": "jobber"})
+        assert pairing.link_call(p.code, s) == "linked"
+        assert s.connected_line() == expect
+    import asyncio
+
+    await asyncio.sleep(0)
+    assert started == ["CATrue"]
+    # A call that never links a screen is never recorded, and the agent says nothing about it.
+    s, _ = admit("northline", "phone")
+    assert s is not None and s.connected_line() == "Great, you're connected. How can I help you today?"
+
+
+async def test_the_report_goes_once_to_the_setup_address_with_the_page_button(stored: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+    from app import email, report_email
+
+    sent: list[dict[str, str]] = []
+
+    async def send(to: str, subject: str, html_body: str, text_body: str, from_name: str) -> None:
+        sent.append({"to": to, "subject": subject, "html": html_body, "text": text_body, "from": from_name})
+
+    async def any_domain(domain: str) -> bool:
+        return True
+
+    monkeypatch.setattr(email, "send", send)
+    monkeypatch.setattr(email, "receives_mail", any_domain)
+    s, _ = admit("hotels", "phone")
+    assert s is not None
+    s.setup = {"email": "leif@example.com", "record": True}
+    s.record.tool("search_hotels", {}, True, {}, 5000, "3 best of 30 hotels", "Searching hotels")
+    s.record.tool("take_message", {}, True, {}, 10, "Message for an agent · MSG-412", "Leaving a message")
+    s.record.tool("link_screen", {}, True, {}, 1, "linked", "Linking")
+    await report_email.send(s, recorded=True)
+    await report_email.send(s, recorded=True)
+    assert len(sent) == 1 and sent[0]["to"] == "leif@example.com" and sent[0]["subject"] == "Your call with Marisol at Palmetto Stays"
+    assert "Message for an agent · MSG-412" in sent[0]["text"] and "linked" not in sent[0]["text"]
+    assert s.report_url in sent[0]["html"] and "See your full call" in sent[0]["html"] and "Book a chat with us" in sent[0]["html"]

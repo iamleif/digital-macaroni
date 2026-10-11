@@ -7,7 +7,7 @@ from .state import HotelState
 from .store import AGENCY, AREAS, MAX_NIGHTS
 
 PAYMENT_LINE = "Everything's ready. This is where I'd send you the secure payment link, but I'm in test mode, so I can't book this for you right now."
-OPENING_PHONE = "Thanks for calling Palmetto Stays, this is Marisol. This call is recorded. Please enter your screen code."
+OPENING_PHONE = "Hi, thanks for calling Palmetto Stays, this is Marisol. Please tell me the number on your screen."
 OPENING_WEB = "Thanks for calling Palmetto Stays, this is Marisol. Where would you like to stay?"
 
 

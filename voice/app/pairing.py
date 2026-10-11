@@ -7,6 +7,7 @@ matched by caller ID. A call gets a few attempts before further codes are ignore
 
 from __future__ import annotations
 
+import asyncio
 import secrets
 import time
 from dataclasses import dataclass
@@ -75,6 +76,15 @@ def link_call(code: str, session: DemoSession) -> str:
     p.session = session
     if p.setup:
         session.setup = p.setup
+    # Recorded only when the visitor chose it on the setup card: that tick is their consent, and the
+    # agent says so in the connected line. A call that never links a screen is never recorded.
+    if (session.setup or {}).get("record") and session.call_sid:
+        from . import recording
+
+        try:
+            asyncio.get_running_loop().create_task(recording.start(session, session.call_sid))
+        except RuntimeError:
+            pass
     _by_code.pop(code, None)
     if p.on_linked:
         p.on_linked(session)

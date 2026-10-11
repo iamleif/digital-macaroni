@@ -114,7 +114,7 @@ async def _link_screen(session: DemoSession, args: dict[str, Any]) -> Result:
         return {"ok": False, "error": "not_a_phone_call", "message": "This conversation is already on the website."}
     result = session.link_screen("".join(c for c in str(args.get("code", "")) if c.isdigit()))
     if result == "linked":
-        return {"ok": True, "linked": True}
+        return {"ok": True, "linked": True, "say": session.connected_line(), "next": "Say exactly the line in say, and nothing more."}
     return {"ok": False, "error": result, "message": "That code did not match a waiting screen. Ask them to check the code on the page."}
 
 

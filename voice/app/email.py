@@ -324,6 +324,23 @@ def call_summary(brand: str, agent: str, c: dict[str, Any]) -> tuple[str, str, s
     return f"Your call with {b.full}", body, _text(b, heading, intro, lines, agent, did)
 
 
+def call_report(brand: str, agent: str, c: dict[str, Any]) -> tuple[str, str, str]:
+    """
+    The report promised on the setup card, sent to the address there once the call ends: what the
+    agent did, in a few lines, and the button to the call's own page (recording, transcript, every step).
+    c: {"steps": [str], "recorded": bool, "did": str}. Returns (subject, html, text).
+    """
+    b = BRANDS[brand]
+    steps = c.get("steps") or ["Answered your questions"]
+    items = "".join(f'<tr><td style="padding:7px 0;font-family:{FONT};font-size:15px;line-height:1.5;color:{b.ink}"><span style="color:{b.accent};font-weight:800">&#10003;</span>&nbsp; {e(x)}</td></tr>' for x in steps)
+    card = f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr><td style="padding:14px 18px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{items}</table></td></tr></table>'
+    heading = f"Your call with {agent}"
+    intro = f"As promised, here's your call with {agent} at {b.full}" + (": the recording, the transcript and every step are one tap away." if c.get("recorded") else ". The transcript and every step are one tap away.")
+    did = c.get("did") or "took your call"
+    body = layout(b, f"Your call with {agent} at {b.full}", "Your call report", heading, intro, card, agent, did)
+    return f"Your call with {agent} at {b.full}", body, _text(b, heading, intro, [f"- {x}" for x in steps], agent, did)
+
+
 def visit_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:
     """Northline: the booked visit, big and clear. Returns (subject, html, text)."""
     b = BRANDS["northline"]

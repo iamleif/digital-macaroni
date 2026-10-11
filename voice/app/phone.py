@@ -15,7 +15,7 @@ from typing import Any, Optional
 
 from starlette.websockets import WebSocket, WebSocketDisconnect
 
-from . import log, recording
+from . import log
 from .audio import LevelMeter, PhoneEncoder, rms, twilio_to_gemini, voice_stats
 from .config import config
 from .live import LiveSession, TranscriptTracker, open_live
@@ -28,7 +28,8 @@ GREET_NOTE = "[The call has just connected. Greet the caller now.]"
 NUDGE_NOTE = "[The line has been quiet for a while. Briefly and warmly check whether the caller is still there.]"
 SILENT_GOODBYE_NOTE = "[The line is still quiet. Say a short, friendly goodbye, then call end_call.]"
 TIME_NOTE = "[The demo call has reached its time limit. Kindly tell the caller the demo is ending, thank them for trying it, mention they can try it again or get in touch on the website, then call end_call.]"
-LINKED_NOTE = "[The caller has just linked their screen with the keypad code; they can now see the dashboard. Say exactly \"Great, you're connected. How can I help you today?\" and nothing more.]"
+def linked_note(line: str) -> str:
+    return f"[The caller has just linked their screen with the keypad code; they can now see the dashboard. Say exactly \"{line}\" and nothing more.]"
 HANGUP_MARK = "demo-hangup"
 SPEECH_RMS = 700
 # Caller audio held while the live session connects: about five seconds of 20 ms frames.
@@ -306,7 +307,8 @@ class PhoneBridge:
         s.link_screen = self.link
         self.tracker = TranscriptTracker(s)
         s.emit({"type": "session.ready", "sessionId": s.id, "demo": s.demo_id, "channel": "phone"})
-        self.tasks.append(asyncio.create_task(recording.start(s, start.get("callSid"))))
+        # Recording starts only once the caller's screen links and they chose it on the form (pairing.link_call).
+        s.call_sid = start.get("callSid")
         s.publish_state()
         self.tasks.append(asyncio.create_task(self.connect_live(s)))
 
@@ -331,7 +333,7 @@ class PhoneBridge:
             result = self.link(self.digits)
             self.digits = ""
             if result == "linked" and self.live:
-                self.live.send_text(LINKED_NOTE)
+                self.live.send_text(linked_note(self.session.connected_line()))  # type: ignore[union-attr]
 
     async def run(self) -> None:
         writer = asyncio.create_task(self._writer())
