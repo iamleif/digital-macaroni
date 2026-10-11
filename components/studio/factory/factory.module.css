@@ -34,3 +34,7 @@
 /* The homepage band under the hero: copy on the left, the instant-call form on the right; stacked on phones. */
 .homeBand { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); gap: 56px; align-items: center; }
 @media (max-width: 900px) { .homeBand { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+
+/* "Call me now": the site's yellow pill, not the black submit button. Repeated class beats .formCard's button rule. */
+.callButton.callButton.callButton { background: var(--yellow, #f6cf4a); color: var(--ink, #0f0f0d); }
+.callButton.callButton.callButton:hover:not(:disabled) { background: #ffd95e; }

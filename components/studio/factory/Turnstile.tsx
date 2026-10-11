@@ -32,6 +32,8 @@ export function Turnstile({ onToken, resetKey = 0 }: { onToken: (token: string) 
         sitekey: TURNSTILE_SITE_KEY,
         // The normal widget is a fixed 300px; on narrow phones its compact form fits inside the card.
         size: window.innerWidth < 420 ? "compact" : "normal",
+        // Always the light widget, whatever the visitor's system theme: the form card is white.
+        theme: "light",
         callback: (t: string) => callback.current(t),
         "expired-callback": () => callback.current(""),
         "error-callback": () => callback.current(""),

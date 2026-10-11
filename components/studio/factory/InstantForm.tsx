@@ -139,7 +139,7 @@ export function InstantForm() {
       </label>
       <Turnstile onToken={setToken} resetKey={tries} />
       <div className="form-action">
-        <button className="submit-button" type="submit" disabled={sending}>{sending ? "Starting…" : "Call me now"}</button>
+        <button className={`submit-button ${f.callButton}`} type="submit" disabled={sending}>{sending ? "Starting…" : "Call me now"}</button>
         {problem ? <p className="form-status" data-state="error" role="alert">{problem}</p> : null}
       </div>
     </form>
