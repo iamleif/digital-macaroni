@@ -9,8 +9,8 @@ import h from "@/components/studio/home.module.css";
 
 export const metadata: Metadata = pageMeta({
   title: "AI Voice Agent Pricing — Digital Macaroni",
-  shareTitle: "Digital Macaroni pricing: AI voice agents from $3,000",
-  description: "AI voice agent pricing: ready-made agents $3,000 one-time, custom from $6,000. Running plans from $249/mo, or self-host on your own accounts.",
+  shareTitle: "Digital Macaroni pricing: AI voice agents from $2,500",
+  description: "AI voice agent pricing: core agents $2,500 one-time, custom from $6,000. Running plans from $349/mo, or self-host on your own accounts.",
   path: "/pricing/",
   ownImage: true,
 });
@@ -44,11 +44,11 @@ export default function PricingPage() {
         url: PAGE_URL,
         provider: ORG_REF,
         itemListElement: [
-          { "@type": "Offer", name: "Ready-made AI voice agent", description: "A proven inbound phone agent rebuilt for your business and trained on its services, prices and policies: answers every call, books appointments, answers questions, takes messages, texts confirmations and summaries, and transfers urgent calls. One integration and 30 days of fixes included. Live in 2 to 5 days.", price: 3000, priceCurrency: "USD", url: PAGE_URL, itemOffered: { "@type": "Service", serviceType: "AI voice agent", name: "Ready-made AI voice agent", provider: ORG_REF } },
+          { "@type": "Offer", name: "Core AI voice agent", description: "A proven inbound phone agent rebuilt for your business and trained on its services, prices and policies: answers every call, books appointments, answers questions, takes messages, texts confirmations and summaries, and transfers urgent calls. One integration and 30 days of fixes included. Live in 2 to 5 days.", price: 2500, priceCurrency: "USD", url: PAGE_URL, itemOffered: { "@type": "Service", serviceType: "AI voice agent", name: "Core AI voice agent", provider: ORG_REF } },
           { "@type": "Offer", name: "Custom AI voice agent", description: "An AI voice agent built around your business: a deep knowledge base, five or more connections that write back to your CRM, calendar or practice software, your own intake and routing, outbound callbacks and reminders, two-way texting, multiple numbers, locations and languages, and 90 days of tuning after launch. Live in 2 to 4 weeks.", priceSpecification: { "@type": "PriceSpecification", minPrice: 6000, priceCurrency: "USD" }, url: PAGE_URL, itemOffered: { "@type": "Service", serviceType: "AI voice agent", name: "Custom AI voice agent", provider: ORG_REF } },
           { "@type": "Offer", name: "Self-hosted setup", description: "Your agent built and tested in your own phone and AI accounts, with 30 days of fixes. No monthly fee from Digital Macaroni.", price: 500, priceCurrency: "USD", url: PAGE_URL },
-          { "@type": "Offer", name: "Hosted plan", description: "Your number, 500 call minutes, 500 texts, your dashboard and email support. Billed monthly in advance, 3-month minimum, then month-to-month.", priceSpecification: { "@type": "UnitPriceSpecification", minPrice: 249, priceCurrency: "USD", unitText: "MONTH" }, url: PAGE_URL },
-          { "@type": "Offer", name: "Managed plan", description: "1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning from real calls, a monthly report and same-day email support. Billed monthly in advance, 3-month minimum, then month-to-month.", priceSpecification: { "@type": "UnitPriceSpecification", minPrice: 500, priceCurrency: "USD", unitText: "MONTH" }, url: PAGE_URL },
+          { "@type": "Offer", name: "Hosted plan", description: "Your number, 500 call minutes, 500 texts, your dashboard and email support. Billed monthly in advance, 3-month minimum, then month-to-month.", priceSpecification: { "@type": "UnitPriceSpecification", minPrice: 349, priceCurrency: "USD", unitText: "MONTH" }, url: PAGE_URL },
+          { "@type": "Offer", name: "Managed plan", description: "1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning from real calls, a monthly report and same-day email support. Billed monthly in advance, 3-month minimum, then month-to-month.", priceSpecification: { "@type": "UnitPriceSpecification", minPrice: 749, priceCurrency: "USD", unitText: "MONTH" }, url: PAGE_URL },
         ],
       },
       {

@@ -22,7 +22,7 @@ function bioSource(): string {
 }
 
 const TOPICS = [
-  ["ready-made", "A ready-made voice agent"],
+  ["ready-made", "A core voice agent"],
   ["custom-agent", "A custom voice agent"],
   ["consulting", "Consulting on a project"],
   ["software", "Business software or a dashboard"],

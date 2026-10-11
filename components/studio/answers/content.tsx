@@ -74,12 +74,12 @@ export const ANSWERS: Answer[] = [
           <tr><td>SMS</td><td>Text the caller a confirmation and text your team a summary</td></tr>
         </tbody>
       </table>
-      <p>A <a href="/answers/how-much-does-an-ai-phone-agent-cost/">ready-made agent</a> needs no integration: bookings and messages land in your own dashboard instead.</p>
+      <p>A <a href="/answers/how-much-does-an-ai-phone-agent-cost/">core agent</a> needs no integration: bookings and messages land in your own dashboard instead.</p>
     </>,
     faqs: [
-      { q: "Can an AI phone agent book into ServiceTitan or Jobber?", a: "Yes. A custom agent connects to ServiceTitan, Jobber, Housecall Pro, simPRO, ServiceM8 and other field service tools through their APIs to check availability and book jobs. A ready-made agent books into its own dashboard instead." },
+      { q: "Can an AI phone agent book into ServiceTitan or Jobber?", a: "Yes. A custom agent connects to ServiceTitan, Jobber, Housecall Pro, simPRO, ServiceM8 and other field service tools through their APIs to check availability and book jobs. A core agent books into its own dashboard instead." },
       { q: "What happens with emergency calls?", a: "You set the rules. Callers reporting dangers such as a gas smell can be told to leave and call 911, and urgent jobs can be transferred to your on-call technician." },
-      { q: "How long does it take to set up?", a: "A ready-made agent is usually live in two to five days. A custom agent connected to your systems takes two to four weeks." },
+      { q: "How long does it take to set up?", a: "A core agent is usually live in two to five days. A custom agent connected to your systems takes two to four weeks." },
     ],
     sources: [],
     related: ["what-happens-when-an-ai-phone-agent-gets-something-wrong", "how-much-does-an-ai-phone-agent-cost", "can-i-keep-my-business-phone-number"],
@@ -243,7 +243,7 @@ export const ANSWERS: Answer[] = [
     category: "costs",
     label: "What it costs",
     title: "How much does an AI phone agent cost?",
-    short: "Off-the-shelf AI receptionists start at about $29 a month. Agency-built agents typically cost $1,500 to $5,000 to set up plus $300 to $800 a month, and large custom builds run far higher. At Digital Macaroni, a ready-made agent is $3,000 and a custom agent starts at $6,000, plus a running plan from free to $500 a month.",
+    short: "Off-the-shelf AI receptionists start at about $29 a month. Agency-built agents typically cost $1,500 to $5,000 to set up plus $300 to $800 a month, and large custom builds run far higher. At Digital Macaroni, a core agent is $2,500 and a custom agent starts at $6,000, plus a running plan from free to $749 a month.",
     description: "What AI phone agents cost in 2026, from off-the-shelf receptionists to agency and custom builds, and what Digital Macaroni charges.",
     demo: "northline",
     body: <>
@@ -262,7 +262,7 @@ export const ANSWERS: Answer[] = [
       <table>
         <thead><tr><th>Plan</th><th>Price</th><th>Includes</th></tr></thead>
         <tbody>
-          <tr><td>Ready-made agent</td><td>$3,000 one-time</td><td>A proven agent branded as your business and trained on your services, prices and policies: answers every call, books, takes messages, texts confirmations and summaries, transfers urgent calls, dashboard. One integration of your choice (calendar, CRM or any software with an API), Zapier, email support and 30 days of fixes included. Live in 2 to 5 days.</td></tr>
+          <tr><td>Core agent</td><td>$2,500 one-time</td><td>A proven agent branded as your business and trained on your services, prices and policies: answers every call, books, takes messages, texts confirmations and summaries, transfers urgent calls, dashboard. One integration of your choice (calendar, CRM or any software with an API), Zapier, email support and 30 days of fixes included. Live in 2 to 5 days.</td></tr>
           <tr><td>Custom agent</td><td>From $6,000</td><td>Everything above, plus a deep knowledge base, five or more connections that write back to your systems, your own intake and routing, outbound callbacks and reminders with two-way texting, multiple numbers, locations and languages, and 90 days of tuning after launch. Live in 2 to 4 weeks.</td></tr>
         </tbody>
       </table>
@@ -271,8 +271,8 @@ export const ANSWERS: Answer[] = [
         <thead><tr><th>Running plan</th><th>Monthly</th><th>Includes</th></tr></thead>
         <tbody>
           <tr><td>Self-hosted</td><td>Free from us ($500 one-time setup)</td><td>Built in your own phone and AI accounts; you pay those providers directly</td></tr>
-          <tr><td>Hosted</td><td>$249</td><td>Your number, 500 call minutes, 500 texts, your dashboard, email support</td></tr>
-          <tr><td>Managed</td><td>$500</td><td>1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning, monthly report</td></tr>
+          <tr><td>Hosted</td><td>$349</td><td>Your number, 500 call minutes, 500 texts, your dashboard, email support</td></tr>
+          <tr><td>Managed</td><td>$749</td><td>1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning, monthly report</td></tr>
         </tbody>
       </table>
       <p>Hosted and managed are billed monthly in advance, with a 3-month minimum, then month-to-month.</p>
@@ -289,7 +289,7 @@ export const ANSWERS: Answer[] = [
     faqs: [
       { q: "How much does an AI receptionist cost per month?", a: "Off-the-shelf AI receptionists start at about $29 a month and rise with call volume or features. Agency-run agents typically cost $300 to $800 a month on top of a setup fee." },
       { q: "How much does a custom AI phone agent cost?", a: "At Digital Macaroni, custom agents start at $6,000, plus a running plan. Industry estimates for larger agency builds run from $30,000 to $150,000 in the first year." },
-      { q: "Is there a monthly fee?", a: "Yes, the build is one-time and the running plan is separate. Hosted plans are $249 a month and managed plans $500, billed monthly in advance with a 3-month minimum, then month-to-month. Self-hosted agents have no monthly fee from us; you pay your phone and AI providers directly." },
+      { q: "Is there a monthly fee?", a: "Yes, the build is one-time and the running plan is separate. Hosted plans are $349 a month and managed plans $749, billed monthly in advance with a 3-month minimum, then month-to-month. Self-hosted agents have no monthly fee from us; you pay your phone and AI providers directly." },
     ],
     sources: ["aira", "ciela", "groovy"],
     related: ["hosted-vs-managed-vs-self-hosted-ai-phone-agent", "custom-ai-phone-agent-vs-template-build", "can-i-keep-my-business-phone-number"],
@@ -309,7 +309,7 @@ export const ANSWERS: Answer[] = [
       <table>
         <thead><tr><th></th><th>Self-hosted</th><th>Hosted</th><th>Managed</th></tr></thead>
         <tbody>
-          <tr><td>Monthly fee from us</td><td>None ($500 one-time setup)</td><td>$249</td><td>$500</td></tr>
+          <tr><td>Monthly fee from us</td><td>None ($500 one-time setup)</td><td>$349</td><td>$749</td></tr>
           <tr><td>Where it runs</td><td>Your own phone and AI accounts</td><td>Our infrastructure</td><td>Our infrastructure</td></tr>
           <tr><td>Minutes and texts</td><td>You pay providers directly</td><td>500 each included</td><td>1,000 each included</td></tr>
           <tr><td>Changes</td><td>Your team, or billed per change</td><td>Quoted when you need them</td><td>Included, on request</td></tr>
@@ -329,7 +329,7 @@ export const ANSWERS: Answer[] = [
       <p>You choose self-hosted at the start, and we build the agent directly in your accounts from day one, so nothing has to be moved later. You open the phone and AI accounts in your business&rsquo;s name, invite us in for the build, and testing during the build is billed to those accounts. At hand-over you get a short guide to running it, 30 days of fixes, and a license to use the agent. You can remove our access or keep it for paid changes.</p>
     </>,
     faqs: [
-      { q: "What is a managed AI phone agent?", a: "One that the builder runs and maintains for you: hosting, call minutes, changes on request, tuning from real calls and a monthly report. At Digital Macaroni, managed plans are $500 a month." },
+      { q: "What is a managed AI phone agent?", a: "One that the builder runs and maintains for you: hosting, call minutes, changes on request, tuning from real calls and a monthly report. At Digital Macaroni, managed plans are $749 a month." },
       { q: "Can I self-host an AI phone agent?", a: "Yes. For a one-time $500 setup we build it in your own phone and AI accounts, you pay those providers directly, and you get 30 days of fixes." },
       { q: "Can I switch plans later?", a: "Yes. You can move between hosted and managed at any time, and the 3-month minimum carries over. Moving to self-hosted later means setting the agent up in your accounts, so it's easiest to choose that at the start." },
     ],
@@ -513,12 +513,12 @@ export const ANSWERS: Answer[] = [
       </ul>
       <h2>Or build something new</h2>
       <p>Sometimes the right answer is a tool that doesn&rsquo;t exist yet: a simple dashboard, an intake form or a small booking system made for how you work. We build those too, or connect what you have and build only what&rsquo;s missing.</p>
-      <p>A <a href="/pricing/">ready-made agent</a> includes one integration of your choice; custom agents connect to as many systems as the job needs.</p>
+      <p>A <a href="/pricing/">core agent</a> includes one integration of your choice; custom agents connect to as many systems as the job needs.</p>
     </>,
     faqs: [
       { q: "Can an AI phone agent connect to my CRM?", a: "Yes. We connect agents to CRMs such as HubSpot, Salesforce, Keap, GoHighLevel and Zoho, so every call finds or creates the contact and logs what happened." },
       { q: "What if my software isn't on your list?", a: "If it has an API, send us its name and we'll check what the agent can do there. If it doesn't, Zapier, email or a shared spreadsheet usually works, or we can build what's missing." },
-      { q: "How many integrations are included?", a: "A ready-made agent includes one integration of your choice, such as your calendar, CRM or any software with an API. Custom agents connect to as many systems as the job needs." },
+      { q: "How many integrations are included?", a: "A core agent includes one integration of your choice, such as your calendar, CRM or any software with an API. Custom agents connect to as many systems as the job needs." },
     ],
     sources: [],
     related: ["how-much-does-an-ai-phone-agent-cost", "custom-ai-phone-agent-vs-template-build", "ai-phone-agent-for-law-firms"],

@@ -77,12 +77,12 @@ export const siteGraph = {
       makesOffer: [
         {
           "@type": "Offer",
-          name: "Ready-made AI voice agent",
+          name: "Core AI voice agent",
           description: "A proven inbound phone agent, rebuilt for your business: answers every call, books appointments, answers questions, takes messages and transfers urgent calls.",
-          price: 3000,
+          price: 2500,
           priceCurrency: "USD",
           url: `${SITE}/pricing/`,
-          itemOffered: { "@type": "Service", serviceType: "AI voice agent", name: "Ready-made AI voice agent", provider: ORG_REF },
+          itemOffered: { "@type": "Service", serviceType: "AI voice agent", name: "Core AI voice agent", provider: ORG_REF },
         },
         {
           "@type": "Offer",

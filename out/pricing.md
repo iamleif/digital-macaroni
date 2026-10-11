@@ -5,8 +5,8 @@ Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io
 
 ## Agents (one-time build)
 
-### Ready-made agent
-- Price: $3,000 one-time
+### Core agent
+- Price: $2,500 one-time
 - Live in: 2 to 5 days
 - For: inbound calls
 - Includes: answers every call day or night; books appointments, answers questions and takes messages; a knowledge base trained on the business's services, prices, FAQs and policies; one integration of the business's choice (calendar, CRM or any software with an API); texts callers confirmations and links and texts the business a summary after every call; transfers urgent calls; custom branding (business name, voice, greeting and hours); transcripts and summaries in a dashboard, plus Zapier to reach thousands of other apps; email support and 30 days of fixes after launch
@@ -15,7 +15,7 @@ Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io
 ### Custom agent
 - Price: from $6,000
 - Live in: 2 to 4 weeks
-- Includes: everything in the ready-made agent; a deep knowledge base built from the business's website, documents and past calls, kept current; five or more connections that write back (creates leads, updates records, books into the CRM, calendar or practice software); custom intake and qualification scripts with routing by department, location or case type; outbound callbacks, reminders and follow-ups with two-way texting; multiple numbers, locations and languages; designed and tested on real calls before launch; 90 days of tuning after launch and priority support; fixed scope and price agreed up front
+- Includes: everything in the core agent; a deep knowledge base built from the business's website, documents and past calls, kept current; five or more connections that write back (creates leads, updates records, books into the CRM, calendar or practice software); custom intake and qualification scripts with routing by department, location or case type; outbound callbacks, reminders and follow-ups with two-way texting; multiple numbers, locations and languages; designed and tested on real calls before launch; 90 days of tuning after launch and priority support; fixed scope and price agreed up front
 
 ## Running plans
 
@@ -27,11 +27,11 @@ The agent price is a one-time build; a running plan is separate. Hosted and Mana
 - Includes: 30 days of fixes and a guide for running it
 
 ### Hosted
-- Price: $249/month, billed in advance (3-month minimum, then month-to-month)
+- Price: $349/month, billed in advance (3-month minimum, then month-to-month)
 - Includes: phone number, 500 call minutes, 500 texts, dashboard, email support; changes quoted when needed
 
 ### Managed
-- Price: $500/month, billed in advance (3-month minimum, then month-to-month)
+- Price: $749/month, billed in advance (3-month minimum, then month-to-month)
 - Includes: 1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning from real calls, monthly report, same-day email support
 
 ## Extras

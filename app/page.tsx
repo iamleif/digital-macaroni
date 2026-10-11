@@ -269,7 +269,7 @@ export default function HomePage() {
         <PlanCards />
         <ConsultingCard />
         <Reveal className={h.pricingMore}>
-          <p>Running plans from $249/mo, extras and everything that&rsquo;s included.</p>
+          <p>Running plans from $349/mo, extras and everything that&rsquo;s included.</p>
           <a className={h.pillOutline} href="/pricing/">See full pricing <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
         </Reveal>
       </div>
