@@ -117,3 +117,34 @@ def reference(prefix: str, seq: int, seed: str) -> str:
     for c in seed:
         h = (h * 31 + ord(c)) & 0xFFFFFFFF
     return f"{prefix}-{((h + seq * 7919) % 900) + 100}"
+
+
+# ---- The email at the end of every call ----
+
+RECAP_HELP = "Only when nothing was booked or reserved: two or three plain sentences, written to the caller, on what they asked and what you did (a message for the team, prices or options you gave). Never include anything they did not hear on the call."
+
+
+def email_offer(tool: str, booking: str) -> str:
+    """The instruction every agent follows before a call ends: offer the email, whatever happened on the call."""
+    return f"""Email: before the call ends, whatever happened on it, offer once to email the caller a copy: the {booking} if there is one, otherwise a short summary of the call (what they asked, and any message taken for the team). If they want it, ask for their email address and read it back carefully: spell the part before the @ letter by letter, then say the rest ("j, a, m, i, e, at gmail dot com"). Only when they clearly confirm it is right, call {tool} with callerConfirmed true; when there is no {booking}, also pass recap. Say it is on its way only if the tool returns ok. If they decline, that's fine. If they ask for it again, for example to another address, send it again."""
+
+
+def already_sent(emailed: Optional[dict[str, Any]], spoken: str, kind: str) -> bool:
+    """The same email to the same address twice in one call is skipped; anything else goes out."""
+    from .. import email
+
+    target = email.normalise(spoken)
+    return bool(emailed and target and emailed.get("kind") == kind and emailed.get("to") == email.mask(target))
+
+
+async def send_summary(brand: str, agent: str, sender: str, to: str, recap: Optional[str], name: Optional[str], messages: list[dict[str, Any]], rows: Optional[list[tuple[str, str]]] = None, did: Optional[str] = None) -> tuple[OpResult, Optional[dict[str, Any]]]:
+    """Emails a call summary (no booking to confirm). Returns the result and what to keep as state.emailed."""
+    from .. import email
+
+    if not (recap and recap.strip()) and not messages:
+        return fail("no_recap", "Nothing was booked, so pass recap: two or three sentences on what the caller asked and what you did."), None
+    c = {"name": name, "recap": (recap or "").strip(), "messages": messages, "rows": rows or [], "did": did}
+    masked, why = await email.confirm(to, email.call_summary(brand, agent, c), sender)
+    if why:
+        return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly.")), None
+    return ok(f"Call summary emailed · {masked}", {"sent": True, "to": masked}, True), {"to": masked, "kind": "summary"}

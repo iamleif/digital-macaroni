@@ -267,7 +267,7 @@ def test_spoken_email_addresses_are_normalised(spoken, expected):
     assert email.normalise(spoken) == expected
 
 
-async def test_itinerary_email_is_sent_once_from_the_reviewed_booking(fake_duffel, monkeypatch):
+async def test_itinerary_email_or_a_summary_before_the_review(fake_duffel, monkeypatch):
     from app import email
     sent: list[tuple[str, str]] = []
 
@@ -279,7 +279,7 @@ async def test_itinerary_email_is_sent_once_from_the_reviewed_booking(fake_duffe
     state, run = runner()
     await run("search_flights", SEARCH)
     early = await run("email_itinerary", {"email": "alex@example.com", "callerConfirmed": True})
-    assert early.error == "not_reviewed" and not sent
+    assert early.error == "no_recap" and not sent
     await run("choose_flight", {"option": _option_for(state, "British Airways")})
     await run("set_traveller", {"fullName": "Alex Taylor"})
     await run("review_booking")
@@ -288,8 +288,10 @@ async def test_itinerary_email_is_sent_once_from_the_reviewed_booking(fake_duffe
     r = await run("email_itinerary", {"email": "Alex dot Taylor at example dot com", "callerConfirmed": True})
     assert r.ok and r.result["to"] == "a•••r@example.com" and travel.view(state)["emailed"]["to"] == "a•••r@example.com"
     assert sent[0][0] == "alex.taylor@example.com" and "Alex Taylor" in sent[0][1] and "Total: $415" in sent[0][1] and "nothing was booked" in sent[0][1]
-    again = await run("email_itinerary", {"email": "other@example.com", "callerConfirmed": True})
-    assert again.error == "already_sent" and len(sent) == 1
+    same = await run("email_itinerary", {"email": "Alex dot Taylor at example dot com", "callerConfirmed": True})
+    assert same.ok and same.result["duplicate"] and len(sent) == 1
+    other = await run("email_itinerary", {"email": "other@example.com", "callerConfirmed": True})
+    assert other.ok and len(sent) == 2
     assert "alex.taylor" not in str(travel.view(state))
 
 

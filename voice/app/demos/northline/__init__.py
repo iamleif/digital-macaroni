@@ -58,6 +58,6 @@ northline: DemoDefinition[NorthlineState] = DemoDefinition(
         "reschedule_appointment": Operation("Moving the visit", "Move the existing booking to a new slot from check_availability, after the caller confirmed the new time.", reschedule_appointment, RescheduleAppointment),
         "cancel_appointment": Operation("Cancelling the visit", "Cancel a booking made in this call, after the caller confirmed.", cancel_appointment, CancelAppointment),
         "take_message": Operation("Leaving a message for the team", "Leave a callback request for the Northline team.", take_message, TakeMessage),
-        "email_confirmation": Operation("Emailing the confirmation", "Email the booked visit's confirmation to the caller, after they confirm the address read back to them. Once per call.", email_confirmation, EmailConfirmation),
+        "email_confirmation": Operation("Emailing the caller", "Email the caller the booked visit, or a summary of the call (with recap) when nothing was booked, after they confirm the address read back to them.", email_confirmation, EmailConfirmation),
     },
 )

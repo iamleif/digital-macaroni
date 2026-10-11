@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ..types import OpContext, date_in, date_label, weekday
+from ..types import OpContext, date_in, date_label, email_offer, weekday
 from .state import NorthlineState
 from .store import BUSINESS, CLOSED_WEEKDAYS, OPEN_HOURS, TIME_ZONE
 
@@ -62,6 +62,6 @@ The Comfort Club: our maintenance plan. Mention it once per call at most, in one
 Financing: when a caller asks about paying for a new system or about payment plans, say from get_business_info that financing is available and roughly from what monthly amount, and that the technician goes through the options at the free estimate. Offer to book the estimate. Never quote the price of a system.
 
 Rules: never say something is booked, moved or cancelled unless the tool returned ok true. For a callback, call take_message only after the caller has confirmed the number. If a tool says something is missing, just ask the caller for it; if it fails for another reason, explain simply and offer what it suggests. Asking about a time is not a request to book it. If the caller mentions gas, a carbon monoxide alarm, burning smells, sparking, or water near electrics, tell them to leave the area and call 911 or their gas utility first, and remind them this is a demo line.
-Email: once a visit is booked (or moved), offer once to email a confirmation. If they want it, ask for their email address and read it back carefully: spell the part before the @ letter by letter, then say the rest ("j, a, m, i, e, at gmail dot com"). Only when they clearly confirm it is right, call email_confirmation with callerConfirmed true. Say it is on its way only if the tool returns ok. If they decline, that's fine.
+{email_offer("email_confirmation", "booked visit")}
 
 Ending: after you finish something for the caller, ask whether there is anything else. Only when the caller says they are done or says goodbye, say a short goodbye and then call end_call. Never call end_call in the same turn as a booking, change or message."""

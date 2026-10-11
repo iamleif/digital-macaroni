@@ -8,7 +8,7 @@ from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import Confirmed, OpContext, OpResult, add_days, date_label, fail, ok, reference
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary
 from .state import Category, FormFieldState, Reservation, available, price, reservation_text, score, variant_view
 from .store import CATALOGUE, EMAIL_HOURS, HOLD_DAYS, ORDERS, PHOTOS, SHOP, product, variant_of
 
@@ -173,16 +173,24 @@ def get_shop_info(state: FormFieldState, _: Any, ctx: OpContext) -> OpResult:
 
 class EmailReservation(BaseModel):
     email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP)
     callerConfirmed: bool = Confirmed()
 
 
 async def email_reservation(state: FormFieldState, i: EmailReservation, ctx: OpContext) -> OpResult:
-    """Emails the pickup reservation to the caller, with the item's picture: once per call."""
+    """Emails the caller the pickup reservation with the item's picture, or a summary of the call when nothing was reserved."""
     held = [r for r in state.reservations if r.status == "reserved"]
+    kind = "booking" if held else "summary"
+    if already_sent(state.emailed, i.email, kind):
+        return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not held:
-        return fail("nothing_reserved", "There is no reservation to send yet.")
-    if state.emailed:
-        return fail("already_sent", f"The reservation was already emailed to {state.emailed['to']} on this call.")
+        messages = [{"id": m["id"], "summary": m["summary"], "callback": mask_number(m["callbackNumber"])} for m in state.messages]
+        rows = [("Support request", f"{s['id']} · {s['issue']} · we reply by email within one business day") for s in state.support_requests]
+        name = state.messages[-1]["name"] if state.messages else None
+        r, sent = await send_summary("formfield", "Theo", "Theo at Form & Field", i.email, i.recap or ("You asked us to look into an order; the team will reply by email." if rows else None), name, messages, rows, did="searched the shop, checked live stock and looked after your request")
+        if sent:
+            state.emailed = sent
+        return r
     r = held[-1]
     p, v = variant_of(r.variant_id)  # type: ignore[misc]
     image = email.asset(f"products/{p['id']}.{'jpg' if p['id'] in PHOTOS else 'png'}")
@@ -190,5 +198,5 @@ async def email_reservation(state: FormFieldState, i: EmailReservation, ctx: OpC
     masked, why = await email.confirm(i.email, email.pickup_reservation(details), "Theo at Form & Field")
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
-    state.emailed = {"to": masked, "reference": r.id}
+    state.emailed = {"to": masked, "reference": r.id, "kind": "booking"}
     return ok(f"Reservation emailed · {masked}", {"sent": True, "to": masked}, True)

@@ -30,10 +30,13 @@ async def call(demo, state, op: str, args: dict[str, Any]):
     return await o.run(state, o.params.model_validate(args), CTX)  # type: ignore[misc,union-attr]
 
 
-async def test_ellie_emails_the_booked_visit_once(outbox):
+async def test_ellie_emails_a_summary_or_the_booked_visit(outbox):
     state, run = runner(northline)
     early = await call(northline, state, "email_confirmation", {"email": "alex@example.com", "callerConfirmed": True})
-    assert early.error == "nothing_booked" and not outbox
+    assert early.error == "no_recap" and not outbox
+    summary = await call(northline, state, "email_confirmation", {"email": "alex@example.com", "recap": "You asked what a furnace repair costs; I explained the $89 service fee.", "callerConfirmed": True})
+    assert summary.ok and len(outbox) == 1 and "$89 service fee" in outbox[0]["text"] and "Book a chat with us" in outbox[0]["html"]
+    outbox.clear()
     run("book_appointment", {"slotId": slots_for(run)[0], "service": "heating_repair", "name": "Alex Taylor", "address": "48 Birch Lane, Springfield", "issue": "Furnace not heating", "callerConfirmed": True})
     r = await call(northline, state, "email_confirmation", {"email": "alex dot taylor at example dot com", "callerConfirmed": True})
     assert r.ok and r.result["to"] == "a•••r@example.com" and northline.view(state)["emailed"]["to"] == "a•••r@example.com"
@@ -41,8 +44,10 @@ async def test_ellie_emails_the_booked_visit_once(outbox):
     assert msg["to"] == "alex.taylor@example.com" and msg["from"] == "Ellie at Northline"
     assert "Heating repair" in msg["text"] and "48 Birch Lane, Springfield" in msg["text"] and state.appointments[0].id in msg["text"]
     assert "Book a chat with us" in msg["html"] and "digitalmacaroni.io/contact" in msg["html"]
-    again = await call(northline, state, "email_confirmation", {"email": "other@example.com", "callerConfirmed": True})
-    assert again.error == "already_sent" and len(outbox) == 1
+    same = await call(northline, state, "email_confirmation", {"email": "alex dot taylor at example dot com", "callerConfirmed": True})
+    assert same.ok and same.result["duplicate"] and len(outbox) == 1
+    other = await call(northline, state, "email_confirmation", {"email": "other@example.com", "callerConfirmed": True})
+    assert other.ok and len(outbox) == 2
 
 
 async def test_theo_emails_the_reservation_with_the_items_picture(outbox):

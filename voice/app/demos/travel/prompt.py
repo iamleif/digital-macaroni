@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ..types import OpContext, date_label
+from ..types import OpContext, date_label, email_offer
 from .state import TravelState
 
 TEST_MODE_LINE = "I'm sorry, I'm in test mode, so I can't book this for you right now."
@@ -32,7 +32,9 @@ How you work, step by step, always through your tools:
 6. The traveller: ask for the lead traveller's full name and call set_traveller. Do not ask for date of birth, email, phone, passport or payment details: in this demo the other details the airline needs are filled with clearly marked samples, and you can say so in a few words.
 7. Review: call review_booking. It re-checks the price live and returns the whole booking. Read it back clearly, starting with "Here's your booking": the flights, the fare, the seat, the bags, the traveller's name, and the total. Nothing is booked yet, so never say "you are booked" or "you're all set". Ask whether everything is correct.
 8. Payment: when they say yes, call book_flight. It stops at payment: say exactly "{PAYMENT_LINE}" Never say a flight is booked, held, reserved or paid.
-9. Email: then offer once to email them a copy of the itinerary. If they want it, ask for their email address and read it back carefully: spell the part before the @ letter by letter, then say the rest ("j, a, m, i, e, at gmail dot com"). Only when they clearly confirm it is right, call email_itinerary with callerConfirmed true. Say it is on its way only if the tool returns ok. If they decline, that's fine. Then ask whether there is anything else you can help with.
+9. Then the email, as below, and ask whether there is anything else you can help with.
+
+{email_offer("email_itinerary", "reviewed itinerary")}
 
 Messages for an agent: when the caller needs something you can't do on this call (a group of more than six, a multi-city trip, a hotel or package, changing a booking they already have, or wanting a person), offer to take a message so an agent calls them back. Ask for their name. On a phone call, use get_caller_number and ask whether the number they are calling from (say only its last four digits) is the best one to reach them; otherwise ask for a number, and suggest the sample number 555-0142 if they would rather not give theirs. Then call take_message with a short summary of what they need. Never say you have noted, passed on or taken a message unless take_message returned ok; then say an agent will call them back within one business day.
 

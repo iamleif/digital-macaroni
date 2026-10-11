@@ -375,7 +375,7 @@ const OUTCOMES: Partial<Record<DemoId, NonNullable<DemoInfo["design"]["outcomes"
     { tools: ["add_bags"], one: "Added checked bags", many: "Updated the bags {n} times" },
     { tools: ["review_booking"], one: "Re-checked the price and read it back", many: "Read the booking back {n} times" },
     { tools: ["book_flight"], one: "Took the booking up to payment", many: "Took {n} bookings up to payment" },
-    { tools: ["email_itinerary"], one: "Emailed the itinerary", many: "Emailed the itinerary" },
+    { tools: ["email_itinerary"], one: "Emailed the caller a copy", many: "Emailed the caller {n} times" },
     { tools: ["take_message"], one: "Took a message for an agent", many: "Took {n} messages for an agent" },
   ],
 };

@@ -8,7 +8,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import Confirmed, OpContext, OpResult, date_label, fail, ok, reference, weekday
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
 from .state import (
     AccidentType,
     Booked,
@@ -291,21 +291,28 @@ def take_message(state: LawFirmState, i: TakeMessage, ctx: OpContext) -> OpResul
 
 class EmailConfirmation(BaseModel):
     email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP + " Never mention case value, priority or odds.")
     callerConfirmed: bool = Confirmed()
 
 
 async def email_confirmation(state: LawFirmState, i: EmailConfirmation, ctx: OpContext) -> OpResult:
-    """Emails the booked consultation to the caller: once per call, from a fixed template."""
+    """Emails the caller the booked consultation, or a summary of the call when nothing was booked."""
     booked = active(state)
+    kind = "booking" if booked else "summary"
+    if already_sent(state.emailed, i.email, kind):
+        return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
-        return fail("nothing_booked", "There is no booked consultation to confirm yet.")
-    if state.emailed:
-        return fail("already_sent", f"The confirmation was already emailed to {state.emailed['to']} on this call.")
+        messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
+        name = state.messages[-1].name if state.messages else state.intake.get("name")
+        r, sent = await send_summary("lawfirm", "Nora", "Nora at Alder & Finch", i.email, i.recap, name, messages, did="took your call, listened to what happened and passed it to the right attorney")
+        if sent:
+            state.emailed = sent
+        return r
     c = booked[-1]
     s = describe_slot(state, c.slot_id, [c.attorney_id], c.id)
     consult = {"day": s["day"], "time": s["time"], "attorney": attorney(c.attorney_id)["name"], "format": FORMAT_LABEL[c.fmt], "name": c.name, "reference": c.id}
     masked, why = await email.confirm(i.email, email.consult_confirmation(consult), "Nora at Alder & Finch")
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
-    state.emailed = {"to": masked, "reference": c.id}
+    state.emailed = {"to": masked, "reference": c.id, "kind": "booking"}
     return ok(f"Confirmation emailed · {masked}", {"sent": True, "to": masked}, True)

@@ -281,6 +281,32 @@ def hotel_quote(h: dict[str, Any]) -> tuple[str, str, str]:
     return f"Your Palmetto Stays quote · {h['hotel']} · {h['total']}", body, _text(b, heading, intro, lines, "Marisol", did)
 
 
+def call_summary(brand: str, agent: str, c: dict[str, Any]) -> tuple[str, str, str]:
+    """
+    Any business, any call: what was covered, in the agent's words, and anything left for the team
+    (messages, requests). Sent when the call ended without a booking to confirm. Returns (subject, html, text).
+    c: {"name"?, "recap", "rows": [(label, value)], "messages": [{"id", "summary", "callback"}], "did"}.
+    """
+    b = BRANDS[brand]
+    first = (c.get("name") or "").split(" ")[0]
+    notes = "".join(
+        f"""<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px;margin:0 0 10px"><tr><td style="padding:16px 18px;font-family:{FONT}">
+<div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:{b.accent}">Message for the team &middot; {e(m["id"])}</div>
+<div style="padding:6px 0 4px;font-size:15px;line-height:1.5;color:{b.ink}">{e(m["summary"])}</div>
+<div style="font-size:13px;color:#6b645a">We&rsquo;ll call you back on {e(m["callback"])}.</div></td></tr></table>"""
+        for m in c.get("messages") or []
+    )
+    recap = f'<div style="font-family:{FONT};font-size:15px;line-height:1.65;color:{b.ink};padding:0 0 16px">{e(c["recap"])}</div>' if c.get("recap") else ""
+    rows = c.get("rows") or []
+    card = recap + notes + (f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:6px">{_detail_rows(rows, b)}</table>' if rows else "")
+    did = c.get("did") or "answered your call and wrote this summary"
+    heading = f"Thanks for calling, {first}" if first else "Thanks for calling"
+    intro = f"Here's a summary of your call with {agent} at {b.full}."
+    body = layout(b, f"Your call with {b.full}", "Call summary", heading, intro, card, agent, did)
+    lines = ([c["recap"], ""] if c.get("recap") else []) + [f"Message for the team ({m['id']}): {m['summary']} We'll call you back on {m['callback']}." for m in c.get("messages") or []] + [f"{k}: {v}" for k, v in rows if v]
+    return f"Your call with {b.full}", body, _text(b, heading, intro, lines, agent, did)
+
+
 def visit_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:
     """Northline: the booked visit, big and clear. Returns (subject, html, text)."""
     b = BRANDS["northline"]

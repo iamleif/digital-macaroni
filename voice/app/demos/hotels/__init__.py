@@ -59,6 +59,6 @@ hotels: DemoDefinition[HotelState] = DemoDefinition(
         "review_stay": Operation("Checking the price with the hotel", "Re-check the price live with the hotel and hold it, and return the whole stay with the total, to read back.", review_stay, NoArgs, slow=True),
         "book_stay": Operation("Taking payment", "After the caller confirms the review: complete the booking. In this demo it stops at payment.", book_stay, NoArgs),
         "take_message": Operation("Leaving a message for an agent", "Leave a callback request for a Palmetto Stays agent: several rooms or a group, a stay longer than we book on a call, or anything else a person must handle. Only after the caller confirmed the number.", take_message, TakeMessage),
-        "email_quote": Operation("Emailing the quote", "Email the reviewed stay to the caller, after they confirm the address read back to them. Once per call.", email_quote, EmailQuote),
+        "email_quote": Operation("Emailing the caller", "Email the caller the reviewed stay, or a summary of the call (with recap) when there is none, after they confirm the address read back to them.", email_quote, EmailQuote),
     },
 )

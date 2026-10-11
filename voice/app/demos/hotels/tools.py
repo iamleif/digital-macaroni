@@ -8,7 +8,7 @@ from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import Confirmed, OpContext, OpResult, add_days, date_label, fail, mask_number, ok, reference
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary
 from . import store
 from .prompt import PAYMENT_LINE
 from .state import (
@@ -219,20 +219,27 @@ async def book_stay(state: HotelState, i: NoArgs, ctx: OpContext) -> OpResult:
 
 class EmailQuote(BaseModel):
     email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it, e.g. 'alex.taylor@example.com'.")
+    recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP)
     callerConfirmed: bool = Confirmed()
 
 
 async def email_quote(state: HotelState, i: EmailQuote, ctx: OpContext) -> OpResult:
-    """Emails the reviewed stay to the caller: once per call, from a fixed template."""
+    """Emails the caller the reviewed stay, or a summary of the call when there is none."""
+    kind = "booking" if state.review and state.hotel else "summary"
+    if already_sent(state.emailed, i.email, kind):
+        return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if state.review is None or state.hotel is None:
-        return fail("not_reviewed", "There is no reviewed stay to send yet.")
-    if state.emailed:
-        return fail("already_sent", f"The quote was already emailed to {state.emailed['to']} on this call.")
+        messages = [message_view(m) for m in state.messages]
+        name = (state.guest or {}).get("name") or (state.messages[-1]["name"] if state.messages else None)
+        r, sent = await send_summary("hotels", "Marisol", "Marisol at Palmetto Stays", i.email, i.recap, name, messages, did="searched real hotels with live rates and looked after your request")
+        if sent:
+            state.emailed = sent
+        return r
     stay = {**state.review, "photo": (state.hotel["photos"] or [None])[0], "address": state.hotel["address"], "checkIn": state.hotel["checkIn"], "checkOut": state.hotel["checkOut"]}
     masked, why = await email.confirm(i.email, email.hotel_quote(stay), "Marisol at Palmetto Stays")
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
-    state.emailed = {"to": masked}
+    state.emailed = {"to": masked, "kind": "booking"}
     return ok(f"Quote emailed · {masked}", {"sent": True, "to": masked}, True)
 
 

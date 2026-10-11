@@ -68,6 +68,6 @@ travel: DemoDefinition[TravelState] = DemoDefinition(
         "review_booking": Operation("Reviewing the booking", "Re-check the price live and return the whole booking with the total, to read back.", review_booking, NoArgs),
         "book_flight": Operation("Taking payment", "After the caller confirms the review: complete the booking. In this demo it stops at payment.", book_flight, NoArgs),
         "take_message": Operation("Leaving a message for an agent", "Leave a callback request for a Waypoint agent: groups, multi-city trips, hotels or packages, changes to an existing booking, or anything else a person must handle. Only after the caller confirmed the number.", take_message, TakeMessage),
-        "email_itinerary": Operation("Emailing the itinerary", "Email the reviewed itinerary to the caller, after they confirm the address read back to them. Once per call.", email_itinerary, EmailItinerary),
+        "email_itinerary": Operation("Emailing the caller", "Email the caller the reviewed itinerary, or a summary of the call (with recap) when there is none, after they confirm the address read back to them.", email_itinerary, EmailItinerary),
     },
 )

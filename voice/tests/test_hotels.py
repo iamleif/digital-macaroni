@@ -213,3 +213,24 @@ async def test_take_message_records_a_callback_for_an_agent(lite: dict[str, Any]
     v = hotels.view(s)
     assert v["messages"] == [{"id": m.result["messageId"], "name": "Leif", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults.", "preferredTime": None, "callback": "•••• 5382"}]
     assert "Never say you have noted" in hotels.instruction(s, CTX)
+
+
+async def test_summary_email_after_a_message_with_the_digital_macaroni_card(lite: dict[str, Any], monkeypatch: pytest.MonkeyPatch) -> None:
+    from app import email
+
+    sent: list[dict[str, str]] = []
+
+    async def send(to: str, subject: str, html_body: str, text_body: str, from_name: str) -> None:
+        sent.append({"to": to, "subject": subject, "html": html_body, "text": text_body})
+
+    async def any_domain(domain: str) -> bool:
+        return True
+
+    monkeypatch.setattr(email, "send", send)
+    monkeypatch.setattr(email, "receives_mail", any_domain)
+    s = hotels.create_state(NOW)
+    await run(s, "take_message", {"name": "Leif Marshall", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults."})
+    r = await run(s, "email_quote", {"email": "leif at example dot com", "recap": "You wanted two rooms for twenty nights; I took a message for an agent.", "callerConfirmed": True})
+    assert r.ok and sent[0]["to"] == "leif@example.com" and sent[0]["subject"] == "Your call with Palmetto Stays"
+    assert "Thanks for calling, Leif" in sent[0]["text"] and "Two rooms in Miami Beach" in sent[0]["text"] and "•••• 5382" in sent[0]["text"]
+    assert "This is just the tip of the iceberg." in sent[0]["html"] and "Book a chat with us" in sent[0]["html"]

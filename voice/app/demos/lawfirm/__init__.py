@@ -57,6 +57,6 @@ lawfirm: DemoDefinition[LawFirmState] = DemoDefinition(
         "book_consultation": Operation("Booking the consultation", "Book the free consultation after the caller clearly said yes to the read-back. slotId must come from check_availability.", book_consultation, BookConsultation),
         "reschedule_consultation": Operation("Moving the consultation", "Move the existing consultation to a new slot from check_availability, after the caller confirmed the new time.", reschedule_consultation, RescheduleConsultation),
         "take_message": Operation("Leaving a message for the attorneys", "Leave a callback request for the attorneys.", take_message, TakeMessage),
-        "email_confirmation": Operation("Emailing the confirmation", "Email the booked consultation's confirmation to the caller, after they confirm the address read back to them. Once per call.", email_confirmation, EmailConfirmation),
+        "email_confirmation": Operation("Emailing the caller", "Email the caller the booked consultation, or a summary of the call (with recap) when nothing was booked, after they confirm the address read back to them.", email_confirmation, EmailConfirmation),
     },
 )

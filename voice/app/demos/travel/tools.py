@@ -9,7 +9,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import Confirmed, OpContext, OpResult, add_days, date_label, fail, mask_number, ok, reference
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary
 from . import store
 from .prompt import PAYMENT_LINE
 from .state import (
@@ -341,15 +341,22 @@ async def book_flight(state: TravelState, i: NoArgs, ctx: OpContext) -> OpResult
 
 class EmailItinerary(BaseModel):
     email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it, e.g. 'alex.taylor@example.com'.")
+    recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP)
     callerConfirmed: bool = Confirmed()
 
 
 async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext) -> OpResult:
-    """Emails the reviewed itinerary to the caller: once per call, from a fixed template."""
+    """Emails the caller the reviewed itinerary, or a summary of the call when there is none."""
+    kind = "booking" if state.review else "summary"
+    if already_sent(state.emailed, i.email, kind):
+        return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if state.review is None:
-        return fail("not_reviewed", "There is no reviewed itinerary to send yet.")
-    if state.emailed:
-        return fail("already_sent", f"The itinerary was already emailed to {state.emailed['to']} on this call.")
+        messages = [message_view(m) for m in state.messages]
+        name = (state.traveller or {}).get("name") or (state.messages[-1]["name"] if state.messages else None)
+        res, sent = await send_summary("travel", "Linda", "Linda at Waypoint Travel", i.email, i.recap, name, messages, did="searched live airline fares and looked after your request")
+        if sent:
+            state.emailed = sent
+        return res
     r = state.review
     chosen = _option(state, state.selected) if state.selected else None
     trip = {
@@ -366,7 +373,7 @@ async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext)
     masked, why = await email.confirm(i.email, email.flight_itinerary(trip), "Linda at Waypoint Travel")
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
-    state.emailed = {"to": masked, "total": r["total"]}
+    state.emailed = {"to": masked, "total": r["total"], "kind": "booking"}
     return ok(f"Itinerary emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"]}, True)
 
 
