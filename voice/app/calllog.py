@@ -159,6 +159,16 @@ async def get(name: str, byte_range: Optional[str] = None) -> Optional[tuple[int
     return r.status_code, r.content, keep
 
 
+async def read_object(bucket: str, name: str) -> Optional[bytes]:
+    """One whole object from any bucket the service may read (e.g. the demo data bucket), or None."""
+    if not bucket:
+        return None
+    token = await asyncio.to_thread(_token)
+    async with httpx.AsyncClient(timeout=20) as http:
+        r = await http.get(f"https://storage.googleapis.com/storage/v1/b/{bucket}/o/{quote(name, safe='')}?alt=media", headers={"Authorization": f"Bearer {token}"})
+    return r.content if r.status_code == 200 else None
+
+
 async def save(session: "DemoSession") -> None:
     bucket = config.call_log_bucket
     record: Optional[CallRecord] = session.record

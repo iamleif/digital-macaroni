@@ -1,0 +1,12 @@
+{
+  "services": [
+    {"id": "oil_change", "name": "Synthetic oil change", "price": "$79.95", "minutes": 45, "bays": 1},
+    {"id": "tire_rotation", "name": "Tire rotation", "price": "$29.95", "minutes": 30, "bays": 1},
+    {"id": "brakes", "name": "Brake inspection", "price": "Free", "minutes": 45, "bays": 1},
+    {"id": "check_engine", "name": "Check engine light diagnostic", "price": "$129 (goes toward the repair)", "minutes": 90, "bays": 1},
+    {"id": "recall", "name": "Recall repair", "price": "Free", "minutes": 120, "bays": 1},
+    {"id": "inspection", "name": "Multi-point inspection", "price": "Free with any service", "minutes": 30, "bays": 1}
+  ],
+  "loaners": "Loaner cars for repairs over three hours, by request. A shuttle runs within 10 miles.",
+  "allMakes": "We service every make, not only cars bought here."
+}

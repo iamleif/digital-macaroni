@@ -1,0 +1,10 @@
+{
+  "sales": [
+    {"id": "tony", "name": "Tony Russo", "short": "Tony", "role": "Sales consultant"},
+    {"id": "keisha", "name": "Keisha Grant", "short": "Keisha", "role": "Sales consultant"},
+    {"id": "ben", "name": "Ben Kowalski", "short": "Ben", "role": "Sales consultant · trucks & EVs"}
+  ],
+  "finance": {"id": "rita", "name": "Rita Alvarez", "role": "Finance manager"},
+  "service": {"id": "dave", "name": "Dave Mitchell", "role": "Service advisor"},
+  "specialties": {"Truck": "ben", "Electric": "ben"}
+}

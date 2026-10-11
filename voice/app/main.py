@@ -91,6 +91,27 @@ async def health() -> dict[str, Any]:
     return {"ok": True, "enabled": config.enabled, "active": active_count()}
 
 
+_VIN = re.compile(r"^[A-HJ-NPR-Z0-9]{17}$")
+_car_photos: dict[str, bytes] = {}
+
+
+@app.get("/media/cars/{vin}.jpg")
+async def car_photo(vin: str) -> Response:
+    """Woodward's car photos, from our own copy in Cloud Storage (never the original listing sites)."""
+    if not _VIN.match(vin):
+        return Response(status_code=404)
+    body = _car_photos.get(vin)
+    if body is None:
+        got = await calllog.read_object(config.demo_data_bucket, f"dealership/photos/{vin}.jpg")
+        if got is None:
+            return Response(status_code=404)
+        body = got
+        if len(_car_photos) > 400:
+            _car_photos.pop(next(iter(_car_photos)))
+        _car_photos[vin] = body
+    return Response(content=body, media_type="image/jpeg", headers={"Cache-Control": "public, max-age=2592000, immutable"})
+
+
 @app.post("/twilio/voice")
 async def twilio_voice(request: Request) -> Response:
     params = {k: str(v) for k, v in (await request.form()).items()}

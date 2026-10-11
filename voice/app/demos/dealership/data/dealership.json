@@ -1,0 +1,20 @@
+{
+  "name": "Woodward Motor Co.",
+  "kind": "A pre-owned superstore with a full service department: every make, about 1,200 cars on the lot.",
+  "city": "Detroit, MI",
+  "timeZone": "America/Detroit",
+  "phone": "(313) 351-1780",
+  "address": "4400 Woodward Avenue, Detroit, MI 48201, in Midtown. Free customer parking off Willis Street.",
+  "hours": "Sales: Monday to Saturday, 9 AM to 7 PM Eastern. Service: Monday to Friday, 7:30 AM to 6 PM, Saturday 8 AM to 2 PM. Closed Sunday. This line answers around the clock.",
+  "pricing": "The listed price is the price: no haggling. On top come Michigan sales tax (6%), title and plate fees, and a $260 documentation fee. The assistant never quotes a lower price or a monthly payment.",
+  "financing": "Financing through our lenders, credit unions and the buyer's own bank; Rita Alvarez, the finance manager, goes through rates and payments. The assistant never quotes a rate, a payment or an approval.",
+  "tradeIns": "Trade-ins are appraised in person in about 20 minutes, during a test drive visit or any time. The assistant takes the details and never gives a value.",
+  "testDrives": "Bring a valid driver's licence. A test drive is about 30 minutes with a sales consultant; the car is pulled up and ready.",
+  "warranty": "Every car gets a 90-day / 3,000-mile powertrain warranty. Certified pre-owned cars carry the maker's certified warranty.",
+  "delivery": "Free delivery within 50 miles of Detroit.",
+  "policies": [
+    "The assistant is an AI. It answers only from the inventory and this information, never invents a car, a price or a feature, and is honest when it doesn't know.",
+    "A car can be held for 24 hours with a test drive appointment; there is no deposit on the phone.",
+    "The assistant never takes card or bank details, a Social Security number or a driver's licence number."
+  ]
+}

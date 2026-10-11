@@ -53,7 +53,7 @@ apply. Reply STOP at any time to opt out."
 | | Bluebird Insurance Agency, Macon GA | `insurance/` | Yes |
 | | Juniper Row Realty, Austin (real RentCast listings) | `realestate/` | Yes |
 | Retail (Theo) | Form & Field, home goods | `formfield/` | Yes |
-| | Woodward Motor Co., auto dealership | `dealership/` | No |
+| | Woodward Motor Co., Detroit (real auto.dev cars and photos) | `dealership/` | Yes |
 | | Furniture showroom | `furniture/` | No |
 | Travel (Linda) | Waypoint, flights | `travel/` | Yes |
 | | Palmetto Stays, hotels (live LiteAPI hotels and rates) | `hotels/` | Yes |

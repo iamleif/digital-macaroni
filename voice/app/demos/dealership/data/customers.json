@@ -1,0 +1,6 @@
+{
+  "customers": [
+    {"name": "Andre Williams", "phoneLast4": "5530", "car": "2021 Ford F-150 XLT", "lastService": "Oil change in June", "salesperson": "ben"},
+    {"name": "Grace Novak", "phoneLast4": "1184", "car": "2020 Jeep Grand Cherokee Limited", "lastService": "Brakes in August", "salesperson": "keisha"}
+  ]
+}
