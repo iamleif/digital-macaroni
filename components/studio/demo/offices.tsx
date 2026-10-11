@@ -187,44 +187,75 @@ const WORDS = {
   clinic: { brand: "tidewell" as const, kicker: "Reception", staff: "Practitioner", staffs: "Practitioners", menu: "Visit types", request: "Patient booking", list: "Visits", mine: "Booked on this call" },
 };
 
+const ampm = (m: number) => { const h = Math.floor(m / 60); const mm = m % 60; return `${(h + 11) % 12 + 1}${mm ? `:${String(mm).padStart(2, "0")}` : ""}${h < 12 ? "am" : "pm"}`; };
+const GROUP_TONE: Record<string, string> = { Hair: "a", Colour: "b", Nails: "c", "Med spa": "d", Chiropractic: "a", Physiotherapy: "c", Massage: "b" };
+
+/** A salon's book: a tall column per stylist with their photo, 15-minute rows, each treatment its real length. */
+function SalonBook({ view, agentName }: { view: AppointmentView; agentName: string }) {
+  const ROWH = 11;
+  const y = (m: number) => ((m - view.dayStart) / 15) * ROWH;
+  const rows = (view.dayEnd - view.dayStart) / 15;
+  return <section className={d.salon} aria-label="The day by stylist">
+    <div className={d.salonHead} style={{ gridTemplateColumns: `52px repeat(${view.staff.length}, minmax(0, 1fr))` }}>
+      <span />
+      {view.staff.map((p) => <span key={p.id} className={d.salonWho}>{p.photo ? <img src={p.photo} alt="" /> : <i>{initials(p.name)}</i>}<b>{p.name}</b><small>{p.role}</small></span>)}
+    </div>
+    <div className={d.salonBody} style={{ gridTemplateColumns: `52px repeat(${view.staff.length}, minmax(0, 1fr))`, height: rows * ROWH }}>
+      <div className={d.salonTimes}>{Array.from({ length: rows / 2 }, (_, i) => view.dayStart + i * 30).map((m) => <span key={m} style={{ top: y(m) }} data-hour={m % 60 === 0 || undefined}>{m % 60 === 0 ? ampm(m) : ""}</span>)}</div>
+      {view.staff.map((p) => <div key={p.id} className={d.salonCol}>
+        {view.open.filter((o) => o.staffId === p.id).map((o) => <div key={`o${o.start}`} className={d.salonOpen} style={{ top: y(o.start), height: 2 * ROWH - 2 }}><b>Open {ampm(o.start)}</b></div>)}
+        {view.proposed && view.proposed.staffId === p.id ? <div className={d.salonProposed} style={{ top: y(view.proposed.start), height: (view.proposed.minutes / 15) * ROWH - 2 }}><b>Proposed</b><small>Waiting for a yes</small></div> : null}
+        {view.schedule.filter((j) => j.staffId === p.id).map((j) => <div key={`${j.start}${j.title}`} className={d.salonAppt} data-tone={GROUP_TONE[j.group] ?? "a"} data-mine={j.kind === "demo" || undefined} style={{ top: y(j.start), height: (j.minutes / 15) * ROWH - 2 }}>
+          {j.kind === "demo" ? <span className={d.apptTag}>{j.ref} · by {agentName}</span> : null}
+          <small>{ampm(j.start)} – {ampm(j.start + j.minutes)}</small>
+          <b>{j.kind === "demo" ? j.name : j.title}</b>
+          {j.minutes >= 45 ? <small>{j.kind === "demo" ? j.title : "Booked"}</small> : null}
+        </div>)}
+      </div>)}
+    </div>
+  </section>;
+}
+
+/** A clinic's day: a row per practitioner, the hours across, each visit its real length. */
+function ClinicBoard({ view, agentName }: { view: AppointmentView; agentName: string }) {
+  const span = view.dayEnd - view.dayStart;
+  const x = (m: number) => `${((m - view.dayStart) / span) * 100}%`;
+  const w = (m: number) => `calc(${(m / span) * 100}% - 3px)`;
+  const hours = Array.from({ length: span / 60 }, (_, i) => view.dayStart + i * 60);
+  return <section className={d.clinic} aria-label="The day by practitioner"><div className={d.clinicInner}>
+    <div className={d.clinicHours}><span /><div>{hours.map((h) => <span key={h} style={{ left: x(h) }}>{ampm(h)}</span>)}</div></div>
+    {view.staff.map((p, row) => <div key={p.id} className={d.clinicRow}>
+      <span className={d.tech}><i data-tone={TONES[row % 4]}>{initials(p.name.replace("Dr. ", ""))}</i><span className={d.techWho}><b>{p.name}</b><small>{p.role}</small></span></span>
+      <div className={d.clinicLane}>
+        {hours.map((h) => <i key={h} style={{ left: x(h) }} />)}
+        {view.open.filter((o) => o.staffId === p.id).map((o) => <div key={`o${o.start}`} className={d.clinicOpen} style={{ left: x(o.start), width: w(30) }}>Open {ampm(o.start)}</div>)}
+        {view.proposed && view.proposed.staffId === p.id ? <div className={d.clinicProposed} style={{ left: x(view.proposed.start), width: w(view.proposed.minutes) }}>Proposed</div> : null}
+        {view.schedule.filter((j) => j.staffId === p.id).map((j) => <div key={`${j.start}${j.title}`} className={d.clinicAppt} data-tone={GROUP_TONE[j.group] ?? "a"} data-mine={j.kind === "demo" || undefined} style={{ left: x(j.start), width: w(j.minutes) }} title={`${ampm(j.start)} · ${j.title}`}>
+          {j.kind === "demo" ? <span className={d.apptTag}>{j.ref} · by {agentName}</span> : null}
+          <b>{j.kind === "demo" ? j.name : j.title}</b>
+          <small>{ampm(j.start)} · {j.minutes} min</small>
+        </div>)}
+      </div>
+    </div>)}
+  </div></section>;
+}
+
 export function AppointmentOffice({ view, state, agentName, cue }: { view: AppointmentView; state: LiveState; agentName: string; cue?: Cue }) {
   const w = WORDS[view.skin];
   const booked = [...view.appointments].reverse().find((a) => a.status === "booked");
   const filled = view.request.filter((r) => r.value).length;
-  const busyHours = view.schedule.reduce((n, j) => n + j.span, 0);
-  const isOpen = (staffId: string, hour: number) => view.open.some((o) => o.staffId === staffId && o.hour === hour);
   const groups = [...new Set(view.menu.map((m) => m.group))];
   const active = useFollow(cue, APPOINTMENT_SCREENS, "day");
 
+  const bookedMin = view.schedule.reduce((n, j) => n + j.minutes, 0);
   const day = <>
     <div className={d.kpis}>
       <div><span>{w.staffs}</span><strong>{view.staff.length}</strong></div>
-      <div><span>Hours booked</span><strong>{busyHours}<small>/{view.staff.length * view.hours.length}</small></strong></div>
+      <div><span>Hours booked</span><strong>{Math.round(bookedMin / 60)}<small>/{Math.round((view.staff.length * (view.dayEnd - view.dayStart)) / 60)}</small></strong></div>
       <div data-hot={view.open.length > 0 || undefined}><span>Open for this</span><strong>{view.open.length || "—"}</strong></div>
       <div data-hot={Boolean(booked) || undefined}><span>{w.mine}</span><strong>{booked ? booked.id : "—"}</strong></div>
     </div>
-    <section className={d.board} aria-label={`${w.staff} schedule`}>
-      <div className={d.boardGrid} data-fit style={{ gridTemplateColumns: `128px repeat(${view.hours.length}, minmax(0, 1fr))` }}>
-        <span className={d.boardCorner}>{w.staff}</span>
-        {view.hours.map((h) => <span key={h.hour} className={d.boardHour}>{h.label}</span>)}
-        {view.staff.map((s, row) => {
-          const cells: ReactNode[] = [<span key={s.id} className={d.tech}><i data-tone={TONES[row % 4]}>{initials(s.name.replace("Dr. ", ""))}</i><span className={d.techWho}><b>{s.name}</b><small>{s.role}</small></span></span>];
-          for (let i = 0; i < view.hours.length; i++) {
-            const hour = view.hours[i]!.hour;
-            const j = view.schedule.find((x) => x.staffId === s.id && x.hour === hour);
-            const span = j ? Math.min(j.span, view.hours.length - i) : 1;
-            let content: ReactNode = null;
-            if (j?.kind === "demo") content = <div className={d.jobMine}><span className={d.jobTag}>{j.ref} · by {agentName}</span><b>{j.title}</b><small>{j.name}</small></div>;
-            else if (j) content = <div className={d.jobBusy}><b>{j.title}</b><small>Booked</small></div>;
-            else if (view.proposed && view.proposed.staffId === s.id && view.proposed.hour === hour) content = <div className={d.jobProposed}><b>Proposed</b><small>Waiting for a yes</small></div>;
-            else if (isOpen(s.id, hour)) content = <div className={d.jobOpen}>Open</div>;
-            cells.push(<div key={`${s.id}${hour}`} className={d.slot} style={span > 1 ? { gridColumn: `span ${span}` } : undefined}>{content}</div>);
-            i += span - 1;
-          }
-          return <Fragment key={s.id}>{cells}</Fragment>;
-        })}
-      </div>
-    </section>
+    {view.skin === "salon" ? <SalonBook view={view} agentName={agentName} /> : <ClinicBoard view={view} agentName={agentName} />}
   </>;
 
   const booking = <div className={d.cards}>

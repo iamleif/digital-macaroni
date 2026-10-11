@@ -159,19 +159,21 @@ export interface AppointmentView {
   skin: "salon" | "clinic";
   timeZone: string;
   day: { label: string };
-  staff: { id: string; name: string; role: string }[];
-  hours: { hour: number; label: string }[];
-  /** Booked time; `span` is how many hour columns it covers. */
-  schedule: { staffId: string; hour: number; span: number; kind: "existing" | "demo"; title: string; ref?: string; name?: string }[];
-  open: { staffId: string; hour: number }[];
-  proposed: { staffId: string; hour: number } | null;
+  /** The working day, in minutes after midnight. */
+  dayStart: number;
+  dayEnd: number;
+  staff: { id: string; name: string; role: string; photo?: string }[];
+  /** Booked time: minutes after midnight and its real length. */
+  schedule: { staffId: string; start: number; minutes: number; kind: "existing" | "demo"; title: string; group: string; ref?: string; name?: string }[];
+  open: { staffId: string; start: number; minutes: number }[];
+  proposed: { staffId: string; start: number; minutes: number } | null;
   /** Salon: the service menu. Clinic: visit types. `chosen` marks the one being booked. */
   menu: { id: string; name: string; price: string; minutes: number; staff: string[]; group: string; chosen?: boolean }[];
   request: { label: string; value: string | null; note?: string }[];
   /** The signature panel's extra facts: deposit and add-on (salon), intake and coverage (clinic). */
   extras: { title: string; rows: { label: string; value: string; tone?: "good" | "warn" }[] } | null;
   appointments: { id: string; status: "booked" | "cancelled"; service: string; when: string; staff: string; name: string; changes: number }[];
-  messages: { id: string; name: string; summary: string }[];
+  messages: { id: string; name: string; summary: string; preferredTime?: string | null; callback?: string; urgent?: boolean }[];
   emailed?: { to: string; reference: string } | null;
 }
 

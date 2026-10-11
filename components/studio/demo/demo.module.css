@@ -835,6 +835,8 @@
 .previewScope:has([data-demo="dental"]) { --accent: #5b4bb7; --accent-soft: #efedfb; --accent-ink: #3a2f86; --rec: #4a3c9e; }
 .previewScope:has([data-demo="hotels"]) { --accent: #1c7560; --accent-soft: #e2f2eb; --accent-ink: #114a3c; }
 .previewScope .railLogo { visibility: hidden; }
+/* The homepage frame shows the top of the app: the sheet runs to the frame's bottom whatever the screen holds. */
+.previewScope .app, .previewScope .app[data-screens] { min-height: 820px; }
 
 
 /* ---- Juniper Row: listings, the home on the call, the estimate ---- */
@@ -1002,3 +1004,49 @@
 .bookHold small, .bookOpen small { font-size: 9.5px; opacity: .85; }
 .bookNow { position: absolute; left: 56px; right: 0; height: 0; border-top: 2px solid #e5484d; z-index: 4; pointer-events: none; }
 .bookNow span { position: absolute; left: -54px; top: -8px; padding: 0 4px; border-radius: 4px; background: #e5484d; color: #fff; font-size: 9.5px; font-weight: 700; }
+
+
+/* ---- Lune: the salon's book, a tall column per stylist with their photo ---- */
+.salon { --ta: #f4c7d8; --ta-i: #6e2348; --tb: #e9d3f3; --tb-i: #4f2466; --tc: #fbe0c4; --tc-i: #6b3a0b; --td: #cfe9e4; --td-i: #145a52; border-radius: 16px; box-shadow: 0 0 0 1px var(--hair); background: #fff; overflow: hidden; }
+.salonHead { display: grid; background: #fafaf8; border-bottom: 1px solid var(--hair); }
+.salonWho { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 4px 9px; border-left: 1px solid var(--hair-2); min-width: 0; }
+.salonWho img, .salonWho i { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px #fff, 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); display: grid; place-items: center; font-style: normal; font-weight: 700; background: var(--accent-soft); color: var(--accent-ink); }
+.salonWho b { font-size: 12.5px; }
+.salonWho small { font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.salonBody { display: grid; position: relative; background-image: repeating-linear-gradient(180deg, transparent 0 21px, rgba(15,15,13,.05) 21px 22px), repeating-linear-gradient(180deg, transparent 0 43px, rgba(15,15,13,.08) 43px 44px); background-position: 52px 0; background-repeat: no-repeat; background-size: calc(100% - 52px) 100%; }
+.salonTimes { position: relative; border-right: 1px solid var(--hair-2); background: #fbfbf9; }
+.salonTimes span { position: absolute; right: 6px; transform: translateY(-6px); font-size: 10px; font-weight: 700; color: var(--ink-2); }
+.salonCol { position: relative; border-left: 1px solid var(--hair-2); }
+.salonAppt, .salonOpen, .salonProposed { position: absolute; left: 4px; right: 4px; display: flex; flex-direction: column; gap: 0; padding: 3px 7px; border-radius: 8px; overflow: hidden; font-size: 10.5px; line-height: 1.25; }
+.salonAppt { background: var(--t); color: var(--ti); animation: rise .4s var(--ease) both; }
+.salonAppt[data-tone="a"] { --t: var(--ta); --ti: var(--ta-i); }
+.salonAppt[data-tone="b"] { --t: var(--tb); --ti: var(--tb-i); }
+.salonAppt[data-tone="c"] { --t: var(--tc); --ti: var(--tc-i); }
+.salonAppt[data-tone="d"] { --t: var(--td); --ti: var(--td-i); }
+.salonAppt b { font-size: 11.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.salonAppt small, .salonOpen small, .salonProposed small { font-size: 10px; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.salonAppt[data-mine] { box-shadow: 0 0 0 2px var(--accent), 0 10px 22px -12px var(--accent); z-index: 2; animation: land .5s var(--ease) both; }
+.salonOpen { justify-content: center; background: color-mix(in srgb, var(--yellow) 30%, white); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--yellow) 80%, #b07d00); color: #6b4d00; z-index: 1; animation: land .35s var(--ease) both; }
+.salonProposed { background: var(--accent-soft); box-shadow: inset 0 0 0 1.5px var(--accent); color: var(--accent-ink); z-index: 2; }
+.salonOpen b, .salonProposed b { font-size: 11px; }
+
+/* ---- Tidewell: a row per practitioner, each visit its real length ---- */
+.clinic { border-radius: 16px; box-shadow: 0 0 0 1px var(--hair); background: #fff; overflow: hidden; }
+.clinic { overflow-x: auto; scrollbar-width: thin; }
+.clinicInner { min-width: 1040px; }
+.clinicHours { display: grid; grid-template-columns: 170px minmax(0, 1fr); height: 30px; background: #fafaf8; border-bottom: 1px solid var(--hair); }
+.clinicHours > div { position: relative; }
+.clinicHours > div > span { position: absolute; top: 8px; font-size: 10.5px; font-weight: 600; color: var(--muted); transform: translateX(4px); }
+.clinicRow { display: grid; grid-template-columns: 170px minmax(0, 1fr); border-bottom: 1px solid var(--hair-2); min-height: 74px; }
+.clinicRow > .tech { padding: 10px 12px; border-right: 1px solid var(--hair-2); }
+.clinicLane { position: relative; }
+.clinicLane > i { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--hair-2); }
+.clinicAppt, .clinicOpen, .clinicProposed { position: absolute; top: 8px; bottom: 8px; display: flex; flex-direction: column; justify-content: center; padding: 3px 7px; border-radius: 8px; overflow: hidden; font-size: 10.5px; line-height: 1.25; }
+.clinicAppt { background: color-mix(in srgb, var(--accent) 16%, white); color: var(--accent-ink); animation: rise .4s var(--ease) both; }
+.clinicAppt[data-tone="b"] { background: #e9e3f6; color: #46306f; }
+.clinicAppt[data-tone="c"] { background: #e3f0fb; color: #1d4b74; }
+.clinicAppt b { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.clinicAppt small { font-size: 10px; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.clinicAppt[data-mine] { box-shadow: 0 0 0 2px var(--accent); background: var(--accent-soft); z-index: 2; animation: land .5s var(--ease) both; }
+.clinicOpen { background: color-mix(in srgb, var(--yellow) 30%, white); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--yellow) 80%, #b07d00); color: #6b4d00; font-weight: 600; z-index: 1; }
+.clinicProposed { background: var(--accent-soft); box-shadow: inset 0 0 0 1.5px var(--accent); color: var(--accent-ink); font-weight: 600; z-index: 2; }

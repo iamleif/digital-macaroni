@@ -1,4 +1,4 @@
-import { dentalBoard, dentalEmpty, dentalRecord, dealershipCars, dealershipEmpty, dealershipFocus, dealershipNamed, dealershipRecord, dealershipSample, luneEmpty, luneSample, tidewellEmpty, tidewellSample, formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
+import { lunePicked, luneOpen, tidewellOpen, dentalBoard, dentalEmpty, dentalRecord, dealershipCars, dealershipEmpty, dealershipFocus, dealershipNamed, dealershipRecord, dealershipSample, luneEmpty, luneSample, tidewellEmpty, tidewellSample, formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
 import type { AppointmentView, DealershipView, DentalView, DemoEvent, DemoId, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 
 /**
@@ -500,10 +500,6 @@ const insurance = timeline([
   { type: "session.ended", reason: "agent_ended" },
 ]);
 
-const rq = (base: AppointmentView, values: (string | null)[], patch: Partial<AppointmentView> = {}): AppointmentView => ({ ...base, ...patch, request: base.request.map((r, i) => ({ label: r.label, value: values[i] ?? null })) });
-const luneOpen = rq(luneEmpty, ["Cut & style", "Maria", null, null, null], { open: luneSample.open, menu: luneSample.menu.map((m) => ({ ...m, chosen: m.id === "cut" })) });
-const lunePicked = { ...luneOpen, request: luneSample.request.map((r) => (r.label === "Time" ? { label: r.label, value: "Saturday, 3 PM", note: "Proposed" } : r)), proposed: { staffId: "maria", hour: 15 } };
-
 const lune = timeline([
   { type: "session.ready", sessionId: "replay", demo: "lune", channel: "phone" },
   { type: "pairing.linked" },
@@ -517,30 +513,28 @@ const lune = timeline([
   ok("c1", "check_availability", "Check the book", "3 open on Saturday"),
   state(1, luneOpen),
   speaking(true),
-  say("agent", "Maria has three or four on Saturday. Would three work? And what name should I put it under?"),
+  say("agent", "Maria has two-thirty, four or four-thirty on Saturday. Would two-thirty work? And what name should I put it under?"),
   speaking(false),
   1500,
-  say("visitor", "Three is perfect. Priya Shah."),
+  say("visitor", "Two-thirty is perfect. Priya Shah."),
   tool("c2", "note_booking", "Fill in the booking card"),
   500,
   ok("c2", "note_booking", "Fill in the booking card", "Noted 2 details"),
   state(2, lunePicked),
   speaking(true),
-  say("agent", "Welcome back, Priya. A cut and style with Maria, Saturday at three. Want to add a gloss? It’s thirty-five dollars and makes the colour pop."),
+  say("agent", "Welcome back, Priya. A cut and style with Maria, Saturday at two-thirty. Want to add a gloss? It’s thirty-five dollars and makes the colour pop."),
   speaking(false),
   1500,
   say("visitor", "Sure, add it."),
   tool("c3", "book_appointment", "Book the appointment"),
   700,
-  ok("c3", "book_appointment", "Book the appointment", "Booked · LN-218"),
+  ok("c3", "book_appointment", "Book the appointment", "Booked · LN-746"),
   state(3, luneSample),
   speaking(true),
-  say("agent", "You’re all set, Priya. See you Saturday at three. Anything else?"),
+  say("agent", "You’re all set, Priya. See you Saturday at two-thirty. Anything else?"),
   speaking(false),
   { type: "session.ended", reason: "agent_ended" },
 ]);
-
-const twOpen = rq(tidewellEmpty, [null, "Chiropractic · new patient", "Lower back pain after lifting, 1 week", null, null], { open: tidewellSample.open, menu: tidewellSample.menu.map((m) => ({ ...m, chosen: m.id === "chiro-new" })), extras: { title: "Intake & coverage", rows: [{ label: "Patient type", value: "New · assessment first", tone: "good" }, { label: "Red flags", value: "None mentioned", tone: "good" }] } });
 
 const tidewell = timeline([
   { type: "session.ready", sessionId: "replay", demo: "tidewell", channel: "phone" },
@@ -555,19 +549,19 @@ const tidewell = timeline([
   ok("c1", "note_visit", "Fill in the patient booking", "Noted 4 details"),
   tool("c2", "check_availability", "Check the schedule"),
   700,
-  ok("c2", "check_availability", "Check the schedule", "3 open on Tuesday"),
-  state(1, twOpen),
+  ok("c2", "check_availability", "Check the schedule", "Open on Tuesday"),
+  state(1, tidewellOpen),
   speaking(true),
-  say("agent", "Oh, I’m sorry, back pain is miserable. A new patient visit with Dr. Lee would be a good start. She has ten, eleven or four on Tuesday."),
+  say("agent", "Oh, I’m sorry, back pain is miserable. A new patient visit with Dr. Lee would be a good start. She has ten-thirty on Tuesday."),
   speaking(false),
   1500,
-  say("visitor", "Eleven. Jordan Reyes. I have Regence."),
+  say("visitor", "Ten-thirty works. Jordan Reyes. I have Regence."),
   tool("c3", "book_appointment", "Book the visit"),
   700,
-  ok("c3", "book_appointment", "Book the visit", "Booked · TW-407"),
+  ok("c3", "book_appointment", "Book the visit", "Booked"),
   state(2, tidewellSample),
   speaking(true),
-  say("agent", "You’re booked with Dr. Lee on Tuesday at eleven. We bill Regence directly, and I’ll email your intake forms. Please come ten minutes early."),
+  say("agent", "You’re booked with Dr. Lee on Tuesday at ten-thirty. We bill Regence directly, and I’ll email your intake forms. Please come ten minutes early."),
   speaking(false),
   { type: "session.ended", reason: "agent_ended" },
 ]);

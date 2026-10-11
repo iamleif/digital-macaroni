@@ -100,6 +100,7 @@ const TOOL_LOGOS: Record<string, string> = {
   boulevard: "boulevard.png", vagaro: "vagaro.png", shopmonkey: "shopmonkey.png", tekmetric: "tekmetric.jpg", fresha: "fresha.png", mangomint: "mangomint.png", mindbody: "mindbody.png", jane: "jane.png", workiz: "workiz.png",
   lawmatics: "lawmatics.png", mycase: "mycase.png", practicepanther: "practicepanther.png", cliogrow: "cliogrow.png",
   housecallpro: "housecallpro.png", jobber: "jobber.png",
+  nexhealth: "nexhealth.png", opendental: "opendental.png", dentrix: "dentrix.svg", agencyzoom: "agencyzoom.png", appliedepic: "appliedepic.svg", liteapi: "liteapi.png",
 };
 export function ToolMark({ id, name }: { id: string; name: string }) {
   const file = TOOL_LOGOS[id];

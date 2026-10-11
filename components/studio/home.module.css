@@ -803,3 +803,26 @@
 .recTiles > div { padding: 8px 10px; border-radius: 10px; box-shadow: 0 0 0 1px var(--hair); background: #fff; }
 .recTiles small { display: block; font-size: 10px; color: var(--muted); }
 .recTiles b { display: block; font-size: 12px; font-weight: 600; margin-top: 2px; white-space: nowrap; }
+
+
+/* ---- The examples: each in its own tinted panel, with the businesses you can call ---- */
+.ex { padding: 40px; border-radius: 34px; background: var(--exbg, #f6f5f1); }
+.exTone_blue { --exbg: linear-gradient(180deg, #f1f5fc, #e6eefb); }
+.exTone_sage { --exbg: linear-gradient(180deg, #f3f6f0, #e8efe3); }
+.exTone_navy { --exbg: linear-gradient(180deg, #f0f3f9, #e4eaf5); }
+.exTone_sand { --exbg: linear-gradient(180deg, #fbf5ec, #f5e9d8); }
+.exWrap { gap: 28px; }
+.exKinds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+.exKinds a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px; background: #fff; box-shadow: 0 0 0 1px rgba(15, 15, 13, 0.06), 0 6px 16px -14px rgba(15, 15, 13, 0.35); color: inherit; text-decoration: none; transition: transform .25s var(--ease, ease), box-shadow .25s var(--ease, ease); }
+.exKinds a:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(15, 15, 13, 0.1), 0 14px 24px -16px rgba(15, 15, 13, 0.4); }
+.exKinds a > svg:first-child { flex-shrink: 0; }
+.exKinds span { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.exKinds b { font-size: 14px; font-weight: 600; }
+.exText .exKinds small { margin: 1px 0 0; font-size: 12px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted, #74726b); line-height: 1.3; }
+.exKinds a > svg:last-child { flex-shrink: 0; color: var(--faint, #a6a49c); }
+@media (max-width: 960px) {
+  .ex { padding: 22px; border-radius: 26px; }
+}
+@media (max-width: 520px) {
+  .exKinds { grid-template-columns: minmax(0, 1fr); }
+}
