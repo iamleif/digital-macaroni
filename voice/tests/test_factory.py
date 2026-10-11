@@ -260,3 +260,25 @@ class TestBookingAlerts:
         monkeypatch.setattr(factory, "_resend", fake)
         await booking_alerts.handle(_json.loads(body))
         assert sent and "New discovery call: Jess" in sent[0][1] and "10:00 AM Eastern (16:00 in Norway)" in sent[0][2] and "+15095550142" in sent[0][2]
+
+
+class TestAsyncVoicemail:
+    async def test_a_late_voicemail_verdict_hangs_up(self, monkeypatch):
+        hung, leads = [], []
+
+        async def hang_up(sid):
+            hung.append(sid)
+            return True
+
+        async def lead(j, summary):
+            leads.append(j.step)
+
+        monkeypatch.setattr(twilio_api, "hang_up", hang_up)
+        monkeypatch.setattr(factory, "_send_lead", lead)
+        s, _ = admit("agent", "phone", client=True)
+        j = factory._new_job("instant")
+        j.session_id, j.call_sid = s.id, "CA123"
+        await factory.instant_amd(j.id, "human")
+        assert not hung and not s.ended
+        await factory.instant_amd(j.id, "machine_end_beep")
+        assert hung == ["CA123"] and s.ended == "no_answer" and j.step == "no_answer" and leads == ["no_answer"]

@@ -180,6 +180,17 @@ async def twilio_instant_answer(request: Request, job: str = "") -> Response:
     return xml(await factory.instant_answer(job, params.get("AnsweredBy", "unknown")))
 
 
+@app.post("/twilio/instant-amd")
+async def twilio_instant_amd(request: Request, job: str = "") -> Response:
+    """Twilio's answering machine verdict for the instant call, which arrives while the agent is already talking."""
+    params = {k: str(v) for k, v in (await request.form()).items()}
+    if not signed(f"/twilio/instant-amd?job={job}", params, request.headers.get("x-twilio-signature")):
+        log.warn("twilio.bad_signature", {"route": "instant-amd"})
+        return Response(status_code=403)
+    await factory.instant_amd(job, params.get("AnsweredBy", "unknown"))
+    return Response(status_code=204)
+
+
 @app.post("/twilio/instant-status")
 async def twilio_instant_status(request: Request, job: str = "") -> Response:
     params = {k: str(v) for k, v in (await request.form()).items()}

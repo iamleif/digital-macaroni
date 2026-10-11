@@ -53,10 +53,11 @@ async def _request(method: str, path: str, data: Optional[dict[str, Any]] = None
         return 0, {"message": "network"}
 
 
-async def place_call(to: str, from_: str, answer_url: str, status_callback: str) -> Optional[str]:
+async def place_call(to: str, from_: str, answer_url: str, status_callback: str, amd_callback: str) -> Optional[str]:
     """
-    Rings `to`. When it's answered, Twilio first checks whether a person or a voicemail picked up
-    (answering machine detection), then asks `answer_url` what to do, with AnsweredBy in the request.
+    Rings `to`. The moment it's answered Twilio asks `answer_url` what to do, so the agent speaks at once;
+    meanwhile it listens for a voicemail greeting and reports a person or a machine to `amd_callback`
+    (asynchronous answering machine detection: no silence for the caller while it decides).
     Progress (ringing, answered, completed, no answer) goes to `status_callback`. Returns the call SID, or None.
     """
     status, body = await _request(
@@ -65,6 +66,7 @@ async def place_call(to: str, from_: str, answer_url: str, status_callback: str)
         data={
             "To": to, "From": from_, "Url": answer_url, "Method": "POST", "Timeout": "25",
             "MachineDetection": "Enable", "MachineDetectionTimeout": "8",
+            "AsyncAmd": "true", "AsyncAmdStatusCallback": amd_callback, "AsyncAmdStatusCallbackMethod": "POST",
             "StatusCallback": status_callback, "StatusCallbackMethod": "POST",
             # Twilio takes one StatusCallbackEvent parameter per event.
             "StatusCallbackEvent": ["initiated", "ringing", "answered", "completed"],
@@ -74,6 +76,11 @@ async def place_call(to: str, from_: str, answer_url: str, status_callback: str)
         log.warn("twilio_api.call_failed", {"outcome": status, "code": body.get("code")})
         return None
     return body.get("sid")
+
+
+async def hang_up(call_sid: str) -> bool:
+    status, _ = await _request("POST", f"/Calls/{call_sid}.json", data={"Status": "completed"})
+    return 200 <= status < 300
 
 
 async def send_sms(to: str, body: str, from_: Optional[str] = None) -> bool:

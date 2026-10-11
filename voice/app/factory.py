@@ -57,6 +57,7 @@ class Job:
     lead: dict[str, str] = field(default_factory=dict)
     profile: Optional[Profile] = None
     lead_sent: bool = False
+    call_sid: str = ""
     # Instant: the call's summary, kept so a later booking alert can show it.
     summary: Optional[dict[str, Any]] = None
 
@@ -167,7 +168,8 @@ async def _run_instant(j: Job) -> None:
         session.after_call = lambda s: _after_instant(j, s)
         j.session_id = session.id
         j.step = "calling"
-        sid = await twilio_api.place_call(lead["phone"], config.instant_from, f"{config.public_url}/twilio/instant-answer?job={j.id}", f"{config.public_url}/twilio/instant-status?job={j.id}")
+        sid = await twilio_api.place_call(lead["phone"], config.instant_from, f"{config.public_url}/twilio/instant-answer?job={j.id}", f"{config.public_url}/twilio/instant-status?job={j.id}", f"{config.public_url}/twilio/instant-amd?job={j.id}")
+        j.call_sid = sid or ""
         if not sid:
             session.end("error")
             j.step, j.error, j.message = "failed", "call_failed", "We couldn't place the call. Please check the number and try again."
@@ -198,6 +200,25 @@ async def instant_answer(job_id: str, answered_by: str) -> str:
         return hangup_twiml()
     j.step = "in_call"
     return stream_twiml("ws" + config.public_url[4:] + "/twilio/media", {"sessionId": s.id}, f"{config.public_url}/twilio/after-stream?session={s.id}")
+
+
+async def instant_amd(job_id: str, answered_by: str) -> None:
+    """Twilio decided, after the agent started talking, whether a person or a voicemail answered. A voicemail ends the call."""
+    from .session import get_session
+
+    j = jobs.get(job_id)
+    if not j or not (answered_by.startswith("machine") or answered_by == "fax"):
+        return
+    log.info("factory.instant_voicemail", {"outcome": answered_by})
+    s = get_session(j.session_id)
+    if s:
+        s.after_call = None
+    if j.call_sid:
+        await twilio_api.hang_up(j.call_sid)
+    if s and not s.ended:
+        s.end("no_answer")
+    j.step, j.message = "no_answer", VOICEMAIL_MESSAGE
+    await _send_lead(j, None)
 
 
 async def instant_status(job_id: str, call_status: str) -> None:
