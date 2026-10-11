@@ -4,13 +4,13 @@ The appointment engine for businesses that book people into set times with a nam
 booking, moving and cancelling against it. Each business keeps its own folder (data, rules, prompt,
 words on screen) and hands the engine its team, services and hours.
 
-Times are whole hours; a service longer than an hour takes the next hours too. Slot ids carry the
-staff member ("2026-10-03T14@maria"), so the agent offers a person and a time together.
+Times are minutes after midnight, in 15-minute units: a service takes exactly its length (a 45-minute
+blowout, a three-hour balayage). Bookings start on the hour or half hour. Slot ids carry the staff
+member ("2026-10-03T1430@maria"), so the agent offers a person and a time together.
 """
 
 from __future__ import annotations
 
-import math
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -23,8 +23,8 @@ from .types import OpContext, OpResult, add_days, date_in, date_label, fail, mas
 class Busy:
     staff_id: str
     date: str
-    hour: int
-    span: int
+    start: int  # minutes after midnight
+    minutes: int
     title: str
     ref: str
     existing: bool
@@ -60,7 +60,8 @@ class Message:
 class BookingState:
     seed: str
     today: str
-    earliest_today_hour: int
+    # Earliest bookable time today, in minutes after midnight.
+    earliest_today: int
     busy: list[Busy] = field(default_factory=list)
     # What the caller has told us, in the business's own fields.
     request: dict[str, Any] = field(default_factory=dict)
@@ -73,26 +74,32 @@ class BookingState:
     emailed: Optional[dict[str, Any]] = None
 
 
-def hour_label(h: int) -> str:
-    return f"{((h + 11) % 12) + 1} {'AM' if h < 12 else 'PM'}"
+UNIT = 15
+
+
+def time_label(m: int) -> str:
+    h, mm = divmod(m, 60)
+    return f"{(h + 11) % 12 + 1}{f':{mm:02d}' if mm else ''} {'AM' if h < 12 else 'PM'}"
 
 
 def parse_slot(sid: str) -> Optional[tuple[str, int, str]]:
-    m = re.fullmatch(r"(\d{4}-\d{2}-\d{2})T(\d{2})@([a-z0-9_-]+)", sid)
-    return (m.group(1), int(m.group(2)), m.group(3)) if m else None
+    m = re.fullmatch(r"(\d{4}-\d{2}-\d{2})T(\d{2})(\d{2})@([a-z0-9_-]+)", sid)
+    return (m.group(1), int(m.group(2)) * 60 + int(m.group(3)), m.group(4)) if m else None
+
+
+def slot_id(day: str, start: int, pid: str) -> str:
+    return f"{day}T{start // 60:02d}{start % 60:02d}@{pid}"
 
 
 class Calendar:
-    def __init__(self, *, prefix: str, time_zone: str, open_hour: int, close_hour: int, closed_weekdays: frozenset[int], days_ahead: int, staff: list[dict[str, Any]], services: list[dict[str, Any]], busy_titles: dict[str, list[str]]):
+    def __init__(self, *, prefix: str, time_zone: str, open_hour: int, close_hour: int, closed_weekdays: frozenset[int], days_ahead: int, staff: list[dict[str, Any]], services: list[dict[str, Any]], busy_titles: Optional[dict[str, list[str]]] = None):
         self.prefix = prefix
         self.time_zone = time_zone
-        self.open_hour, self.close_hour = open_hour, close_hour
+        self.open, self.close = open_hour * 60, close_hour * 60
         self.closed_weekdays = closed_weekdays
         self.days_ahead = days_ahead
         self.staff = staff
         self.services = services
-        # Titles for other clients' bookings on each person's calendar, so the board looks like a real day.
-        self.busy_titles = busy_titles
 
     # ---- Lookups ----
 
@@ -106,64 +113,66 @@ class Calendar:
         """How the team says the name: "Maria", "Dr. Lee"."""
         return self.person(pid)["short"]
 
-    def span(self, sid: str) -> int:
-        return max(1, math.ceil(self.service(sid)["minutes"] / 60))
-
-    def hours(self) -> list[int]:
-        return list(range(self.open_hour, self.close_hour))
+    def length(self, sid: str) -> int:
+        """A service's length on the book, rounded up to the 15-minute unit."""
+        m = self.service(sid)["minutes"]
+        return -(-m // UNIT) * UNIT
 
     def bookable_days(self, state: BookingState) -> list[str]:
         return [d for d in (add_days(state.today, i) for i in range(self.days_ahead)) if weekday(d) not in self.closed_weekdays]
 
     def describe(self, sid: str) -> dict[str, str]:
-        day, hour, pid = parse_slot(sid)  # type: ignore[misc]
-        return {"slotId": sid, "date": day, "day": date_label(day), "time": hour_label(hour), "with": self.person(pid)["name"]}
+        day, start, pid = parse_slot(sid)  # type: ignore[misc]
+        return {"slotId": sid, "date": day, "day": date_label(day), "time": time_label(start), "with": self.person(pid)["name"]}
 
     # ---- The calendar ----
 
     def create_state(self, now: datetime) -> BookingState:
+        """Other clients' bookings: each person's own services at their real lengths, about two-thirds of the day."""
         today, hour, minute = date_in(self.time_zone, now)
-        state = BookingState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (2 if minute > 0 else 1))
+        state = BookingState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today=hour * 60 + minute + 60)
         n = 0
         today_ord = datetime.fromisoformat(today).toordinal()
         for day in self.bookable_days(state):
             di = datetime.fromisoformat(day).toordinal() - today_ord
             for pi, p in enumerate(self.staff):
-                titles = self.busy_titles.get(p["id"]) or ["Booked"]
-                h = self.open_hour
-                while h < self.close_hour:
-                    if (di * 5 + h * 3 + pi * 7) % 4 == 0:
-                        span = 2 if (di + h + pi) % 5 == 0 and h + 1 < self.close_hour else 1
-                        state.busy.append(Busy(p["id"], day, h, span, titles[(di + h + pi) % len(titles)], f"existing-{n}", True))
-                        n += 1
-                        h += span
-                    else:
-                        h += 1
+                theirs = [x for x in self.services if p["id"] in x["staff"] and not x.get("hidden")]
+                t = self.open
+                k = di * 11 + pi * 5
+                while t < self.close:
+                    k += 1
+                    if k % 5 in (0, 3):  # an open stretch; now and then a long one, so a three-hour colour still fits
+                        t += (180 if k % 10 == 0 else 60) if k % 5 == 0 else 30
+                        continue
+                    svc = theirs[k % len(theirs)]
+                    mins = self.length(svc["id"])
+                    if t + mins > self.close:
+                        t += 30
+                        continue
+                    state.busy.append(Busy(p["id"], day, t, mins, svc["name"], f"existing-{n}", True))
+                    n += 1
+                    t += mins
         return state
 
-    def free(self, state: BookingState, pid: str, day: str, hour: int, span: int, ignore_ref: Optional[str] = None) -> bool:
-        if hour + span > self.close_hour:
+    def free(self, state: BookingState, pid: str, day: str, start: int, minutes: int, ignore_ref: Optional[str] = None) -> bool:
+        if start < self.open or start + minutes > self.close:
             return False
-        for b in state.busy:
-            if b.staff_id == pid and b.date == day and b.ref != ignore_ref and b.hour < hour + span and hour < b.hour + b.span:
-                return False
-        return True
+        return not any(b.staff_id == pid and b.date == day and b.ref != ignore_ref and b.start < start + minutes and start < b.start + b.minutes for b in state.busy)
 
     def open_slots(self, state: BookingState, service_id: str, day: str, staff_id: Optional[str] = None, ignore_ref: Optional[str] = None) -> list[str]:
         if day not in self.bookable_days(state):
             return []
         s = self.service(service_id)
         who = [p for p in s["staff"] if staff_id in (None, p)]
-        span = self.span(service_id)
+        mins = self.length(service_id)
         out = []
-        for h in self.hours():
-            if day == state.today and h < state.earliest_today_hour:
+        for start in range(self.open, self.close, 30):
+            if day == state.today and start < state.earliest_today:
                 continue
             for pid in who:
-                if self.free(state, pid, day, h, span, ignore_ref):
-                    out.append(f"{day}T{h:02d}@{pid}")
+                if self.free(state, pid, day, start, mins, ignore_ref):
+                    out.append(slot_id(day, start, pid))
         return out
-
     # ---- Operations the businesses wrap ----
 
     def check(self, state: BookingState, service_id: str, date: str, staff_id: Optional[str], part_of_day: Optional[str]) -> OpResult:
@@ -175,8 +184,8 @@ class Calendar:
             return fail("outside_calendar", f"Bookings open from today to {date_label(days[-1])}.")
 
         def in_part(sid: str) -> bool:
-            h = parse_slot(sid)[1]  # type: ignore[index]
-            return h < 12 if part_of_day == "morning" else h >= 12 if part_of_day == "afternoon" else True
+            m = parse_slot(sid)[1]  # type: ignore[index]
+            return m < 12 * 60 if part_of_day == "morning" else m >= 12 * 60 if part_of_day == "afternoon" else True
 
         exact = [x for x in self.open_slots(state, service_id, date, staff_id) if in_part(x)]
         state.viewing = {"date": date, "slots": exact, "service": service_id}
@@ -207,17 +216,17 @@ class Calendar:
             return fail("already_booked", "This caller already has a booking in this call. Use reschedule_appointment to change it.", {"appointmentId": live[0].id, "confirmation": self.confirm_text(live[0])})
         if slot_id not in state.offered:
             return fail("slot_not_offered", "That time was not offered. Check availability first.")
-        day, hour, pid = parse_slot(slot_id)  # type: ignore[misc]
+        day, start, pid = parse_slot(slot_id)  # type: ignore[misc]
         if pid not in self.service(service_id)["staff"]:
             return fail("wrong_service", "That time was offered for a different service. Check availability for this one.")
-        span = self.span(service_id)
-        if not self.free(state, pid, day, hour, span):
+        mins = self.length(service_id)
+        if not self.free(state, pid, day, start, mins):
             alternatives = self.open_slots(state, service_id, day)[:3]
             state.offered = list(dict.fromkeys(state.offered + alternatives))
             return fail("slot_taken", "That time has just been taken.", {"alternatives": [self.describe(x) for x in alternatives]})
         aid = reference(self.prefix, state.seq, state.seed)
         state.seq += 1
-        state.busy.append(Busy(pid, day, hour, span, self.service(service_id)["name"], aid, False, name.strip()))
+        state.busy.append(Busy(pid, day, start, mins, self.service(service_id)["name"], aid, False, name.strip()))
         state.appointments.append(Appointment(aid, service_id, slot_id, pid, name.strip(), "booked", ctx.now.isoformat(), extras=extras or {}))
         state.request.pop("proposedSlotId", None)
         state.viewing = {"date": day, "slots": self.open_slots(state, service_id, day), "service": service_id}
@@ -231,11 +240,11 @@ class Calendar:
             return ok(f"Already at that time · {a.id}", {"appointmentId": a.id, "unchanged": True})
         if new_slot_id not in state.offered:
             return fail("slot_not_offered", "That time was not offered. Check availability first.")
-        day, hour, pid = parse_slot(new_slot_id)  # type: ignore[misc]
-        if pid not in self.service(a.service_id)["staff"] or not self.free(state, pid, day, hour, self.span(a.service_id), a.id):
+        day, start, pid = parse_slot(new_slot_id)  # type: ignore[misc]
+        if pid not in self.service(a.service_id)["staff"] or not self.free(state, pid, day, start, self.length(a.service_id), a.id):
             return fail("slot_taken", "That time is no longer free.")
         b = next(b for b in state.busy if b.ref == a.id)
-        b.staff_id, b.date, b.hour = pid, day, hour
+        b.staff_id, b.date, b.start = pid, day, start
         a.slot_id, a.staff_id, a.updated_at, a.changes = new_slot_id, pid, ctx.now.isoformat(), a.changes + 1
         state.viewing = {"date": day, "slots": self.open_slots(state, a.service_id, day), "service": a.service_id}
         s = self.describe(new_slot_id)
@@ -277,24 +286,27 @@ class Calendar:
         v = state.viewing
         opened = []
         if v and v["date"] == day:
+            mins = self.length(v["service"])
             for sid in v["slots"]:
-                _, h, pid = parse_slot(sid)  # type: ignore[misc]
-                opened.append({"staffId": pid, "hour": h})
+                _, start, pid = parse_slot(sid)  # type: ignore[misc]
+                opened.append({"staffId": pid, "start": start, "minutes": mins})
         proposed = state.request.get("proposedSlotId")
         prop = parse_slot(proposed) if proposed else None
         chosen = state.request.get("serviceId") or (live[-1].service_id if live else None)
+        svc_group = {s["name"]: s["group"] for s in self.services}
         return {
             "skin": skin,
             "timeZone": time_zone_label,
             "day": {"label": date_label(day)},
-            "staff": [{"id": p["id"], "name": p["short"], "role": p["role"]} for p in self.staff],
-            "hours": [{"hour": h, "label": hour_label(h)} for h in self.hours()],
+            "dayStart": self.open,
+            "dayEnd": self.close,
+            "staff": [{"id": p["id"], "name": p["short"], "role": p["role"], **({"photo": p["photo"]} if p.get("photo") else {})} for p in self.staff],
             "schedule": [
-                {"staffId": b.staff_id, "hour": b.hour, "span": b.span, "kind": "existing" if b.existing else "demo", "title": b.title, **({"ref": b.ref, "name": b.name} if not b.existing else {})}
+                {"staffId": b.staff_id, "start": b.start, "minutes": b.minutes, "kind": "existing" if b.existing else "demo", "title": b.title, "group": svc_group.get(b.title.split(" + ")[0], ""), **({"ref": b.ref, "name": b.name} if not b.existing else {})}
                 for b in state.busy if b.date == day and (b.existing or any(a.id == b.ref and a.status == "booked" for a in state.appointments))
             ],
             "open": opened,
-            "proposed": {"staffId": prop[2], "hour": prop[1]} if prop and prop[0] == day else None,
+            "proposed": {"staffId": prop[2], "start": prop[1], "minutes": self.length(chosen) if chosen else 60} if prop and prop[0] == day else None,
             "menu": [{"id": s["id"], "name": s["name"], "price": s["priceLabel"], "minutes": s["minutes"], "staff": [self.person(p)["short"] for p in s["staff"]], "group": s["group"], "chosen": s["id"] == chosen} for s in self.services if not s.get("hidden")],
             "request": request,
             "extras": extras,
@@ -304,5 +316,4 @@ class Calendar:
             ],
             "messages": [{"id": m.id, "name": m.name, "summary": m.summary, "preferredTime": m.preferred_time, "callback": mask_number(m.callback_number), "urgent": m.urgent} for m in state.messages],
             "emailed": state.emailed,
-            "agent": agent,
         }

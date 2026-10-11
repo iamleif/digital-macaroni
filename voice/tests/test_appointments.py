@@ -52,7 +52,7 @@ class TestLune:
         b = await run("book_appointment", {"slotId": slot, "service": "balayage", "name": "Leah Park", "callerConfirmed": True})
         assert b.ok and "$25" in b.result["deposit"]
         mine = next(j for j in state.busy if not j.existing)
-        assert mine.span == 3
+        assert mine.minutes == 180
 
     async def test_closed_sunday_and_monday(self):
         _, run = runner(lune)
