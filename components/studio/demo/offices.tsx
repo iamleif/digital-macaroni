@@ -3,7 +3,7 @@ import { ProductArt, swatch } from "../live/product-art";
 import { formfieldEmpty } from "../live/sample-views";
 import type { AppointmentView, BrandId, DealershipView, FormFieldView, HotelsStage, HotelsView, InsuranceView, LawFirmView, RealEstateView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
 import { BrandMark } from "../brand-marks";
-import { ArrowRight, Bed, Calendar, Check, Clock, Coffee, Home, Inbox, Lock, MapPin, Phone, Search, Seat, Settings, Suitcase, User, Users } from "../icons";
+import { ArrowRight, Bed, Calendar, Check, Clock, Coffee, Globe, Grid, Home, Inbox, Lock, MapPin, Phone, Search, Seat, Settings, Suitcase, User } from "../icons";
 import d from "./demo.module.css";
 
 /*
@@ -19,12 +19,40 @@ export const StaticPreview = createContext(false);
 
 const STATE_LABEL: Record<LiveState, string> = { sample: "Sample data", live: "Your call · live", finished: "Your call · finished" };
 
-function Shell({ id, nav, title, kicker, tools, state, children }: { id: BrandId; nav: number; title: string; kicker: string; tools?: ReactNode; state: LiveState; children: ReactNode }) {
-  const icons = [Home, Calendar, Inbox, Users];
-  return <div className={d.app} data-demo={id}>
-    <nav className={d.rail} aria-hidden="true">
+/** The agent's latest step on the call. Each back office follows it to the screen that step changes. */
+export type Cue = { tool: string; id: string } | null;
+type IconC = (p: { size?: number }) => ReactNode;
+type Screen = { id: string; label: string; icon: IconC; count?: number; body: ReactNode };
+
+/** The screen the agent's work points to: the newest step that maps to a screen wins; before any, `start`. */
+function useFollow(cue: Cue | undefined, map: Record<string, string>, start: string): string {
+  const [on, setOn] = useState(start);
+  const seen = useRef<string | null>(null);
+  useEffect(() => {
+    if (!cue) { seen.current = null; setOn(start); return; }
+    if (cue.id === seen.current) return;
+    seen.current = cue.id;
+    const to = map[cue.tool];
+    if (to) setOn(to);
+  }, [cue, map, start]);
+  return on;
+}
+
+/**
+ * The business's software: a sidebar of screens and one screen at a time, sized to the frame. The screen
+ * follows the agent (`active`); a click opens another, until the agent's next step takes it back.
+ */
+function Screens({ id, kicker, title, tools, state, screens, active, cue, head }: { id: BrandId; kicker: string; title: string; tools?: ReactNode; state: LiveState; screens: Screen[]; active: string; cue?: Cue; head?: ReactNode }) {
+  const [picked, setPicked] = useState<string | null>(null);
+  useEffect(() => { setPicked(null); }, [active, cue?.id]);
+  const on = screens.find((x) => x.id === (picked ?? active)) ?? screens[0]!;
+  const buttons = screens.map((x) => <button key={x.id} type="button" data-on={x.id === on.id || undefined} aria-pressed={x.id === on.id} onClick={() => setPicked(x.id)} title={x.label}>
+    <x.icon size={17} /><small>{x.label}</small>{x.count ? <i>{x.count}</i> : null}
+  </button>);
+  return <div className={d.app} data-demo={id} data-screens>
+    <nav className={d.rail} aria-label="Screens">
       <span className={d.railLogo}><BrandMark id={id} size={30} /></span>
-      {icons.map((I, i) => <span key={i} data-on={i === nav || undefined}><I size={17} /></span>)}
+      {buttons}
       <span className={d.railEnd}><Settings size={17} /></span>
     </nav>
     <div className={d.appMain}>
@@ -35,7 +63,9 @@ function Shell({ id, nav, title, kicker, tools, state, children }: { id: BrandId
           <span className={d.statePill} data-state={state}><i />{STATE_LABEL[state]}</span>
         </div>
       </header>
-      {children}
+      <nav className={d.tabs} aria-label="Screens">{buttons}</nav>
+      {head}
+      <div className={d.screen} key={on.id}>{on.body}</div>
     </div>
   </div>;
 }
@@ -68,7 +98,7 @@ const TONES = ["a", "b", "c", "d"];
 
 /* ---------------- Northline ---------------- */
 
-export function NorthlineOffice({ view, state, agentName }: { view: NorthlineView; state: LiveState; agentName: string }) {
+export function NorthlineOffice({ view, state, agentName, cue }: { view: NorthlineView; state: LiveState; agentName: string; cue?: Cue }) {
   const job = (techId: string, hour: number) => view.schedule.find((j) => j.techId === techId && j.hour === hour);
   const isOpen = (techId: string, hour: number) => view.open.some((o) => o.techId === techId && o.hour === hour);
   const r = view.request;
@@ -78,16 +108,15 @@ export function NorthlineOffice({ view, state, agentName }: { view: NorthlineVie
   const slots = view.technicians.length * view.windows.length;
   const taken = view.schedule.length;
   let proposedShown = false;
+  const active = useFollow(cue, NORTHLINE_SCREENS, "schedule");
 
-  return <Shell id="northline" nav={1} kicker={`Dispatch · ${view.timeZone}`} title={view.day.label} state={state}
-    tools={<span className={d.seg}><b>Day</b><span>Week</span></span>}>
+  const schedule = <>
     <div className={d.kpis}>
       <div><span>Technicians</span><strong>{view.technicians.length}</strong></div>
       <div><span>Windows booked</span><strong>{taken}<small>/{slots}</small></strong></div>
       <div data-hot={view.open.length > 0 || undefined}><span>Open for this job</span><strong>{view.open.length || "—"}</strong></div>
       <div data-hot={Boolean(booked) || undefined}><span>Your visit</span><strong>{booked ? booked.id : "—"}</strong></div>
     </div>
-
     <section className={d.board} aria-label="Dispatch board">
       <div className={d.boardGrid} style={{ gridTemplateColumns: `100px repeat(${view.windows.length}, minmax(92px, 1fr))` }}>
         <span className={d.boardCorner}>Technician</span>
@@ -111,35 +140,44 @@ export function NorthlineOffice({ view, state, agentName }: { view: NorthlineVie
         ])}
       </div>
     </section>
+  </>;
 
-    <div className={d.cards}>
-      <Card title="Service request" meta={<span className={d.progress}><i style={{ width: `${filled * 20}%` }} />{filled}/5</span>}>
-        <dl className={d.fields}>
-          <Field label="Service" value={r.service} />
-          <Field label="Name" value={r.name} />
-          <Field label="Address" value={r.address} />
-          <Field label="Problem" value={r.issue} />
-          <Field label="Time" value={time} note={booked ? "Booked" : r.proposed ? "Proposed" : undefined} />
-        </dl>
-      </Card>
-      <div className={d.stack}>
-        <Card title="Visits" meta={view.appointments.length || "None yet"}>
-          {view.appointments.length ? <ul className={d.list}>{view.appointments.map((a) => <li key={a.id} data-status={a.status}>
-            <span className={d.listIcon}><Calendar size={15} /></span>
-            <div><b>{a.service} · {a.id}</b><small>{a.day}, {a.window} · {a.technician}</small><small>{a.name}, {a.address}</small></div>
-            <em data-status={a.status}>{a.status === "cancelled" ? "Cancelled" : a.changes ? `Moved ${a.changes}×` : "Booked"}</em>
-          </li>)}</ul> : <Empty>A visit appears here once {agentName} books it.</Empty>}
-          {view.emailed ? <Emailed to={view.emailed.to} what={`Confirmation for ${view.emailed.reference}`} /> : null}
-        </Card>
-        <Card title="Messages" meta={view.messages.length || "Inbox empty"}>
-          {view.messages.length ? <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
-            <span className={d.listIcon}><Phone size={15} /></span>
-            <div><b>{m.name} · {m.id}</b><small>{m.summary}</small>{m.preferredTime ? <small>Call back {m.preferredTime}</small> : null}</div>
-          </li>)}</ul> : <Empty>Callback requests for the team land here.</Empty>}
-        </Card>
-      </div>
-    </div>
-  </Shell>;
+  const booking = <div className={d.cards}>
+    <Card title="Service request" meta={<span className={d.progress}><i style={{ width: `${filled * 20}%` }} />{filled}/5</span>}>
+      <dl className={d.fields}>
+        <Field label="Service" value={r.service} />
+        <Field label="Name" value={r.name} />
+        <Field label="Address" value={r.address} />
+        <Field label="Problem" value={r.issue} />
+        <Field label="Time" value={time} note={booked ? "Booked" : r.proposed ? "Proposed" : undefined} />
+      </dl>
+    </Card>
+    <Card title="Visits" meta={view.appointments.length || "None yet"}>
+      {view.appointments.length ? <ul className={d.list}>{view.appointments.map((a) => <li key={a.id} data-status={a.status}>
+        <span className={d.listIcon}><Calendar size={15} /></span>
+        <div><b>{a.service} · {a.id}</b><small>{a.day}, {a.window} · {a.technician}</small><small>{a.name}, {a.address}</small></div>
+        <em data-status={a.status}>{a.status === "cancelled" ? "Cancelled" : a.changes ? `Moved ${a.changes}×` : "Booked"}</em>
+      </li>)}</ul> : <Empty>A visit appears here once {agentName} books it.</Empty>}
+      {view.emailed ? <Emailed to={view.emailed.to} what={`Confirmation for ${view.emailed.reference}`} /> : null}
+    </Card>
+  </div>;
+
+  return <Screens id="northline" kicker={`Dispatch · ${view.timeZone}`} title={view.day.label} state={state} active={active} cue={cue} screens={[
+    { id: "schedule", label: "Schedule", icon: Calendar, body: schedule },
+    { id: "booking", label: "Booking", icon: User, body: booking },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages.length, body: <Messages items={view.messages} empty="Callback requests for the team land here." /> },
+  ]} />;
+}
+const NORTHLINE_SCREENS: Record<string, string> = { note_request_details: "booking", get_business_info: "booking", check_availability: "schedule", book_appointment: "schedule", reschedule_appointment: "schedule", cancel_appointment: "booking", email_confirmation: "booking", take_message: "inbox" };
+
+/** Callback requests and messages for the team: the same inbox in every business. */
+function Messages({ items, empty, title = "Messages" }: { items: { id: string; name: string; summary: string; preferredTime?: string | null; callback?: string; for?: string | null; urgent?: boolean }[]; empty: string; title?: string }) {
+  return <Card title={title} meta={items.length || "Inbox empty"}>
+    {items.length ? <ul className={d.list}>{items.map((m) => <li key={m.id}>
+      <span className={d.listIcon}><Phone size={15} /></span>
+      <div><b>{m.name} · {m.id}{m.urgent ? " · urgent" : ""}</b><small>{m.summary}</small>{m.for || m.callback || m.preferredTime ? <small>{[m.for ? `For ${m.for}` : null, m.callback ? `call back ${m.callback}` : null, m.preferredTime ?? null].filter(Boolean).join(" · ")}</small> : null}</div>
+    </li>)}</ul> : <Empty>{empty}</Empty>}
+  </Card>;
 }
 
 /* ---------------- Ellie's other front desks: salon / med spa and clinic ---------------- */
@@ -149,25 +187,24 @@ const WORDS = {
   clinic: { brand: "tidewell" as const, kicker: "Reception", staff: "Practitioner", staffs: "Practitioners", menu: "Visit types", request: "Patient booking", list: "Visits", mine: "Booked on this call" },
 };
 
-export function AppointmentOffice({ view, state, agentName }: { view: AppointmentView; state: LiveState; agentName: string }) {
+export function AppointmentOffice({ view, state, agentName, cue }: { view: AppointmentView; state: LiveState; agentName: string; cue?: Cue }) {
   const w = WORDS[view.skin];
   const booked = [...view.appointments].reverse().find((a) => a.status === "booked");
   const filled = view.request.filter((r) => r.value).length;
   const busyHours = view.schedule.reduce((n, j) => n + j.span, 0);
   const isOpen = (staffId: string, hour: number) => view.open.some((o) => o.staffId === staffId && o.hour === hour);
   const groups = [...new Set(view.menu.map((m) => m.group))];
+  const active = useFollow(cue, APPOINTMENT_SCREENS, "day");
 
-  return <Shell id={w.brand} nav={1} kicker={`${w.kicker} · ${view.timeZone}`} title={view.day.label} state={state}
-    tools={<span className={d.seg}><b>Day</b><span>Week</span></span>}>
+  const day = <>
     <div className={d.kpis}>
       <div><span>{w.staffs}</span><strong>{view.staff.length}</strong></div>
       <div><span>Hours booked</span><strong>{busyHours}<small>/{view.staff.length * view.hours.length}</small></strong></div>
       <div data-hot={view.open.length > 0 || undefined}><span>Open for this</span><strong>{view.open.length || "—"}</strong></div>
       <div data-hot={Boolean(booked) || undefined}><span>{w.mine}</span><strong>{booked ? booked.id : "—"}</strong></div>
     </div>
-
     <section className={d.board} aria-label={`${w.staff} schedule`}>
-      <div className={d.boardGrid} style={{ gridTemplateColumns: `140px repeat(${view.hours.length}, minmax(96px, 1fr))` }}>
+      <div className={d.boardGrid} data-fit style={{ gridTemplateColumns: `128px repeat(${view.hours.length}, minmax(0, 1fr))` }}>
         <span className={d.boardCorner}>{w.staff}</span>
         {view.hours.map((h) => <span key={h.hour} className={d.boardHour}>{h.label}</span>)}
         {view.staff.map((s, row) => {
@@ -188,36 +225,45 @@ export function AppointmentOffice({ view, state, agentName }: { view: Appointmen
         })}
       </div>
     </section>
+  </>;
 
-    <div className={d.cards}>
-      <Card title={w.menu} meta={`${view.menu.length} options`}>
-        <div className={d.menu}>{groups.map((g) => <div key={g}>
-          <small>{g}</small>
-          <ul>{view.menu.filter((m) => m.group === g).map((m) => <li key={m.id} data-chosen={m.chosen || undefined}>
-            <div><b>{m.name}</b><span>{m.minutes} min · {m.staff.join(", ")}</span></div>
-            <strong>{m.price}</strong>
-          </li>)}</ul>
-        </div>)}</div>
+  const booking = <div className={d.cards}>
+    <div className={d.stack}>
+      <Card title={w.request} meta={<span className={d.progress}><i style={{ width: `${(filled / view.request.length) * 100}%` }} />{filled}/{view.request.length}</span>}>
+        <dl className={d.fields}>{view.request.map((r) => <Field key={r.label} label={r.label} value={r.value} note={r.note} />)}</dl>
       </Card>
-      <div className={d.stack}>
-        <Card title={w.request} meta={<span className={d.progress}><i style={{ width: `${(filled / view.request.length) * 100}%` }} />{filled}/{view.request.length}</span>}>
-          <dl className={d.fields}>{view.request.map((r) => <Field key={r.label} label={r.label} value={r.value} note={r.note} />)}</dl>
-        </Card>
-        {view.extras ? <Card title={view.extras.title}>
-          <ul className={d.extras}>{view.extras.rows.map((r) => <li key={r.label} data-tone={r.tone}><span>{r.label}</span><b>{r.value}</b></li>)}</ul>
-        </Card> : null}
-        <Card title={w.list} meta={view.appointments.length || "None yet"}>
-          {view.appointments.length ? <ul className={d.list}>{view.appointments.map((a) => <li key={a.id} data-status={a.status}>
-            <span className={d.listIcon}><Calendar size={15} /></span>
-            <div><b>{a.service} · {a.id}</b><small>{a.when} · {a.staff}</small><small>{a.name}</small></div>
-            <em data-status={a.status}>{a.status === "cancelled" ? "Cancelled" : a.changes ? `Moved ${a.changes}×` : "Booked"}</em>
-          </li>)}</ul> : <Empty>{view.skin === "salon" ? "An appointment" : "A visit"} appears here once {agentName} books it.</Empty>}
-          {view.emailed ? <Emailed to={view.emailed.to} what={`Confirmation for ${view.emailed.reference}`} /> : null}
-        </Card>
-      </div>
+      {view.extras ? <Card title={view.extras.title}>
+        <ul className={d.extras}>{view.extras.rows.map((r) => <li key={r.label} data-tone={r.tone}><span>{r.label}</span><b>{r.value}</b></li>)}</ul>
+      </Card> : null}
     </div>
-  </Shell>;
+    <Card title={w.list} meta={view.appointments.length || "None yet"}>
+      {view.appointments.length ? <ul className={d.list}>{view.appointments.map((a) => <li key={a.id} data-status={a.status}>
+        <span className={d.listIcon}><Calendar size={15} /></span>
+        <div><b>{a.service} · {a.id}</b><small>{a.when} · {a.staff}</small><small>{a.name}</small></div>
+        <em data-status={a.status}>{a.status === "cancelled" ? "Cancelled" : a.changes ? `Moved ${a.changes}×` : "Booked"}</em>
+      </li>)}</ul> : <Empty>{view.skin === "salon" ? "An appointment" : "A visit"} appears here once {agentName} books it.</Empty>}
+      {view.emailed ? <Emailed to={view.emailed.to} what={`Confirmation for ${view.emailed.reference}`} /> : null}
+    </Card>
+  </div>;
+
+  const menu = <Card title={w.menu} meta={`${view.menu.length} options`}>
+    <div className={d.menuGrid}>{groups.map((g) => <div key={g}>
+      <small>{g}</small>
+      <ul>{view.menu.filter((m) => m.group === g).map((m) => <li key={m.id} data-chosen={m.chosen || undefined}>
+        <div><b>{m.name}</b><span>{m.minutes} min · {m.staff.join(", ")}</span></div>
+        <strong>{m.price}</strong>
+      </li>)}</ul>
+    </div>)}</div>
+  </Card>;
+
+  return <Screens id={w.brand} kicker={`${w.kicker} · ${view.timeZone}`} title={view.day.label} state={state} active={active} cue={cue} screens={[
+    { id: "day", label: "Day", icon: Calendar, body: day },
+    { id: "booking", label: "Booking", icon: User, body: booking },
+    { id: "menu", label: view.skin === "salon" ? "Menu" : "Services", icon: Grid, body: menu },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages.length, body: <Messages items={view.messages} empty="Callback requests for the team land here." /> },
+  ]} />;
 }
+const APPOINTMENT_SCREENS: Record<string, string> = { note_booking: "booking", note_visit: "booking", find_patient: "booking", get_business_info: "menu", check_availability: "day", book_appointment: "day", reschedule_appointment: "day", cancel_appointment: "booking", email_confirmation: "booking", take_message: "inbox" };
 
 /* ---------------- Form & Field ---------------- */
 
@@ -234,7 +280,7 @@ function Photo({ id, name, option }: { id: string | undefined; name: string; opt
   return src ? <img src={src} alt={name} loading="lazy" /> : <ProductArt id={id ?? ""} color={swatch(option)} />;
 }
 
-export function FormFieldOffice({ view, state, agentName }: { view: FormFieldView; state: LiveState; agentName: string }) {
+export function FormFieldOffice({ view, state, agentName, cue }: { view: FormFieldView; state: LiveState; agentName: string; cue?: Cue }) {
   const live = state !== "sample";
   const focus = view.shown.find((p) => p.focus);
   // The shelves always show: the standard catalogue with live stock for anything looked up, plus other finds.
@@ -243,16 +289,15 @@ export function FormFieldOffice({ view, state, agentName }: { view: FormFieldVie
   const found = new Set(live ? view.shown.map((p) => p.id) : []);
   const productId = (name: string) => catalogue.find((p) => p.name === name)?.id;
   const reservedCount = view.reservations.filter((r) => r.status === "reserved").length;
+  const active = useFollow(cue, FORMFIELD_SCREENS, "catalogue");
 
-  return <Shell id="formfield" nav={0} kicker="Shop" title="Catalogue" state={state}
-    tools={<span className={d.search}><Search size={13} />{found.size ? `${found.size} found by ${agentName}` : "Search products"}</span>}>
+  const shelf = <>
     <div className={d.kpis}>
       <div><span>On the shelves</span><strong>{catalogue.length}</strong></div>
       <div data-hot={found.size > 0 || undefined}><span>Found on this call</span><strong>{found.size || "—"}</strong></div>
       <div data-hot={reservedCount > 0 || undefined}><span>Held for pickup</span><strong>{reservedCount || "—"}</strong></div>
       <div data-hot={Boolean(view.order) || undefined}><span>Order looked up</span><strong>{view.order ? `#${view.order.number}` : "—"}</strong></div>
     </div>
-
     <section className={d.shelf} aria-label="Catalogue">
       {catalogue.map((p) => {
         const reserved = view.reservations.filter((r) => r.status === "reserved" && r.product === p.name);
@@ -272,42 +317,51 @@ export function FormFieldOffice({ view, state, agentName }: { view: FormFieldVie
         </article>;
       })}
     </section>
+  </>;
 
-    <div className={d.cards}>
-      <Card title="Product details" meta={focus?.name ?? "None open"}>
-        {focus && (focus.description || focus.materials) ? <>
-          {focus.description ? <p className={d.copy}>{focus.description}</p> : null}
-          <dl className={d.fields}>
-            {focus.materials ? <Field label="Materials" value={focus.materials} /> : null}
-            {focus.size ? <Field label="Size" value={focus.size} /> : null}
-          </dl>
-        </> : <Empty>When {agentName} looks something up for you, its details open here.</Empty>}
-      </Card>
-      <Card title="Pickup orders" meta={view.reservations.length || "None yet"}>
-        {view.reservations.length ? <ul className={d.list}>{view.reservations.map((r) => <li key={r.id} data-status={r.status}>
-          <span className={d.thumb}><Photo id={productId(r.product)} name={r.product} option={r.option} /></span>
-          <div><b>{r.quantity} × {r.product}</b><small>{r.option} · for {r.name} · {r.id}</small><small>Held until closing {r.pickupBy} · ${r.price} paid in store</small></div>
-          <em data-status={r.status === "reserved" ? "booked" : "cancelled"}>{r.status === "reserved" ? "Ready" : "Cancelled"}</em>
-        </li>)}</ul> : <Empty>A pickup order appears here once {agentName} reserves something.</Empty>}
-        {view.emailed ? <Emailed to={view.emailed.to} what={`Reservation ${view.emailed.reference}`} /> : null}
-      </Card>
-      <Card title={view.order ? `Order #${view.order.number}` : "Order lookup"} meta={view.order?.status ?? "None yet"}>
-        {view.order ? <>
-          <p className={d.copy}>{view.order.name}</p>
-          <ul className={d.items}>{view.order.items.map((i) => <li key={i.name}><b>{i.name}</b><span>{i.option} · ${i.price}</span></li>)}</ul>
-          <ol className={d.timeline}>{view.order.events.map((e, i) => <li key={e} data-last={i === view.order!.events.length - 1 || undefined}>{e}</li>)}</ol>
-          {view.supportRequests.map((s) => <p key={s.id} className={d.flag}>Support request {s.id}: pending review. Nothing is refunded automatically.</p>)}
-        </> : <Empty>{agentName} discusses an order only once its number and email both match.</Empty>}
-      </Card>
-      <Card title="Messages" meta={view.messages.length || "Inbox empty"}>
-        {view.messages.length ? <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
-          <span className={d.listIcon}><Phone size={15} /></span>
-          <div><b>{m.name} · {m.id}</b><small>{m.summary}</small></div>
-        </li>)}</ul> : <Empty>Callback requests for the team land here.</Empty>}
-      </Card>
-    </div>
-  </Shell>;
+  const product = <Card title="Product details" meta={focus?.name ?? "None open"}>
+    {focus ? <div className={d.productFocus}>
+      <span className={d.productFocusImg}><Photo id={focus.id} name={focus.name} option={focus.options.find((o) => o.inStock > 0)?.option ?? focus.options[0]!.option} /></span>
+      <div>
+        <b>{focus.name}</b><strong>${focus.price}</strong>
+        {focus.description ? <p className={d.copy}>{focus.description}</p> : null}
+        <dl className={d.fields}>
+          {focus.materials ? <Field label="Materials" value={focus.materials} /> : null}
+          {focus.size ? <Field label="Size" value={focus.size} /> : null}
+        </dl>
+        <ul className={d.stock}>{focus.options.map((o) => <li key={o.id} data-out={o.inStock === 0 || undefined}><i style={{ background: swatch(o.option) }} />{o.option}<b>{o.inStock === 0 ? "Out" : `${o.inStock} left`}</b></li>)}</ul>
+      </div>
+    </div> : <Empty>When {agentName} looks something up for you, its details open here.</Empty>}
+  </Card>;
+
+  const pickups = <Card title="Pickup orders" meta={view.reservations.length || "None yet"}>
+    {view.reservations.length ? <ul className={d.list}>{view.reservations.map((r) => <li key={r.id} data-status={r.status}>
+      <span className={d.thumb}><Photo id={productId(r.product)} name={r.product} option={r.option} /></span>
+      <div><b>{r.quantity} × {r.product}</b><small>{r.option} · for {r.name} · {r.id}</small><small>Held until closing {r.pickupBy} · ${r.price} paid in store</small></div>
+      <em data-status={r.status === "reserved" ? "booked" : "cancelled"}>{r.status === "reserved" ? "Ready" : "Cancelled"}</em>
+    </li>)}</ul> : <Empty>A pickup order appears here once {agentName} reserves something.</Empty>}
+    {view.emailed ? <Emailed to={view.emailed.to} what={`Reservation ${view.emailed.reference}`} /> : null}
+  </Card>;
+
+  const orders = <Card title={view.order ? `Order #${view.order.number}` : "Order lookup"} meta={view.order?.status ?? "None yet"}>
+    {view.order ? <>
+      <p className={d.copy}>{view.order.name}</p>
+      <ul className={d.items}>{view.order.items.map((i) => <li key={i.name}><b>{i.name}</b><span>{i.option} · ${i.price}</span></li>)}</ul>
+      <ol className={d.timeline}>{view.order.events.map((e, i) => <li key={e} data-last={i === view.order!.events.length - 1 || undefined}>{e}</li>)}</ol>
+      {view.supportRequests.map((s) => <p key={s.id} className={d.flag}>Support request {s.id}: pending review. Nothing is refunded automatically.</p>)}
+    </> : <Empty>{agentName} discusses an order only once its number and email both match.</Empty>}
+  </Card>;
+
+  return <Screens id="formfield" kicker="Shop" title="Catalogue" state={state} active={active} cue={cue}
+    tools={<span className={d.search}><Search size={13} />{found.size ? `${found.size} found by ${agentName}` : "Search products"}</span>} screens={[
+    { id: "catalogue", label: "Shelves", icon: Grid, body: shelf },
+    { id: "product", label: "Product", icon: Search, body: product },
+    { id: "pickups", label: "Pickups", icon: Check, count: reservedCount, body: pickups },
+    { id: "orders", label: "Orders", icon: Suitcase, body: orders },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages.length, body: <Messages items={view.messages} empty="Callback requests for the team land here." /> },
+  ]} />;
 }
+const FORMFIELD_SCREENS: Record<string, string> = { search_products: "catalogue", get_product_details: "product", reserve_item: "pickups", update_reservation: "pickups", cancel_reservation: "pickups", email_reservation: "pickups", lookup_order: "orders", create_support_request: "orders", take_message: "inbox" };
 
 /* ---------------- Waypoint ---------------- */
 
@@ -660,7 +714,8 @@ function TripSummary({ view, stage }: { view: TravelView; stage: TravelStage }) 
   </section>;
 }
 
-export function TravelOffice({ view, state, agentName }: { view: TravelView; state: LiveState; agentName: string }) {
+export function TravelOffice({ view, state, agentName, cue }: { view: TravelView; state: LiveState; agentName: string; cue?: Cue }) {
+  const active = useFollow(cue, TRAVEL_SCREENS, "booking");
   const q = view.search;
   const live = state !== "sample";
   const from = q ? (q.originName ?? q.origin) : null;
@@ -698,8 +753,7 @@ export function TravelOffice({ view, state, agentName }: { view: TravelView; sta
   const searching = !q || stepIndex(shown) <= stepIndex("options");
   const kicker = searching || !q ? "Flight desk" : `${isoDate(q.departureDate)}${q.returnDate ? ` – ${isoDate(q.returnDate)}` : " · one way"} · ${q.adults} adult${q.adults > 1 ? "s" : ""}, ${q.cabinClass.replace("_", " ")}`;
 
-  return <Shell id="travel" nav={1} kicker={kicker} title={q ? `${from} → ${to}` : "Flights"} state={state}
-    tools={<span className={d.seg}><b>Booking</b><span>Trips</span></span>}>
+  const booking = <>
     {searching ? <div className={d.trip}>
       <Field label="From" value={from} />
       <Field label="To" value={to} />
@@ -709,15 +763,15 @@ export function TravelOffice({ view, state, agentName }: { view: TravelView; sta
     </div> : null}
     <Stepper stage={stage} shown={shown} onShow={(s) => setPeek(s === stage ? null : { at: stage, show: s })} view={view} />
     <div className={d.stagePanel} key={shown}>{panel}</div>
-    <TripSummary view={view} stage={stage} />
-    {view.messages?.length ? <Card title="Messages for an agent" meta={view.messages.length}>
-      <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
-        <span className={d.listIcon}><Phone size={15} /></span>
-        <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>Call back on {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
-      </li>)}</ul>
-    </Card> : null}
-  </Shell>;
+  </>;
+
+  return <Screens id="travel" kicker={kicker} title={q ? `${from} → ${to}` : "Flights"} state={state} active={active} cue={cue} screens={[
+    { id: "booking", label: "Booking", icon: Seat, body: booking },
+    { id: "trip", label: "Trip", icon: Globe, body: <TripSummary view={view} stage={stage} /> },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages?.length ?? 0, body: <Messages title="Messages for an agent" items={view.messages ?? []} empty="Callback requests for an agent land here." /> },
+  ]} />;
 }
+const TRAVEL_SCREENS: Record<string, string> = { find_places: "booking", search_flights: "booking", choose_flight: "booking", choose_fare: "booking", get_seats: "booking", choose_seat: "booking", add_bags: "booking", set_traveller: "booking", review_booking: "booking", book_flight: "booking", email_itinerary: "trip", take_message: "inbox" };
 
 
 /* ---------------- Palmetto Stays ---------------- */
@@ -941,7 +995,8 @@ function StaySummary({ view }: { view: HotelsView }) {
   </section>;
 }
 
-export function HotelsOffice({ view, state, agentName }: { view: HotelsView; state: LiveState; agentName: string }) {
+export function HotelsOffice({ view, state, agentName, cue }: { view: HotelsView; state: LiveState; agentName: string; cue?: Cue }) {
+  const active = useFollow(cue, HOTEL_SCREENS, "booking");
   const q = view.search;
   const live = state !== "sample";
   const stage = hotelStageOf(view);
@@ -971,8 +1026,7 @@ export function HotelsOffice({ view, state, agentName }: { view: HotelsView; sta
   const searching = !q || hotelStep(shown) <= hotelStep("options");
   const kicker = searching || !q ? "Hotel desk" : `${q.checkinLabel} – ${q.checkoutLabel} · ${plural(q.nights, "night")} · ${plural(q.adults, "adult")}`;
 
-  return <Shell id="hotels" nav={1} kicker={kicker} title={q ? q.area : "Hotels"} state={state}
-    tools={<span className={d.seg}><b>Booking</b><span>Stays</span></span>}>
+  const booking = <>
     {searching ? <div className={d.trip}>
       <Field label="Area" value={q?.area} />
       <Field label="Check-in" value={q?.checkinLabel} />
@@ -982,15 +1036,15 @@ export function HotelsOffice({ view, state, agentName }: { view: HotelsView; sta
     </div> : null}
     <HotelStepper stage={stage} shown={shown} onShow={(s) => setPeek(s === stage ? null : { at: stage, show: s })} view={view} />
     <div className={d.stagePanel} key={shown}>{panel}</div>
-    {hotelStep(stage) >= hotelStep("hotel") ? <StaySummary view={view} /> : null}
-    {view.messages?.length ? <Card title="Messages for an agent" meta={view.messages.length}>
-      <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
-        <span className={d.listIcon}><Phone size={15} /></span>
-        <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>Call back on {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
-      </li>)}</ul>
-    </Card> : null}
-  </Shell>;
+  </>;
+
+  return <Screens id="hotels" kicker={kicker} title={q ? q.area : "Hotels"} state={state} active={active} cue={cue} screens={[
+    { id: "booking", label: "Booking", icon: Bed, body: booking },
+    { id: "stay", label: "Stay", icon: MapPin, body: hotelStep(stage) >= hotelStep("hotel") ? <StaySummary view={view} /> : <Empty>The stay comes together here once {agentName} opens a hotel.</Empty> },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages?.length ?? 0, body: <Messages title="Messages for an agent" items={view.messages ?? []} empty="Callback requests for an agent land here." /> },
+  ]} />;
 }
+const HOTEL_SCREENS: Record<string, string> = { search_hotels: "booking", choose_hotel: "booking", choose_room: "booking", set_guest: "booking", review_stay: "booking", book_stay: "booking", email_quote: "stay", take_message: "inbox" };
 
 
 /* ---------------- Alder & Finch Injury Law ---------------- */
@@ -1059,10 +1113,10 @@ function RecordHeader({ opened, number, tags, source, stages, at, label }: { ope
 }
 
 /** The record's sections, each field typed in, picked or toggled as the agent records it. */
-function RecordForm({ sections, opened, waiting, children }: { sections: { id: string; title: string; fields: RecordField[] }[]; opened: boolean; waiting: string; children?: ReactNode }) {
+function RecordForm({ sections, opened, waiting, children, wide }: { sections: { id: string; title: string; fields: RecordField[] }[]; opened: boolean; waiting: string; children?: ReactNode; wide?: boolean }) {
   const all = sections.flatMap((s) => s.fields);
   const filled = all.filter((x) => (Array.isArray(x.value) ? x.value.length : x.value)).length;
-  return <div className={d.recForm}>
+  return <div className={d.recForm} data-wide={wide || undefined}>
     {!opened ? <p className={d.recWaiting}>{waiting}</p> : null}
     {sections.map((sec, i) => <section key={sec.id} className={d.recSection}>
       <h3>{sec.title}{i === 0 ? <span>{filled}/{all.length} filled</span> : null}</h3>
@@ -1077,72 +1131,67 @@ function RecordForm({ sections, opened, waiting, children }: { sections: { id: s
   </div>;
 }
 
-export function LawFirmOffice({ view, state, agentName }: { view: LawFirmView; state: LiveState; agentName: string }) {
+export function LawFirmOffice({ view, state, agentName, cue }: { view: LawFirmView; state: LiveState; agentName: string; cue?: Cue }) {
   const r = view.record;
   const a = view.assessment;
   const conflict = view.conflict;
   const stages: RecordStage[] = r.stage === "declined" ? [...STAGES.slice(0, 2), { id: "declined", label: "Declined", declined: true }] : STAGES;
   const at = stages.findIndex((x) => x.id === r.stage);
   const booked = [...view.consults].reverse().find((c) => c.status === "booked");
+  const active = useFollow(cue, LAW_SCREENS, "record");
 
-  return <Shell id="lawfirm" nav={2} kicker={`Matters · New potential client · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
-    tools={<span className={d.seg}><b>Record</b><span>7 AM brief</span></span>}>
-    <RecordHeader opened={r.opened} number={r.number ?? "PI-····"} tags={["Potential new client"]} source={`Phone · AI intake · ${agentName}`} stages={stages} at={at} label="Matter stage" />
-
-    <div className={d.recGrid}>
-      <RecordForm sections={r.sections} opened={r.opened} waiting={`The matter record opens the moment ${agentName} has something to write down.`} />
-
-      <div className={d.stack}>
-        <Card title="Case review" meta={a ? (a.outcome === "qualified" ? "Can take it" : "Cannot take it") : "Waiting"}>
-          <div className={d.review}>
-            <div className={d.reviewRow} data-state={conflict?.status ?? "waiting"}>
-              <i aria-hidden="true">{conflict ? (conflict.status === "clear" ? <Check size={11} /> : "!") : null}</i>
-              <div><b>Conflict check</b><small>{conflict ? (conflict.status === "clear" ? `No match for ${conflict.checked.join(" or ")} in clients or open matters` : "A conflict was found. The firm cannot take this matter.") : "Runs once the caller gives a name"}</small></div>
-            </div>
-            <div className={d.reviewRow} data-state={a ? (a.outcome === "qualified" ? "clear" : "conflict") : "waiting"}>
-              <i aria-hidden="true">{a ? (a.outcome === "qualified" ? <Check size={11} /> : "!") : null}</i>
-              <div>
-                <b>{a?.outcome === "declined" ? "Declined" : "Qualified"}{a?.tier ? <span className={d.tier} data-tier={a.tier}>Tier {a.tier}</span> : null}</b>
-                <small>{a ? (a.outcome === "declined" ? a.reason : TIER_NOTE[a.tier!]) : "Decided from the record once the basics are in"}</small>
-                {a?.outcome === "qualified" ? <ul className={d.reviewPoints}>{a.points.map((p) => <li key={p}>{p}</li>)}{a.flags.map((fl) => <li key={fl} data-flag>{fl}</li>)}</ul> : null}
-                {a?.deadline ? <small className={d.deadline}>Colorado limit · {a.deadline}</small> : null}
-              </div>
-            </div>
+  const review = <div className={d.cards}>
+    <Card title="Case review" meta={a ? (a.outcome === "qualified" ? "Can take it" : "Cannot take it") : "Waiting"}>
+      <div className={d.review}>
+        <div className={d.reviewRow} data-state={conflict?.status ?? "waiting"}>
+          <i aria-hidden="true">{conflict ? (conflict.status === "clear" ? <Check size={11} /> : "!") : null}</i>
+          <div><b>Conflict check</b><small>{conflict ? (conflict.status === "clear" ? `No match for ${conflict.checked.join(" or ")} in clients or open matters` : "A conflict was found. The firm cannot take this matter.") : "Runs once the caller gives a name"}</small></div>
+        </div>
+        <div className={d.reviewRow} data-state={a ? (a.outcome === "qualified" ? "clear" : "conflict") : "waiting"}>
+          <i aria-hidden="true">{a ? (a.outcome === "qualified" ? <Check size={11} /> : "!") : null}</i>
+          <div>
+            <b>{a?.outcome === "declined" ? "Declined" : "Qualified"}{a?.tier ? <span className={d.tier} data-tier={a.tier}>Tier {a.tier}</span> : null}</b>
+            <small>{a ? (a.outcome === "declined" ? a.reason : TIER_NOTE[a.tier!]) : "Decided from the record once the basics are in"}</small>
+            {a?.outcome === "qualified" ? <ul className={d.reviewPoints}>{a.points.map((p) => <li key={p}>{p}</li>)}{a.flags.map((fl) => <li key={fl} data-flag>{fl}</li>)}</ul> : null}
+            {a?.deadline ? <small className={d.deadline}>Colorado limit · {a.deadline}</small> : null}
           </div>
-        </Card>
-
-        <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written after the call"}>
-          {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the matter once the case is reviewed.</Empty>}
-        </Card>
-
-        <Card title="Tasks created" meta={view.tasks.length || "None yet"}>
-          {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Follow-ups for the team are created from the record.</Empty>}
-        </Card>
-
-        <Card title="Free consultation" meta={booked ? booked.id : view.openTimes.length ? `${view.openTimes.length} open` : "Not booked"}>
-          {booked ? <div className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{booked.attorney}</b><small>{booked.day}, {booked.time} · {booked.format}</small></div><em>{booked.changes ? `Moved ${booked.changes}×` : "Booked"}</em></div>
-            : view.openTimes.length ? <div className={d.openTimes}>{view.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.attorney.split(" ")[0]} · {o.day}</small></span>)}</div>
-            : <Empty>Open times with the right attorney appear here.</Empty>}
-          {view.emailed ? <Emailed to={view.emailed.to} what={`Confirmation for ${view.emailed.reference}`} /> : null}
-        </Card>
-
-        <Card title="7 AM case brief" meta={view.brief ? `${view.brief.rows.length} calls` : "Last night"}>
-          {view.brief ? <ol className={d.brief}>{view.brief.rows.map((row, i) => <li key={`${row.who}-${i}`} data-mine={row.mine || undefined}>
-            <span className={d.tier} data-tier={row.tier ?? "none"}>{row.tier ?? "—"}</span>
-            <div><b>{row.who}{row.mine ? <em>This call</em> : null}</b><small>{row.summary}</small></div>
-          </li>)}</ol> : <Empty>Every call ranked by case value, ready at 7 AM.</Empty>}
-        </Card>
-
-        {view.messages.length ? <Card title="Messages" meta={view.messages.length}>
-          <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
-            <span className={d.listIcon}><Phone size={15} /></span>
-            <div><b>{m.name} · {m.id}{m.urgent ? " · urgent" : ""}</b><small>{m.summary}</small>{m.preferredTime ? <small>Call back {m.preferredTime}</small> : null}</div>
-          </li>)}</ul>
-        </Card> : null}
+        </div>
       </div>
-    </div>
-  </Shell>;
+    </Card>
+    <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written after the call"}>
+      {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the matter once the case is reviewed.</Empty>}
+    </Card>
+  </div>;
+
+  const consult = <div className={d.cards}>
+    <Card title="Free consultation" meta={booked ? booked.id : view.openTimes.length ? `${view.openTimes.length} open` : "Not booked"}>
+      {booked ? <div className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{booked.attorney}</b><small>{booked.day}, {booked.time} · {booked.format}</small></div><em>{booked.changes ? `Moved ${booked.changes}×` : "Booked"}</em></div>
+        : view.openTimes.length ? <div className={d.openTimes}>{view.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.attorney.split(" ")[0]} · {o.day}</small></span>)}</div>
+        : <Empty>Open times with the right attorney appear here.</Empty>}
+      {view.emailed ? <Emailed to={view.emailed.to} what={`Confirmation for ${view.emailed.reference}`} /> : null}
+    </Card>
+    <Card title="Tasks created" meta={view.tasks.length || "None yet"}>
+      {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Follow-ups for the team are created from the record.</Empty>}
+    </Card>
+  </div>;
+
+  const brief = <Card title="7 AM case brief" meta={view.brief ? `${view.brief.rows.length} calls` : "Last night"}>
+    {view.brief ? <ol className={d.brief}>{view.brief.rows.map((row, i) => <li key={`${row.who}-${i}`} data-mine={row.mine || undefined}>
+      <span className={d.tier} data-tier={row.tier ?? "none"}>{row.tier ?? "—"}</span>
+      <div><b>{row.who}{row.mine ? <em>This call</em> : null}</b><small>{row.summary}</small></div>
+    </li>)}</ol> : <Empty>Every call ranked by case value, ready at 7 AM.</Empty>}
+  </Card>;
+
+  return <Screens id="lawfirm" kicker={`Matters · New potential client · ${view.timeZone}`} title={r.title ?? "New call"} state={state} active={active} cue={cue}
+    head={<RecordHeader opened={r.opened} number={r.number ?? "PI-····"} tags={["Potential new client"]} source={`Phone · AI intake · ${agentName}`} stages={stages} at={at} label="Matter stage" />} screens={[
+    { id: "record", label: "Matter", icon: User, body: <RecordForm wide sections={r.sections} opened={r.opened} waiting={`The matter record opens the moment ${agentName} has something to write down.`} /> },
+    { id: "review", label: "Review", icon: Check, body: review },
+    { id: "consult", label: "Calendar", icon: Calendar, body: consult },
+    { id: "brief", label: "Brief", icon: Clock, body: brief },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages.length, body: <Messages items={view.messages} empty="Messages for the attorneys land here." /> },
+  ]} />;
 }
+const LAW_SCREENS: Record<string, string> = { note_intake: "record", check_conflicts: "review", assess_case: "review", check_availability: "consult", book_consultation: "consult", reschedule_consultation: "consult", email_confirmation: "consult", take_message: "inbox" };
 
 
 /* ---------------- Juniper Row Realty ---------------- */
@@ -1168,7 +1217,7 @@ function HomeTile({ h, searching }: { h: RealEstateView["listings"]["homes"][num
   </li>;
 }
 
-export function RealEstateOffice({ view, state, agentName }: { view: RealEstateView; state: LiveState; agentName: string }) {
+export function RealEstateOffice({ view, state, agentName, cue }: { view: RealEstateView; state: LiveState; agentName: string; cue?: Cue }) {
   const r = view.record;
   const lead = view.lead;
   const booked = view.appointments.filter((a) => a.status === "booked");
@@ -1177,77 +1226,75 @@ export function RealEstateOffice({ view, state, agentName }: { view: RealEstateV
   const L = view.listings;
   const searching = L.criteria != null || L.homes.some((h) => h.focus);
   const est = view.estimate;
+  const active = useFollow(cue, REALESTATE_SCREENS, "listings");
 
-  return <Shell id="realestate" nav={3} kicker={`Leads · Inbound call · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
-    tools={<span className={d.seg}><b>Lead</b><span>Listings</span><span>Calendar</span></span>}>
-    <RecordHeader opened={r.opened} number={r.number ?? "L-····"} tags={[lead.known ? "Known contact" : "New inquiry"]} source={`Phone · AI assistant · ${agentName}`} stages={stages} at={at} label="Lead stage" />
+  const leadCard = <Card title="Lead score" meta={lead.tier ? lead.tierNote : "Waiting"}>
+    <div className={d.review}>
+      <div className={d.reviewRow} data-state={lead.tier ? "clear" : "waiting"}>
+        <i aria-hidden="true">{lead.tier ? <Check size={11} /> : null}</i>
+        <div>
+          <b>{lead.tier ? "Ranked" : "Not ranked yet"}{lead.tier ? <span className={d.tier} data-tier={lead.tier}>{lead.tier}</span> : null}</b>
+          <small>{lead.tier ? "From timeline, financing and what was booked. The caller never hears it." : "Ranked once the name, buying or selling, and timeline are in"}</small>
+          {lead.points.length || lead.flags.length ? <ul className={d.reviewPoints}>{lead.points.map((p) => <li key={p}>{p}</li>)}{lead.flags.map((fl) => <li key={fl} data-flag>{fl}</li>)}</ul> : null}
+        </div>
+      </div>
+      <div className={d.reviewRow} data-state={lead.agent ? "clear" : "waiting"}>
+        <i aria-hidden="true">{lead.agent ? <Check size={11} /> : null}</i>
+        <div><b>Assigned agent</b><small>{lead.agent ? `${lead.agent.name} · ${lead.agent.role}` : "Routed by area, or to the listing specialist for sellers"}</small></div>
+      </div>
+      {lead.known ? <div className={d.reviewRow} data-state="clear"><i aria-hidden="true"><Check size={11} /></i><div><b>Spoke with {lead.known.spokeWith}</b><small>{lead.known.note}</small></div></div> : null}
+    </div>
+  </Card>;
 
+  const listings = <>
     <Card title={L.criteria ? "Search" : "Active listings · Austin"} meta={L.criteria ? `${L.total} match${L.total === 1 ? "" : "es"}` : L.total ? `${L.total} homes` : "Waiting"}>
       {L.criteria ? <p className={d.homeCriteria}><Search size={13} />{L.criteria}</p> : null}
       {L.homes.length ? <ul className={d.homes}>{L.homes.map((h) => <HomeTile key={h.id} h={h} searching={searching} />)}</ul> : <Empty>Homes that match light up here as the caller describes what they want.</Empty>}
       {L.snapshot ? <p className={d.homeSource}>Real active listings (RentCast), as of {L.snapshot}</p> : null}
     </Card>
+    {view.focus || est ? <div className={d.cards}>
+      {view.focus ? <Card title="On the call" meta={view.focus.price}>
+        <div className={d.focusHome}>
+          <b>{view.focus.address}</b>
+          <small>{view.focus.area} · {view.focus.zip} · shows with {view.focus.agent}</small>
+          <dl>{view.focus.facts.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
+        </div>
+      </Card> : null}
+      {est ? <Card title="Home value" meta={est.status === "ok" ? "Estimate" : "No estimate"}>
+        {est.status === "ok" ? <div className={d.estimate}><small>{est.address}</small><strong>{est.low} – {est.high}</strong><span>From {est.comparables} comparable homes for sale nearby · confirmed by an in-person valuation</span></div>
+          : <Empty>No estimate for {est.address}. The listing specialist values it in person.</Empty>}
+      </Card> : null}
+    </div> : null}
+  </>;
 
-    <div className={d.recGrid}>
-      <RecordForm sections={r.sections} opened={r.opened} waiting={`The lead opens the moment ${agentName} learns something worth keeping.`} />
+  const calendar = <div className={d.cards}>
+    <Card title={booked.some((a) => a.purpose === "valuation") || view.calendar?.purpose === "valuation" ? "Valuation" : "Showing"} meta={booked.length ? booked[booked.length - 1].id : view.calendar?.openTimes.length ? `${view.calendar.openTimes.length} open` : "Not booked"}>
+      {booked.length ? booked.map((a) => <div key={a.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{a.address}</b><small>{a.day}, {a.time} · {a.agent}</small></div><em>{a.changes ? `Moved ${a.changes}×` : "Booked"}</em></div>)
+        : view.calendar?.openTimes.length ? <div className={d.openTimes}>{view.calendar.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.agent.split(" ")[0]} · {o.day}</small></span>)}</div>
+        : <Empty>Open times with the right agent appear here.</Empty>}
+      {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `Confirmation for ${view.emailed.reference}` : "Call summary"} /> : null}
+    </Card>
+    <Card title="Follow-ups" meta={view.tasks.length || "None yet"}>
+      {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Tasks for the agents are created from the lead.</Empty>}
+    </Card>
+  </div>;
 
-      <div className={d.stack}>
-        <Card title="Lead score" meta={lead.tier ? lead.tierNote : "Waiting"}>
-          <div className={d.review}>
-            <div className={d.reviewRow} data-state={lead.tier ? "clear" : "waiting"}>
-              <i aria-hidden="true">{lead.tier ? <Check size={11} /> : null}</i>
-              <div>
-                <b>{lead.tier ? "Ranked" : "Not ranked yet"}{lead.tier ? <span className={d.tier} data-tier={lead.tier}>{lead.tier}</span> : null}</b>
-                <small>{lead.tier ? "From timeline, financing and what was booked. The caller never hears it." : "Ranked once the name, buying or selling, and timeline are in"}</small>
-                {lead.points.length || lead.flags.length ? <ul className={d.reviewPoints}>{lead.points.map((p) => <li key={p}>{p}</li>)}{lead.flags.map((fl) => <li key={fl} data-flag>{fl}</li>)}</ul> : null}
-              </div>
-            </div>
-            <div className={d.reviewRow} data-state={lead.agent ? "clear" : "waiting"}>
-              <i aria-hidden="true">{lead.agent ? <Check size={11} /> : null}</i>
-              <div><b>Assigned agent</b><small>{lead.agent ? `${lead.agent.name} · ${lead.agent.role}` : "Routed by area, or to the listing specialist for sellers"}</small></div>
-            </div>
-            {lead.known ? <div className={d.reviewRow} data-state="clear"><i aria-hidden="true"><Check size={11} /></i><div><b>Spoke with {lead.known.spokeWith}</b><small>{lead.known.note}</small></div></div> : null}
-          </div>
-        </Card>
+  const inbox = <div className={d.cards}>
+    <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
+      {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the lead.</Empty>}
+    </Card>
+    <Messages items={view.messages} empty="Messages for the agents land here." />
+  </div>;
 
-        {view.focus ? <Card title="On the call" meta={view.focus.price}>
-          <div className={d.focusHome}>
-            <b>{view.focus.address}</b>
-            <small>{view.focus.area} · {view.focus.zip} · shows with {view.focus.agent}</small>
-            <dl>{view.focus.facts.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
-          </div>
-        </Card> : null}
-
-        {est ? <Card title="Home value" meta={est.status === "ok" ? "Automated estimate" : "No estimate"}>
-          {est.status === "ok" ? <div className={d.estimate}><small>{est.address}</small><strong>{est.low} – {est.high}</strong><span>From {est.comparables} recent sales nearby · confirmed by an in-person valuation</span></div>
-            : <Empty>No automated estimate for {est.address}. The listing specialist values it in person.</Empty>}
-        </Card> : null}
-
-        <Card title={booked.some((a) => a.purpose === "valuation") || view.calendar?.purpose === "valuation" ? "Valuation" : "Showing"} meta={booked.length ? booked[booked.length - 1].id : view.calendar?.openTimes.length ? `${view.calendar.openTimes.length} open` : "Not booked"}>
-          {booked.length ? booked.map((a) => <div key={a.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{a.address}</b><small>{a.day}, {a.time} · {a.agent}</small></div><em>{a.changes ? `Moved ${a.changes}×` : "Booked"}</em></div>)
-            : view.calendar?.openTimes.length ? <div className={d.openTimes}>{view.calendar.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.agent.split(" ")[0]} · {o.day}</small></span>)}</div>
-            : <Empty>Open times with the right agent appear here.</Empty>}
-          {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `Confirmation for ${view.emailed.reference}` : "Call summary"} /> : null}
-        </Card>
-
-        <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
-          {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the lead.</Empty>}
-        </Card>
-
-        <Card title="Follow-ups" meta={view.tasks.length || "None yet"}>
-          {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Tasks for the agents are created from the lead.</Empty>}
-        </Card>
-
-        {view.messages.length ? <Card title="Messages" meta={view.messages.length}>
-          <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
-            <span className={d.listIcon}><Phone size={15} /></span>
-            <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>For {m.for ?? "the team"} · call back {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
-          </li>)}</ul>
-        </Card> : null}
-      </div>
-    </div>
-  </Shell>;
+  return <Screens id="realestate" kicker={`Leads · Inbound call · ${view.timeZone}`} title={r.title ?? "New call"} state={state} active={active} cue={cue}
+    head={<RecordHeader opened={r.opened} number={r.number ?? "L-····"} tags={[lead.known ? "Known contact" : "New inquiry"]} source={`Phone · AI assistant · ${agentName}`} stages={stages} at={at} label="Lead stage" />} screens={[
+    { id: "lead", label: "Lead", icon: User, body: <div className={d.recGrid}><RecordForm sections={r.sections} opened={r.opened} waiting={`The lead opens the moment ${agentName} learns something worth keeping.`} />{leadCard}</div> },
+    { id: "listings", label: "Listings", icon: Home, body: listings },
+    { id: "calendar", label: "Calendar", icon: Calendar, body: calendar },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages.length, body: inbox },
+  ]} />;
 }
+const REALESTATE_SCREENS: Record<string, string> = { note_lead: "lead", search_listings: "listings", get_listing: "listings", estimate_value: "listings", check_availability: "calendar", book_appointment: "calendar", reschedule_appointment: "calendar", email_confirmation: "calendar", take_message: "inbox" };
 
 
 /* ---------------- Bluebird Insurance ---------------- */
@@ -1259,7 +1306,7 @@ function insuranceStages(v: InsuranceView): RecordStage[] {
   return [{ id: "new", label: "New call" }, { id: "intake", label: "Details" }, { id: "ready", label: customer ? "Verified" : "Ready to quote" }, { id: "booked", label: "Agent call booked" }];
 }
 
-export function InsuranceOffice({ view, state, agentName }: { view: InsuranceView; state: LiveState; agentName: string }) {
+export function InsuranceOffice({ view, state, agentName, cue }: { view: InsuranceView; state: LiveState; agentName: string; cue?: Cue }) {
   const r = view.record;
   const stages = insuranceStages(view);
   const at = Math.max(0, stages.findIndex((x) => x.id === r.stage)) + (r.stage === "logged" && !stages.some((x) => x.id === "logged") ? stages.length - 1 : 0);
@@ -1267,69 +1314,74 @@ export function InsuranceOffice({ view, state, agentName }: { view: InsuranceVie
   const p = view.policy;
   const c = view.claim;
   const rows = view.rows;
+  const active = useFollow(cue, INSURANCE_SCREENS, "account");
 
-  return <Shell id="insurance" nav={3} kicker={`Accounts · ${view.verified ? "Current customer" : "Prospect"} · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
-    tools={<span className={d.seg}><b>Account</b><span>Policies</span><span>Service</span></span>}>
-    <RecordHeader opened={r.opened} number={r.number ?? "Q-····"} tags={[view.verified ? "Verified customer" : "New prospect", ...view.flags]} source={`Phone · AI assistant · ${agentName}`} stages={stages} at={Math.min(at, stages.length - 1)} label="Account stage" />
-
-    <div className={d.recGrid}>
-      <RecordForm sections={r.sections} opened={r.opened} waiting={`The account opens the moment ${agentName} has something to write down.`}>
-        {rows.drivers.length || rows.vehicles.length || rows.home.length ? <Card title="For the quote" meta={`${rows.drivers.length + rows.vehicles.length + rows.home.length} items`}>
-          <ul className={d.list}>
-            {rows.drivers.map((x) => <li key={`d-${x.name}`}><span className={d.listIcon}><User size={15} /></span><div><b>{x.name}</b><small>Driver{x.detail ? ` · ${x.detail}` : ""}</small></div></li>)}
-            {rows.vehicles.map((x) => <li key={`v-${x.name}`}><span className={d.listIcon}><Suitcase size={15} /></span><div><b>{x.name}</b><small>Vehicle</small></div></li>)}
-            {rows.home.map((x) => <li key={`h-${x.name}`}><span className={d.listIcon}><Home size={15} /></span><div><b>{x.detail}</b><small>{x.name}</small></div></li>)}
-          </ul>
-        </Card> : null}
-        {view.accountPolicies.length ? <Card title="Policies on the account" meta={view.accountPolicies.length}>
-          <ul className={d.policies}>{view.accountPolicies.map((x) => <li key={x.number} data-on={p?.number === x.number || undefined}><b>{x.line}</b><span>{x.carrier}</span><small>{x.number} · renews {x.renews}</small></li>)}</ul>
-        </Card> : null}
-      </RecordForm>
-
-      <div className={d.stack}>
-        {p ? <Card title={`${p.line} policy`} meta={`${p.carrier} · ${p.term}`}>
-          <dl className={d.coverages}>{p.coverages.map((x) => <div key={x.name}><dt>{x.name}</dt><dd>{x.limit ?? x.deductible}{x.deductible && !x.limit ? <em>deductible</em> : null}</dd></div>)}</dl>
-          <p className={d.policyMeta}>{[...p.insured, ...p.drivers.map((n) => `Driver: ${n}`)].join(" · ")}</p>
-          <div className={d.billing}><span>{p.billing.plan}</span><b>{p.billing.amount}</b><small>Next due {p.billing.nextDue} · {p.billing.status}</small></div>
-        </Card> : <Card title="Policy" meta="Waiting"><Empty>A current customer&rsquo;s coverages, limits and deductibles open here once {agentName} finds them.</Empty></Card>}
-
-        {c ? <Card title="Claim notice" meta={c.id}>
-          <div className={d.claim} data-injured={c.injured || undefined}>
-            {c.description ? <p>{c.description}</p> : null}
-            <dl>{c.fields.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value ?? <span className={d.dash}>Waiting</span>}</dd></div>)}</dl>
-            <div className={d.claimLine}><Phone size={14} /><div><b>{c.carrier} claims · {c.claimsLine}</b><small>Given to the caller. The carrier&rsquo;s adjuster decides coverage.</small></div></div>
-          </div>
-        </Card> : null}
-
-        {view.requests.length ? <Card title="Service requests" meta={view.requests.length}>
-          <ul className={d.list}>{view.requests.map((x) => <li key={x.id}><span className={d.listIcon}><Inbox size={15} /></span><div><b>{x.kind} · {x.id}</b><small>{x.details}</small><small>{x.policy} · staff confirm before it takes effect</small></div></li>)}</ul>
-        </Card> : null}
-
-        <Card title="Licensed agent" meta={booked.length ? booked[booked.length - 1].id : view.openTimes.length ? `${view.openTimes.length} open` : "Not booked"}>
-          {booked.length ? booked.map((x) => <div key={x.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{x.agent} calls {x.name.split(" ")[0]}</b><small>{x.day}, {x.time} · {x.topic}</small></div><em>{x.changes ? `Moved ${x.changes}×` : "Booked"}</em></div>)
-            : view.openTimes.length ? <div className={d.openTimes}>{view.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.agent.split(" ")[0]} · {o.day}</small></span>)}</div>
-            : <Empty>Quotes go to a licensed agent: open call times appear here.</Empty>}
-          {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `${view.emailed.reference.startsWith("PA-") ? "ID card" : "Confirmation"} for ${view.emailed.reference}` : "Call summary"} /> : null}
-        </Card>
-
-        <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
-          {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the account.</Empty>}
-        </Card>
-
-        <Card title="Tasks created" meta={view.tasks.length || "None yet"}>
-          {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Follow-ups for the team are created from the account.</Empty>}
-        </Card>
-
-        {view.messages.length ? <Card title="Messages" meta={view.messages.length}>
-          <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
-            <span className={d.listIcon}><Phone size={15} /></span>
-            <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>Call back {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
-          </li>)}</ul>
-        </Card> : null}
-      </div>
+  const account = <div className={d.recGrid}>
+    <RecordForm sections={r.sections} opened={r.opened} waiting={`The account opens the moment ${agentName} has something to write down.`} />
+    <div className={d.stack}>
+      {rows.drivers.length || rows.vehicles.length || rows.home.length ? <Card title="For the quote" meta={`${rows.drivers.length + rows.vehicles.length + rows.home.length} items`}>
+        <ul className={d.list}>
+          {rows.drivers.map((x) => <li key={`d-${x.name}`}><span className={d.listIcon}><User size={15} /></span><div><b>{x.name}</b><small>Driver{x.detail ? ` · ${x.detail}` : ""}</small></div></li>)}
+          {rows.vehicles.map((x) => <li key={`v-${x.name}`}><span className={d.listIcon}><Suitcase size={15} /></span><div><b>{x.name}</b><small>Vehicle</small></div></li>)}
+          {rows.home.map((x) => <li key={`h-${x.name}`}><span className={d.listIcon}><Home size={15} /></span><div><b>{x.detail}</b><small>{x.name}</small></div></li>)}
+        </ul>
+      </Card> : null}
+      {view.accountPolicies.length ? <Card title="Policies on the account" meta={view.accountPolicies.length}>
+        <ul className={d.policies}>{view.accountPolicies.map((x) => <li key={x.number} data-on={p?.number === x.number || undefined}><b>{x.line}</b><span>{x.carrier}</span><small>{x.number} · renews {x.renews}</small></li>)}</ul>
+      </Card> : null}
+      {!rows.drivers.length && !rows.vehicles.length && !rows.home.length && !view.accountPolicies.length ? <Card title="Quote or customer" meta="Waiting"><Empty>Drivers, vehicles and the home for a quote, or a customer&rsquo;s policies, appear here.</Empty></Card> : null}
     </div>
-  </Shell>;
+  </div>;
+
+  const policy = <div className={d.cards}>
+    {p ? <Card title={`${p.line} policy`} meta={`${p.carrier} · ${p.term}`}>
+      <dl className={d.coverages}>{p.coverages.map((x) => <div key={x.name}><dt>{x.name}</dt><dd>{x.limit ?? x.deductible}{x.deductible && !x.limit ? <em>deductible</em> : null}</dd></div>)}</dl>
+      <p className={d.policyMeta}>{[...p.insured, ...p.drivers.map((n) => `Driver: ${n}`)].join(" · ")}</p>
+      <div className={d.billing}><span>{p.billing.plan}</span><b>{p.billing.amount}</b><small>Next due {p.billing.nextDue} · {p.billing.status}</small></div>
+    </Card> : <Card title="Policy" meta="Waiting"><Empty>A current customer&rsquo;s coverages, limits and deductibles open here once {agentName} finds them.</Empty></Card>}
+    <div className={d.stack}>
+      {c ? <Card title="Claim notice" meta={c.id}>
+        <div className={d.claim} data-injured={c.injured || undefined}>
+          {c.description ? <p>{c.description}</p> : null}
+          <dl>{c.fields.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value ?? <span className={d.dash}>Waiting</span>}</dd></div>)}</dl>
+          <div className={d.claimLine}><Phone size={14} /><div><b>{c.carrier} claims · {c.claimsLine}</b><small>Given to the caller. The carrier&rsquo;s adjuster decides coverage.</small></div></div>
+        </div>
+      </Card> : null}
+      {view.requests.length ? <Card title="Service requests" meta={view.requests.length}>
+        <ul className={d.list}>{view.requests.map((x) => <li key={x.id}><span className={d.listIcon}><Inbox size={15} /></span><div><b>{x.kind} · {x.id}</b><small>{x.details}</small><small>{x.policy} · staff confirm before it takes effect</small></div></li>)}</ul>
+      </Card> : null}
+      {!c && !view.requests.length ? <Card title="Claims & changes" meta="None yet"><Empty>A claim notice or a policy change request appears here.</Empty></Card> : null}
+    </div>
+  </div>;
+
+  const calendar = <div className={d.cards}>
+    <Card title="Licensed agent" meta={booked.length ? booked[booked.length - 1].id : view.openTimes.length ? `${view.openTimes.length} open` : "Not booked"}>
+      {booked.length ? booked.map((x) => <div key={x.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{x.agent} calls {x.name.split(" ")[0]}</b><small>{x.day}, {x.time} · {x.topic}</small></div><em>{x.changes ? `Moved ${x.changes}×` : "Booked"}</em></div>)
+        : view.openTimes.length ? <div className={d.openTimes}>{view.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.agent.split(" ")[0]} · {o.day}</small></span>)}</div>
+        : <Empty>Quotes go to a licensed agent: open call times appear here.</Empty>}
+      {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `${view.emailed.reference.startsWith("PA-") ? "ID card" : "Confirmation"} for ${view.emailed.reference}` : "Call summary"} /> : null}
+    </Card>
+    <Card title="Tasks created" meta={view.tasks.length || "None yet"}>
+      {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Follow-ups for the team are created from the account.</Empty>}
+    </Card>
+  </div>;
+
+  const inbox = <div className={d.cards}>
+    <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
+      {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the account.</Empty>}
+    </Card>
+    <Messages items={view.messages} empty="Messages for the account manager land here." />
+  </div>;
+
+  return <Screens id="insurance" kicker={`Accounts · ${view.verified ? "Current customer" : "Prospect"} · ${view.timeZone}`} title={r.title ?? "New call"} state={state} active={active} cue={cue}
+    head={<RecordHeader opened={r.opened} number={r.number ?? "Q-····"} tags={[view.verified ? "Verified customer" : "New prospect", ...view.flags]} source={`Phone · AI assistant · ${agentName}`} stages={stages} at={Math.min(at, stages.length - 1)} label="Account stage" />} screens={[
+    { id: "account", label: "Account", icon: User, body: account },
+    { id: "policy", label: "Policy", icon: Lock, body: policy },
+    { id: "calendar", label: "Calendar", icon: Calendar, body: calendar },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages.length, body: inbox },
+  ]} />;
 }
+const INSURANCE_SCREENS: Record<string, string> = { note_account: "account", find_customer: "account", get_policy: "policy", report_claim: "policy", request_change: "policy", email_id_card: "policy", check_availability: "calendar", book_agent_call: "calendar", reschedule_agent_call: "calendar", email_confirmation: "calendar", take_message: "inbox" };
 
 
 /* ---------------- Woodward Motor Co. ---------------- */
@@ -1354,63 +1406,61 @@ function CarTile({ c, searching }: { c: DealershipView["lot"]["cars"][number]; s
   </li>;
 }
 
-export function DealershipOffice({ view, state, agentName }: { view: DealershipView; state: LiveState; agentName: string }) {
+export function DealershipOffice({ view, state, agentName, cue }: { view: DealershipView; state: LiveState; agentName: string; cue?: Cue }) {
   const r = view.record;
   const at = DEAL_STAGES.findIndex((x) => x.id === r.stage);
   const L = view.lot;
   const searching = L.criteria != null || L.cars.some((c) => c.focus);
   const booked = view.appointments.filter((a) => a.status === "booked");
   const f = view.focus;
+  const active = useFollow(cue, DEALERSHIP_SCREENS, "inventory");
 
-  return <Shell id="dealership" nav={1} kicker={`Sales desk · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
-    tools={<span className={d.seg}><b>Lead</b><span>Inventory</span><span>Service</span></span>}>
-    <RecordHeader opened={r.opened} number={r.number ?? "D-····"} tags={[view.known ? "Returning customer" : "New lead"]} source={`Phone · AI assistant · ${agentName}`} stages={DEAL_STAGES} at={at} label="Lead stage" />
-
+  const inventory = <div className={d.lotGrid}>
     <Card title={L.criteria ? "Inventory search" : "On the lot"} meta={L.criteria ? `${L.total} match${L.total === 1 ? "" : "es"}` : `${L.total.toLocaleString("en-US")} cars`}>
       {L.criteria ? <p className={d.homeCriteria}><Search size={13} />{L.criteria}</p> : null}
       {L.cars.length ? <ul className={d.cars}>{L.cars.map((c) => <CarTile key={c.stock} c={c} searching={searching} />)}</ul> : <Empty>Cars that match light up here as the caller describes what they want.</Empty>}
       <p className={d.homeSource}>Real cars for sale around Detroit, as of {L.snapshot}</p>
     </Card>
-
-    <div className={d.recGrid}>
-      <RecordForm sections={r.sections} opened={r.opened} waiting={`The lead opens the moment ${agentName} learns something worth keeping.`} />
-
-      <div className={d.stack}>
-        {f ? <Card title="On the call" meta={f.price}>
-          <div className={d.focusCar}>
-            <img src={carPhoto(f.vin)} alt={f.name} />
-            <b>{f.name}</b>
-            <small>{f.warranty} warranty{f.cpo ? " · certified pre-owned" : ""}</small>
-            <dl>{f.facts.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
-          </div>
-        </Card> : null}
-
-        {view.known ? <Card title="Returning customer" meta={view.known.salesperson}>
-          <div className={d.reviewRow} data-state="clear"><i aria-hidden="true"><Check size={11} /></i><div><b>{view.known.car}</b><small>Last service: {view.known.lastService}</small></div></div>
-        </Card> : null}
-
-        <Card title={view.calendar?.purpose === "service" || booked.some((a) => a.purpose === "service") ? "Service bay" : "Test drive"} meta={booked.length ? booked[booked.length - 1].id : view.calendar?.openTimes.length ? `${view.calendar.openTimes.length} open` : "Not booked"}>
-          {booked.length ? booked.map((a) => <div key={a.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{a.purpose === "test_drive" ? a.vehicle : `${a.service} · ${a.vehicle}`}</b><small>{a.day}, {a.time}{a.with ? ` · ${a.with}` : ""}</small></div><em>{a.changes ? `Moved ${a.changes}×` : "Booked"}</em></div>)
-            : view.calendar?.openTimes.length ? <div className={d.openTimes}>{view.calendar.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.with ? `${o.with.split(" ")[0]} · ` : ""}{o.day}</small></span>)}</div>
-            : <Empty>Open test-drive and service times appear here.</Empty>}
-          {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `Confirmation for ${view.emailed.reference}` : "Call summary"} /> : null}
-        </Card>
-
-        <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
-          {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the lead.</Empty>}
-        </Card>
-
-        <Card title="Follow-ups" meta={view.tasks.length || "None yet"}>
-          {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Tasks for sales, finance and service are created from the lead.</Empty>}
-        </Card>
-
-        {view.messages.length ? <Card title="Messages" meta={view.messages.length}>
-          <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
-            <span className={d.listIcon}><Phone size={15} /></span>
-            <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>For {m.for} · call back {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
-          </li>)}</ul>
-        </Card> : null}
+    {f ? <Card title="On the call" meta={f.price}>
+      <div className={d.focusCar}>
+        <img src={carPhoto(f.vin)} alt={f.name} />
+        <b>{f.name}</b>
+        <small>{f.warranty} warranty{f.cpo ? " · certified pre-owned" : ""}</small>
+        <dl>{f.facts.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
       </div>
+    </Card> : null}
+  </div>;
+
+  const lead = <div className={d.recGrid}>
+    <RecordForm sections={r.sections} opened={r.opened} waiting={`The lead opens the moment ${agentName} learns something worth keeping.`} />
+    <div className={d.stack}>
+      {view.known ? <Card title="Returning customer" meta={view.known.salesperson}>
+        <div className={d.reviewRow} data-state="clear"><i aria-hidden="true"><Check size={11} /></i><div><b>{view.known.car}</b><small>Last service: {view.known.lastService}</small></div></div>
+      </Card> : null}
+      <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
+        {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the lead.</Empty>}
+      </Card>
     </div>
-  </Shell>;
+  </div>;
+
+  const calendar = <div className={d.cards}>
+    <Card title={view.calendar?.purpose === "service" || booked.some((a) => a.purpose === "service") ? "Service bay" : "Test drive"} meta={booked.length ? booked[booked.length - 1].id : view.calendar?.openTimes.length ? `${view.calendar.openTimes.length} open` : "Not booked"}>
+      {booked.length ? booked.map((a) => <div key={a.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{a.purpose === "test_drive" ? a.vehicle : `${a.service} · ${a.vehicle}`}</b><small>{a.day}, {a.time}{a.with ? ` · ${a.with}` : ""}</small></div><em>{a.changes ? `Moved ${a.changes}×` : "Booked"}</em></div>)
+        : view.calendar?.openTimes.length ? <div className={d.openTimes}>{view.calendar.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.with ? `${o.with.split(" ")[0]} · ` : ""}{o.day}</small></span>)}</div>
+        : <Empty>Open test-drive and service times appear here.</Empty>}
+      {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `Confirmation for ${view.emailed.reference}` : "Call summary"} /> : null}
+    </Card>
+    <Card title="Follow-ups" meta={view.tasks.length || "None yet"}>
+      {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Tasks for sales, finance and service are created from the lead.</Empty>}
+    </Card>
+  </div>;
+
+  return <Screens id="dealership" kicker={`Sales desk · ${view.timeZone}`} title={r.title ?? "New call"} state={state} active={active} cue={cue}
+    head={<RecordHeader opened={r.opened} number={r.number ?? "D-····"} tags={[view.known ? "Returning customer" : "New lead"]} source={`Phone · AI assistant · ${agentName}`} stages={DEAL_STAGES} at={at} label="Lead stage" />} screens={[
+    { id: "inventory", label: "Inventory", icon: Grid, body: inventory },
+    { id: "lead", label: "Lead", icon: User, body: lead },
+    { id: "calendar", label: "Calendar", icon: Calendar, body: calendar },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages.length, body: <Messages items={view.messages} empty="Messages for sales, finance and service land here." /> },
+  ]} />;
 }
+const DEALERSHIP_SCREENS: Record<string, string> = { search_inventory: "inventory", get_vehicle: "inventory", note_lead: "lead", check_availability: "calendar", book_appointment: "calendar", reschedule_appointment: "calendar", email_confirmation: "calendar", take_message: "inbox" };

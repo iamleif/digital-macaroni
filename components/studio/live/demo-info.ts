@@ -407,7 +407,7 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
       rules: [
         "Answers only from real listing data: never invents a home, price or feature",
         "Fair housing: never describes an area by who lives there or calls it safe or unsafe",
-        "Gives sellers an automated range, never a price opinion",
+        "Gives sellers a range from comparable listings, never a price opinion",
         "Never advises on offers, mortgages or law, and never quotes commission",
       ],
     },

@@ -5,11 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { VOICE_URL } from "../live/client";
 import { voiceDemos } from "../live/demo-info";
-import type { AppointmentView, FormFieldView, HotelsView, LawFirmView, NorthlineView, TravelView } from "../live/types";
+import type { AppointmentView, DealershipView, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 import { BrandLockup } from "../brand-marks";
 import { ArrowRight, ArrowUpRight, Check, Clock } from "../icons";
 import { CookieSettings, track } from "../consent";
-import { AppointmentOffice, FormFieldOffice, HotelsOffice, LawFirmOffice, NorthlineOffice, TravelOffice } from "../demo/offices";
+import { AppointmentOffice, DealershipOffice, FormFieldOffice, HotelsOffice, InsuranceOffice, LawFirmOffice, NorthlineOffice, RealEstateOffice, TravelOffice } from "../demo/offices";
 import { BOOKING_TOOLS, ToolMark, findTool, opsFor } from "../demo/funnel";
 import { businessOf, isTestStop, mmss, outcomes, spoken, stepOutcome, took, type CallReport, type Line, type ReportEntry, type Step } from "./report";
 import d from "../demo/demo.module.css";
@@ -208,6 +208,9 @@ function Office({ report, agent }: { report: CallReport; agent: string }) {
     case "travel": return <TravelOffice view={v as TravelView} state={state} agentName={agent} />;
     case "hotels": return <HotelsOffice view={v as HotelsView} state={state} agentName={agent} />;
     case "formfield": return <FormFieldOffice view={v as FormFieldView} state={state} agentName={agent} />;
+    case "realestate": return <RealEstateOffice view={v as RealEstateView} state={state} agentName={agent} />;
+    case "insurance": return <InsuranceOffice view={v as InsuranceView} state={state} agentName={agent} />;
+    case "dealership": return <DealershipOffice view={v as DealershipView} state={state} agentName={agent} />;
     default: return <NorthlineOffice view={v as NorthlineView} state={state} agentName={agent} />;
   }
 }

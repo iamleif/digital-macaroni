@@ -11,7 +11,7 @@ import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
 import { ArrowUpRight, Check, Phone } from "../icons";
 import { COMPANY_INSTAGRAM, COMPANY_LINKEDIN, COMPANY_TIKTOK, COMPANY_YOUTUBE } from "../site";
-import { AppointmentOffice, DealershipOffice, FormFieldOffice, HotelsOffice, InsuranceOffice, LawFirmOffice, NorthlineOffice, RealEstateOffice, TravelOffice, type LiveState } from "./offices";
+import { type Cue, AppointmentOffice, DealershipOffice, FormFieldOffice, HotelsOffice, InsuranceOffice, LawFirmOffice, NorthlineOffice, RealEstateOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
 import { CookieSettings, track } from "../consent";
 import { VoiceBars } from "./voice-bars";
@@ -129,6 +129,9 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
 
   const onCall = !feed.ended && (watch.status === "linked" || (replaying && feed.entries.length > 0));
   const view = feed.view ?? EMPTY[demo.id];
+  // The agent's latest step: the back office follows it to the screen that step changes.
+  const last = [...feed.entries].reverse().find((e): e is Action => e.kind === "action");
+  const cue: Cue = last ? { tool: last.tool, id: last.id } : null;
   const state: LiveState = feed.view ? (feed.ended ? "finished" : "live") : "sample";
 
   return <div className={d.page} data-gated={gated || undefined}>
@@ -169,15 +172,15 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
 
       <section className={d.center} aria-label={`${shown.name} back office`}>
         {skin !== "home" ? <AppointmentOffice view={(skin === "salon" ? luneSample : tidewellSample) as AppointmentView} state="sample" agentName={demo.agentName} />
-          : demo.id === "lawfirm" ? <LawFirmOffice view={view as LawFirmView} state={state} agentName={demo.agentName} />
-          : demo.id === "northline" ? <NorthlineOffice view={view as NorthlineView} state={state} agentName={demo.agentName} />
-          : demo.id === "travel" ? <TravelOffice view={view as TravelView} state={state} agentName={demo.agentName} />
-          : demo.id === "hotels" ? <HotelsOffice view={view as HotelsView} state={state} agentName={demo.agentName} />
-          : demo.id === "lune" || demo.id === "tidewell" ? <AppointmentOffice view={view as AppointmentView} state={state} agentName={demo.agentName} />
-          : demo.id === "dealership" ? <DealershipOffice view={view as DealershipView} state={state} agentName={demo.agentName} />
-          : demo.id === "realestate" ? <RealEstateOffice view={view as RealEstateView} state={state} agentName={demo.agentName} />
-          : demo.id === "insurance" ? <InsuranceOffice view={view as InsuranceView} state={state} agentName={demo.agentName} />
-          : <FormFieldOffice view={view as FormFieldView} state={state} agentName={demo.agentName} />}
+          : demo.id === "lawfirm" ? <LawFirmOffice cue={cue} view={view as LawFirmView} state={state} agentName={demo.agentName} />
+          : demo.id === "northline" ? <NorthlineOffice cue={cue} view={view as NorthlineView} state={state} agentName={demo.agentName} />
+          : demo.id === "travel" ? <TravelOffice cue={cue} view={view as TravelView} state={state} agentName={demo.agentName} />
+          : demo.id === "hotels" ? <HotelsOffice cue={cue} view={view as HotelsView} state={state} agentName={demo.agentName} />
+          : demo.id === "lune" || demo.id === "tidewell" ? <AppointmentOffice cue={cue} view={view as AppointmentView} state={state} agentName={demo.agentName} />
+          : demo.id === "dealership" ? <DealershipOffice cue={cue} view={view as DealershipView} state={state} agentName={demo.agentName} />
+          : demo.id === "realestate" ? <RealEstateOffice cue={cue} view={view as RealEstateView} state={state} agentName={demo.agentName} />
+          : demo.id === "insurance" ? <InsuranceOffice cue={cue} view={view as InsuranceView} state={state} agentName={demo.agentName} />
+          : <FormFieldOffice cue={cue} view={view as FormFieldView} state={state} agentName={demo.agentName} />}
       </section>
 
       <BehindTheCall demo={shown} feed={feed} setup={funnel ? setup : null} />
