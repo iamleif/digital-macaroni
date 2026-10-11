@@ -11,7 +11,7 @@ import { Turnstile } from "./Turnstile";
 type Job = { job: string; step: string; business: string; error?: string; message?: string };
 
 const STEPS = [
-  { key: "reading", label: "Building your demo from your website" },
+  { key: "reading", label: "Building your agent from your website" },
   { key: "calling", label: "Calling your phone" },
   { key: "in_call", label: "On the call" },
   { key: "done", label: "Summary emailed to you" },
@@ -87,8 +87,8 @@ export function InstantForm() {
     const done = job.step === "done";
     return (
       <div className={f.progress} role="status" aria-live="polite">
-        <h2>{done ? "That’s what your callers get." : failed ? "We couldn’t reach you." : job.business ? `Building ${job.business}’s demo` : "Building your demo"}</h2>
-        <p>{done ? (job.message || "Check your email: that’s the summary you’d get after every call, with a link to book a time with us.") : failed ? job.message : at >= 1 ? "Pick up when your phone rings. Pretend you’re one of your customers." : "We’re reading your website and setting up your agent. This takes under a minute."}</p>
+        <h2>{done ? "That’s what your callers get." : failed ? "We couldn’t reach you." : at >= 1 ? "Calling you now" : "Building your agent now"}</h2>
+        <p>{done ? (job.message || "Check your email: that’s the summary you’d get after every call, with a link to book a time with us.") : failed ? job.message : at >= 1 ? "Pick up when your phone rings. Pretend you’re one of your customers." : "Stay close to your phone. We’re reading your website and it calls you in under a minute."}</p>
         {failed ? null : (
           <ol className={f.steps}>
             {STEPS.map((s, i) => (
