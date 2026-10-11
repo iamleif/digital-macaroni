@@ -120,7 +120,7 @@ class TestTidewell:
     async def test_the_email_never_carries_the_reason_for_the_visit(self, monkeypatch):
         sent = {}
 
-        async def confirm(to, message, sender):
+        async def confirm(to, message):
             sent["text"] = message[2]
             return "a•••@example.com", None
 

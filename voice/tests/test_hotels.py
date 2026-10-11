@@ -231,6 +231,6 @@ async def test_summary_email_after_a_message_with_the_digital_macaroni_card(lite
     s = hotels.create_state(NOW)
     await run(s, "take_message", {"name": "Leif Marshall", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults."})
     r = await run(s, "email_quote", {"email": "leif at example dot com", "recap": "You wanted two rooms for twenty nights; I took a message for an agent.", "callerConfirmed": True})
-    assert r.ok and sent[0]["to"] == "leif@example.com" and sent[0]["subject"] == "Your call with Palmetto Stays"
+    assert r.ok and sent[0]["to"] == "leif@example.com" and sent[0]["subject"] == "Demo · Your call with Palmetto Stays"
     assert "Thanks for calling, Leif" in sent[0]["text"] and "Two rooms in Miami Beach" in sent[0]["text"] and "•••• 5382" in sent[0]["text"]
     assert "This is just the tip of the iceberg." in sent[0]["html"] and "Book a call with Leif" in sent[0]["html"]

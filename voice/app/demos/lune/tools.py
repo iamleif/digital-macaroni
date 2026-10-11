@@ -140,7 +140,7 @@ async def email_confirmation(state: BookingState, i: EmailConfirmation, ctx: OpC
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
-        r, sent = await send_summary("lune", "Ellie", "Ellie at Lune", i.email, i.recap, state.request.get("name"), messages, did="answered your questions and passed your message to the team")
+        r, sent = await send_summary("lune", "Ellie", i.email, i.recap, state.request.get("name"), messages, did="answered your questions and passed your message to the team")
         if sent:
             state.emailed = sent
         return r
@@ -152,7 +152,7 @@ async def email_confirmation(state: BookingState, i: EmailConfirmation, ctx: OpC
         rows.append(("Deposit", f"{a.extras['deposit']} by secure link, taken off the bill"))
     rows += [("Where", BUSINESS["address"].split(".")[0]), ("Changes", "Free up to 24 hours before")]
     v = {"brand": "lune", "agent": "Ellie", "service": s["name"] + (f" + {a.extras['addOn']}" if a.extras.get("addOn") else ""), "day": d["day"], "time": d["time"], "zone": "Pacific", "name": a.name, "reference": a.id, "rows": rows, "did": "found the right person, checked the book and saved your spot"}
-    masked, why = await email.confirm(i.email, email.appointment_confirmation(v), "Ellie at Lune")
+    masked, why = await email.confirm(i.email, email.appointment_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

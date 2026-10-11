@@ -226,14 +226,14 @@ async def email_confirmation(state: NorthlineState, i: EmailConfirmation, ctx: O
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
         name = state.request.get("name") or (state.messages[-1].name if state.messages else None)
-        r, sent = await send_summary("northline", "Ellie", "Ellie at Northline", i.email, i.recap, name, messages, did="answered your call and sorted out what you needed")
+        r, sent = await send_summary("northline", "Ellie", i.email, i.recap, name, messages, did="answered your call and sorted out what you needed")
         if sent:
             state.emailed = sent
         return r
     a = booked[-1]
     s = describe_slot(a.slot_id)
     visit = {"day": s["day"], "window": s["window"], "technician": first_name(a.tech_id), "service": service(a.service_id)["name"], "issue": a.issue, "address": a.address, "name": a.name, "reference": a.id}
-    masked, why = await email.confirm(i.email, email.visit_confirmation(visit), "Ellie at Northline")
+    masked, why = await email.confirm(i.email, email.visit_confirmation(visit))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

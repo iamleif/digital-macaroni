@@ -304,14 +304,14 @@ async def email_confirmation(state: LawFirmState, i: EmailConfirmation, ctx: OpC
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
         name = state.messages[-1].name if state.messages else state.intake.get("name")
-        r, sent = await send_summary("lawfirm", "Nora", "Nora at Alder & Finch", i.email, i.recap, name, messages, did="took your call, listened to what happened and passed it to the right attorney")
+        r, sent = await send_summary("lawfirm", "Nora", i.email, i.recap, name, messages, did="took your call, listened to what happened and passed it to the right attorney")
         if sent:
             state.emailed = sent
         return r
     c = booked[-1]
     s = describe_slot(state, c.slot_id, [c.attorney_id], c.id)
     consult = {"day": s["day"], "time": s["time"], "attorney": attorney(c.attorney_id)["name"], "format": FORMAT_LABEL[c.fmt], "name": c.name, "reference": c.id}
-    masked, why = await email.confirm(i.email, email.consult_confirmation(consult), "Nora at Alder & Finch")
+    masked, why = await email.confirm(i.email, email.consult_confirmation(consult))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": c.id, "kind": "booking"}

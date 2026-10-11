@@ -231,12 +231,12 @@ async def email_quote(state: HotelState, i: EmailQuote, ctx: OpContext) -> OpRes
     if state.review is None or state.hotel is None:
         messages = [message_view(m) for m in state.messages]
         name = (state.guest or {}).get("name") or (state.messages[-1]["name"] if state.messages else None)
-        r, sent = await send_summary("hotels", "Marisol", "Marisol at Palmetto Stays", i.email, i.recap, name, messages, did="searched real hotels with live rates and looked after your request")
+        r, sent = await send_summary("hotels", "Marisol", i.email, i.recap, name, messages, did="searched real hotels with live rates and looked after your request")
         if sent:
             state.emailed = sent
         return r
     stay = {**state.review, "photo": (state.hotel["photos"] or [None])[0], "address": state.hotel["address"], "checkIn": state.hotel["checkIn"], "checkOut": state.hotel["checkOut"]}
-    masked, why = await email.confirm(i.email, email.hotel_quote(stay), "Marisol at Palmetto Stays")
+    masked, why = await email.confirm(i.email, email.hotel_quote(stay))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "kind": "booking"}

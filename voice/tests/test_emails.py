@@ -41,7 +41,7 @@ async def test_ellie_emails_a_summary_or_the_booked_visit(outbox):
     r = await call(northline, state, "email_confirmation", {"email": "alex dot taylor at example dot com", "callerConfirmed": True})
     assert r.ok and r.result["to"] == "a•••r@example.com" and northline.view(state)["emailed"]["to"] == "a•••r@example.com"
     msg = outbox[0]
-    assert msg["to"] == "alex.taylor@example.com" and msg["from"] == "Ellie at Northline"
+    assert msg["to"] == "alex.taylor@example.com" and msg["from"] == "Digital Macaroni" and msg["subject"].startswith("Demo · ")
     assert "Heating repair" in msg["text"] and "48 Birch Lane, Springfield" in msg["text"] and state.appointments[0].id in msg["text"]
     assert "Book a call with Leif" in msg["html"] and "cal.com/leif-johansen-pnbduq/ai-agent" in msg["html"]
     same = await call(northline, state, "email_confirmation", {"email": "alex dot taylor at example dot com", "callerConfirmed": True})
@@ -56,7 +56,7 @@ async def test_theo_emails_the_reservation_with_the_items_picture(outbox):
     r = await call(formfield, state, "email_reservation", {"email": "sam@example.com", "callerConfirmed": True})
     assert r.ok and formfield.view(state)["emailed"]["to"] == "s•••m@example.com"
     msg = outbox[0]
-    assert msg["from"] == "Theo at Form & Field" and "Ridge Table Lamp" in msg["subject"]
+    assert msg["from"] == "Digital Macaroni" and "Ridge Table Lamp" in msg["subject"]
     assert "/email-assets/products/ridge-lamp.jpg" in msg["html"] and "Sage green" in msg["text"] and "210 Market Street" in msg["text"]
 
 

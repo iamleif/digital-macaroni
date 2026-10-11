@@ -224,7 +224,7 @@ async def email_id_card(state: InsuranceState, i: EmailIdCard, ctx: OpContext) -
     if not p or p["line"] != "auto":
         return fail("not_auto", "ID cards are for auto policies. Ask which auto policy.")
     card = {"name": state.customer["name"], "carrier": carrier(p["carrier"])["name"], "policyNumber": p["number"], "effective": p["effective"], "expires": p["renewal"], "vehicles": p.get("vehicles", []), "drivers": p.get("drivers", []), "claimsLine": carrier(p["carrier"])["claimsLine"]}
-    masked, why = await email.confirm(i.email, email.insurance_id_card(card), "Owen at Bluebird Insurance")
+    masked, why = await email.confirm(i.email, email.insurance_id_card(card))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.id_cards.append(p["number"])
@@ -358,14 +358,14 @@ async def email_confirmation(state: InsuranceState, i: EmailConfirmation, ctx: O
             rows += [("Claim notice", state.claim["id"]), (f"{c['name']} claims", c["claimsLine"])]
         rows += [(CHANGE_LABEL[r.kind], f"{r.id} · {r.details}") for r in state.requests]
         name = (state.customer or {}).get("name") or state.account.get("name") or (state.messages[-1].name if state.messages else None)
-        r, sent = await send_summary("insurance", "Owen", "Owen at Bluebird Insurance", i.email, i.recap, name, messages, rows, did="looked up your policy and logged everything for our team")
+        r, sent = await send_summary("insurance", "Owen", i.email, i.recap, name, messages, rows, did="looked up your policy and logged everything for our team")
         if sent:
             state.emailed = sent
         return r
     c = booked[-1]
     s = describe_slot(state, c.slot_id, c.staff_id)
     v = {"day": s["day"], "time": s["time"], "agent": s["agent"], "topic": c.topic, "name": c.name, "reference": c.id}
-    masked, why = await email.confirm(i.email, email.insurance_call_confirmation(v), "Owen at Bluebird Insurance")
+    masked, why = await email.confirm(i.email, email.insurance_call_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": c.id, "kind": "booking"}

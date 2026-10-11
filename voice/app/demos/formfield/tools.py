@@ -187,7 +187,7 @@ async def email_reservation(state: FormFieldState, i: EmailReservation, ctx: OpC
         messages = [{"id": m["id"], "summary": m["summary"], "callback": mask_number(m["callbackNumber"])} for m in state.messages]
         rows = [("Support request", f"{s['id']} · {s['issue']} · we reply by email within one business day") for s in state.support_requests]
         name = state.messages[-1]["name"] if state.messages else None
-        r, sent = await send_summary("formfield", "Theo", "Theo at Form & Field", i.email, i.recap or ("You asked us to look into an order; the team will reply by email." if rows else None), name, messages, rows, did="searched the shop, checked live stock and looked after your request")
+        r, sent = await send_summary("formfield", "Theo", i.email, i.recap or ("You asked us to look into an order; the team will reply by email." if rows else None), name, messages, rows, did="searched the shop, checked live stock and looked after your request")
         if sent:
             state.emailed = sent
         return r
@@ -195,7 +195,7 @@ async def email_reservation(state: FormFieldState, i: EmailReservation, ctx: OpC
     p, v = variant_of(r.variant_id)  # type: ignore[misc]
     image = email.asset(f"products/{p['id']}.{'jpg' if p['id'] in PHOTOS else 'png'}")
     details = {"product": p["name"], "option": v["option"], "quantity": r.quantity, "price": price(p["price"] * r.quantity), "pickupBy": date_label(r.pickup_by), "shop": SHOP["address"], "hours": EMAIL_HOURS, "name": r.name, "reference": r.id, "image": image}
-    masked, why = await email.confirm(i.email, email.pickup_reservation(details), "Theo at Form & Field")
+    masked, why = await email.confirm(i.email, email.pickup_reservation(details))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": r.id, "kind": "booking"}

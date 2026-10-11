@@ -353,7 +353,7 @@ async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext)
     if state.review is None:
         messages = [message_view(m) for m in state.messages]
         name = (state.traveller or {}).get("name") or (state.messages[-1]["name"] if state.messages else None)
-        res, sent = await send_summary("travel", "Linda", "Linda at Waypoint Travel", i.email, i.recap, name, messages, did="searched live airline fares and looked after your request")
+        res, sent = await send_summary("travel", "Linda", i.email, i.recap, name, messages, did="searched live airline fares and looked after your request")
         if sent:
             state.emailed = sent
         return res
@@ -370,7 +370,7 @@ async def email_itinerary(state: TravelState, i: EmailItinerary, ctx: OpContext)
         "refund": (state.details or {}).get("refund", ""),
         "airlineLogo": chosen.get("airlineLogo") if chosen else None,
     }
-    masked, why = await email.confirm(i.email, email.flight_itinerary(trip), "Linda at Waypoint Travel")
+    masked, why = await email.confirm(i.email, email.flight_itinerary(trip))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "total": r["total"], "kind": "booking"}

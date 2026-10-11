@@ -107,9 +107,9 @@ async def receives_mail(domain: str) -> bool:
         return True
 
 
-async def confirm(spoken: str, message: tuple[str, str, str], from_name: str) -> tuple[Optional[str], Optional[str]]:
+async def confirm(spoken: str, message: tuple[str, str, str]) -> tuple[Optional[str], Optional[str]]:
     """
-    Sends one demo email to the address the caller gave. Returns (masked address, None) when sent, or
+    Sends one demo email to the address the caller gave, from Digital Macaroni with "Demo ·" on the subject. Returns (masked address, None) when sent, or
     (None, reason): "invalid_email", "too_many_for_address", "busy", "not_configured" or "failed".
     """
     address = normalise(spoken)
@@ -123,7 +123,7 @@ async def confirm(spoken: str, message: tuple[str, str, str], from_name: str) ->
     if not await receives_mail(address.rpartition("@")[2]):
         return None, "unknown_domain"
     subject, body, text = message
-    why = await send(address, subject, body, text, from_name)
+    why = await send(address, f"Demo · {subject}", body, text, "Digital Macaroni")
     return (None, why) if why else (mask(address), None)
 
 

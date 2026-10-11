@@ -171,7 +171,7 @@ async def email_confirmation(state: BookingState, i: EmailConfirmation, ctx: OpC
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
-        r, sent = await send_summary("tidewell", "Ellie", "Ellie at Tidewell", i.email, i.recap, state.request.get("name"), messages, did="answered your questions and passed your message to the front desk")
+        r, sent = await send_summary("tidewell", "Ellie", i.email, i.recap, state.request.get("name"), messages, did="answered your questions and passed your message to the front desk")
         if sent:
             state.emailed = sent
         return r
@@ -184,7 +184,7 @@ async def email_confirmation(state: BookingState, i: EmailConfirmation, ctx: OpC
     rows.append(("Changes", "24 hours' notice, please"))
     # The email names the visit type only: no reason for the visit or other health details.
     v = {"brand": "tidewell", "agent": "Ellie", "service": s["name"], "day": d["day"], "time": d["time"], "zone": "Pacific", "name": a.name, "reference": a.id, "rows": rows, "did": "found the right practitioner and booked your visit"}
-    masked, why = await email.confirm(i.email, email.appointment_confirmation(v), "Ellie at Tidewell")
+    masked, why = await email.confirm(i.email, email.appointment_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

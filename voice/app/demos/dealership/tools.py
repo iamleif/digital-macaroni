@@ -246,7 +246,7 @@ async def email_confirmation(state: DealershipState, i: EmailConfirmation, ctx: 
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
         rows = [(describe_search(car(s)), f"{money(car(s)['price'])} · {car(s)['miles']:,} miles · stock {s}") for s in state.read if car(s)]  # type: ignore[index]
-        r, sent = await send_summary("dealership", "Wes", "Wes at Woodward Motor Co.", i.email, i.recap, state.lead.get("name"), messages, rows, did="searched the lot for you and passed your details to the team")
+        r, sent = await send_summary("dealership", "Wes", i.email, i.recap, state.lead.get("name"), messages, rows, did="searched the lot for you and passed your details to the team")
         if sent:
             state.emailed = sent
         return r
@@ -260,7 +260,7 @@ async def email_confirmation(state: DealershipState, i: EmailConfirmation, ctx: 
         rows += [("Car", a.vehicle), ("Service", service(a.service_id)["name"] + f" · {service(a.service_id)['price']}"), ("Advisor", SERVICE_ADVISOR["name"])]  # type: ignore[arg-type]
     rows.append(("Where", BUSINESS["address"].split(",")[0] + ", Detroit"))
     v = {"brand": "dealership", "agent": "Wes", "service": "Test drive" if c else "Service visit", "day": s["day"], "time": s["time"], "zone": "Eastern", "name": a.name, "reference": a.id, "rows": rows, "did": "searched the lot, found the car and booked your test drive" if c else "booked your car into the service bay", "photo": None}
-    masked, why = await email.confirm(i.email, email.appointment_confirmation(v), "Wes at Woodward Motor Co.")
+    masked, why = await email.confirm(i.email, email.appointment_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

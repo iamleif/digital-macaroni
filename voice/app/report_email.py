@@ -50,7 +50,7 @@ async def send(session: "DemoSession", recorded: bool) -> None:
     session.report_sent = True
     email.REPORT_URL.set(session.report_url)
     message = email.call_report(session.demo_id, session.demo.agent_name, {"steps": steps(session), "recorded": recorded, "did": DID.get(session.demo_id)})
-    masked, why = await email.confirm(address, message, f"{session.demo.agent_name} at {session.demo.business_name}")
+    masked, why = await email.confirm(address, message)
     log.info("report.emailed" if masked else "report.not_sent", {"session": session.id, "outcome": why})
 
 

@@ -111,7 +111,7 @@ class TestChange:
     async def test_emails_the_id_card(self, monkeypatch):
         sent = {}
 
-        async def confirm(to, message, sender):
+        async def confirm(to, message):
             sent["subject"] = message[0]
             return "c•••@example.com", None
 

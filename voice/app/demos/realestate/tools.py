@@ -303,7 +303,7 @@ async def email_confirmation(state: RealEstateState, i: EmailConfirmation, ctx: 
         if state.estimate and state.estimate.get("status") == "ok":
             rows.append(("Automated estimate", f"{money(state.estimate['low'])} to {money(state.estimate['high'])}"))
         name = state.messages[-1].name if state.messages else state.lead.get("name")
-        r, sent = await send_summary("realestate", "Miles", "Miles at Juniper Row Realty", i.email, i.recap, name, messages, rows, did="answered your questions about Austin homes and passed your details to the right agent")
+        r, sent = await send_summary("realestate", "Miles", i.email, i.recap, name, messages, rows, did="answered your questions about Austin homes and passed your details to the right agent")
         if sent:
             state.emailed = sent
         return r
@@ -311,7 +311,7 @@ async def email_confirmation(state: RealEstateState, i: EmailConfirmation, ctx: 
     s = describe_slot(a.slot_id, a.agent_id)
     x = listing(a.listing_id) if a.listing_id else None
     v = {"purpose": a.purpose, "day": s["day"], "time": s["time"], "agent": s["agent"], "address": a.address, "name": a.name, "reference": a.id, "price": money(x["price"]) if x else None, "home": f"{x['beds']} bd · {x['baths']} ba · {x['sqft']:,} sq ft" if x else None}
-    masked, why = await email.confirm(i.email, email.realestate_confirmation(v), "Miles at Juniper Row Realty")
+    masked, why = await email.confirm(i.email, email.realestate_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

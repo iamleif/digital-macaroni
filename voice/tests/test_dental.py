@@ -107,7 +107,7 @@ async def test_closed_on_weekends_and_a_short_notice_list():
 async def test_the_email_never_carries_symptoms(monkeypatch):
     sent = {}
 
-    async def confirm(to, message, sender):
+    async def confirm(to, message):
         sent["text"] = message[2]
         return "a•••@example.com", None
 

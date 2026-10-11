@@ -306,7 +306,7 @@ async def email_confirmation(state: DentalState, i: EmailConfirmation, ctx: OpCo
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
-        r, sent = await send_summary("dental", "June", "June at Aspen Grove Dental", i.email, i.recap, state.patient.get("name"), messages, did="answered your questions and passed your message to the front office")
+        r, sent = await send_summary("dental", "June", i.email, i.recap, state.patient.get("name"), messages, did="answered your questions and passed your message to the front office")
         if sent:
             state.emailed = sent
         return r
@@ -318,7 +318,7 @@ async def email_confirmation(state: DentalState, i: EmailConfirmation, ctx: OpCo
         rows.append(("Bring", "Photo ID and your insurance card; arrive 15 minutes early"))
     rows.append(("Changes", "24 hours' notice, please"))
     v = {"brand": "dental", "agent": "June", "service": t["name"], "day": s["day"], "time": s["time"], "zone": "Central", "name": a.patient, "reference": a.id, "rows": rows, "did": "checked the book and saved you the right chair"}
-    masked, why = await email.confirm(i.email, email.appointment_confirmation(v), "June at Aspen Grove Dental")
+    masked, why = await email.confirm(i.email, email.appointment_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

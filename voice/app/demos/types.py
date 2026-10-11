@@ -141,14 +141,14 @@ def already_sent(emailed: Optional[dict[str, Any]], spoken: str, kind: str) -> b
     return bool(emailed and target and emailed.get("kind") == kind and emailed.get("to") == email.mask(target))
 
 
-async def send_summary(brand: str, agent: str, sender: str, to: str, recap: Optional[str], name: Optional[str], messages: list[dict[str, Any]], rows: Optional[list[tuple[str, str]]] = None, did: Optional[str] = None) -> tuple[OpResult, Optional[dict[str, Any]]]:
+async def send_summary(brand: str, agent: str, to: str, recap: Optional[str], name: Optional[str], messages: list[dict[str, Any]], rows: Optional[list[tuple[str, str]]] = None, did: Optional[str] = None) -> tuple[OpResult, Optional[dict[str, Any]]]:
     """Emails a call summary (no booking to confirm). Returns the result and what to keep as state.emailed."""
     from .. import email
 
     if not (recap and recap.strip()) and not messages:
         return fail("no_recap", "Nothing was booked, so pass recap: two or three sentences on what the caller asked and what you did."), None
     c = {"name": name, "recap": (recap or "").strip(), "messages": messages, "rows": rows or [], "did": did}
-    masked, why = await email.confirm(to, email.call_summary(brand, agent, c), sender)
+    masked, why = await email.confirm(to, email.call_summary(brand, agent, c))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly.")), None
     return ok(f"Call summary emailed · {masked}", {"sent": True, "to": masked}, True), {"to": masked, "kind": "summary"}
