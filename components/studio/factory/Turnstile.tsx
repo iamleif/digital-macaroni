@@ -30,6 +30,8 @@ export function Turnstile({ onToken, resetKey = 0 }: { onToken: (token: string) 
       if (gone || !box.current || !window.turnstile || widget.current) return;
       widget.current = window.turnstile.render(box.current, {
         sitekey: TURNSTILE_SITE_KEY,
+        // The normal widget is a fixed 300px; on narrow phones its compact form fits inside the card.
+        size: window.innerWidth < 420 ? "compact" : "normal",
         callback: (t: string) => callback.current(t),
         "expired-callback": () => callback.current(""),
         "error-callback": () => callback.current(""),

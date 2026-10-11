@@ -11,6 +11,9 @@ import { answerBySlug } from "@/components/studio/answers/content";
 import { pageMeta } from "@/components/studio/site";
 import { DEFAULT_MISSED, DEFAULT_RATE, TRADES, lostRevenue } from "@/components/studio/calculator/math";
 import h from "@/components/studio/home.module.css";
+import c from "@/components/studio/contact.module.css";
+import f from "@/components/studio/factory/factory.module.css";
+import { InstantForm } from "@/components/studio/factory/InstantForm";
 
 export const metadata: Metadata = pageMeta({
   title: "Digital Macaroni — AI voice agents that get to work",
@@ -126,6 +129,17 @@ export default function HomePage() {
           </Intro>
         </div>
         <Intro delay={360}><HeroVideo /></Intro>
+      </div>
+    </section>
+
+    {/* Your own agent: an instant demo call built from the visitor's website */}
+    <section id="your-agent" className={`${h.sheet} ${h.ctaSheet}`} aria-labelledby="your-agent-heading">
+      <div className={`${h.sheetInner} ${f.homeBand}`}>
+        <Reveal>
+          <h2 id="your-agent-heading" className={h.h2}>Hear your own agent. <span className={h.chip} data-tone="yellow"><Phone size={20} /></span><br />In about a minute.</h2>
+          <p className={h.lede}>Give us your website and your mobile. We build a demo agent from your site, and it calls you. Play one of your customers and hear how it would answer your calls.</p>
+        </Reveal>
+        <div className={c.formCard}><InstantForm /></div>
       </div>
     </section>
 

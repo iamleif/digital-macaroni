@@ -30,3 +30,7 @@
 .forward { margin: 0; padding: 16px 18px; border-radius: 16px; background: #f6f5f1; font-size: 14px; line-height: 1.65; color: var(--ink-2); }
 .forward b { color: var(--ink); }
 .problem { color: #b03a26; }
+
+/* The homepage band under the hero: copy on the left, the instant-call form on the right; stacked on phones. */
+.homeBand { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px); gap: 56px; align-items: center; }
+@media (max-width: 900px) { .homeBand { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
