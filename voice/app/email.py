@@ -196,7 +196,7 @@ def leif_block(lead: str) -> str:
     return f"""<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:22px;border-top:1px solid #34322d"><tr>
 <td width="76" style="padding:22px 0 0;vertical-align:top"><img src="{asset("leif.jpg")}" width="64" height="64" alt="Leif" style="display:block;border:0;border-radius:999px"></td>
 <td style="padding:22px 0 0;vertical-align:top;font-family:{FONT}">
-<div style="font-size:17px;font-weight:800;color:#fff8e6">Book a call with Leif</div>
+<div style="font-size:17px;font-weight:800;color:#fff8e6">Book a discovery call with Leif</div>
 <div style="padding:4px 0 0;font-size:14px;line-height:1.6;color:#d9d2c3">{e(lead)}</div>
 <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:14px"><tr><td style="background:#f5c542;border-radius:999px"><a href="{config.meeting_url}" style="display:inline-block;padding:12px 22px;font-family:{FONT};font-size:15px;font-weight:700;color:#1b1a17;text-decoration:none">Book a call with Leif &rarr;</a></td></tr></table>
 </td></tr></table>"""
@@ -210,7 +210,7 @@ def promo_card(agent: str, did: str) -> str:
 <tr><td><img src="{asset("digital-macaroni.png")}" width="40" height="40" alt="Digital Macaroni" style="display:block;border:0"></td></tr>
 <tr><td style="padding:16px 0 8px;font-family:{FONT};font-size:24px;line-height:1.25;font-weight:800;color:#fff8e6">This is just the tip of the iceberg.</td></tr>
 <tr><td style="font-family:{FONT};font-size:15px;line-height:1.65;color:#d9d2c3">{e(agent)} {e(did)}, then wrote this email, without a human stepping in. Digital Macaroni builds AI voice agents like {e(agent)} for real businesses: answering every call, booking and rescheduling, taking orders, handling support, and plugging into the tools you already use.</td></tr>
-<tr><td>{leif_block("30 minutes on how an agent like this would work for your business: what it answers, what it connects to, and what it costs.")}</td></tr>
+<tr><td>{leif_block("A relaxed 30-minute discovery call: your questions, what your business needs, and your options for an agent like this.")}</td></tr>
 <tr><td style="padding:14px 0 0;font-family:{FONT};font-size:13px;line-height:1.6;color:#a9a192">Or just reply to this email. It comes straight to our team.</td></tr>
 </table></td></tr></table>"""
 
