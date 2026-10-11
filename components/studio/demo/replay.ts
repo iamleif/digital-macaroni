@@ -1,5 +1,5 @@
-import { dealershipCars, dealershipEmpty, dealershipFocus, dealershipNamed, dealershipRecord, dealershipSample, luneEmpty, luneSample, tidewellEmpty, tidewellSample, formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
-import type { AppointmentView, DealershipView, DemoEvent, DemoId, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
+import { dentalBoard, dentalEmpty, dentalRecord, dealershipCars, dealershipEmpty, dealershipFocus, dealershipNamed, dealershipRecord, dealershipSample, luneEmpty, luneSample, tidewellEmpty, tidewellSample, formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
+import type { AppointmentView, DealershipView, DentalView, DemoEvent, DemoId, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 
 /**
  * Sample calls for reviewing the demo pages without phoning in (`?replay`). Each is a timeline of the
@@ -26,7 +26,7 @@ let v = 0;
 const say = (speaker: "visitor" | "agent", text: string, id = `t${++v}`): DemoEvent => ({ type: "transcript", id, speaker, text, final: true });
 const tool = (callId: string, name: string, label: string): DemoEvent => ({ type: "tool.started", callId, tool: name, label });
 const ok = (callId: string, name: string, label: string, summary: string): DemoEvent => ({ type: "tool.succeeded", callId, tool: name, label, summary, version: 0 });
-const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView | RealEstateView | InsuranceView | AppointmentView | DealershipView): DemoEvent => ({ type: "state", version, state: s });
+const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView | RealEstateView | InsuranceView | AppointmentView | DealershipView | DentalView): DemoEvent => ({ type: "state", version, state: s });
 const speaking = (on: boolean): DemoEvent => ({ type: "agent.speaking", speaking: on });
 
 const nlRequest = (patch: Partial<NorthlineView["request"]>): NorthlineView => ({ ...northlineEmpty, request: { ...northlineEmpty.request, ...patch } });
@@ -628,4 +628,67 @@ const dealership = timeline([
   { type: "session.ended", reason: "agent_ended" },
 ]);
 
-export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels, realestate, insurance, lune, tidewell, dealership };
+const dn = (values: Record<string, string | string[]>, patch: Partial<DentalView> = {}, stage: DentalView["record"]["stage"] = "chart"): DentalView => ({
+  ...dentalEmpty, ...patch,
+  record: { opened: true, number: "P-614", title: (values.name as string) ?? null, stage, sections: dentalRecord(values) },
+});
+const dnStory = { name: "Alex Taylor", dob: "May 4, 1990", status: "New", reason: "New patient exam & cleaning", lastVisit: "About two years ago" };
+const dnIns = { ...dnStory, carrier: "Delta Dental", network: "In network", relationship: "Self", subscriber: "Alex Taylor", memberId: "DD-48210" };
+const dnChart = dn(dnStory);
+const dnChecked = dn(dnIns, { insurance: { carrier: "Delta Dental", inNetwork: true } }, "checked");
+const dnOpen = { ...dnChecked, board: { ...dentalBoard, openSlots: [{ op: "op3", start: 480, minutes: 90 }, { op: "op3", start: 840, minutes: 90 }] } };
+const dnBooked: DentalView = {
+  ...dnChecked,
+  record: { ...dnChecked.record, stage: "booked" },
+  board: { ...dentalBoard, openSlots: [], appts: [...dentalBoard.appts, { id: "AG-614", op: "op3", start: 480, minutes: 90, patient: "Alex Taylor", procedures: "CompEx, FMX, Prophy", code: "HYG1", tone: "hyg1", kind: "demo", confirmed: "confirmed", alert: false, exam: true, phone: "•••• 0142", time: "8 AM" }] },
+  booked: [{ id: "AG-614", visit: "New patient exam & cleaning", day: "Monday, October 5", time: "8 AM", with: "Jenna Morris", op: "OP-3", changes: 0 }],
+  note: "Alex Taylor called (new patient). Wants: new patient exam & cleaning. Insurance: Delta Dental (in network). Booked new patient exam & cleaning Monday, October 5 at 8 AM with Jenna Morris.",
+  tasks: [{ title: "Email new-patient forms", who: "June", due: "Now" }, { title: "Verify Delta Dental benefits", who: "Front office", due: "Before the visit" }, { title: "Reminder text · New patient exam & cleaning", who: "Practice system", due: "2 days before" }],
+};
+
+const dental = timeline([
+  { type: "session.ready", sessionId: "replay", demo: "dental", channel: "phone" },
+  { type: "pairing.linked" },
+  speaking(true),
+  say("agent", "Thanks for calling Aspen Grove Dental, this is June. How can I help?"),
+  speaking(false),
+  1500,
+  say("visitor", "Hi, I’m new and I need a cleaning. It’s been a couple of years. I’m Alex Taylor."),
+  tool("c1", "note_patient", "Fill in the patient chart"),
+  500,
+  ok("c1", "note_patient", "Fill in the patient chart", "Noted 4 details"),
+  state(1, dnChart),
+  speaking(true),
+  say("agent", "Welcome, Alex. For a first visit we do a full exam, X-rays and a cleaning, about ninety minutes. Do you have dental insurance?"),
+  speaking(false),
+  1500,
+  say("visitor", "Yes, Delta Dental through work."),
+  tool("c2", "check_insurance", "Check the insurance network"),
+  600,
+  ok("c2", "check_insurance", "Check the insurance network", "Delta Dental · in network"),
+  state(2, dnChecked),
+  speaking(true),
+  say("agent", "Good news, we’re in network with Delta. The office checks your benefits before the visit. What day works for you?"),
+  speaking(false),
+  1400,
+  say("visitor", "Monday, early if possible."),
+  tool("c3", "check_availability", "Check the appointment book"),
+  700,
+  ok("c3", "check_availability", "Check the appointment book", "2 open on Monday"),
+  state(3, dnOpen),
+  speaking(true),
+  say("agent", "Jenna has eight o’clock Monday morning, or two in the afternoon. Shall I book eight with Jenna for Alex Taylor?"),
+  speaking(false),
+  1500,
+  say("visitor", "Eight is great."),
+  tool("c4", "book_appointment", "Book the visit"),
+  700,
+  ok("c4", "book_appointment", "Book the visit", "Booked · AG-614"),
+  state(4, dnBooked),
+  speaking(true),
+  say("agent", "You’re booked, Monday at eight with Jenna. I’ll email your new-patient forms; please come fifteen minutes early with your ID and insurance card."),
+  speaking(false),
+  { type: "session.ended", reason: "agent_ended" },
+]);
+
+export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels, realestate, insurance, lune, tidewell, dealership, dental };

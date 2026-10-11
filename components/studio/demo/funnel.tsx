@@ -22,7 +22,7 @@ import f from "./funnel.module.css";
 export type LawArea = "injury" | "insurance" | "realestate";
 export type ShopKind = "dtc" | "dealership";
 export type TravelKind = "flights" | "hotels";
-export type Trade = BookingSkin | LawArea | ShopKind | TravelKind;
+export type Trade = BookingSkin | LawArea | ShopKind | TravelKind | "dental";
 /** `demo` is the demo page that runs this kind, when it is not the page the visitor is on. */
 type TradeCard = { id: Trade; label: string; example: string; demo?: DemoId };
 /** `when` limits a write to calls that went one way: a case the firm took, or one it had to decline. */
@@ -34,10 +34,11 @@ export type Setup = { trade: Trade; tool: string; email: string; record: boolean
 /** The businesses Ellie can answer for: one appointment engine, three front desks. */
 const TRADES: TradeCard[] = [
   { id: "salon", label: "Salon & med spa", example: "Cuts, colour, nails, facials, injectables", demo: "lune" },
+  { id: "dental", label: "Dental practice", example: "New patients, recalls, toothaches, insurance", demo: "dental" },
   { id: "clinic", label: "Wellness clinic", example: "Chiropractic, physio, massage", demo: "tidewell" },
   { id: "home", label: "Home services", example: "Heating & cooling visits", demo: "northline" },
 ];
-const TRADE_FIRST: Partial<Record<DemoId, Trade>> = { northline: "home", lune: "salon", tidewell: "clinic" };
+const TRADE_FIRST: Partial<Record<DemoId, Trade>> = { northline: "home", lune: "salon", tidewell: "clinic", dental: "dental" };
 
 /** Law and professional services: separate businesses, each with its own agent and number. A card for another one opens its demo. */
 const LAW_AREAS: TradeCard[] = [
@@ -67,7 +68,7 @@ function kindsFor(demoId: string): { cards: TradeCard[]; first: Trade; mark: (t:
   if (demoId === "lawfirm" || demoId === "realestate" || demoId === "insurance") return { cards: LAW_AREAS, first: LAW_FIRST[demoId]!, mark: (t) => <BrandMark id={t.demo!} size={26} />, title: "What kind of business do you want to try?", lede: LAW_LEDE[demoId]!, runs: "What runs your business today?", stage: "Your business" };
   if (demoId === "formfield" || demoId === "dealership") return { cards: SHOP_KINDS, first: demoId === "dealership" ? "dealership" : "dtc", mark: (t) => (t.demo ? <BrandMark id={t.demo} size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: inventory, availability and follow-up.", runs: "What runs your business today?", stage: "Your business" };
   if (demoId === "travel" || demoId === "hotels") return { cards: TRAVEL_KINDS, first: demoId === "hotels" ? "hotels" : "flights", mark: (t) => (t.id === "flights" ? <BrandMark id="travel" size={26} /> : t.id === "hotels" ? <BrandMark id="hotels" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: demoId === "hotels" ? "Pick one and we’ll set the call up that way: hotels, rooms and rates." : "Pick one and we’ll set the call up that way: fares, options and bookings.", runs: "What runs your business today?", stage: "Your business" };
-  return { cards: TRADES, first: TRADE_FIRST[demoId as DemoId] ?? "salon", mark: (t) => <BrandMark id={SKINS[t.id as BookingSkin].brand} size={26} />, title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: services, schedule and rules.", runs: "What runs your business today?", stage: "Your business" };
+  return { cards: TRADES, first: TRADE_FIRST[demoId as DemoId] ?? "salon", mark: (t) => <BrandMark id={t.demo ?? SKINS[t.id as BookingSkin].brand} size={26} />, title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: services, schedule and rules.", runs: "What runs your business today?", stage: "Your business" };
 }
 
 /** How each business appears on the demo page. */
@@ -294,6 +295,40 @@ const TOOLS: Tool[] = [
       take_message: [{ what: "Log the call", op: "POST /agency/{id}/client/{clientId}/log" }],
     },
   },
+  {
+    id: "nexhealth",
+    name: "NexHealth",
+    skins: ["dental"],
+    confirmation: "NexHealth texts the patient the confirmation",
+    ops: {
+      find_patient: [{ what: "Find the patient by name and birthdate", op: "GET /patients?name=&date_of_birth=" }],
+      note_patient: [{ what: "Create the new patient with insurance", op: "POST /patients · insurance_name" }],
+      check_availability: [{ what: "Read open slots by provider and operatory", op: "GET /available_slots?pids[]=&lids[]=" }],
+      book_appointment: [
+        { what: "Book it and notify the patient", op: "POST /appointments?notify_patient=true" },
+        { what: "Add the call summary", op: "POST /patients/{id}/alerts" },
+      ],
+      cancel_appointment: [{ what: "Cancel the appointment", op: "PATCH /appointments/{id}" }],
+    },
+  },
+  {
+    id: "opendental",
+    name: "Open Dental",
+    skins: ["dental"],
+    confirmation: "",
+    ops: {
+      find_patient: [{ what: "Find the patient", op: "GET /patients?LName=&FName=&Birthdate=" }],
+      note_patient: [{ what: "Create the patient", op: "POST /patients" }],
+      check_insurance: [{ what: "Attach the plan and subscriber", op: "POST /inssubs, POST /patplans" }],
+      check_availability: [{ what: "Find open slots by provider and operatory", op: "GET /appointments/Slots?ProvNum=&OpNum=&lengthMinutes=" }],
+      book_appointment: [
+        { what: "Book the appointment", op: "POST /appointments" },
+        { what: "Log the call", op: "POST /commlogs" },
+      ],
+      take_message: [{ what: "Log the call for a callback", op: "POST /commlogs" }],
+    },
+  },
+  { id: "dentrix", name: "Dentrix (through NexHealth)", skins: ["dental"], confirmation: "", ops: {} },
   { id: "appliedepic", name: "Applied Epic", skins: ["insurance"], confirmation: "", ops: {} },
   { id: "ezlynx", name: "EZLynx", skins: ["insurance"], confirmation: "", ops: {} },
   { id: "cloudbeds", name: "Cloudbeds", skins: ["hotels"], confirmation: "", ops: {} },

@@ -2,7 +2,7 @@
  * The demo voice service's protocol and dashboard records, as the website receives them. Mirrors
  * DigitalMacaroni/voice/src/protocol.ts and each demo's view() output.
  */
-export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels" | "realestate" | "insurance" | "lune" | "tidewell" | "dealership";
+export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels" | "realestate" | "insurance" | "lune" | "tidewell" | "dealership" | "dental";
 
 export type DemoEvent =
   | { type: "session.ready"; sessionId: string; demo: DemoId; channel: "phone" | "browser" }
@@ -318,4 +318,49 @@ export interface DealershipView {
   emailed?: { to: string; reference?: string } | null;
 }
 
-export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView | HotelsView | RealEstateView | InsuranceView | DealershipView;
+/** One appointment in the dental book: minutes after midnight, coloured by its provider's column. */
+export interface DentalAppt {
+  id: string;
+  op: string;
+  start: number;
+  minutes: number;
+  patient: string;
+  procedures: string;
+  code: string;
+  tone: "dds1" | "dds2" | "hyg1" | "hyg2";
+  kind: "existing" | "demo";
+  confirmed: "confirmed" | "left_message" | "unconfirmed";
+  alert: boolean;
+  exam: boolean;
+  phone: string | null;
+  time: string;
+}
+
+/** Aspen Grove Dental: the appointment book by operatory in 10-minute units, the patient chart, insurance and triage. */
+export interface DentalView {
+  timeZone: string;
+  record: RecordHead<"new" | "chart" | "checked" | "booked">;
+  board: {
+    date: string;
+    label: string;
+    open: number;
+    close: number;
+    lunch: [number, number] | null;
+    now: number | null;
+    ops: { id: string; name: string; provider: string; code: string; tone: DentalAppt["tone"]; role: string }[];
+    appts: DentalAppt[];
+    openSlots: { op: string; start: number; minutes: number }[];
+    holds: { op: string; start: number; minutes: number }[];
+  };
+  insurance: { carrier: string; inNetwork: boolean; onFile?: boolean; medicaid?: boolean } | null;
+  triage: { outcome?: "er" | "now" | "same_day"; painLevel?: number; swelling?: boolean; fever?: boolean } | null;
+  found: { due: string; hygienist: string } | null;
+  booked: { id: string; visit: string; day: string; time: string; with: string; op: string; changes: number }[];
+  asap: { name: string; type: string; preferred: string }[];
+  messages: { id: string; name: string; summary: string; preferredTime: string | null; callback: string; urgent: boolean }[];
+  note: string | null;
+  tasks: { title: string; who: string; due: string }[];
+  emailed?: { to: string; reference?: string } | null;
+}
+
+export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView | HotelsView | RealEstateView | InsuranceView | DealershipView | DentalView;

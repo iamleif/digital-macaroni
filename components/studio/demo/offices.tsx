@@ -1,7 +1,7 @@
 import { Fragment, createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ProductArt, swatch } from "../live/product-art";
 import { formfieldEmpty } from "../live/sample-views";
-import type { AppointmentView, BrandId, DealershipView, FormFieldView, HotelsStage, HotelsView, InsuranceView, LawFirmView, RealEstateView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
+import type { AppointmentView, BrandId, DealershipView, DentalView, FormFieldView, HotelsStage, HotelsView, InsuranceView, LawFirmView, RealEstateView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
 import { BrandMark } from "../brand-marks";
 import { ArrowRight, Bed, Calendar, Check, Clock, Coffee, Globe, Grid, Home, Inbox, Lock, MapPin, Phone, Search, Seat, Settings, Suitcase, User } from "../icons";
 import d from "./demo.module.css";
@@ -1464,3 +1464,110 @@ export function DealershipOffice({ view, state, agentName, cue }: { view: Dealer
   ]} />;
 }
 const DEALERSHIP_SCREENS: Record<string, string> = { search_inventory: "inventory", get_vehicle: "inventory", note_lead: "lead", check_availability: "calendar", book_appointment: "calendar", reschedule_appointment: "calendar", email_confirmation: "calendar", take_message: "inbox" };
+
+
+/* ---------------- Aspen Grove Dental ---------------- */
+
+const DENTAL_STAGES: RecordStage[] = [
+  { id: "new", label: "New call" },
+  { id: "chart", label: "Chart" },
+  { id: "checked", label: "Insurance & triage" },
+  { id: "booked", label: "Booked" },
+];
+const UNIT = 10;
+const ROW = 12;
+const hhmm = (m: number) => { const h = Math.floor(m / 60); return `${(h + 11) % 12 + 1}:${String(m % 60).padStart(2, "0")}${h < 12 ? "am" : "pm"}`; };
+const CONFIRM: Record<DentalView["board"]["appts"][number]["confirmed"], { t: string; label: string }> = { confirmed: { t: "C", label: "Confirmed" }, left_message: { t: "LM", label: "Left message" }, unconfirmed: { t: "U", label: "Unconfirmed" } };
+
+/** The practice's appointment book: one column per operatory, 10-minute rows, blocks coloured by provider. */
+function DentalBook({ b, agentName }: { b: DentalView["board"]; agentName: string }) {
+  const rows = (b.close - b.open) / UNIT;
+  const y = (m: number) => ((m - b.open) / UNIT) * ROW;
+  return <section className={d.book} aria-label={`Appointment book, ${b.label}`}>
+    <div className={d.bookHead} style={{ gridTemplateColumns: `56px repeat(${b.ops.length}, minmax(0, 1fr))` }}>
+      <span className={d.bookDay}>{b.label.split(",")[0]}</span>
+      {b.ops.map((o) => <span key={o.id} className={d.bookOp} data-tone={o.tone}><b>{o.name}</b><small>{o.provider} · {o.code}</small></span>)}
+    </div>
+    <div className={d.bookBody} style={{ gridTemplateColumns: `56px repeat(${b.ops.length}, minmax(0, 1fr))`, height: rows * ROW }}>
+      <div className={d.bookTimes}>
+        {Array.from({ length: rows }, (_, i) => b.open + i * UNIT).map((m) => <span key={m} style={{ top: y(m) }} data-hour={m % 60 === 0 || undefined}>{m % 60 === 0 ? hhmm(m) : `:${m % 60}`}</span>)}
+      </div>
+      {b.ops.map((o) => <div key={o.id} className={d.bookCol} data-tone={o.tone}>
+        {b.lunch ? <div className={d.bookLunch} style={{ top: y(b.lunch[0]), height: ((b.lunch[1] - b.lunch[0]) / UNIT) * ROW }}><span>Lunch</span></div> : null}
+        {b.holds.filter((h) => h.op === o.id).map((h) => <div key={`h${h.start}`} className={d.bookHold} style={{ top: y(h.start), height: (h.minutes / UNIT) * ROW - 2 }}><b>Emergency hold</b><small>{hhmm(h.start)} · same-day pain</small></div>)}
+        {b.openSlots.filter((s) => s.op === o.id).map((s) => <div key={`o${s.start}`} className={d.bookOpen} style={{ top: y(s.start), height: (s.minutes / UNIT) * ROW - 2 }}><b>Open</b><small>{hhmm(s.start)} · {s.minutes} min</small></div>)}
+        {b.appts.filter((a) => a.op === o.id).map((a) => <div key={a.id} className={d.appt} data-tone={a.tone} data-mine={a.kind === "demo" || undefined} style={{ top: y(a.start), height: (a.minutes / UNIT) * ROW - 2 }} title={`${a.patient} · ${a.procedures}`}>
+          <i className={d.apptConfirm} data-state={a.confirmed} title={CONFIRM[a.confirmed].label}>{CONFIRM[a.confirmed].t}</i>
+          <div>
+            {a.kind === "demo" ? <span className={d.apptTag}>{a.id} · by {agentName}</span> : null}
+            <b>{a.patient}</b>
+            <small>{a.procedures}</small>
+            {a.minutes >= 40 && a.phone ? <small>H: {a.phone}</small> : null}
+            {a.minutes >= 50 ? <small>{a.code}</small> : null}
+          </div>
+          {a.alert ? <em className={d.apptAlert} title="Medical alert">+</em> : null}
+          {a.exam && a.minutes >= 40 ? <span className={d.apptExam} style={{ top: Math.max(14, ((a.minutes / 2 - 5) / UNIT) * ROW) }}>Dr exam</span> : null}
+        </div>)}
+      </div>)}
+      {b.now != null ? <div className={d.bookNow} style={{ top: y(b.now) }}><span>{hhmm(b.now)}</span></div> : null}
+    </div>
+  </section>;
+}
+
+export function DentalOffice({ view, state, agentName, cue }: { view: DentalView; state: LiveState; agentName: string; cue?: Cue }) {
+  const r = view.record;
+  const at = DENTAL_STAGES.findIndex((x) => x.id === r.stage);
+  const ins = view.insurance;
+  const tr = view.triage;
+  const booked = view.booked;
+  const active = useFollow(cue, DENTAL_SCREENS, "schedule");
+
+  const chart = <div className={d.recGrid}>
+    <RecordForm sections={r.sections} opened={r.opened} waiting={`The chart opens the moment ${agentName} has something to write down.`} />
+    <div className={d.stack}>
+      <Card title="Insurance check" meta={ins ? (ins.inNetwork ? "In network" : "Out of network") : "Waiting"}>
+        <div className={d.review}>
+          <div className={d.reviewRow} data-state={ins ? (ins.inNetwork ? "clear" : "conflict") : "waiting"}>
+            <i aria-hidden="true">{ins ? (ins.inNetwork ? <Check size={11} /> : "!") : null}</i>
+            <div><b>{ins ? ins.carrier : "Dental plan"}</b><small>{ins ? (ins.medicaid ? "Not accepted; low-cost city clinics suggested" : ins.inNetwork ? `In network${ins.onFile ? " · on file" : ""} · benefits verified before the visit` : "Out of network · we file the claim for the patient") : "Checked against the plans we're in network with"}</small></div>
+          </div>
+        </div>
+      </Card>
+      {tr ? <Card title="Triage" meta={tr.outcome === "er" ? "Emergency room" : tr.outcome === "now" ? "Within the hour" : "Same day"}>
+        <div className={d.review}>
+          <div className={d.reviewRow} data-state={tr.outcome === "er" ? "conflict" : "clear"}>
+            <i aria-hidden="true">{tr.outcome === "er" ? "!" : <Check size={11} />}</i>
+            <div><b>{tr.outcome === "er" ? "Told to call 911 or go to the ER" : tr.outcome === "now" ? "Knocked-out tooth · in within the hour" : "Same-day emergency visit"}</b><small>{[tr.painLevel != null ? `Pain ${tr.painLevel}/10` : null, tr.swelling ? "swelling" : null, tr.fever ? "fever" : null].filter(Boolean).join(" · ") || "Answers recorded"}</small></div>
+          </div>
+        </div>
+      </Card> : null}
+      {view.found ? <Card title="Current patient" meta={view.found.hygienist}>
+        <div className={d.reviewRow} data-state="clear"><i aria-hidden="true"><Check size={11} /></i><div><b>{view.found.due}</b><small>Usually sees {view.found.hygienist}</small></div></div>
+      </Card> : null}
+      <Card title="Booked on this call" meta={booked.length ? booked[booked.length - 1].id : "Not yet"}>
+        {booked.length ? booked.map((a) => <div key={a.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{a.visit}</b><small>{a.day}, {a.time} · {a.with} · {a.op}</small></div><em>{a.changes ? `Moved ${a.changes}×` : "Booked"}</em></div>) : <Empty>The visit lands in the book once {agentName} books it.</Empty>}
+        {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `Confirmation for ${view.emailed.reference}` : "Call summary"} /> : null}
+      </Card>
+    </div>
+  </div>;
+
+  const inbox = <div className={d.cards}>
+    <div className={d.stack}>
+      <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
+        {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the chart.</Empty>}
+      </Card>
+      <Card title="Tasks" meta={view.tasks.length || "None yet"}>
+        {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Benefit checks, forms and reminders are queued from the call.</Empty>}
+      </Card>
+    </div>
+    <Messages items={view.messages} empty="Messages for the front office land here." />
+  </div>;
+
+  return <Screens id="dental" kicker={`Appointments · ${view.timeZone}`} title={view.board.label} state={state} active={active} cue={cue}
+    head={<RecordHeader opened={r.opened} number={r.number ?? "P-····"} tags={[r.title ?? "New patient call", ...(ins ? [ins.inNetwork ? `${ins.carrier} · in network` : `${ins.carrier} · out of network`] : [])]} source={`Phone · AI assistant · ${agentName}`} stages={DENTAL_STAGES} at={at} label="Call stage" />} screens={[
+    { id: "schedule", label: "Schedule", icon: Calendar, body: <DentalBook b={view.board} agentName={agentName} /> },
+    { id: "chart", label: "Chart", icon: User, body: chart },
+    { id: "inbox", label: "Inbox", icon: Inbox, count: view.messages.length + view.asap.length, body: inbox },
+  ]} />;
+}
+const DENTAL_SCREENS: Record<string, string> = { note_patient: "chart", find_patient: "chart", check_insurance: "chart", triage_emergency: "chart", check_availability: "schedule", book_appointment: "schedule", reschedule_appointment: "schedule", cancel_appointment: "schedule", add_to_asap_list: "inbox", email_confirmation: "chart", take_message: "inbox" };

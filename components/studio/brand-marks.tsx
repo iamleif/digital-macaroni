@@ -41,6 +41,12 @@ export function BrandMark({ id, size = 22 }: { id: BrandId; size?: number }) {
     <path d="M5.2 12.2 12 6.4l6.8 5.8M7.4 10.6v7.4h9.2v-7.4" stroke="#fff" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round" fill="none" />
     <circle cx="11" cy="14.6" r="1.25" fill="#9fc4e8" /><circle cx="13.4" cy="14" r="1.25" fill="#9fc4e8" /><circle cx="12.4" cy="16.2" r="1.25" fill="#9fc4e8" />
   </svg>;
+  if (id === "dental") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <defs><linearGradient id="ag-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#7464d0" /><stop offset="1" stopColor="#4a3c9e" /></linearGradient></defs>
+    <rect width="24" height="24" rx="7" fill="url(#ag-g)" />
+    <path d="M8.6 5.6c-2 0-3.3 1.4-3.3 3.5 0 2 .8 3.3 1.3 4.8.5 1.6.7 5 2.2 5 1.3 0 1.3-3.2 2.2-4.5.5-.7 1.1-.7 1.6 0 .9 1.3.9 4.5 2.2 4.5 1.5 0 1.7-3.4 2.2-5 .5-1.5 1.3-2.8 1.3-4.8 0-2.1-1.3-3.5-3.3-3.5-1.6 0-2.4.9-3.2.9s-1.6-.9-3.2-.9Z" fill="#fff" />
+    <path d="M14.6 8.2c.9.2 1.4.8 1.5 1.7" stroke="#f3c766" strokeWidth="1.2" strokeLinecap="round" fill="none" />
+  </svg>;
   if (id === "dealership") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <defs><linearGradient id="wm-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#c8463f" /><stop offset="1" stopColor="#8e2420" /></linearGradient></defs>
     <rect width="24" height="24" rx="7" fill="url(#wm-g)" />
@@ -71,6 +77,7 @@ const WORDMARK: Record<BrandId, { text: string; className: string }> = {
   realestate: { text: "Juniper Row", className: h.wmJuniper },
   insurance: { text: "Bluebird", className: h.wmBluebird },
   dealership: { text: "Woodward Motor Co.", className: h.wmWoodward },
+  dental: { text: "Aspen Grove Dental", className: h.wmAspen },
   lune: { text: "lune", className: h.wmLune },
   tidewell: { text: "Tidewell", className: h.wmTidewell },
 };

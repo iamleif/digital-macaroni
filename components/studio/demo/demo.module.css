@@ -38,6 +38,7 @@
 .page:has([data-demo="realestate"]) { --accent: #2e6650; --accent-soft: #e5f0ea; --accent-ink: #1d4335; --rec: #24503f; --orb: radial-gradient(circle at 35% 30%, #ffffff, #cfe5d8 30%, #5f9c80 62%, #24503f); }
 .page:has([data-demo="insurance"]) { --accent: #2563a8; --accent-soft: #e6effa; --accent-ink: #17406f; --rec: #1f5596; --orb: radial-gradient(circle at 35% 30%, #ffffff, #cfe0f5 30%, #5d93d4 62%, #1f5596); }
 .page:has([data-demo="dealership"]) { --accent: #b4312c; --accent-soft: #fbeceb; --accent-ink: #7a1f1b; --rec: #8e2420; --orb: radial-gradient(circle at 35% 30%, #ffffff, #f4cfcc 30%, #d2645d 62%, #8e2420); }
+.page:has([data-demo="dental"]) { --accent: #5b4bb7; --accent-soft: #efedfb; --accent-ink: #3a2f86; --rec: #4a3c9e; --orb: radial-gradient(circle at 35% 30%, #ffffff, #d9d3f6 30%, #8a7ddc 62%, #4a3c9e); }
 .page:has([data-demo="hotels"]) { --accent: #1c7560; --accent-soft: #e2f2eb; --accent-ink: #114a3c; --orb: radial-gradient(circle at 35% 30%, #ffffff, #c6ead9 30%, #4fae8c 62%, #145a47); }
 .page *, .page *::before, .page *::after { box-sizing: border-box; }
 .page :where(a) { color: inherit; text-decoration: none; }
@@ -831,6 +832,7 @@
 .previewScope:has([data-demo="realestate"]) { --accent: #2e6650; --accent-soft: #e5f0ea; --accent-ink: #1d4335; --rec: #24503f; }
 .previewScope:has([data-demo="insurance"]) { --accent: #2563a8; --accent-soft: #e6effa; --accent-ink: #17406f; --rec: #1f5596; }
 .previewScope:has([data-demo="dealership"]) { --accent: #b4312c; --accent-soft: #fbeceb; --accent-ink: #7a1f1b; --rec: #8e2420; }
+.previewScope:has([data-demo="dental"]) { --accent: #5b4bb7; --accent-soft: #efedfb; --accent-ink: #3a2f86; --rec: #4a3c9e; }
 .previewScope:has([data-demo="hotels"]) { --accent: #1c7560; --accent-soft: #e2f2eb; --accent-ink: #114a3c; }
 .previewScope .railLogo { visibility: hidden; }
 
@@ -961,3 +963,42 @@
 .boardGrid[data-fit] .slot { padding: 4px; min-width: 0; }
 .boardGrid[data-fit] :is(.jobBusy, .jobMine, .jobProposed, .jobOpen) { min-width: 0; overflow: hidden; }
 .boardGrid[data-fit] :is(.jobBusy, .jobMine, .jobProposed) b, .boardGrid[data-fit] :is(.jobBusy, .jobMine, .jobProposed) small, .boardGrid[data-fit] .jobTag { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+
+/* ---- Aspen Grove: the appointment book (operatories, 10-minute rows, provider colours) ---- */
+.book { --dds1: #f6b394; --dds1-ink: #6b2d12; --dds2: #f7e07e; --dds2-ink: #5b4800; --hyg1: #aeb3f5; --hyg1-ink: #262a77; --hyg2: #a9e0a6; --hyg2-ink: #1d5a1d; border-radius: 16px; box-shadow: 0 0 0 1px var(--hair); background: #fff; overflow: hidden; }
+.bookHead { display: grid; position: sticky; top: 0; z-index: 3; background: #fafaf8; border-bottom: 1px solid var(--hair); }
+.bookDay { display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--muted); border-right: 1px solid var(--hair-2); }
+.bookOp { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 7px 4px; border-right: 1px solid var(--hair-2); position: relative; }
+.bookOp::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); }
+.bookOp b { font-size: 12.5px; letter-spacing: .02em; }
+.bookOp small { font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.bookOp[data-tone="dds1"], .bookCol[data-tone="dds1"], .appt[data-tone="dds1"] { --c: var(--dds1); --ci: var(--dds1-ink); }
+.bookOp[data-tone="dds2"], .bookCol[data-tone="dds2"], .appt[data-tone="dds2"] { --c: var(--dds2); --ci: var(--dds2-ink); }
+.bookOp[data-tone="hyg1"], .bookCol[data-tone="hyg1"], .appt[data-tone="hyg1"] { --c: var(--hyg1); --ci: var(--hyg1-ink); }
+.bookOp[data-tone="hyg2"], .bookCol[data-tone="hyg2"], .appt[data-tone="hyg2"] { --c: var(--hyg2); --ci: var(--hyg2-ink); }
+.bookBody { display: grid; position: relative; background-image: repeating-linear-gradient(180deg, transparent 0 11px, rgba(15,15,13,.045) 11px 12px), repeating-linear-gradient(180deg, transparent 0 71px, rgba(15,15,13,.09) 71px 72px); background-position: 56px 0; background-repeat: no-repeat; background-size: calc(100% - 56px) 100%; }
+.bookTimes { position: relative; border-right: 1px solid var(--hair-2); background: #fbfbf9; }
+.bookTimes span { position: absolute; right: 6px; transform: translateY(-1px); font-size: 8.5px; line-height: 12px; color: #b4b1a6; font-variant-numeric: tabular-nums; }
+.bookTimes span[data-hour] { font-size: 10.5px; font-weight: 700; color: var(--ink-2); }
+.bookCol { position: relative; border-right: 1px solid var(--hair-2); background: color-mix(in srgb, var(--c) 7%, transparent); }
+.bookLunch { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(-45deg, #ecebe6, #ecebe6 5px, #f4f3ef 5px, #f4f3ef 10px); display: grid; place-items: center; }
+.bookLunch span { font-size: 10.5px; font-weight: 600; color: #a6a39a; letter-spacing: .04em; text-transform: uppercase; }
+.appt { position: absolute; left: 3px; right: 3px; display: flex; gap: 5px; padding: 3px 6px 3px 3px; border-radius: 6px; background: var(--c); color: var(--ci); overflow: hidden; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ci) 18%, transparent); font-size: 10.5px; line-height: 1.25; animation: rise .4s var(--ease) both; }
+.appt > div { min-width: 0; flex: 1; display: flex; flex-direction: column; }
+.appt b { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.appt small { font-size: 10px; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.appt[data-mine] { box-shadow: 0 0 0 2px var(--accent), 0 10px 22px -12px var(--accent); z-index: 2; animation: land .5s var(--ease) both; }
+.apptTag { display: inline-block; align-self: flex-start; margin-bottom: 1px; padding: 0 5px; border-radius: 4px; background: var(--accent); color: #fff; font-size: 9.5px; font-weight: 700; }
+.apptConfirm { flex-shrink: 0; width: 16px; height: 16px; display: grid; place-items: center; border-radius: 4px; font-size: 8px; font-style: normal; font-weight: 800; background: rgba(255,255,255,.65); color: var(--ci); }
+.apptConfirm[data-state="confirmed"] { background: #fff; color: #17744c; }
+.apptConfirm[data-state="left_message"] { background: #fff4d6; color: #7a5700; }
+.apptAlert { position: absolute; top: 3px; right: 3px; width: 13px; height: 13px; display: grid; place-items: center; border-radius: 3px; background: #d92d20; color: #fff; font-style: normal; font-size: 11px; font-weight: 800; line-height: 1; }
+.apptExam { position: absolute; right: 3px; padding: 0 4px; border-radius: 4px; background: var(--dds1); color: var(--dds1-ink); font-size: 8.5px; font-weight: 800; box-shadow: 0 0 0 1px rgba(255,255,255,.7); }
+.bookHold, .bookOpen { position: absolute; left: 3px; right: 3px; display: flex; flex-direction: column; justify-content: center; padding: 2px 6px; border-radius: 6px; font-size: 10px; line-height: 1.2; overflow: hidden; }
+.bookHold { background: repeating-linear-gradient(-45deg, #fff0ee, #fff0ee 4px, #fff 4px, #fff 8px); box-shadow: inset 0 0 0 1px #f0b4ad; color: #a3271a; }
+.bookOpen { background: color-mix(in srgb, var(--yellow) 32%, white); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--yellow) 80%, #b07d00); color: #6b4d00; animation: land .35s var(--ease) both; z-index: 1; }
+.bookHold b, .bookOpen b { font-size: 10.5px; font-weight: 700; }
+.bookHold small, .bookOpen small { font-size: 9.5px; opacity: .85; }
+.bookNow { position: absolute; left: 56px; right: 0; height: 0; border-top: 2px solid #e5484d; z-index: 4; pointer-events: none; }
+.bookNow span { position: absolute; left: -54px; top: -8px; padding: 0 4px; border-radius: 4px; background: #e5484d; color: #fff; font-size: 9.5px; font-weight: 700; }
