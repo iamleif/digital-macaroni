@@ -8,9 +8,9 @@ const READY = [
   "Books appointments, answers questions and takes messages",
   "Texts callers confirmations and links",
   "Texts you a summary after every call",
+  "One integration: your calendar, CRM or any software with an API",
   "Transfers urgent calls to you or your team",
   "Your brand: business name, logo, voice, greeting, hours and services",
-  "Two connections of your choice: calendar, CRM or a custom API",
   "Zapier, to reach thousands of other apps",
   "Every call’s transcript and summary in your dashboard",
   "Email support, plus 30 days of fixes after launch",
@@ -23,7 +23,7 @@ const CUSTOM = [
   "Designed and tested on your real calls",
   "Fixed scope and price, agreed up front",
 ];
-const SHORT = 4;
+const SHORT = 5;
 
 /** What a company can bring us in for. Shared by the consulting card and /consulting/. */
 export const CONSULTING_AREAS = [
@@ -42,7 +42,7 @@ export function PlanCards({ full = false }: { full?: boolean }) {
     <Reveal className={h.planShell}>
       <article className={h.plan}>
         <p className={h.planName}>Ready-made agent</p>
-        <p className={h.planPrice}>$3,500<span>one-time</span></p>
+        <p className={h.planPrice}>$3,000<span>one-time</span></p>
         <p className={h.planPitch}>One of our proven agents, branded as your business and connected to your calendar or CRM, answering every inbound call.</p>
         <ul>{ready.map((f) => <li key={f}><Check size={15} />{f}</li>)}</ul>
         <a className={h.pillOutline} href="/contact/?topic=ready-made">Start with a ready-made agent <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
@@ -51,7 +51,7 @@ export function PlanCards({ full = false }: { full?: boolean }) {
     <Reveal delay={90} className={h.planShell}>
       <article className={h.plan} data-featured>
         <p className={h.planName}>Custom agent<em>Most flexible</em></p>
-        <p className={h.planPrice}><small>from</small>$7,500</p>
+        <p className={h.planPrice}><small>from</small>$6,000</p>
         <p className={h.planPitch}>Everything in the ready-made agent, built around your business and connected to the tools you already use.</p>
         <ul>{custom.map((f) => <li key={f}><Check size={15} />{f}</li>)}</ul>
         <a className={h.pillYellow} href="/contact/?topic=custom-agent">Shape a custom project <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>

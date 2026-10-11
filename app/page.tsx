@@ -90,7 +90,7 @@ const languages: [string, string][] = [
 const tools = ["Calendly", "HubSpot", "Salesforce", "GoHighLevel", "Keap", "ServiceTitan", "Housecall Pro", "AccuLynx", "Clio", "Lawmatics", "Applied Epic", "Shopify", "Square", "QuickBooks", "Slack", "WhatsApp"];
 
 /** Homepage questions: each links to its full answer page. */
-const homeFaqs = ["how-much-does-an-ai-phone-agent-cost", "what-happens-when-an-ai-phone-agent-gets-something-wrong", "can-i-keep-my-business-phone-number", "will-callers-know-they-are-talking-to-an-ai", "hosted-vs-managed-vs-self-hosted-ai-phone-agent", "custom-ai-phone-agent-vs-template-build"]
+const homeFaqs = ["how-much-does-an-ai-phone-agent-cost", "what-software-can-an-ai-phone-agent-connect-to", "what-happens-when-an-ai-phone-agent-gets-something-wrong", "can-i-keep-my-business-phone-number", "will-callers-know-they-are-talking-to-an-ai", "hosted-vs-managed-vs-self-hosted-ai-phone-agent", "custom-ai-phone-agent-vs-template-build"]
   .map((slug) => answerBySlug(slug)!)
   .filter(Boolean);
 

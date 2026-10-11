@@ -32,8 +32,8 @@ export const CATEGORIES: Record<Category, { title: string; blurb: string }> = {
   "how-it-works": { title: "How it works", blurb: "Reliability, disclosure, your phone number and the rest of the details." },
 };
 
-export const UPDATED = "October 9, 2026";
-export const UPDATED_ISO = "2026-10-09";
+export const UPDATED = "October 11, 2026";
+export const UPDATED_ISO = "2026-10-11";
 
 /** An inline citation: links the claim to its source, which also appears in the page's source list. */
 function Cite({ k, children }: { k: SourceKey; children: ReactNode }) {
@@ -243,7 +243,7 @@ export const ANSWERS: Answer[] = [
     category: "costs",
     label: "What it costs",
     title: "How much does an AI phone agent cost?",
-    short: "Off-the-shelf AI receptionists start at about $29 a month. Agency-built agents typically cost $1,500 to $5,000 to set up plus $300 to $800 a month, and large custom builds run far higher. At Digital Macaroni, a ready-made agent is $3,500 and a custom agent starts at $7,500, plus a running plan from free to $500 a month.",
+    short: "Off-the-shelf AI receptionists start at about $29 a month. Agency-built agents typically cost $1,500 to $5,000 to set up plus $300 to $800 a month, and large custom builds run far higher. At Digital Macaroni, a ready-made agent is $3,000 and a custom agent starts at $6,000, plus a running plan from free to $500 a month.",
     description: "What AI phone agents cost in 2026, from off-the-shelf receptionists to agency and custom builds, and what Digital Macaroni charges.",
     demo: "northline",
     body: <>
@@ -262,8 +262,8 @@ export const ANSWERS: Answer[] = [
       <table>
         <thead><tr><th>Plan</th><th>Price</th><th>Includes</th></tr></thead>
         <tbody>
-          <tr><td>Ready-made agent</td><td>$3,500 one-time</td><td>A proven agent branded as your business: answers every call, books, takes messages, texts confirmations and summaries, transfers urgent calls, dashboard. Two connections of your choice, Zapier and email support included. Live in 2 to 5 days.</td></tr>
-          <tr><td>Custom agent</td><td>From $7,500</td><td>Everything above, with five or more connections to your systems through their APIs, with two-way texting and your own call flows. Live in 2 to 4 weeks.</td></tr>
+          <tr><td>Ready-made agent</td><td>$3,000 one-time</td><td>A proven agent branded as your business: answers every call, books, takes messages, texts confirmations and summaries, transfers urgent calls, dashboard. One integration of your choice (calendar, CRM or any software with an API), Zapier and email support included. Live in 2 to 5 days.</td></tr>
+          <tr><td>Custom agent</td><td>From $6,000</td><td>Everything above, with five or more connections to your systems through their APIs, with two-way texting and your own call flows. Live in 2 to 4 weeks.</td></tr>
         </tbody>
       </table>
       <h2>Keeping it running</h2>
@@ -287,7 +287,7 @@ export const ANSWERS: Answer[] = [
     </>,
     faqs: [
       { q: "How much does an AI receptionist cost per month?", a: "Off-the-shelf AI receptionists start at about $29 a month and rise with call volume or features. Agency-run agents typically cost $300 to $800 a month on top of a setup fee." },
-      { q: "How much does a custom AI phone agent cost?", a: "At Digital Macaroni, custom agents start at $7,500, plus a running plan. Industry estimates for larger agency builds run from $30,000 to $150,000 in the first year." },
+      { q: "How much does a custom AI phone agent cost?", a: "At Digital Macaroni, custom agents start at $6,000, plus a running plan. Industry estimates for larger agency builds run from $30,000 to $150,000 in the first year." },
       { q: "Is there a monthly fee?", a: "Hosted plans are $249 a month and managed plans $500. Self-hosted agents have no monthly fee from us; you pay your phone and AI providers directly." },
     ],
     sources: ["aira", "ciela", "groovy"],
@@ -411,7 +411,7 @@ export const ANSWERS: Answer[] = [
     category: "how-it-works",
     label: "Telling callers it's AI",
     title: "Will callers know they're talking to an AI?",
-    short: "Only if you choose. Your agent can introduce itself as an AI assistant or not, and calls can be recorded or not. But the law may decide for you: in the EU, people must be told they're talking to AI, several US states require everyone's consent to record a call, and AI voices on outbound calls fall under US robocall rules.",
+    short: "It depends: on your choices, and on where you and your callers are. Your agent can introduce itself as an AI assistant or not, and calls can be recorded or not. But the law may decide for you: in the EU, people must be told they're talking to AI, several US states require everyone's consent to record a call, and AI voices on outbound calls fall under US robocall rules.",
     description: "Whether an AI phone agent has to tell callers it's AI or that calls are recorded, and the EU and US rules that apply.",
     demo: "northline",
     body: <>
@@ -473,6 +473,53 @@ export const ANSWERS: Answer[] = [
     ],
     sources: ["fccPorting", "twilio10dlc"],
     related: ["how-much-does-an-ai-phone-agent-cost", "will-callers-know-they-are-talking-to-an-ai", "ai-phone-agent-for-home-services"],
+  },
+  {
+    slug: "what-software-can-an-ai-phone-agent-connect-to",
+    category: "how-it-works",
+    label: "Connecting your software",
+    title: "What software can an AI phone agent connect to?",
+    short: "Almost anything your business already runs. We connect agents to calendars, CRMs, practice and case management, field-service, booking, commerce, accounting and messaging tools. If your software has an API, we're happy to look at it and show you how the agent can work inside it. And if what you need doesn't exist yet, we can build it.",
+    description: "Which calendars, CRMs and business systems an AI phone agent can connect to, how anything with an API can be connected, and what to do when there is no API.",
+    demo: "lawfirm",
+    body: <>
+      <h2>Tools we connect agents to</h2>
+      <table>
+        <thead><tr><th>Kind of software</th><th>Examples</th><th>What the agent does there</th></tr></thead>
+        <tbody>
+          <tr><td>Calendars and booking</td><td>Google Calendar, Outlook, Calendly, Acuity, Square Appointments</td><td>Reads real availability, books, moves and cancels appointments</td></tr>
+          <tr><td>CRMs</td><td>HubSpot, Salesforce, Keap, GoHighLevel, Zoho</td><td>Finds the caller, creates leads and contacts, logs the call</td></tr>
+          <tr><td>Dental and medical practices</td><td>Dentrix, Open Dental, Eaglesoft</td><td>Books patients, notes the reason for the visit, sends confirmations</td></tr>
+          <tr><td>Veterinary</td><td>ezyVet, Vetspire</td><td>Looks up the pet and owner, books the visit, writes the call notes</td></tr>
+          <tr><td>Home service</td><td>ServiceTitan, Housecall Pro, Jobber</td><td>Creates the job, books a window, sends the confirmation</td></tr>
+          <tr><td>Legal and insurance</td><td>Clio, MyCase, Lawmatics, Filevine, Applied Epic</td><td>Runs the intake, fills in the matter or policy record, books the consultation</td></tr>
+          <tr><td>Real estate</td><td>Follow Up Boss</td><td>Captures the lead, notes what they want, sets up the showing</td></tr>
+          <tr><td>Restaurants and hospitality</td><td>SevenRooms, Tock, OpenTable</td><td>Takes the reservation and notes the occasion</td></tr>
+          <tr><td>Commerce and payments</td><td>Shopify, Square, Stripe</td><td>Checks stock and orders, holds items, takes deposits</td></tr>
+          <tr><td>Accounting</td><td>QuickBooks, Xero</td><td>Looks up invoices and balances, logs payments</td></tr>
+          <tr><td>Messaging</td><td>Text, WhatsApp, email, Slack, Microsoft Teams</td><td>Texts the caller, alerts your team, sends the call summary</td></tr>
+        </tbody>
+      </table>
+      <p>These are examples, not a fixed list. See it working in the <Demo id="lawfirm">new client intake demo</Demo>, where the record fills in while the caller talks.</p>
+      <h2>If it has an API, we can usually connect it</h2>
+      <p>An API is the door a piece of software opens for other programs. If your software has one, even if it&rsquo;s niche or built for your industry, send us its name: we&rsquo;ll look at what it allows and tell you exactly what the agent can read and write there before any work begins.</p>
+      <h2>No API? There are other ways in</h2>
+      <ul>
+        <li><strong>Zapier and similar tools</strong>, which reach thousands of apps without custom code.</li>
+        <li><strong>Email or a shared inbox</strong>, for systems that accept new work by email.</li>
+        <li><strong>A spreadsheet or database</strong> your team already works from.</li>
+      </ul>
+      <h2>Or build something new</h2>
+      <p>Sometimes the right answer is a tool that doesn&rsquo;t exist yet: a simple dashboard, an intake form or a small booking system made for how you work. We build those too, or connect what you have and build only what&rsquo;s missing.</p>
+      <p>A <a href="/pricing/">ready-made agent</a> includes one integration of your choice; custom agents connect to as many systems as the job needs.</p>
+    </>,
+    faqs: [
+      { q: "Can an AI phone agent connect to my CRM?", a: "Yes. We connect agents to CRMs such as HubSpot, Salesforce, Keap, GoHighLevel and Zoho, so every call finds or creates the contact and logs what happened." },
+      { q: "What if my software isn't on your list?", a: "If it has an API, send us its name and we'll check what the agent can do there. If it doesn't, Zapier, email or a shared spreadsheet usually works, or we can build what's missing." },
+      { q: "How many integrations are included?", a: "A ready-made agent includes one integration of your choice, such as your calendar, CRM or any software with an API. Custom agents connect to as many systems as the job needs." },
+    ],
+    sources: [],
+    related: ["how-much-does-an-ai-phone-agent-cost", "custom-ai-phone-agent-vs-template-build", "ai-phone-agent-for-law-firms"],
   },
 ];
 
