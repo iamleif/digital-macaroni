@@ -1,0 +1,44 @@
+{
+  "services": [
+    {
+      "id": "heating_repair",
+      "name": "Heating repair",
+      "skill": "heating",
+      "fee": 89,
+      "about": "Furnace, boiler or heat pump not heating, strange noises, or the system cycling on and off."
+    },
+    {
+      "id": "cooling_repair",
+      "name": "Cooling repair",
+      "skill": "cooling",
+      "fee": 89,
+      "about": "Air conditioning not cooling, leaking, or not turning on."
+    },
+    {
+      "id": "heating_tune_up",
+      "name": "Heating tune-up",
+      "skill": "heating",
+      "fee": 129,
+      "about": "Furnace, boiler or heat pump check and cleaning before winter. Flat price, no service fee on top."
+    },
+    {
+      "id": "cooling_tune_up",
+      "name": "AC tune-up",
+      "skill": "cooling",
+      "fee": 129,
+      "about": "Air conditioner check and cleaning before summer. Flat price, no service fee on top."
+    },
+    {
+      "id": "replacement_estimate",
+      "name": "New system estimate",
+      "skill": "heating",
+      "fee": 0,
+      "about": "An in-home quote for a new furnace, air conditioner or heat pump. Free."
+    }
+  ],
+  "noSymptomNeeded": [
+    "cooling_tune_up",
+    "heating_tune_up",
+    "replacement_estimate"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Northline Home Services",
+  "trade": "Heating and cooling: furnaces, heat pumps, boilers, ductless mini-splits and air conditioning. No plumbing, water heaters or electrical work.",
+  "city": "Seattle, WA",
+  "area": [
+    "Seattle",
+    "West Seattle",
+    "North Seattle",
+    "Bellevue",
+    "Kirkland",
+    "Redmond",
+    "Renton",
+    "Burien",
+    "SeaTac"
+  ],
+  "phone": "(206) 887-9619",
+  "hours": "Visits Monday to Saturday, arrival windows from 8 AM to 6 PM Pacific Time. Closed Sunday.",
+  "serviceFee": "Repair visits have a $89 service fee. It covers a technician coming out and a full diagnosis of the system. Before any work starts, the technician gives a flat, upfront price for the repair, and nothing is done without the customer's okay. If they go ahead, the fee goes toward the repair; if they decide not to, the fee is all they pay.",
+  "emergency": {
+    "counts": "No heat in cold weather, no cooling in extreme heat, water leaking from the system, or a system that won't shut off.",
+    "duringHours": "Urgent jobs are fitted in the same day whenever a technician is free.",
+    "afterHours": "Evenings, overnight and Sundays, an on-call technician covers emergencies and calls back within 15 minutes.",
+    "fee": "After-hours visits have a $149 service fee instead of $89; it goes toward the repair. Comfort Club members pay the regular $89."
+  },
+  "comfortClub": {
+    "price": "$19 a month, cancel any time.",
+    "includes": [
+      "A heating tune-up every fall and an AC tune-up every spring",
+      "Priority scheduling, ahead of non-members",
+      "No $89 service fee on repair visits",
+      "15% off repairs",
+      "The regular $89 fee after hours instead of $149"
+    ],
+    "value": "Two tune-ups alone are $258 a year; the Club is $228.",
+    "joining": "The technician signs them up at any visit, in a couple of minutes."
+  },
+  "financing": "Financing on new systems with approved credit, from about $99 a month. The technician goes through the options and exact numbers at the free estimate.",
+  "policies": [
+    "No repair or new-system prices over the phone: the technician has to see the system first, then gives a flat price before any work starts.",
+    "Customers can change or cancel a visit free of charge.",
+    "Technicians call 30 minutes before arriving.",
+    "Licensed, bonded and insured technicians. Repairs carry a one-year parts and labor warranty.",
+    "Payment by card, check or cash after the work is done."
+  ]
+}

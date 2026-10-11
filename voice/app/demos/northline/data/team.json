@@ -1,0 +1,27 @@
+{
+  "technicians": [
+    {
+      "id": "maya",
+      "name": "Maya Ortiz",
+      "skills": [
+        "heating",
+        "cooling"
+      ]
+    },
+    {
+      "id": "sam",
+      "name": "Sam Becker",
+      "skills": [
+        "cooling"
+      ]
+    },
+    {
+      "id": "jordan",
+      "name": "Jordan Lee",
+      "skills": [
+        "heating",
+        "cooling"
+      ]
+    }
+  ]
+}

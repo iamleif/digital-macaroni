@@ -1,0 +1,18 @@
+{
+  "timeZone": "America/Los_Angeles",
+  "arrivalWindows": [
+    8,
+    10,
+    12,
+    14,
+    16
+  ],
+  "daysAhead": 7,
+  "openHours": [
+    8,
+    18
+  ],
+  "closedWeekdays": [
+    0
+  ]
+}
