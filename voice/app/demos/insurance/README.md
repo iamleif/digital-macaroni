@@ -2,7 +2,8 @@
 
 Not built yet. When it is, this folder follows the same layout as `northline/` (see `../README.md`).
 
-- **Demo and phone line:** Law & professional services (Nora's number)
+- **Demo:** Law & professional services
+- **Phone number:** (478) 707-3907, Macon, Georgia (its own; bought, not yet pointed at the voice service)
 - **Agent:** Owen (working name)
 - **What callers want:** Quotes, what a policy covers, starting a claim, policy changes, ID cards. See Macaroni/Docs/studio-preview/HANDOFF_INSURANCE.md.
 - **Today:** Card on step 1 only.

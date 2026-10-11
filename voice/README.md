@@ -12,7 +12,7 @@ The live voice agents behind the website demos, each on its own engine:
   `DEMO_CASCADE` lists the demos on the cascade (default `travel`).
 
 - Phone: Twilio media streams on the three demo numbers (`/twilio/voice`, `/twilio/media`): Northline (720) 599-6395,
-  Form & Field (830) 239-2110, Alder & Finch (206) 887-9619; Waypoint has none.
+  Form & Field (830) 239-2110, Alder & Finch (206) 887-9619, Waypoint (929) 333-3608.
 - Website: browser microphone sessions (`/browser/sessions`) and pairing a phone call to a watching page (`/pairings`).
 - One Cloud Run service, `studio-demo-voice` in `digital-macaroni-510610`, single always-on instance (sessions live in memory).
   Built with Google buildpacks from `Procfile` and `.python-version` (no Dockerfile).

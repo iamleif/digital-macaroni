@@ -27,9 +27,9 @@ class Config:
             for number, demo in {
             env.get("NORTHLINE_NUMBER", "+17205996395"): "northline",
             env.get("FORMFIELD_NUMBER", "+18302392110"): "formfield",
-            env.get("TRAVEL_NUMBER", ""): "travel",
+            env.get("TRAVEL_NUMBER", "+19293333608"): "travel",
             # (206) 887-9619 is the account's only text-verified number (RankLadder texting, A2P approved), so the law firm
-            # has it and can text. Ellie moved to (720) 599-6395; Waypoint has no number. Both stay on this service in Twilio.
+            # has it and can text. Ellie moved to (720) 599-6395; Waypoint has (929) 333-3608 (New York).
             env.get("LAWFIRM_NUMBER", "+12068879619"): "lawfirm",
             }.items()
             if number

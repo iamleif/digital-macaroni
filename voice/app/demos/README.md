@@ -19,13 +19,26 @@ changes in memory, so nothing a caller books carries over to the next call.
 
 ## Phone lines
 
-| Demo | Calls | Texts |
-|---|---|---|
-| Scheduling (Northline, Lune, Tidewell) | (720) 599-6395 | Shown on screen only |
-| Law & professional (Alder & Finch, insurance, real estate) | (206) 887-9619 | **Yes, from (206) 887-9619**: intake forms and links, the account's only A2P-approved number (RankLadder texting campaign, registered to Digital Macaroni) |
-| Retail (Form & Field, dealership, furniture) | (830) 239-2110 | Shown on screen only |
-| Travel (Waypoint) | None yet | Shown on screen only |
+Every business has its own number; the number alone decides which agent answers (`app/config.py`).
+Bought October 11, 2026 on the Twilio account; about $1.15 a month each.
 
+| Business | Number | Area code is |
+|---|---|---|
+| Northline | (720) 599-6395 | Denver |
+| Lune | (323) 312-3248 | Los Angeles |
+| Tidewell | (971) 366-2375 | Portland |
+| Alder & Finch | (206) 887-9619 | Seattle; **the only number that texts** |
+| Bluebird Insurance | (478) 707-3907 | Macon, GA |
+| Juniper Row Realty | (512) 645-1952 | Austin |
+| Form & Field | (830) 239-2110 | Texas Hill Country |
+| Dealership | (313) 351-1780 | Detroit |
+| Furniture showroom | (312) 820-9899 | Chicago |
+| Waypoint flights | (929) 333-3608 | New York |
+| Waypoint hotels | (786) 305-3013 | Miami |
+| Waypoint tours | (702) 830-4942 | Las Vegas |
+
+Only (206) 887-9619 is A2P-approved, so it sends every real text for the law & professional businesses
+(Alder & Finch, insurance, real estate): intake forms and links. Every other business shows its texts on screen.
 Texts from (206) 887-9619 start with "Digital Macaroni demo:", link only to digitalmacaroni.io (no
 shorteners), and go out only after the agent has asked on the call and said "Message and data rates may
 apply. Reply STOP at any time to opt out."
