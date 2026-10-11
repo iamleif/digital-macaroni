@@ -43,12 +43,18 @@ How AI voice agents are built, with a live demo of each architecture: https://di
 - [Managed voice platform](https://digitalmacaroni.io/architecture/managed-voice-platform/): a voice platform runs the conversation while tools and data stay on our server. Demo: Form & Field, on ElevenLabs Agents.
 - [Cascade: speech-to-text, LLM, text-to-speech](https://digitalmacaroni.io/architecture/stt-llm-tts-cascade/): separate models hear, think and speak, with our own turn-taking. Demo: Waypoint Travel, on AssemblyAI and Google Gemini.
 
+
+## Try it on your own business
+
+Any business in the US or Canada can hear its own AI voice agent in about a minute, free: enter your website and mobile at [digitalmacaroni.io/your-agent](https://digitalmacaroni.io/your-agent/) (also on the homepage). A demo agent built from your website calls you; afterwards you get the call summary by email and a link to book a 30-minute discovery call with Leif.
+
 ## Example projects
 
-Three example voice agents show the kind of work the studio builds. They are demos, not products for sale: each client's agent is built around their business, rules and software.
+Example voice agents show the kind of work the studio builds. They are demos, not products for sale: each client's agent is built around their business, rules and software.
 
 - [Book a service visit](https://digitalmacaroni.io/demo/northline/): Northline, a fictional home-services business. The agent books, moves and cancels service visits.
 - [Help a shop's callers](https://digitalmacaroni.io/demo/formfield/): Form & Field, a fictional shop. The agent answers product questions, checks stock and holds items for pickup.
+- [A new client calls a law firm](https://digitalmacaroni.io/demo/lawfirm/): Alder & Finch Injury Law, a fictional personal-injury firm. The agent takes the intake, runs the conflict check, qualifies the case and books a free consultation.
 - [Search and book a flight](https://digitalmacaroni.io/demo/travel/): Waypoint Travel, a fictional travel agency. The agent searches live fares and books up to payment.
 - [Search and book hotels](https://digitalmacaroni.io/demo/hotels/): Palmetto Stays, a fictional hotel-booking agency in Miami. The agent searches real Miami hotels with live rates, walks through the rooms and books up to payment.
 - [A buyer or seller calls a brokerage](https://digitalmacaroni.io/demo/realestate/): Juniper Row Realty, a fictional Austin brokerage. The agent searches real active Austin listings, books showings, gives sellers an automated value estimate and ranks every caller as a lead.

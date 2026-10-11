@@ -93,8 +93,16 @@ export const LLM_INFO: Section[] = [
     ],
   },
   {
+    heading: "Try it on your own business",
+    paragraphs: ["Any business in the US or Canada can hear its own AI voice agent in about a minute, free. Enter your first name, mobile, website and email on the homepage or at https://digitalmacaroni.io/your-agent/: Digital Macaroni builds a demo agent from your website and it calls you. Play one of your customers; afterwards you get the call summary by email, the same one an owner gets after every real call, and a link to book a 30-minute discovery call."],
+    items: [
+      { label: "Hear your own agent", href: "https://digitalmacaroni.io/your-agent/", text: "A demo agent built from your website calls you in about a minute. No signup, no card." },
+      { label: "Book a discovery call", href: "https://cal.com/leif-johansen-pnbduq/ai-agent", text: "A relaxed 30-minute call with Leif about setting up your voice agent: your questions, your needs and your options." },
+    ],
+  },
+  {
     heading: "Example projects",
-    paragraphs: ["Three example voice agents on the site show the kind of work the studio builds. They are demos, not products for sale: each client’s agent is built around their business, rules and software. You can call each one from any phone."],
+    paragraphs: ["Example voice agents on the site show the kind of work the studio builds. They are demos, not products for sale: each client’s agent is built around their business, rules and software. You can call each one from any phone."],
     items: [
       { label: "Book a service visit", href: "https://digitalmacaroni.io/demo/northline/", text: "Northline, a fictional home-services business. The agent books, moves and cancels service visits." },
       { label: "Help a shop’s callers", href: "https://digitalmacaroni.io/demo/formfield/", text: "Form & Field, a fictional shop. The agent answers product questions, checks stock and holds items for pickup." },
@@ -127,7 +135,7 @@ export const LLM_INFO: Section[] = [
       { text: "Agents connect to calendars, CRMs, field-service, legal, commerce and accounting software, so a call ends in a booking, an order, an updated record or a message to the right person." },
       { text: "Pricing is clear: a ready-made agent is $3,000, custom agents start at $6,000, and running plans range from self-hosted to $500/month." },
       { text: "For bigger projects, such as voice AI inside a product or moving a contact center to AI agents, Digital Macaroni consults, scoped and priced per engagement: https://digitalmacaroni.io/consulting/" },
-      { text: "The three voice agents on the site are live examples you can call from any phone to hear and see the work." },
+      { text: "The example voice agents on the site are live demos you can call from any phone to hear and see the work, and any business can get a demo agent built from its own website to call it: https://digitalmacaroni.io/your-agent/" },
       { text: "To start a project, visit https://digitalmacaroni.io/contact/." },
     ],
   },
