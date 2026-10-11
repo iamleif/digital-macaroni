@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState, type ReactNode } from "react";
 import { track } from "@/components/studio/consent";
+import { Turnstile } from "@/components/studio/factory/Turnstile";
 
 type Status = {
   state: "idle" | "sending" | "success" | "error";
@@ -62,6 +63,8 @@ function Row({ children }: { children: ReactNode }) {
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>(initialStatus);
+  // Each "Verify you are human" token works once: after every send, the box gets a fresh one.
+  const [sends, setSends] = useState(0);
   const [topic, setTopic] = useState<Topic>("");
   const [source, setSource] = useState("");
   const [landing, setLanding] = useState("");
@@ -85,6 +88,7 @@ export function ContactForm() {
     const form = event.currentTarget;
 
     setStatus({ state: "sending", message: "Sending…" });
+    setSends((n) => n + 1);
 
     try {
       const body = new FormData(form);
@@ -210,6 +214,9 @@ export function ContactForm() {
           autoComplete="off"
         />
       </div>
+
+      {/* Adds the cf-turnstile-response field the worker checks. */}
+      <Turnstile onToken={() => {}} resetKey={sends} />
 
       <div className="form-action">
         <button

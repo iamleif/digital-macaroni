@@ -216,3 +216,13 @@ class TestVoicemail:
         s.record.said("u1", "visitor", "Leave a message after the beep.")
         assert await factory.summarise(s) is None
         s.end("test")
+
+
+class TestEmailCheck:
+    async def test_throwaway_and_broken_addresses_are_refused(self):
+        from app.verify import email_problem, is_disposable
+
+        assert is_disposable("mailinator.com") and is_disposable("inbox.mailinator.com") and not is_disposable("gmail.com")
+        assert await email_problem("someone@mailinator.com") == "disposable"
+        assert await email_problem("not an email") == "invalid"
+        assert await email_problem("a@b") == "invalid"

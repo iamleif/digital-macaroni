@@ -1,3 +1,5 @@
+import { DISPOSABLE } from "./lib/disposable-domains.js";
+
 const RECIPIENT = "hello@digitalmacaroni.io";
 const SENDER = "website@digitalmacaroni.io";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,6 +43,44 @@ function json(message, status = 200) {
       headers: { "Cache-Control": "no-store" },
     },
   );
+}
+
+// A throwaway inbox (from github.com/disposable-email-domains), or a subdomain of one.
+function isDisposable(domain) {
+  const parts = domain.split(".");
+  for (let i = 0; i < parts.length - 1; i++) if (DISPOSABLE.has(parts.slice(i).join("."))) return true;
+  return false;
+}
+
+// Whether the domain can receive email (MX, or an address record), by DNS over HTTPS. Unknown counts as yes.
+async function receivesMail(domain) {
+  try {
+    for (const type of ["MX", "A"]) {
+      const r = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=${type}`, { headers: { accept: "application/dns-json" } });
+      const data = await r.json();
+      if (data.Status === 3) return false;
+      if (data.Answer && data.Answer.length) return true;
+    }
+    return false;
+  } catch {
+    return true;
+  }
+}
+
+// Cloudflare Turnstile ("Verify you are human"), checked with the widget's secret.
+async function isHuman(token, ip, env) {
+  if (!env.TURNSTILE_SECRET) return true;
+  if (!token) return false;
+  try {
+    const body = new FormData();
+    body.set("secret", env.TURNSTILE_SECRET);
+    body.set("response", token);
+    if (ip) body.set("remoteip", ip);
+    const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
+    return Boolean((await r.json()).success);
+  } catch {
+    return false;
+  }
 }
 
 function cleanHeader(value) {
@@ -147,6 +187,17 @@ export default {
 
     if (!EMAIL_PATTERN.test(email) || email.length > 254) {
       return json("Please enter a valid email address.", 400);
+    }
+    const domain = email.split("@").pop();
+    if (isDisposable(domain)) {
+      return json("Please use your real email address: we can’t reply to temporary inboxes.", 400);
+    }
+    if (!(await receivesMail(domain))) {
+      return json("That email domain doesn’t seem to receive email. Please check the spelling.", 400);
+    }
+
+    if (!(await isHuman(String(form.get("cf-turnstile-response") || ""), request.headers.get("cf-connecting-ip"), env))) {
+      return json("Please tick “Verify you are human” and try again.", 400);
     }
 
     const topicLabel = TOPICS.get(topic);

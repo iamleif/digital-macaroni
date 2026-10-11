@@ -34,6 +34,7 @@ from .demos.agent import AgentState
 from .profile import Profile, build_profile, fallback_profile, normalise_url
 from .session import DemoSession, admit
 from .twilio import stream_twiml
+from .verify import EMAIL_MESSAGES, email_problem, human  # noqa: F401  (human: the routes check it before a job starts)
 
 VOICES = {"female": ("Ava", "Sulafat"), "male": ("Leo", "Iapetus")}
 _EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[a-z]{2,}$", re.I)
@@ -108,21 +109,6 @@ def _clean(s: Any, n: int) -> str:
 
 
 # ---- 1. Instant demo call ----
-
-
-async def human(token: str, ip: str) -> bool:
-    """Cloudflare Turnstile's verdict on the form's "Verify you are human" token. Passes when no secret is set."""
-    if not config.turnstile_secret:
-        return True
-    if not token:
-        return False
-    try:
-        async with httpx.AsyncClient(timeout=8) as http:
-            r = await http.post("https://challenges.cloudflare.com/turnstile/v0/siteverify", data={"secret": config.turnstile_secret, "response": token, "remoteip": ip})
-        return bool(r.json().get("success"))
-    except (httpx.HTTPError, ValueError) as err:
-        log.warn("factory.turnstile_failed", {}, err)
-        return False
 
 
 def start_instant(body: dict[str, Any], ip: str) -> tuple[Optional[Job], Optional[tuple[int, str, str]]]:
@@ -393,8 +379,11 @@ async def start_onboard(body: dict[str, Any]) -> tuple[Optional[Job], Optional[t
         return None, (400, "businessName", "Please add your business name.")
     if not website:
         return None, (400, "website", "That website address doesn't look right.")
-    if not owner_email or not _EMAIL.match(owner_email):
+    if not owner_email:
         return None, (400, "ownerEmail", "Please add the email where call summaries should go.")
+    bad = await email_problem(owner_email)
+    if bad:
+        return None, (400, "ownerEmail", EMAIL_MESSAGES[bad])
     if not owner_mobile:
         return None, (400, "ownerMobile", "Please add a US or Canadian mobile for call summaries.")
     if not re.fullmatch(r"[2-9][0-9]{2}", area):

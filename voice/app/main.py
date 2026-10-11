@@ -449,6 +449,9 @@ async def instant(request: Request) -> JSONResponse:
     body = await _json(request)
     if not await factory.human(str(body.get("turnstileToken") or ""), client_ip(request)):
         return JSONResponse({"error": "verify", "message": "Please tick “Verify you are human” and try again."}, status_code=400)
+    bad = await factory.email_problem(str(body.get("email") or ""))
+    if bad:
+        return JSONResponse({"error": "email", "message": factory.EMAIL_MESSAGES[bad]}, status_code=400)
     job, why = factory.start_instant(body, client_ip(request))
     return _refusal(why) if job is None else JSONResponse(job.public())  # type: ignore[arg-type]
 
@@ -471,7 +474,10 @@ async def onboard(request: Request) -> JSONResponse:
         return JSONResponse({"error": "origin"}, status_code=403)
     if not allow_start(f"onboard:{client_ip(request)}", 10):
         return JSONResponse({"error": "rate_limited", "message": "Please wait a few minutes and try again."}, status_code=429)
-    job, why = await factory.start_onboard(await _json(request))
+    body = await _json(request)
+    if not await factory.human(str(body.get("turnstileToken") or ""), client_ip(request)):
+        return JSONResponse({"error": "verify", "message": "Please tick “Verify you are human” and try again."}, status_code=400)
+    job, why = await factory.start_onboard(body)
     return _refusal(why) if job is None else JSONResponse(job.public())  # type: ignore[arg-type]
 
 

@@ -115,6 +115,10 @@ async def confirm(spoken: str, message: tuple[str, str, str], from_name: str) ->
     address = normalise(spoken)
     if address is None:
         return None, "invalid_email"
+    from .verify import is_disposable
+
+    if is_disposable(address.rpartition("@")[2]):
+        return None, "disposable"
     # A misheard domain ("recent.dev" for "resend.dev") must not reach a stranger or bounce.
     if not await receives_mail(address.rpartition("@")[2]):
         return None, "unknown_domain"
@@ -127,6 +131,7 @@ async def confirm(spoken: str, message: tuple[str, str, str], from_name: str) ->
 REFUSALS = {
     "invalid_email": "That doesn't look like a complete email address. Ask the caller to say it again, slowly, and read it back.",
     "too_many_for_address": "That address has already had several emails from our demos today. Apologise; nothing more can be emailed to it today.",
+    "disposable": "That's a temporary inbox, and our demos don't send to those. Ask for their usual email address instead.",
     "unknown_domain": "Nothing was sent: the part after the @ doesn't seem to exist, so it was probably misheard. Say which domain you heard, and ask the caller to spell the part after the @ slowly.",
 }
 

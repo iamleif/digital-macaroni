@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Check, Phone } from "@/components/studio/icons";
 import { VOICE_URL } from "@/components/studio/live/client";
 import f from "./factory.module.css";
+import { Turnstile } from "./Turnstile";
 
 /** The voice service's progress for this setup (factory.py Job.public). */
 type Job = { job: string; step: string; business: string; error?: string; message?: string; number?: string; numberPretty?: string; agentName?: string };
@@ -22,6 +23,8 @@ export function OnboardForm() {
   const [job, setJob] = useState<Job | null>(null);
   const [sending, setSending] = useState(false);
   const [problem, setProblem] = useState("");
+  const [token, setToken] = useState("");
+  const [tries, setTries] = useState(0);
 
   useEffect(() => {
     const token = new URLSearchParams(window.location.search).get("invite") ?? "";
@@ -52,10 +55,14 @@ export function OnboardForm() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const d = Object.fromEntries(new FormData(event.currentTarget).entries());
+    if (!token) {
+      setProblem("Please tick “Verify you are human” first.");
+      return;
+    }
     setSending(true);
     setProblem("");
     try {
-      const r = await fetch(`${VOICE_URL}/onboard`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...d, invite }) });
+      const r = await fetch(`${VOICE_URL}/onboard`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...d, invite, turnstileToken: token }) });
       const out = (await r.json()) as Job & { message?: string };
       if (!r.ok) throw new Error(out.message || "Something went wrong. Please try again.");
       setJob(out);
@@ -63,6 +70,7 @@ export function OnboardForm() {
       setProblem(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setSending(false);
+      setTries((n) => n + 1);
     }
   }
 
@@ -155,8 +163,9 @@ export function OnboardForm() {
         <input id="neverSay" name="neverSay" maxLength={600} />
       </div>
       <p className={f.note}>We read your website to build your agent. Your new number is local to the area code you choose.</p>
+      <Turnstile onToken={setToken} resetKey={tries} />
       <div className="form-action">
-        <button className="submit-button" type="submit" disabled={sending}>{sending ? "Starting…" : "Build my agent"}</button>
+        <button className={`submit-button ${f.callButton}`} type="submit" disabled={sending}>{sending ? "Starting…" : "Build my agent"}</button>
         {problem ? <p className="form-status" data-state="error" role="alert">{problem}</p> : null}
       </div>
     </form>
