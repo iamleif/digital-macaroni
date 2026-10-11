@@ -179,9 +179,7 @@ async def _run_instant(j: Job) -> None:
         session.after_call = lambda s: _after_instant(j, s)
         j.session_id = session.id
         j.step = "calling"
-        stream_url = "ws" + config.public_url[4:] + "/twilio/media"
-        twiml = stream_twiml(stream_url, {"sessionId": session.id}, f"{config.public_url}/twilio/after-stream?session={session.id}")
-        sid = await twilio_api.place_call(lead["phone"], config.instant_from, twiml, f"{config.public_url}/twilio/instant-status?job={j.id}")
+        sid = await twilio_api.place_call(lead["phone"], config.instant_from, f"{config.public_url}/twilio/instant-answer?job={j.id}", f"{config.public_url}/twilio/instant-status?job={j.id}")
         if not sid:
             session.end("error")
             j.step, j.error, j.message = "failed", "call_failed", "We couldn't place the call. Please check the number and try again."
@@ -189,6 +187,29 @@ async def _run_instant(j: Job) -> None:
     except Exception as err:  # noqa: BLE001
         log.error("factory.instant_failed", {}, err)
         j.step, j.error, j.message = "failed", "internal", "Something went wrong on our side. Please try again."
+
+
+VOICEMAIL_MESSAGE = "It went to your voicemail. If your phone silences unknown callers, turn that off for a minute, then try again."
+
+
+async def instant_answer(job_id: str, answered_by: str) -> str:
+    """The instant call was answered. A person (or not sure) gets the agent; a voicemail gets a polite hang-up."""
+    from .session import get_session
+    from .twilio import hangup_twiml
+
+    j = jobs.get(job_id)
+    s = get_session(j.session_id) if j else None
+    if not j or not s or s.ended:
+        return hangup_twiml()
+    if answered_by.startswith("machine") or answered_by == "fax":
+        log.info("factory.instant_voicemail", {"outcome": answered_by})
+        s.after_call = None
+        s.end("no_answer")
+        j.step, j.message = "no_answer", VOICEMAIL_MESSAGE
+        await _send_lead(j, None)
+        return hangup_twiml()
+    j.step = "in_call"
+    return stream_twiml("ws" + config.public_url[4:] + "/twilio/media", {"sessionId": s.id}, f"{config.public_url}/twilio/after-stream?session={s.id}")
 
 
 async def instant_status(job_id: str, call_status: str) -> None:
@@ -245,9 +266,13 @@ def _transcript(s: DemoSession) -> str:
     return "\n".join(lines)[-20000:]
 
 
+_VOICEMAIL = re.compile(r"leave (me )?a message|after the (beep|tone)|voice ?mail|not available right now|mailbox", re.I)
+
+
 async def summarise(s: DemoSession) -> Optional[dict[str, Any]]:
-    """The owner's summary of a call, or None when the caller never spoke."""
-    if not any(e.get("kind") == "say" and e.get("speaker") == "visitor" for e in s.record.entries):
+    """The owner's summary of a call, or None when the caller never spoke (or only a voicemail greeting did)."""
+    heard = [e["text"] for e in s.record.entries if e.get("kind") == "say" and e.get("speaker") == "visitor"]
+    if not heard or (len(heard) <= 2 and any(_VOICEMAIL.search(t) for t in heard)):
         return None
     state: AgentState = s.state
     messages = [{"name": m.name, "callback": m.callback, "reason": m.reason, "preferredTime": m.preferred_time, "urgent": m.urgent} for m in state.messages]

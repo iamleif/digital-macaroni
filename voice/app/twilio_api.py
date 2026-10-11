@@ -37,7 +37,7 @@ def pretty(n: str) -> str:
     return f"({d[:3]}) {d[3:6]}-{d[6:]}" if len(d) == 10 else n
 
 
-async def _request(method: str, path: str, data: Optional[dict[str, str]] = None, params: Optional[dict[str, str]] = None) -> tuple[int, dict[str, Any]]:
+async def _request(method: str, path: str, data: Optional[dict[str, Any]] = None, params: Optional[dict[str, str]] = None) -> tuple[int, dict[str, Any]]:
     if not configured():
         return 0, {"message": "not_configured"}
     try:
@@ -53,12 +53,22 @@ async def _request(method: str, path: str, data: Optional[dict[str, str]] = None
         return 0, {"message": "network"}
 
 
-async def place_call(to: str, from_: str, twiml: str, status_callback: str) -> Optional[str]:
-    """Rings `to` and plays `twiml` when answered. Returns the call SID, or None."""
+async def place_call(to: str, from_: str, answer_url: str, status_callback: str) -> Optional[str]:
+    """
+    Rings `to`. When it's answered, Twilio first checks whether a person or a voicemail picked up
+    (answering machine detection), then asks `answer_url` what to do, with AnsweredBy in the request.
+    Progress (ringing, answered, completed, no answer) goes to `status_callback`. Returns the call SID, or None.
+    """
     status, body = await _request(
         "POST",
         "/Calls.json",
-        data={"To": to, "From": from_, "Twiml": twiml, "Timeout": "25", "StatusCallback": status_callback, "StatusCallbackMethod": "POST", "StatusCallbackEvent": "initiated ringing answered completed"},
+        data={
+            "To": to, "From": from_, "Url": answer_url, "Method": "POST", "Timeout": "25",
+            "MachineDetection": "Enable", "MachineDetectionTimeout": "8",
+            "StatusCallback": status_callback, "StatusCallbackMethod": "POST",
+            # Twilio takes one StatusCallbackEvent parameter per event.
+            "StatusCallbackEvent": ["initiated", "ringing", "answered", "completed"],
+        },
     )
     if status >= 300 or status == 0:
         log.warn("twilio_api.call_failed", {"outcome": status, "code": body.get("code")})

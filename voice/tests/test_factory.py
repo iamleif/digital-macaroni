@@ -187,3 +187,32 @@ class TestSummary:
         assert t.startswith("URGENT · New call for Acme Dental") and "(206) 555-0142" in t and "Next: Call Sam to book." in t
         subject, body, _ = factory.summary_email("Acme Dental", {**m, "messages": []}, demo=True)
         assert subject.startswith("URGENT · Sam called Acme Dental") and "Book a call with Leif" in body
+
+
+class TestVoicemail:
+    async def test_voicemail_gets_a_hang_up_and_the_page_is_told(self, monkeypatch):
+        sent = []
+
+        async def lead(j, summary):
+            sent.append(j.step)
+
+        monkeypatch.setattr(factory, "_send_lead", lead)
+        s, _ = admit("agent", "phone", client=True)
+        j = factory._new_job("instant")
+        j.session_id = s.id
+        twiml = await factory.instant_answer(j.id, "machine_start")
+        assert "<Hangup/>" in twiml and s.ended == "no_answer" and j.step == "no_answer" and "voicemail" in j.message and sent == ["no_answer"]
+
+    async def test_a_person_gets_the_agent(self):
+        s, _ = admit("agent", "phone", client=True)
+        j = factory._new_job("instant")
+        j.session_id = s.id
+        twiml = await factory.instant_answer(j.id, "human")
+        assert f'value="{s.id}"' in twiml and j.step == "in_call"
+        s.end("test")
+
+    async def test_a_voicemail_greeting_is_not_a_call_to_summarise(self):
+        s, _ = admit("agent", "phone", client=True)
+        s.record.said("u1", "visitor", "Leave a message after the beep.")
+        assert await factory.summarise(s) is None
+        s.end("test")

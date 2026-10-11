@@ -132,6 +132,16 @@ def _client_call(a: agents_store.ClientAgent, caller: str) -> str:
     return stream_twiml(stream_url, {"sessionId": session.id}, f"{config.public_url}/twilio/after-stream?session={session.id}")
 
 
+@app.post("/twilio/instant-answer")
+async def twilio_instant_answer(request: Request, job: str = "") -> Response:
+    """The instant demo call was answered: Twilio says whether a person or a voicemail picked up."""
+    params = {k: str(v) for k, v in (await request.form()).items()}
+    if not signed(f"/twilio/instant-answer?job={job}", params, request.headers.get("x-twilio-signature")):
+        log.warn("twilio.bad_signature", {"route": "instant-answer"})
+        return Response(status_code=403)
+    return xml(await factory.instant_answer(job, params.get("AnsweredBy", "unknown")))
+
+
 @app.post("/twilio/instant-status")
 async def twilio_instant_status(request: Request, job: str = "") -> Response:
     params = {k: str(v) for k, v in (await request.form()).items()}
