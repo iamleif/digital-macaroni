@@ -240,3 +240,23 @@ class TestEmailPass:
 
         p = email_pass("Jess@Example.com")
         assert pass_ok("jess@example.com", p) and not pass_ok("other@example.com", p) and not pass_ok("jess@example.com", "")
+
+
+class TestBookingAlerts:
+    async def test_signed_booking_emails_leif_with_both_times(self, cfg, monkeypatch):
+        import hashlib, hmac, json as _json
+        from app import booking_alerts
+
+        cfg(cal_webhook_secret="s3cret")
+        body = _json.dumps({"triggerEvent": "BOOKING_CREATED", "payload": {"startTime": "2026-10-13T14:00:00Z", "attendees": [{"name": "Jess", "email": "jess@acme.com", "timeZone": "America/Chicago"}], "responses": {"attendeePhoneNumber": {"value": "+15095550142"}}}}).encode()
+        assert booking_alerts.signed(body, hmac.new(b"s3cret", body, hashlib.sha256).hexdigest())
+        assert not booking_alerts.signed(body, "nope")
+        sent = []
+
+        async def fake(to, subject, html_body, text, frm):
+            sent.append((to, subject, text))
+            return True
+
+        monkeypatch.setattr(factory, "_resend", fake)
+        await booking_alerts.handle(_json.loads(body))
+        assert sent and "New discovery call: Jess" in sent[0][1] and "10:00 AM Eastern (16:00 in Norway)" in sent[0][2] and "+15095550142" in sent[0][2]

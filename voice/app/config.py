@@ -112,6 +112,8 @@ class Config:
     leads_email: str = env.get("LEADS_EMAIL", "hello@digitalmacaroni.io")
     # Where a prospect books a call with Leif (Cal.com event "Your AI voice agent": 30 min, Mon–Sat 6 AM–3 PM Eastern).
     meeting_url: str = env.get("MEETING_URL", "https://cal.com/leif-johansen-pnbduq/ai-agent")
+    # Cal.com signs its booking webhooks with this (booking_alerts.py).
+    cal_webhook_secret: str = env.get("CAL_WEBHOOK_SECRET", "")
     # Cloudflare Turnstile ("Verify you are human") on the instant demo form; unset skips the check (local runs).
     turnstile_secret: str = env.get("TURNSTILE_SECRET", "")
     # Client lines have their own cap, apart from the demos'.

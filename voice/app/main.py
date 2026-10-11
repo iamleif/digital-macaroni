@@ -153,6 +153,23 @@ def _client_call(a: agents_store.ClientAgent, caller: str) -> str:
     return stream_twiml(stream_url, {"sessionId": session.id}, f"{config.public_url}/twilio/after-stream?session={session.id}")
 
 
+@app.post("/webhooks/cal")
+async def cal_webhook(request: Request) -> Response:
+    """Cal.com: a discovery call was booked, moved or cancelled. Leif gets an email (booking_alerts.py)."""
+    from . import booking_alerts
+
+    body = await request.body()
+    if not booking_alerts.signed(body, request.headers.get("x-cal-signature-256")):
+        log.warn("booking.bad_signature")
+        return Response(status_code=401)
+    try:
+        event = json.loads(body)
+    except ValueError:
+        return Response(status_code=400)
+    asyncio.get_running_loop().create_task(booking_alerts.handle(event))
+    return Response(status_code=200)
+
+
 @app.post("/twilio/instant-answer")
 async def twilio_instant_answer(request: Request, job: str = "") -> Response:
     """The instant demo call was answered: Twilio says whether a person or a voicemail picked up."""

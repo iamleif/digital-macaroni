@@ -57,6 +57,8 @@ class Job:
     lead: dict[str, str] = field(default_factory=dict)
     profile: Optional[Profile] = None
     lead_sent: bool = False
+    # Instant: the call's summary, kept so a later booking alert can show it.
+    summary: Optional[dict[str, Any]] = None
 
     def public(self) -> dict[str, Any]:
         out: dict[str, Any] = {"job": self.id, "step": self.step, "business": self.business}
@@ -222,6 +224,7 @@ async def instant_status(job_id: str, call_status: str) -> None:
 
 async def _after_instant(j: Job, s: DemoSession) -> None:
     summary = await summarise(s)
+    j.summary = summary
     if summary is None:
         j.step = "done"
         j.message = "The call ended before we spoke. You can try again."
