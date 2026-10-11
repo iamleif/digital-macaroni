@@ -22,12 +22,12 @@ export default function YourAgentPage() {
       </header>
       <main id="content" className={c.sheet}>
         <section className={c.copy} aria-labelledby="your-agent-title">
-          <h1 id="your-agent-title">Hear your own agent. In 20 seconds.</h1>
-          <p>Give us your website and your mobile. An AI agent reads your site and calls you. Play one of your customers and hear how it would answer your calls.</p>
+          <h1 id="your-agent-title">Hear your own agent. In about a minute.</h1>
+          <p>Give us your website and your mobile. We build a demo agent from your site, and it calls you. Play one of your customers and hear how it would answer your calls.</p>
           <ul>
             <li><Check size={15} />Answers from what’s on your website</li>
             <li><Check size={15} />Takes a message like your best front desk</li>
-            <li><Check size={15} />Texts you the call summary when you hang up</li>
+            <li><Check size={15} />Emails you the call summary when you hang up</li>
           </ul>
         </section>
         <div className={c.formCard}><InstantForm /></div>

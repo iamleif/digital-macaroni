@@ -11,10 +11,10 @@ import { Turnstile } from "./Turnstile";
 type Job = { job: string; step: string; business: string; error?: string; message?: string };
 
 const STEPS = [
-  { key: "reading", label: "Reading your website" },
+  { key: "reading", label: "Building your demo from your website" },
   { key: "calling", label: "Calling your phone" },
   { key: "in_call", label: "On the call" },
-  { key: "done", label: "Summary texted to you" },
+  { key: "done", label: "Summary emailed to you" },
 ];
 // Twilio's "ringing" still counts as calling; "summary" means the call ended and the summary is being written.
 const AT: Record<string, number> = { reading: 0, calling: 1, ringing: 1, in_call: 2, summary: 2, done: 3 };
@@ -87,8 +87,8 @@ export function InstantForm() {
     const done = job.step === "done";
     return (
       <div className={f.progress} role="status" aria-live="polite">
-        <h2>{done ? "That’s what your callers get." : failed ? "We couldn’t reach you." : job.business ? `Setting up ${job.business}’s agent` : "Setting up your agent"}</h2>
-        <p>{done ? (job.message || "Check your texts: that’s the summary you’d get after every call.") : failed ? job.message : at >= 1 ? "Pick up when your phone rings. Pretend you’re one of your customers." : "This takes a few seconds."}</p>
+        <h2>{done ? "That’s what your callers get." : failed ? "We couldn’t reach you." : job.business ? `Building ${job.business}’s demo` : "Building your demo"}</h2>
+        <p>{done ? (job.message || "Check your email: that’s the summary you’d get after every call, with a link to book a time with us.") : failed ? job.message : at >= 1 ? "Pick up when your phone rings. Pretend you’re one of your customers." : "We’re reading your website and setting up your agent. This takes under a minute."}</p>
         {failed ? null : (
           <ol className={f.steps}>
             {STEPS.map((s, i) => (
@@ -126,8 +126,8 @@ export function InstantForm() {
         <input id="website" name="website" type="text" inputMode="url" autoComplete="url" required maxLength={200} placeholder="yourbusiness.com" />
       </div>
       <div className="field">
-        <label htmlFor="email">Email<span className="optional"> optional, for a copy of the summary</span></label>
-        <input id="email" name="email" type="email" autoComplete="email" maxLength={120} />
+        <label htmlFor="email">Email<span className="optional"> for the call summary</span></label>
+        <input id="email" name="email" type="email" autoComplete="email" required maxLength={120} />
       </div>
       <div className="honeypot" aria-hidden="true">
         <label htmlFor="company">Company</label>
@@ -135,7 +135,7 @@ export function InstantForm() {
       </div>
       <label className={f.consent}>
         <input type="checkbox" name="consent" required />
-        <span>Call me now with an AI agent, and text me the call summary. One call, one text. US and Canadian numbers.</span>
+        <span>Call me now with an AI demo agent and email me the call summary. One call. US and Canadian numbers.</span>
       </label>
       <Turnstile onToken={setToken} resetKey={tries} />
       <div className="form-action">

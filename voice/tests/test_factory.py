@@ -9,7 +9,7 @@ import pytest
 
 from app import agents_store, factory, twilio_api
 from app.config import config
-from app.demos.agent import AgentState, TakeMessage, TextBookingLink, agent, take_message, text_booking_link
+from app.demos.agent import AgentState, TakeMessage, TextBookingLink, agent, send_meeting_link, take_message, text_booking_link
 from app.demos.agent.prompt import instruction
 from app.demos.types import OpContext
 from app.profile import fallback_profile, normalise_url, page_text, profile_facts, useful_links
@@ -121,7 +121,7 @@ class TestAgent:
 
     def test_instant_prompt_greets_the_prospect(self):
         p = instruction(self.state(mode="instant", visitor_name="Jamie"), PHONE)
-        assert "Hi Jamie" in p and "Acme Dental" in p and "text with the summary" in p
+        assert "Hi Jamie" in p and "Acme Dental" in p and "This is a demo" in p and "send_meeting_link" in p
 
     def test_client_prompt_uses_owner_notes(self):
         p = instruction(self.state(mode="client", notes="We don't take Delta Dental.", never_say="Never quote crowns."), PHONE)
@@ -130,6 +130,11 @@ class TestAgent:
     def test_no_screen_code_tool(self):
         names = [s.name for s in tool_specs(agent)]
         assert "link_screen" not in names and {"get_business_info", "take_message", "text_booking_link", "end_call"} <= set(names)
+
+
+    async def test_meeting_link_only_in_instant_mode(self):
+        r = await send_meeting_link(self.state(mode="client"), {}, PHONE)
+        assert not r.ok and r.error == "not_available"
 
 
 class TestAdmit:
@@ -143,7 +148,7 @@ class TestAdmit:
 
 
 class TestInstantForm:
-    BODY = {"name": "Jamie Lee", "phone": "206 555 0142", "website": "acme.com", "consent": True, "elapsedMs": 9000}
+    BODY = {"name": "Jamie Lee", "phone": "206 555 0142", "website": "acme.com", "email": "jamie@acme.com", "consent": True, "elapsedMs": 9000}
 
     def test_rejects_bad_input(self, cfg):
         cfg(twilio_account_sid="AC1", twilio_api_key_sid="SK1", twilio_api_key_secret="x", enabled=True)
@@ -151,6 +156,7 @@ class TestInstantForm:
         assert factory.start_instant({**self.BODY, "elapsedMs": 500}, "1.1.1.1")[1][1] == "too_fast"
         assert factory.start_instant({**self.BODY, "phone": "+44 20 7946 0958"}, "1.1.1.1")[1][1] == "phone"
         assert factory.start_instant({**self.BODY, "consent": False}, "1.1.1.1")[1][1] == "consent"
+        assert factory.start_instant({**self.BODY, "email": ""}, "1.1.1.1")[1][1] == "email"
 
     async def test_limits_tries_per_number(self, cfg, monkeypatch):
         cfg(twilio_account_sid="AC1", twilio_api_key_sid="SK1", twilio_api_key_secret="x", enabled=True)
@@ -180,4 +186,4 @@ class TestSummary:
         t = factory.summary_text("Acme Dental", m)
         assert t.startswith("URGENT · New call for Acme Dental") and "(206) 555-0142" in t and "Next: Call Sam to book." in t
         subject, body, _ = factory.summary_email("Acme Dental", {**m, "messages": []}, demo=True)
-        assert subject.startswith("URGENT · Sam called Acme Dental") and "pricing" in body
+        assert subject.startswith("URGENT · Sam called Acme Dental") and "Book a time with our team" in body

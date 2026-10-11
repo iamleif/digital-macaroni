@@ -141,8 +141,8 @@ def start_instant(body: dict[str, Any], ip: str) -> tuple[Optional[Job], Optiona
         return None, (400, "phone", "Please use a US or Canadian mobile number.")
     if not website:
         return None, (400, "website", "That website address doesn't look right.")
-    if email and not _EMAIL.match(email):
-        return None, (400, "email", "That email address doesn't look right.")
+    if not email or not _EMAIL.match(email):
+        return None, (400, "email", "Please add your email: the call summary and a link to book a meeting go there.")
     if body.get("consent") is not True:
         return None, (400, "consent", "Please tick the box so we can call you.")
     if not config.enabled:
@@ -172,7 +172,7 @@ async def _run_instant(j: Job) -> None:
             j.message = "All our agents are busy right now. Please try again in a minute or two."
             return
         agent_name, voice = VOICES["female"]
-        session.state = AgentState(now=session.state.now, mode="instant", profile=profile.model_dump(), agent_name=agent_name, visitor_name=lead["name"], caller_number=lead["phone"])
+        session.state = AgentState(now=session.state.now, mode="instant", profile=profile.model_dump(), agent_name=agent_name, visitor_name=lead["name"], visitor_email=lead["email"], caller_number=lead["phone"])
         session.caller_number = lead["phone"]
         session.voice = voice
         session.max_override = config.instant_max_seconds
@@ -221,7 +221,8 @@ async def _after_instant(j: Job, s: DemoSession) -> None:
         await _send_lead(j, None)
         return
     state: AgentState = s.state
-    await _deliver_summary(state.business, summary, Owner(name=j.lead["name"], email=j.lead.get("email", ""), mobile=j.lead["phone"]), demo=True)
+    # The demo's summary goes by email only (with the link to book a meeting): no texts from the demo.
+    await _deliver_summary(state.business, summary, Owner(name=j.lead["name"], email=j.lead["email"]), demo=True)
     j.step = "done"
     await _send_lead(j, summary)
 
@@ -474,7 +475,7 @@ def summary_email(business: str, m: dict[str, Any], demo: bool) -> tuple[str, st
     urgent = '<p style="display:inline-block;background:#fde8e4;color:#a8321f;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;margin:0 0 12px">URGENT</p><br>' if m.get("urgent") else ""
     inner = f'{urgent}<p style="margin:0 0 14px">{e(m["summary"])}</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{table}</table>{msgs}'
     if demo:
-        inner += f'<p style="margin:22px 0 0;padding:16px;background:#1b1a17;color:#fff8e6;border-radius:12px">This is what you\'d get after every call your agent takes, by text and email. <a href="{config.site_url}/pricing/" style="color:#f5c542">See what it costs to have it for real &rarr;</a></p>'
+        inner += f'<p style="margin:22px 0 0;padding:18px;background:#1b1a17;color:#fff8e6;border-radius:12px">That was the demo call. This summary is what you\'d get after every call your agent takes. Want us to set it up for your business?<br><a href="{config.meeting_url}" style="display:inline-block;margin-top:12px;padding:11px 20px;background:#f5c542;color:#1b1a17;border-radius:999px;font-weight:700;text-decoration:none">Book a time with our team &rarr;</a></p>'
     foot = "Sent by Digital Macaroni after a demo call you asked for." if demo else f"Sent by your AI agent for {e(business)}, built by Digital Macaroni. Reply to this email for help."
     subject = f"{'URGENT · ' if m.get('urgent') else ''}{who} called {business}" + (f" · {m['reason']}" if m.get("reason") else "")
     return subject, _shell(m["summary"], f"New call: {who}", inner, foot), summary_text(business, m, demo)
@@ -491,6 +492,17 @@ def live_email(a: ClientAgent) -> tuple[str, str, str]:
 <p style="margin:14px 0 0">Want it to say something differently or know something new? Just reply to this email.</p>"""
     text = f"{a.agent_name}, your AI agent for {a.business_name}, is answering on {n}.\n1. Call {n} to hear it.\n2. Forward your business line to {n}: *72{digits} (AT&T, Verizon) or **21*{a.number}# (T-Mobile); for unanswered calls only, *71{digits} or **61*{a.number}#. Stop with *73 or ##21#.\n3. After every call you'll get a text and an email with the summary.\nReply to this email for changes."
     return f"Your AI agent is live · {n}", _shell(f"Your agent answers on {n}", "Your agent is live", inner, "Digital Macaroni · digitalmacaroni.io"), text
+
+
+async def send_meeting_email(name: str, to: str, business: str) -> bool:
+    """Instant demo: the link to book a meeting, sent while the prospect is still on the call."""
+    e = html.escape
+    first = (name or "").split(" ")[0]
+    inner = f"""<p style="margin:0 0 14px">Thanks for trying the demo{', ' + e(first) if first else ''}. Pick a time and we'll show you how an agent like this would work for {e(business)}: your own number, your calendar or software, and a summary after every call.</p>
+<p style="margin:18px 0 0"><a href="{config.meeting_url}" style="display:inline-block;padding:13px 24px;background:#1b1a17;color:#fff;border-radius:999px;font-weight:700;text-decoration:none">Book a time with our team &rarr;</a></p>
+<p style="margin:18px 0 0;color:#6b645a;font-size:14px">Or just reply to this email. It comes straight to us.</p>"""
+    text = f"Thanks for trying the demo. Book a time with our team: {config.meeting_url}\nOr just reply to this email."
+    return await _resend(to, f"Your AI agent for {business}: book a time with us", _shell("Book a time with our team", "Let's set it up for real", inner, "Digital Macaroni · digitalmacaroni.io"), text, "Digital Macaroni")
 
 
 async def _send_lead(j: Job, summary: Optional[dict[str, Any]]) -> None:

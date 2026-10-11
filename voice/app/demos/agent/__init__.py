@@ -47,6 +47,9 @@ class AgentState:
     agent_name: str = "Ava"
     # Instant mode: the prospect the agent is calling (first name only).
     visitor_name: str = ""
+    # Instant mode: where the meeting link goes, and whether it went.
+    visitor_email: str = ""
+    meeting_sent: bool = False
     # Client mode: what the owner told us on the setup form, beyond the website.
     notes: str = ""
     never_say: str = ""
@@ -117,6 +120,20 @@ async def text_booking_link(state: AgentState, i: TextBookingLink, ctx: OpContex
     return ok(f"Booking link texted · {mask_number(state.caller_number)}", {"sent": True}, True)
 
 
+async def send_meeting_link(state: AgentState, _: Any, ctx: OpContext) -> OpResult:
+    """Instant demo: emails the prospect a link to book a meeting with Digital Macaroni, while they're still on the call."""
+    if state.mode != "instant" or not state.visitor_email:
+        return fail("not_available", "There's no email to send a meeting link to on this call.")
+    if state.meeting_sent:
+        return ok("Meeting link already emailed", {"sent": True, "duplicate": True})
+    from ...factory import send_meeting_email
+
+    if not await send_meeting_email(state.visitor_name, state.visitor_email, state.business):
+        return fail("email_failed", "The email couldn't be sent right now. Say the team will reach out by email instead.")
+    state.meeting_sent = True
+    return ok("Meeting link emailed", {"sent": True}, True)
+
+
 def view(state: AgentState) -> dict[str, Any]:
     return {
         "business": state.business,
@@ -137,6 +154,7 @@ agent: DemoDefinition[AgentState] = DemoDefinition(
     operations={
         "get_business_info": Operation("Looking up the business", "Everything known about the business: services, hours, location, service area, prices, policies, FAQs, the owner's notes and the local time right now. Call it before answering any question about the business, and answer only from what it returns.", get_business_info),
         "take_message": Operation("Taking a message", "Take a message for the business after the caller confirmed their callback number. It reaches the owner by text and email the moment the call ends.", take_message, TakeMessage),
+        "send_meeting_link": Operation("Emailing a link to book a meeting", "Instant demo only: email the prospect a link to book a meeting with Digital Macaroni's team. Call it once, at the close of the demo.", send_meeting_link),
         "text_booking_link": Operation("Texting the booking link", "Text the business's online booking link to the number the caller is calling from, after they said yes to a text. Only when get_business_info has a booking_url.", text_booking_link, TextBookingLink),
     },
 )
