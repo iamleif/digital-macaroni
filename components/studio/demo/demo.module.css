@@ -837,6 +837,8 @@
 .previewScope .railLogo { visibility: hidden; }
 /* The homepage frame shows the top of the app: the sheet runs to the frame's bottom whatever the screen holds. */
 .previewScope .app, .previewScope .app[data-screens] { min-height: 820px; }
+.previewScope .app[data-screens] .screen { flex: none; overflow: visible; }
+.previewScope .app[data-screens] .appMain { overflow: hidden; }
 
 
 /* ---- Juniper Row: listings, the home on the call, the estimate ---- */

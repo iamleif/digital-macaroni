@@ -43,9 +43,12 @@ function useFollow(cue: Cue | undefined, map: Record<string, string>, start: str
  * follows the agent (`active`); a click opens another, until the agent's next step takes it back.
  */
 function Screens({ id, kicker, title, tools, state, screens, active, cue, head }: { id: BrandId; kicker: string; title: string; tools?: ReactNode; state: LiveState; screens: Screen[]; active: string; cue?: Cue; head?: ReactNode }) {
+  const still = useContext(StaticPreview);
   const [picked, setPicked] = useState<string | null>(null);
   useEffect(() => { setPicked(null); }, [active, cue?.id]);
   const on = screens.find((x) => x.id === (picked ?? active)) ?? screens[0]!;
+  // A still picture (the homepage) has no clicks: it shows the main screen with the next one under it, so the frame is full.
+  const next = still ? screens[screens.indexOf(on) + 1] : undefined;
   const buttons = screens.map((x) => <button key={x.id} type="button" data-on={x.id === on.id || undefined} aria-pressed={x.id === on.id} onClick={() => setPicked(x.id)} title={x.label}>
     <x.icon size={17} /><small>{x.label}</small>{x.count ? <i>{x.count}</i> : null}
   </button>);
@@ -66,6 +69,7 @@ function Screens({ id, kicker, title, tools, state, screens, active, cue, head }
       <nav className={d.tabs} aria-label="Screens">{buttons}</nav>
       {head}
       <div className={d.screen} key={on.id}>{on.body}</div>
+      {next ? <div className={d.screen} key={next.id}>{next.body}</div> : null}
     </div>
   </div>;
 }
