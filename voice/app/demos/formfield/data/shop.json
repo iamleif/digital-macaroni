@@ -1,0 +1,12 @@
+{
+  "name": "Form & Field",
+  "what": "A small home-goods shop: lighting, tableware, textiles, small furniture and planters.",
+  "address": "210 Market Street",
+  "hours": "10 AM to 6 PM, Monday to Saturday. Closed Sunday.",
+  "pickup": "Reserved items are held for {holdDays} days and paid for in store when collected.",
+  "shipping": "We ship anywhere in the US: $9 flat, free on orders over $150, usually 3 to 5 business days.",
+  "localDelivery": "Furniture and floor lamps can be delivered locally for $35, free on orders over $250, usually within a week.",
+  "returns": "Returns within 30 days, unused and with the receipt, refunded to the original payment. Sale items are final sale.",
+  "giftCards": "Gift cards in store and online, from $25. Gift wrapping is free in the shop.",
+  "payment": "Card, cash, Apple Pay and Google Pay in store."
+}

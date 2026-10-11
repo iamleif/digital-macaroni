@@ -1,0 +1,238 @@
+{
+  "categories": [
+    "lighting",
+    "tableware",
+    "textiles",
+    "furniture",
+    "planters"
+  ],
+  "products": [
+    {
+      "id": "ridge-lamp",
+      "name": "Ridge Table Lamp",
+      "category": "lighting",
+      "price": 89,
+      "description": "A ribbed ceramic table lamp with a soft linen drum shade. Warm, even light for a side table or desk.",
+      "materials": "Glazed stoneware base, linen shade, fabric cord",
+      "size": "18 inches tall, shade 12 inches across",
+      "colors": [
+        "green",
+        "sage",
+        "oat",
+        "beige",
+        "charcoal",
+        "grey"
+      ],
+      "variants": [
+        {
+          "id": "ridge-sage",
+          "option": "Sage green",
+          "stock": 3
+        },
+        {
+          "id": "ridge-oat",
+          "option": "Oat",
+          "stock": 0
+        },
+        {
+          "id": "ridge-charcoal",
+          "option": "Charcoal",
+          "stock": 5
+        }
+      ]
+    },
+    {
+      "id": "moss-lamp",
+      "name": "Moss Glass Lamp",
+      "category": "lighting",
+      "price": 129,
+      "description": "A mouth-blown green glass table lamp. The base glows slightly when it is on.",
+      "materials": "Hand-blown glass, brass fittings, cotton shade",
+      "size": "16 inches tall",
+      "colors": [
+        "green",
+        "moss"
+      ],
+      "variants": [
+        {
+          "id": "moss-green",
+          "option": "Moss green",
+          "stock": 1
+        }
+      ]
+    },
+    {
+      "id": "arc-floor-lamp",
+      "name": "Arc Floor Lamp",
+      "category": "lighting",
+      "price": 189,
+      "description": "A slim arching floor lamp that reaches over a sofa or reading chair.",
+      "materials": "Powder-coated steel, marble base",
+      "size": "68 inches tall, 40 inch reach",
+      "colors": [
+        "brass",
+        "gold",
+        "black"
+      ],
+      "variants": [
+        {
+          "id": "arc-brass",
+          "option": "Brushed brass",
+          "stock": 2
+        },
+        {
+          "id": "arc-black",
+          "option": "Matte black",
+          "stock": 4
+        }
+      ]
+    },
+    {
+      "id": "pleat-pendant",
+      "name": "Pleat Paper Pendant",
+      "category": "lighting",
+      "price": 64,
+      "description": "A pleated paper ceiling shade that softens a bright bulb. Fits a standard pendant fitting.",
+      "materials": "Washi-style paper over a steel frame",
+      "size": "20 inches across",
+      "colors": [
+        "white",
+        "cream"
+      ],
+      "variants": [
+        {
+          "id": "pleat-white",
+          "option": "White",
+          "stock": 8
+        }
+      ]
+    },
+    {
+      "id": "everyday-mugs",
+      "name": "Everyday Mugs, set of two",
+      "category": "tableware",
+      "price": 32,
+      "description": "Generous stoneware mugs with a comfortable handle. Dishwasher and microwave safe.",
+      "materials": "Stoneware with a satin glaze",
+      "size": "12 fluid ounces each",
+      "colors": [
+        "sand",
+        "beige",
+        "sage",
+        "green",
+        "ink",
+        "blue"
+      ],
+      "variants": [
+        {
+          "id": "mugs-sand",
+          "option": "Sand",
+          "stock": 12
+        },
+        {
+          "id": "mugs-sage",
+          "option": "Sage",
+          "stock": 0
+        },
+        {
+          "id": "mugs-ink",
+          "option": "Ink blue",
+          "stock": 7
+        }
+      ]
+    },
+    {
+      "id": "linen-throw",
+      "name": "Washed Linen Throw",
+      "category": "textiles",
+      "price": 78,
+      "description": "A heavy, soft washed-linen throw with fringed ends.",
+      "materials": "100% European linen",
+      "size": "50 by 60 inches",
+      "colors": [
+        "olive",
+        "green",
+        "natural",
+        "beige",
+        "rust",
+        "orange"
+      ],
+      "variants": [
+        {
+          "id": "throw-olive",
+          "option": "Olive",
+          "stock": 4
+        },
+        {
+          "id": "throw-natural",
+          "option": "Natural",
+          "stock": 6
+        },
+        {
+          "id": "throw-rust",
+          "option": "Rust",
+          "stock": 0
+        }
+      ]
+    },
+    {
+      "id": "fold-side-table",
+      "name": "Fold Side Table",
+      "category": "furniture",
+      "price": 145,
+      "description": "A small solid-wood side table with a folded lip that stops things sliding off.",
+      "materials": "Solid oak or walnut, oil finish",
+      "size": "20 inches tall, 16 inch top",
+      "colors": [
+        "oak",
+        "light wood",
+        "walnut",
+        "dark wood"
+      ],
+      "variants": [
+        {
+          "id": "fold-oak",
+          "option": "Oak",
+          "stock": 2
+        },
+        {
+          "id": "fold-walnut",
+          "option": "Walnut",
+          "stock": 0
+        }
+      ]
+    },
+    {
+      "id": "field-planter",
+      "name": "Field Planter",
+      "category": "planters",
+      "price": 48,
+      "description": "A stoneware planter with a drainage hole and matching saucer.",
+      "materials": "Stoneware, unglazed inside",
+      "size": "Small 6 inches, large 10 inches across",
+      "colors": [
+        "sage",
+        "green",
+        "clay",
+        "terracotta"
+      ],
+      "variants": [
+        {
+          "id": "planter-small-sage",
+          "option": "Small, sage",
+          "stock": 5
+        },
+        {
+          "id": "planter-large-sage",
+          "option": "Large, sage",
+          "stock": 1
+        },
+        {
+          "id": "planter-large-clay",
+          "option": "Large, clay",
+          "stock": 3
+        }
+      ]
+    }
+  ]
+}
