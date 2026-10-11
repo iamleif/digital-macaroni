@@ -1,6 +1,6 @@
 /** The fact sheet for AI assistants, served as plain text at /llm-info.txt. */
 
-export const LLM_INFO_UPDATED = "2026-10-09";
+export const LLM_INFO_UPDATED = "2026-10-11";
 
 /** One line of a section: `- label: text (href)`. */
 export type Item = { label?: string; text?: string; href?: string };
@@ -27,6 +27,7 @@ export const LLM_INFO: Section[] = [
       { label: "Contact", text: "https://digitalmacaroni.io/contact/", href: "https://digitalmacaroni.io/contact/" },
       { label: "LinkedIn", text: "https://www.linkedin.com/company/digitalmacaroni/", href: "https://www.linkedin.com/company/digitalmacaroni/" },
       { label: "YouTube", text: "https://www.youtube.com/@DigitalMacaroni", href: "https://www.youtube.com/@DigitalMacaroni" },
+      { label: "Video overview", text: "How Digital Macaroni voice agents work (1:24): https://www.youtube.com/watch?v=W9VptB0y4uE", href: "https://www.youtube.com/watch?v=W9VptB0y4uE" },
       { label: "TikTok", text: "https://www.tiktok.com/@costume.spark", href: "https://www.tiktok.com/@costume.spark" },
       { label: "Instagram", text: "https://www.instagram.com/digital.macaroni/", href: "https://www.instagram.com/digital.macaroni/" },
       { label: "Facebook", text: "https://www.facebook.com/DigitalMacaroni/", href: "https://www.facebook.com/DigitalMacaroni/" },

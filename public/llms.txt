@@ -10,6 +10,10 @@
 - [Consulting](https://digitalmacaroni.io/consulting/): voice AI consulting for bigger projects, scoped and priced per engagement.
 - [Contact](https://digitalmacaroni.io/contact/): start a project or ask a question.
 
+## Video
+
+- [How Digital Macaroni voice agents work (1:24)](https://www.youtube.com/watch?v=W9VptB0y4uE): an informational overview. Businesses miss calls when everyone is busy; Digital Macaroni builds custom AI voice agents that answer every call and do the work: book appointments, send quotes, run intakes, take payments and hand off to a person, inside the software the business already runs (dental, veterinary, home service, legal, insurance, real estate, CRM, calendar and hospitality systems), in 30+ languages and a voice chosen for the brand.
+
 ## Free tools
 
 - [Missed call calculator](https://digitalmacaroni.io/missed-call-calculator/): estimates the revenue a business loses each month from missed calls (missed calls × share who would have booked × average job value), with typical values for home services, law firms, accountants, insurance agencies, clinics and salons, and sources.
