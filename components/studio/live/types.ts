@@ -2,7 +2,7 @@
  * The demo voice service's protocol and dashboard records, as the website receives them. Mirrors
  * DigitalMacaroni/voice/src/protocol.ts and each demo's view() output.
  */
-export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels";
+export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels" | "realestate" | "insurance";
 
 export type DemoEvent =
   | { type: "session.ready"; sessionId: string; demo: DemoId; channel: "phone" | "browser" }
@@ -209,4 +209,81 @@ export interface LawFirmView {
   emailed?: { to: string; reference: string } | null;
 }
 
-export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView | HotelsView;
+/** A record screen's header: its number, title and how far along it is. Shared by law, real estate and insurance. */
+export interface RecordHead<Stage extends string> {
+  opened: boolean;
+  number: string | null;
+  title: string | null;
+  stage: Stage;
+  sections: { id: string; title: string; fields: RecordField[] }[];
+}
+
+/** One home on the listings grid: real active Austin listings. */
+export interface RealEstateHome {
+  id: string;
+  address: string;
+  area: string;
+  type: string;
+  price: string;
+  beds: number;
+  baths: number;
+  sqft: number;
+  daysOnMarket: number | null;
+  standout: string;
+  /** In the last search; read out to the caller; the home being discussed; a showing booked there. */
+  matched: boolean;
+  read: boolean;
+  focus: boolean;
+  booked: boolean;
+}
+
+/** Juniper Row Realty: a buyer or seller lead filling in, the listings it searched, an estimate, showings and valuations. */
+export interface RealEstateView {
+  timeZone: string;
+  record: RecordHead<"new" | "contacted" | "qualified" | "booked">;
+  lead: {
+    tier: "A" | "B" | "C" | null;
+    tierNote: string | null;
+    score: number | null;
+    points: string[];
+    flags: string[];
+    agent: { name: string; role: string } | null;
+    known: { spokeWith: string; note: string } | null;
+  };
+  listings: { criteria: string | null; total: number; homes: RealEstateHome[]; snapshot: string | null };
+  focus: { id: string; address: string; area: string; zip: string; price: string; facts: { label: string; value: string }[]; agent: string } | null;
+  estimate: { status: "ok"; address: string; low: string; high: string; comparables: number } | { status: "unavailable"; address: string } | null;
+  calendar: { purpose: "showing" | "valuation"; agent: string; openTimes: { slotId: string; day: string; time: string; agent: string }[] } | null;
+  appointments: { id: string; purpose: "showing" | "valuation"; status: "booked" | "cancelled"; address: string; name: string; changes: number; day: string; time: string; agent: string }[];
+  messages: { id: string; name: string; summary: string; preferredTime: string | null; callback: string; for: string | null }[];
+  note: string | null;
+  tasks: { title: string; who: string; due: string }[];
+  emailed?: { to: string; reference?: string } | null;
+}
+
+/** Bluebird Insurance: a quote intake or a verified customer, their policy, a claim notice, change requests and an agent call. */
+export interface InsuranceView {
+  timeZone: string;
+  record: RecordHead<"new" | "intake" | "ready" | "logged" | "booked">;
+  verified: boolean;
+  accountPolicies: { number: string; line: string; carrier: string; renews: string | null }[];
+  rows: { drivers: { name: string; detail: string }[]; vehicles: { name: string; detail: string }[]; home: { name: string; detail: string }[] };
+  flags: string[];
+  policy: {
+    number: string; line: string; carrier: string; term: string; renews: string | null;
+    coverages: { name: string; limit?: string; deductible?: string }[];
+    billing: { plan: string; nextDue: string; amount: string; status: string };
+    insured: string[];
+    drivers: string[];
+  } | null;
+  claim: { id: string; policy: string; carrier: string; claimsLine: string; description: string | null; fields: { label: string; value: string | null }[]; injured: boolean } | null;
+  requests: { id: string; policy: string; kind: string; details: string }[];
+  openTimes: { slotId: string; day: string; time: string; agent: string }[];
+  calls: { id: string; status: "booked" | "cancelled"; topic: string; name: string; changes: number; day: string; time: string; agent: string }[];
+  messages: { id: string; name: string; summary: string; preferredTime: string | null; callback: string }[];
+  note: string | null;
+  tasks: { title: string; who: string; due: string }[];
+  emailed?: { to: string; reference?: string } | null;
+}
+
+export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView | HotelsView | RealEstateView | InsuranceView;

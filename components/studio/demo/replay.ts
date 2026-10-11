@@ -1,5 +1,5 @@
-import { formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, travelEmpty, travelSample } from "../live/sample-views";
-import type { DemoEvent, DemoId, FormFieldView, HotelsView, LawFirmView, NorthlineView, TravelView } from "../live/types";
+import { formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
+import type { DemoEvent, DemoId, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 
 /**
  * Sample calls for reviewing the demo pages without phoning in (`?replay`). Each is a timeline of the
@@ -26,7 +26,7 @@ let v = 0;
 const say = (speaker: "visitor" | "agent", text: string, id = `t${++v}`): DemoEvent => ({ type: "transcript", id, speaker, text, final: true });
 const tool = (callId: string, name: string, label: string): DemoEvent => ({ type: "tool.started", callId, tool: name, label });
 const ok = (callId: string, name: string, label: string, summary: string): DemoEvent => ({ type: "tool.succeeded", callId, tool: name, label, summary, version: 0 });
-const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView): DemoEvent => ({ type: "state", version, state: s });
+const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView | RealEstateView | InsuranceView): DemoEvent => ({ type: "state", version, state: s });
 const speaking = (on: boolean): DemoEvent => ({ type: "agent.speaking", speaking: on });
 
 const nlRequest = (patch: Partial<NorthlineView["request"]>): NorthlineView => ({ ...northlineEmpty, request: { ...northlineEmpty.request, ...patch } });
@@ -392,4 +392,112 @@ const hotels = timeline([
   { type: "session.ended", reason: "agent_ended" },
 ]);
 
-export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels };
+const reView = (values: Record<string, string | string[]>, patch: Partial<RealEstateView> = {}, stage: RealEstateView["record"]["stage"] = "contacted"): RealEstateView => ({
+  ...realestateEmpty, ...patch,
+  record: { opened: true, number: "L-418", title: (values.name as string) ?? null, stage, sections: realestateRecord(values) },
+});
+const reSearch = reView({ intent: "Buying", areas: ["Central Austin"], price: "Up to $700,000", beds: "3+" }, { listings: { ...realestateSample.listings, homes: realestateHomes.map((h, i) => ({ ...h, matched: i === 0 || i === 4, read: i === 0 || i === 4 })) } });
+const reFocus = reView({ ...realestateNamed }, { listings: { ...realestateSample.listings, homes: realestateSample.listings.homes.map((h) => ({ ...h, booked: false })) }, focus: realestateSample.focus, lead: { ...realestateSample.lead, tier: "A", points: realestateSample.lead.points.slice(0, 3) } }, "qualified");
+const reOpen = { ...reFocus, calendar: { purpose: "showing" as const, agent: "Priya Shah", openTimes: [{ slotId: "a", day: "Saturday", time: "10 AM", agent: "Priya Shah" }, { slotId: "b", day: "Saturday", time: "11 AM", agent: "Priya Shah" }] } };
+
+const realestate = timeline([
+  { type: "session.ready", sessionId: "replay", demo: "realestate", channel: "phone" },
+  { type: "pairing.linked" },
+  speaking(true),
+  say("agent", "Thanks for calling Juniper Row Realty, this is Miles. Are you looking to buy or sell?"),
+  speaking(false),
+  1500,
+  say("visitor", "Buying. Anything three bedrooms under 700 in Hyde Park?"),
+  tool("c1", "search_listings", "Search real Austin listings"),
+  700,
+  ok("c1", "search_listings", "Search real Austin listings", "2 matches · reading 2"),
+  state(1, reSearch),
+  speaking(true),
+  say("agent", "There’s a 1938 house in Hyde Park at six eighty-nine, three beds and two baths, and one in Crestview at six fifteen. Want to hear more about either?"),
+  speaking(false),
+  1600,
+  say("visitor", "The Hyde Park one. I’m Jamie, pre-approved with my credit union, hoping to move in the next couple of months. First home."),
+  tool("c2", "get_listing", "Open a listing"),
+  tool("c3", "note_lead", "Fill in the lead record"),
+  700,
+  ok("c2", "get_listing", "Open a listing", "Sample home · Hyde Park · $689,000"),
+  ok("c3", "note_lead", "Fill in the lead record", "Noted 6 details"),
+  state(2, reFocus),
+  speaking(true),
+  say("agent", "Congratulations on the first home. It’s 1,610 square feet and has been on the market twelve days. Would you like to see it?"),
+  speaking(false),
+  1500,
+  say("visitor", "Saturday morning?"),
+  tool("c4", "check_availability", "Check the agent’s calendar"),
+  700,
+  ok("c4", "check_availability", "Check the agent’s calendar", "3 open with Priya on Saturday"),
+  state(3, reOpen),
+  speaking(true),
+  say("agent", "Priya Shah can show it at ten on Saturday. Shall I book that for Jamie Cole?"),
+  speaking(false),
+  1600,
+  say("visitor", "Yes please."),
+  tool("c5", "book_appointment", "Book a showing or valuation"),
+  800,
+  ok("c5", "book_appointment", "Book a showing or valuation", "Showing booked · JR-418"),
+  state(4, realestateSample),
+  speaking(true),
+  say("agent", "You’re booked with Priya on Saturday at ten. Would you like a confirmation by email?"),
+  speaking(false),
+  { type: "session.ended", reason: "agent_ended" },
+]);
+
+const insView = (values: Record<string, string | string[]>, patch: Partial<InsuranceView> = {}, stage: InsuranceView["record"]["stage"] = "intake"): InsuranceView => ({
+  ...insuranceEmpty, ...patch,
+  record: { opened: true, number: "Q-318", title: (values.name as string) ?? null, stage, sections: insuranceRecord(values) },
+});
+const insStart = insView({ name: "Jamie Cole", lines: ["Auto", "Renters"] });
+const insRows = insView({ ...insuranceNamed }, { rows: insuranceSample.rows, flags: insuranceSample.flags }, "ready");
+const insOpen = { ...insRows, openTimes: [{ slotId: "a", day: "Tomorrow", time: "10 AM", agent: "Tasha Greene" }, { slotId: "b", day: "Tomorrow", time: "11 AM", agent: "Robert Hale" }] };
+
+const insurance = timeline([
+  { type: "session.ready", sessionId: "replay", demo: "insurance", channel: "phone" },
+  { type: "pairing.linked" },
+  speaking(true),
+  say("agent", "Thanks for calling Bluebird Insurance, this is Owen. How can I help?"),
+  speaking(false),
+  1500,
+  say("visitor", "I want a quote for my car and my apartment. I’m Jamie Cole."),
+  tool("c1", "note_account", "Fill in the account"),
+  600,
+  ok("c1", "note_account", "Fill in the account", "Noted 2 details"),
+  state(1, insStart),
+  speaking(true),
+  say("agent", "Happy to help, Jamie. What car would we be insuring?"),
+  speaking(false),
+  1500,
+  say("visitor", "A 2020 Honda Accord. I’m with GEICO now, it renews at the end of the month."),
+  tool("c2", "note_account", "Fill in the account"),
+  600,
+  ok("c2", "note_account", "Fill in the account", "Noted 5 details"),
+  state(2, insRows),
+  speaking(true),
+  say("agent", "Got it. A licensed agent will shop our carriers and call you with real numbers. Would tomorrow work for a quick call?"),
+  speaking(false),
+  1400,
+  say("visitor", "Tomorrow morning is good."),
+  tool("c3", "check_availability", "Check the licensed agents’ calendar"),
+  600,
+  ok("c3", "check_availability", "Check the licensed agents’ calendar", "3 open tomorrow"),
+  state(3, insOpen),
+  speaking(true),
+  say("agent", "Tasha Greene can call you at ten tomorrow. Shall I book it?"),
+  speaking(false),
+  1500,
+  say("visitor", "Yes."),
+  tool("c4", "book_agent_call", "Book a call with a licensed agent"),
+  700,
+  ok("c4", "book_agent_call", "Book a call with a licensed agent", "Call booked with Tasha · BB-318"),
+  state(4, insuranceSample),
+  speaking(true),
+  say("agent", "Done. Tasha will call you at ten tomorrow. Anything else?"),
+  speaking(false),
+  { type: "session.ended", reason: "agent_ended" },
+]);
+
+export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels, realestate, insurance };

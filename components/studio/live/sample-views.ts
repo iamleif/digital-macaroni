@@ -1,4 +1,4 @@
-import type { AppointmentView, FormFieldView, HotelsView, LawFirmView, RecordField, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
+import type { AppointmentView, FormFieldView, HotelsView, InsuranceView, LawFirmView, RealEstateHome, RealEstateView, RecordField, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
 
 /**
  * Representative records for the homepage cards and the demo window before a conversation starts.
@@ -372,3 +372,90 @@ export const hotelsSample: HotelsView = {
 };
 
 export const hotelsEmpty: HotelsView = { stage: "trip", search: null, options: [], selected: null, hotel: null, rooms: [], room: null, guest: null, review: null, booking: null, messages: [], emailed: null };
+
+
+/* Juniper Row Realty: the lead record. Same shape the voice service sends. */
+const RE_AREAS = ["Central Austin", "East Austin", "South Austin", "Westlake", "North Austin", "Northwest Austin"];
+const RE_INTENT = ["Buying", "Selling", "Buying and selling"];
+const RE_TYPES = ["House", "Condo", "Townhouse"];
+const RE_TIMELINE = ["Ready now", "Within 3 months", "3 to 6 months", "6 months or more", "Just looking"];
+const RE_FINANCING = ["Pre-approved", "Cash buyer", "Talking to a lender", "Not yet"];
+
+export function realestateRecord(v: Partial<Record<string, string | string[]>> = {}, opened = Object.keys(v).length > 0): RealEstateView["record"]["sections"] {
+  const g = (k: string) => (v[k] as string | undefined) ?? null;
+  return [
+    { id: "contact", title: "Contact", fields: [f("name", "Full name", "text", g("name")), f("phone", "Phone", "text", g("phone")), f("email", "Email", "text", g("email")), f("intent", "Lead type", "select", g("intent"), RE_INTENT), f("source", "Source", "select", opened ? "Phone · AI assistant" : null, ["Phone · AI assistant", "Zillow", "Website", "Open house", "Referral"])] },
+    { id: "search", title: "Looking for", fields: [f("areas", "Areas", "chips", (v.areas as string[] | undefined) ?? null, RE_AREAS, true), f("price", "Price range", "text", g("price")), f("beds", "Bedrooms", "text", g("beds")), f("type", "Home type", "select", g("type"), RE_TYPES)] },
+    { id: "ready", title: "Readiness", fields: [f("timeline", "Timeline", "select", g("timeline"), RE_TIMELINE), f("financing", "Financing", "select", g("financing"), RE_FINANCING), f("lender", "Lender", "text", g("lender")), f("first", "First home", "toggle", g("first"), ["Yes", "No"]), f("agent", "Has an agent", "toggle", g("agent"), ["Yes", "No"])] },
+  ];
+}
+
+/* Sample homes for the screen before a call; a live call shows real active Austin listings. */
+const home = (id: string, address: string, area: string, type: string, price: string, beds: number, baths: number, sqft: number, days: number, standout: string): RealEstateHome => ({ id, address, area, type, price, beds, baths, sqft, daysOnMarket: days, standout, matched: false, read: false, focus: false, booked: false });
+export const realestateHomes: RealEstateHome[] = [
+  home("S1", "Sample home · Hyde Park", "Central Austin", "House", "$689,000", 3, 2, 1610, 12, "built in 1938"),
+  home("S2", "Sample home · Mueller", "East Austin", "Townhouse", "$524,000", 3, 2.5, 1720, 4, "just listed this week"),
+  home("S3", "Sample home · Travis Heights", "South Austin", "House", "$1,150,000", 3, 2.5, 2050, 45, "a big lot, about 0.22 acres"),
+  home("S4", "Sample home · Rollingwood", "Westlake", "House", "$1,895,000", 4, 3.5, 3310, 22, "built in 2019"),
+  home("S5", "Sample home · Crestview", "North Austin", "House", "$615,000", 3, 2, 1480, 9, "about $416 a square foot"),
+  home("S6", "Sample home · Great Hills", "Northwest Austin", "Condo", "$349,000", 2, 2, 1090, 31, "no HOA fee listed"),
+];
+
+export const realestateEmpty: RealEstateView = {
+  timeZone: "Central Time",
+  record: { opened: false, number: null, title: null, stage: "new", sections: realestateRecord({}, false) },
+  lead: { tier: null, tierNote: null, score: null, points: [], flags: [], agent: null, known: null },
+  listings: { criteria: null, total: 0, homes: realestateHomes, snapshot: null },
+  focus: null, estimate: null, calendar: null, appointments: [], messages: [], note: null, tasks: [], emailed: null,
+};
+
+export const realestateStory = { intent: "Buying", areas: ["Central Austin"], price: "Up to $700,000", beds: "3+", type: "House", timeline: "Within 3 months", financing: "Pre-approved", lender: "Amplify Credit Union", first: "Yes", agent: "No" };
+export const realestateNamed = { ...realestateStory, name: "Jamie Cole", phone: "•••• 0142", email: "j•••e@example.com" };
+
+export const realestateSample: RealEstateView = {
+  ...realestateEmpty,
+  record: { opened: true, number: "L-418", title: "Jamie Cole", stage: "booked", sections: realestateRecord(realestateNamed) },
+  lead: { tier: "A", tierNote: "Hot · call back today", score: 8, points: ["Within 3 months", "Pre-approved · Amplify Credit Union", "First-time buyer", "Showing booked"], flags: [], agent: { name: "Priya Shah", role: "Buyer's agent" }, known: null },
+  listings: { criteria: "Central Austin · Up to $700,000 · 3+ beds · House", total: 2, snapshot: null, homes: realestateHomes.map((h, i) => ({ ...h, matched: i === 0 || i === 4, read: i === 0 || i === 4, focus: i === 0, booked: i === 0 })) },
+  focus: { id: "S1", address: "Sample home · Hyde Park", area: "Central Austin", zip: "78751", price: "$689,000", agent: "Priya Shah", facts: [{ label: "Type", value: "House" }, { label: "Beds", value: "3" }, { label: "Baths", value: "2" }, { label: "Square feet", value: "1,610" }, { label: "Built", value: "1938" }, { label: "On market", value: "12 days" }] },
+  calendar: { purpose: "showing", agent: "Priya Shah", openTimes: [] },
+  appointments: [{ id: "JR-418", purpose: "showing", status: "booked", address: "Sample home · Hyde Park", name: "Jamie Cole", changes: 0, day: "Saturday", time: "10 AM", agent: "Priya Shah" }],
+  note: "Jamie Cole called the brokerage line, buying. Areas: Central Austin. Budget: Up to $700,000. 3+ bedrooms. Timeline: within 3 months. Pre-approved with Amplify Credit Union. Asked about the Hyde Park home ($689,000). Showing booked with Priya Shah, Saturday at 10 AM.",
+  tasks: [
+    { title: "Showing · Hyde Park", who: "Priya Shah", due: "Saturday, 10 AM" },
+    { title: "Call the lead back", who: "Priya Shah", due: "Today" },
+    { title: "Set up a saved search with new-listing alerts", who: "Juniper Row CRM", due: "Now" },
+  ],
+};
+
+/* Bluebird Insurance: the account record. Same shape the voice service sends. */
+const INS_LINES = ["Auto", "Home", "Renters"];
+const INS_COVER = ["Liability only", "Full coverage", "Higher limits", "Lower deductible", "Roadside", "Rental car", "Umbrella", "Flood"];
+
+export function insuranceRecord(v: Partial<Record<string, string | string[]>> = {}, opened = Object.keys(v).length > 0, quote = true): InsuranceView["record"]["sections"] {
+  const g = (k: string) => (v[k] as string | undefined) ?? null;
+  return [
+    { id: "contact", title: "Contact", fields: [f("name", "Full name", "text", g("name")), f("dob", "Date of birth", "date", g("dob")), f("phone", "Phone", "text", g("phone")), f("email", "Email", "text", g("email")), f("address", "Address", "text", g("address"), [], true), f("status", "Customer", "select", opened ? (g("status") ?? "New prospect") : null, ["Current customer", "New prospect"])] },
+    ...(quote ? [{ id: "quote", title: "Quote request", fields: [f("lines", "Lines to quote", "chips", (v.lines as string[] | undefined) ?? null, INS_LINES), f("carrier", "Current carrier", "text", g("carrier")), f("renewal", "Current renewal", "date", g("renewal")), f("coverage", "Coverage wanted", "chips", (v.coverage as string[] | undefined) ?? null, INS_COVER, true)] }] : []),
+  ];
+}
+
+export const insuranceEmpty: InsuranceView = {
+  timeZone: "Eastern Time",
+  record: { opened: false, number: null, title: null, stage: "new", sections: insuranceRecord({}, false) },
+  verified: false, accountPolicies: [], rows: { drivers: [], vehicles: [], home: [] }, flags: [], policy: null, claim: null, requests: [],
+  openTimes: [], calls: [], messages: [], note: null, tasks: [], emailed: null,
+};
+
+export const insuranceNamed = { name: "Jamie Cole", dob: "Feb 11, 1994", phone: "•••• 0142", address: "300 Walnut St, Macon, GA", lines: ["Auto", "Renters"], carrier: "GEICO", renewal: "Oct 28, 2026", coverage: ["Full coverage", "Roadside"] };
+
+export const insuranceSample: InsuranceView = {
+  ...insuranceEmpty,
+  record: { opened: true, number: "Q-318", title: "Jamie Cole", stage: "booked", sections: insuranceRecord(insuranceNamed) },
+  rows: { drivers: [{ name: "Jamie Cole", detail: "Born Feb 11, 1994 · Licensed 12 yrs · Incidents: none" }], vehicles: [{ name: "2020 Honda Accord", detail: "" }], home: [{ name: "Belongings", detail: "$25,000" }] },
+  flags: ["Bundle: auto + renters", "Renews within 45 days"],
+  openTimes: [],
+  calls: [{ id: "BB-318", status: "booked", topic: "Auto and renters quote", name: "Jamie Cole", changes: 0, day: "Tomorrow", time: "10 AM", agent: "Tasha Greene" }],
+  note: "Jamie Cole called. Wants a quote: auto, renters. Vehicles: 2020 Honda Accord. Currently with GEICO, renews Oct 28, 2026. Call with Tasha Greene booked, tomorrow at 10 AM.",
+  tasks: [{ title: "Call Jamie Cole · Auto and renters quote", who: "Tasha Greene", due: "Tomorrow, 10 AM" }, { title: "Run quotes with the carriers", who: "Tasha Greene", due: "Before the call" }],
+};

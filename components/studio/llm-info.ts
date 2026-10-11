@@ -101,6 +101,8 @@ export const LLM_INFO: Section[] = [
       { label: "A new client calls a law firm", href: "https://digitalmacaroni.io/demo/lawfirm/", text: "Alder & Finch Injury Law, a fictional personal-injury firm. The agent takes the intake, runs the conflict check, qualifies the case and books a free consultation." },
       { label: "Search and book a flight", href: "https://digitalmacaroni.io/demo/travel/", text: "Waypoint Travel, a fictional travel agency. The agent searches live fares and books up to payment." },
       { label: "Search and book hotels", href: "https://digitalmacaroni.io/demo/hotels/", text: "Palmetto Stays, a fictional hotel-booking agency in Miami. The agent searches real Miami hotels with live rates, walks through the rooms and books up to payment." },
+      { label: "A buyer or seller calls a brokerage", href: "https://digitalmacaroni.io/demo/realestate/", text: "Juniper Row Realty, a fictional Austin brokerage. The agent searches real active Austin listings, books showings with the right agent, gives sellers an automated value estimate, and ranks every caller as a lead." },
+      { label: "Customers call an insurance agency", href: "https://digitalmacaroni.io/demo/insurance/", text: "Bluebird Insurance, a fictional independent agency in Georgia. The agent takes quote requests for a licensed agent, reads customers their coverage, logs claims with the carrier's claims line and takes policy changes." },
     ],
   },
   {

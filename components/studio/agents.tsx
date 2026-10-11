@@ -7,8 +7,8 @@ import { Reveal } from "./reveal";
 import h from "./home.module.css";
 
 /** How each agent is presented on the homepage. */
-/** Only the homepage lineup has a persona; other demos (hotels) are reached from their own pages. */
-type HomeDemo = Exclude<DemoId, "hotels">;
+/** Only the homepage lineup has a persona; other demos (hotels, real estate, insurance) are reached from their own pages. */
+type HomeDemo = Exclude<DemoId, "hotels" | "realestate" | "insurance">;
 const PERSONAS: Record<HomeDemo, { tone: string; label: string; bullets: string[]; title: string; industries: string; pitch: string }> = {
   northline: {
     label: "Appointments",

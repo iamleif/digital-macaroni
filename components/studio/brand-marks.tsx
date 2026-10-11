@@ -35,6 +35,20 @@ export function BrandMark({ id, size = 22 }: { id: BrandId; size?: number }) {
     <path d="M12 13.4 5.3 11.3M12 13.4 6.9 8.1M12 13.4 9.5 6.3M12 13.4V5.8M12 13.4l2.5-7.1M12 13.4l5.1-5.3M12 13.4l6.7-2.1" stroke="#fff" strokeWidth="1.45" strokeLinecap="round" fill="none" />
     <path d="M12 13.4c.2 2.2-.3 4-1.3 5.4" stroke="#f3c766" strokeWidth="1.5" strokeLinecap="round" fill="none" />
   </svg>;
+  if (id === "realestate") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <defs><linearGradient id="jr-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3d7d63" /><stop offset="1" stopColor="#24503f" /></linearGradient></defs>
+    <rect width="24" height="24" rx="7" fill="url(#jr-g)" />
+    <path d="M5.2 12.2 12 6.4l6.8 5.8M7.4 10.6v7.4h9.2v-7.4" stroke="#fff" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <circle cx="11" cy="14.6" r="1.25" fill="#9fc4e8" /><circle cx="13.4" cy="14" r="1.25" fill="#9fc4e8" /><circle cx="12.4" cy="16.2" r="1.25" fill="#9fc4e8" />
+  </svg>;
+  if (id === "insurance") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <defs><linearGradient id="bb-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3f86d6" /><stop offset="1" stopColor="#1f5596" /></linearGradient></defs>
+    <rect width="24" height="24" rx="7" fill="url(#bb-g)" />
+    <path d="M5 15.6c3 .4 5.4-.6 6.6-3.3.9-2 2.3-3.4 4.3-3.4 1.3 0 2.2.6 2.7 1.6-1 .3-1.6.9-1.8 1.9-.6 3.3-3.4 5.2-7.4 5.2-2 0-3.5-.7-4.4-2Z" fill="#fff" />
+    <path d="M18.6 10.5 20.2 11l-1.7.6" fill="#f5c542" stroke="#f5c542" strokeWidth=".6" strokeLinejoin="round" />
+    <path d="M9.4 13.2c1.3.1 2.5-.3 3.4-1.3" stroke="#3f86d6" strokeWidth="1.1" strokeLinecap="round" fill="none" />
+    <circle cx="16.3" cy="10.6" r=".7" fill="#1f5596" />
+  </svg>;
   return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <defs><linearGradient id="wp-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#e8a65a" /><stop offset="1" stopColor="#b26f2a" /></linearGradient></defs>
     <rect width="24" height="24" rx="7" fill="url(#wp-g)" />
@@ -48,6 +62,8 @@ const WORDMARK: Record<BrandId, { text: string; className: string }> = {
   travel: { text: "Waypoint", className: h.wmWaypoint },
   lawfirm: { text: "Alder & Finch", className: h.wmLawfirm },
   hotels: { text: "Palmetto Stays", className: h.wmPalmetto },
+  realestate: { text: "Juniper Row", className: h.wmJuniper },
+  insurance: { text: "Bluebird", className: h.wmBluebird },
   lune: { text: "lune", className: h.wmLune },
   tidewell: { text: "Tidewell", className: h.wmTidewell },
 };

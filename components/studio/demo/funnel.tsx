@@ -37,12 +37,18 @@ const TRADES: TradeCard[] = [
   { id: "home", label: "Home services", example: "Heating & cooling visits", ready: true },
 ];
 
-/** The practice areas Nora can answer for. Injury is built; the others are the same agent with other questions. */
+/** Law and professional services: separate businesses, each with its own agent and number. A card for another one opens its demo. */
 const LAW_AREAS: TradeCard[] = [
-  { id: "injury", label: "Personal injury", example: "Car crashes, falls, dog bites, wrongful death", ready: true },
-  { id: "insurance", label: "Insurance", example: "Claims, quotes, policy questions", ready: true },
-  { id: "realestate", label: "Real estate", example: "Buyers, sellers, showings", ready: true },
+  { id: "injury", label: "Personal injury", example: "Car crashes, falls, dog bites, wrongful death", ready: true, demo: "lawfirm" },
+  { id: "realestate", label: "Real estate", example: "Buyers, sellers, showings, home values", ready: true, demo: "realestate" },
+  { id: "insurance", label: "Insurance", example: "Quotes, coverage, claims, policy changes", ready: true, demo: "insurance" },
 ];
+const LAW_FIRST: Partial<Record<DemoId, Trade>> = { lawfirm: "injury", realestate: "realestate", insurance: "insurance" };
+const LAW_LEDE: Partial<Record<DemoId, string>> = {
+  lawfirm: "Pick one and we’ll set the call up that way: intake questions, calendar and rules.",
+  realestate: "Pick one and we’ll set the call up that way: listings, showings and lead scoring.",
+  insurance: "Pick one and we’ll set the call up that way: quotes, policies and claims.",
+};
 /** The kinds of shop and travel business. Each is the same agent with its own catalogue. */
 const SHOP_KINDS: TradeCard[] = [
   { id: "dtc", label: "Direct-to-consumer brand", example: "Online store: products, orders, returns", ready: true },
@@ -57,7 +63,7 @@ const TRAVEL_KINDS: TradeCard[] = [
 
 /** What each demo asks on the first step: the cards, the mark on each, and the words around them. */
 function kindsFor(demoId: string): { cards: TradeCard[]; first: Trade; mark: (t: TradeCard) => React.ReactNode; title: string; lede: string; runs: string; stage: string } {
-  if (demoId === "lawfirm") return { cards: LAW_AREAS, first: "injury", mark: (t) => (t.id === "injury" ? <BrandMark id="lawfirm" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: intake questions, calendar and rules.", runs: "What runs your business today?", stage: "Your business" };
+  if (demoId === "lawfirm" || demoId === "realestate" || demoId === "insurance") return { cards: LAW_AREAS, first: LAW_FIRST[demoId]!, mark: (t) => <BrandMark id={t.demo!} size={26} />, title: "What kind of business do you want to try?", lede: LAW_LEDE[demoId]!, runs: "What runs your business today?", stage: "Your business" };
   if (demoId === "formfield") return { cards: SHOP_KINDS, first: "dtc", mark: (t) => (t.id === "dtc" ? <BrandMark id="formfield" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: inventory, availability and follow-up.", runs: "What runs your business today?", stage: "Your business" };
   if (demoId === "travel" || demoId === "hotels") return { cards: TRAVEL_KINDS, first: demoId === "hotels" ? "hotels" : "flights", mark: (t) => (t.id === "flights" ? <BrandMark id="travel" size={26} /> : t.id === "hotels" ? <BrandMark id="hotels" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: demoId === "hotels" ? "Pick one and we’ll set the call up that way: hotels, rooms and rates." : "Pick one and we’ll set the call up that way: fares, options and bookings.", runs: "What runs your business today?", stage: "Your business" };
   return { cards: TRADES, first: "salon", mark: (t) => <BrandMark id={SKINS[t.id as BookingSkin].brand} size={26} />, title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: services, schedule and rules.", runs: "What runs your business today?", stage: "Your business" };
@@ -182,12 +188,113 @@ const TOOLS: Tool[] = [
       ],
     },
   },
+  {
+    id: "followupboss",
+    name: "Follow Up Boss",
+    skins: ["realestate"],
+    confirmation: "Follow Up Boss sends the calendar invitation to the client",
+    ops: {
+      get_caller_number: [{ what: "Find the person by phone", op: "GET /v1/people?phone=" }],
+      note_lead: [{ what: "Create or match the lead with search criteria and assigned agent", op: "POST /v1/events · type: Property Inquiry" }],
+      get_listing: [{ what: "Attach the property to the lead", op: "POST /v1/events · property{street,price,bedrooms}" }],
+      estimate_value: [{ what: "Log the seller inquiry with the address", op: "POST /v1/events · type: Seller Inquiry" }],
+      book_appointment: [
+        { what: "Book the appointment and invite the client", op: "POST /v1/appointments?sendInvitation=true" },
+        { what: "Create the showing task for the agent", op: "POST /v1/tasks · type: Showing" },
+        { what: "Log the call", op: "POST /v1/calls · isIncoming: true" },
+      ],
+      take_message: [{ what: "Create a call-back task for the agent", op: "POST /v1/tasks · type: Call" }],
+    },
+  },
+  {
+    id: "lofty",
+    name: "Lofty",
+    skins: ["realestate"],
+    confirmation: "",
+    ops: {
+      get_caller_number: [{ what: "Find the lead by phone", op: "GET /v1.0/leads?phone=" }],
+      note_lead: [{ what: "Create the lead with its inquiry and timeframe", op: "POST /v1.0/leads" }],
+      search_listings: [{ what: "Save the search criteria on the lead", op: "POST /v1.0/leads · inquiry" }],
+      check_availability: [{ what: "Read the agent's open times", op: "GET /v2.0/calendar/meetings/available" }],
+      book_appointment: [
+        { what: "Book the appointment at the property", op: "POST /v2.0/calendar · type: APPOINTMENT" },
+        { what: "Assign the agent", op: "POST /v1.0/leads/{leadId}/assignment" },
+        { what: "Add the call summary", op: "POST /v1.0/notes" },
+      ],
+      take_message: [{ what: "Create a call-back task", op: "POST /v2.0/tasks · type: Call" }],
+    },
+  },
+  {
+    id: "kvcore",
+    name: "kvCORE",
+    skins: ["realestate"],
+    confirmation: "",
+    ops: {
+      note_lead: [{ what: "Create the contact with deal type and price range", op: "POST /contact" }],
+      book_appointment: [
+        { what: "Log the call and the booking as a note", op: "PUT /contact/{id}/action/note" },
+        { what: "Schedule the agent's follow-up call", op: "POST /schedule-call" },
+      ],
+      take_message: [{ what: "Schedule a call back", op: "POST /schedule-call" }],
+    },
+  },
+  {
+    id: "hubspot",
+    name: "HubSpot",
+    skins: ["realestate", "insurance"],
+    confirmation: "HubSpot emails the meeting confirmation",
+    ops: {
+      get_caller_number: [{ what: "Search contacts by phone", op: "POST /crm/v3/objects/contacts/search" }],
+      note_lead: [{ what: "Create the contact with its owner", op: "POST /crm/v3/objects/contacts · hubspot_owner_id" }],
+      note_account: [{ what: "Create the contact", op: "POST /crm/v3/objects/contacts" }],
+      find_customer: [{ what: "Search the policy by number or the contact", op: "POST /crm/v3/objects/{policy}/search" }],
+      report_claim: [{ what: "Open a ticket for the claim", op: "POST /crm/v3/objects/tickets" }],
+      request_change: [{ what: "Open a service ticket", op: "POST /crm/v3/objects/tickets" }],
+      book_appointment: [
+        { what: "Book the meeting", op: "POST /scheduler/v3/meetings/meeting-links/book" },
+        { what: "Log the call", op: "POST /crm/v3/objects/calls" },
+      ],
+      book_agent_call: [
+        { what: "Create the quote deal", op: "POST /crm/v3/objects/deals · pipeline: Quotes" },
+        { what: "Book the call", op: "POST /scheduler/v3/meetings/meeting-links/book" },
+      ],
+      take_message: [{ what: "Create a call-back task", op: "POST /crm/v3/objects/tasks" }],
+    },
+  },
+  {
+    id: "agencyzoom",
+    name: "AgencyZoom",
+    skins: ["insurance"],
+    confirmation: "",
+    ops: {
+      find_customer: [{ what: "Find the customer", op: "POST /customers" }],
+      get_policy: [{ what: "Read the customer's policies", op: "GET /customers/{id}/policies" }],
+      note_account: [{ what: "Create the lead", op: "POST /leads/create" }],
+      book_agent_call: [
+        { what: "Open the quote opportunity", op: "POST /leads/{id}/opportunities" },
+        { what: "Create the agent's call task", op: "POST /tasks" },
+      ],
+      report_claim: [{ what: "Note the loss on the customer", op: "POST /customers/{id}/notes" }],
+      request_change: [{ what: "Create a task for the account manager", op: "POST /tasks" }],
+      take_message: [{ what: "Create a call-back task", op: "POST /tasks" }],
+    },
+  },
+  {
+    id: "hawksoft",
+    name: "HawkSoft",
+    skins: ["insurance"],
+    confirmation: "",
+    ops: {
+      find_customer: [{ what: "Find the client by policy number", op: "GET /agency/{id}/clients/search?policyNumber=" }],
+      get_policy: [{ what: "Read the policies and coverages", op: "GET /agency/{id}/clients/search?include=policies" }],
+      note_account: [{ what: "Create the prospect", op: "POST /agency/{id}/client" }],
+      report_claim: [{ what: "Log the loss with a task for the CSR", op: "POST /agency/{id}/client/{clientId}/log" }],
+      request_change: [{ what: "Log the change for the CSR", op: "POST /agency/{id}/client/{clientId}/log" }],
+      take_message: [{ what: "Log the call", op: "POST /agency/{id}/client/{clientId}/log" }],
+    },
+  },
+  { id: "appliedepic", name: "Applied Epic", skins: ["insurance"], confirmation: "", ops: {} },
   { id: "ezlynx", name: "EZLynx", skins: ["insurance"], confirmation: "", ops: {} },
-  { id: "hawksoft", name: "HawkSoft", skins: ["insurance"], confirmation: "", ops: {} },
-  { id: "hubspot", name: "HubSpot", skins: ["insurance", "realestate"], confirmation: "", ops: {} },
-  { id: "followupboss", name: "Follow Up Boss", skins: ["realestate"], confirmation: "", ops: {} },
-  { id: "kvcore", name: "kvCORE", skins: ["realestate"], confirmation: "", ops: {} },
-  { id: "lofty", name: "Lofty", skins: ["realestate"], confirmation: "", ops: {} },
   { id: "cloudbeds", name: "Cloudbeds", skins: ["hotels"], confirmation: "", ops: {} },
   { id: "mews", name: "Mews", skins: ["hotels"], confirmation: "", ops: {} },
   { id: "guesty", name: "Guesty", skins: ["hotels"], confirmation: "", ops: {} },
@@ -340,7 +447,7 @@ export function opsFor(tool: Tool, step: { tool: string; summary?: string | null
 }
 
 /** Steps that book something, after which the tool sends its own confirmation. */
-export const BOOKING_TOOLS = ["book_appointment", "book_consultation"];
+export const BOOKING_TOOLS = ["book_appointment", "book_consultation", "book_agent_call"];
 
 /* ---------------- Setup card ---------------- */
 

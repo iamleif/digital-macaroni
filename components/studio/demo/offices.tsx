@@ -1,7 +1,7 @@
 import { Fragment, createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ProductArt, swatch } from "../live/product-art";
 import { formfieldEmpty } from "../live/sample-views";
-import type { AppointmentView, BrandId, FormFieldView, HotelsStage, HotelsView, LawFirmView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
+import type { AppointmentView, BrandId, FormFieldView, HotelsStage, HotelsView, InsuranceView, LawFirmView, RealEstateView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
 import { BrandMark } from "../brand-marks";
 import { ArrowRight, Bed, Calendar, Check, Clock, Coffee, Home, Inbox, Lock, MapPin, Phone, Search, Seat, Settings, Suitcase, User, Users } from "../icons";
 import d from "./demo.module.css";
@@ -1040,42 +1040,57 @@ function RecordInput({ field }: { field: RecordField }) {
   </div>;
 }
 
+/* ---------------- The record: law, real estate and insurance share it ---------------- */
+
+type RecordStage = { id: string; label: string; declined?: boolean };
+
+/** The record's number, its tags and where it has got to. */
+function RecordHeader({ opened, number, tags, source, stages, at, label }: { opened: boolean; number: string; tags: string[]; source: string; stages: RecordStage[]; at: number; label: string }) {
+  return <header className={d.recHead} data-opened={opened || undefined}>
+    <div className={d.recId}>
+      <span className={d.recNum}>{number}</span>
+      {tags.map((t) => <span key={t} className={d.recTag}>{t}</span>)}
+      <span className={d.recTag} data-tone="src">{source}</span>
+    </div>
+    <ol className={d.stages} aria-label={label}>
+      {stages.map((x, i) => <li key={x.id} data-state={i < at ? "done" : i === at ? "now" : "next"} data-declined={x.declined || undefined}><i>{i < at ? <Check size={10} /> : i + 1}</i>{x.label}</li>)}
+    </ol>
+  </header>;
+}
+
+/** The record's sections, each field typed in, picked or toggled as the agent records it. */
+function RecordForm({ sections, opened, waiting, children }: { sections: { id: string; title: string; fields: RecordField[] }[]; opened: boolean; waiting: string; children?: ReactNode }) {
+  const all = sections.flatMap((s) => s.fields);
+  const filled = all.filter((x) => (Array.isArray(x.value) ? x.value.length : x.value)).length;
+  return <div className={d.recForm}>
+    {!opened ? <p className={d.recWaiting}>{waiting}</p> : null}
+    {sections.map((sec, i) => <section key={sec.id} className={d.recSection}>
+      <h3>{sec.title}{i === 0 ? <span>{filled}/{all.length} filled</span> : null}</h3>
+      <div className={d.recFields}>
+        {sec.fields.map((fl) => <div key={fl.key} className={d.recField} data-wide={fl.wide || undefined}>
+          <label>{fl.label}</label>
+          <RecordInput field={fl} />
+        </div>)}
+      </div>
+    </section>)}
+    {children}
+  </div>;
+}
+
 export function LawFirmOffice({ view, state, agentName }: { view: LawFirmView; state: LiveState; agentName: string }) {
   const r = view.record;
   const a = view.assessment;
   const conflict = view.conflict;
-  const stages = r.stage === "declined" ? [...STAGES.slice(0, 2), { id: "declined" as const, label: "Declined" }] : STAGES;
+  const stages: RecordStage[] = r.stage === "declined" ? [...STAGES.slice(0, 2), { id: "declined", label: "Declined", declined: true }] : STAGES;
   const at = stages.findIndex((x) => x.id === r.stage);
-  const filled = r.sections.flatMap((s) => s.fields).filter((x) => (Array.isArray(x.value) ? x.value.length : x.value)).length;
-  const total = r.sections.flatMap((s) => s.fields).length;
   const booked = [...view.consults].reverse().find((c) => c.status === "booked");
 
   return <Shell id="lawfirm" nav={2} kicker={`Matters · New potential client · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
     tools={<span className={d.seg}><b>Record</b><span>7 AM brief</span></span>}>
-    <header className={d.recHead} data-opened={r.opened || undefined}>
-      <div className={d.recId}>
-        <span className={d.recNum}>{r.number ?? "PI-····"}</span>
-        <span className={d.recTag}>Potential new client</span>
-        <span className={d.recTag} data-tone="src">Phone · AI intake · {agentName}</span>
-      </div>
-      <ol className={d.stages} aria-label="Matter stage">
-        {stages.map((x, i) => <li key={x.id} data-state={i < at ? "done" : i === at ? "now" : "next"} data-declined={x.id === "declined" || undefined}><i>{i < at ? <Check size={10} /> : i + 1}</i>{x.label}</li>)}
-      </ol>
-    </header>
+    <RecordHeader opened={r.opened} number={r.number ?? "PI-····"} tags={["Potential new client"]} source={`Phone · AI intake · ${agentName}`} stages={stages} at={at} label="Matter stage" />
 
     <div className={d.recGrid}>
-      <div className={d.recForm}>
-        {!r.opened ? <p className={d.recWaiting}>The matter record opens the moment {agentName} has something to write down.</p> : null}
-        {r.sections.map((sec) => <section key={sec.id} className={d.recSection}>
-          <h3>{sec.title}{sec.id === "contact" ? <span>{filled}/{total} filled</span> : null}</h3>
-          <div className={d.recFields}>
-            {sec.fields.map((fl) => <div key={fl.key} className={d.recField} data-wide={fl.wide || undefined}>
-              <label>{fl.label}</label>
-              <RecordInput field={fl} />
-            </div>)}
-          </div>
-        </section>)}
-      </div>
+      <RecordForm sections={r.sections} opened={r.opened} waiting={`The matter record opens the moment ${agentName} has something to write down.`} />
 
       <div className={d.stack}>
         <Card title="Case review" meta={a ? (a.outcome === "qualified" ? "Can take it" : "Cannot take it") : "Waiting"}>
@@ -1122,6 +1137,193 @@ export function LawFirmOffice({ view, state, agentName }: { view: LawFirmView; s
           <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
             <span className={d.listIcon}><Phone size={15} /></span>
             <div><b>{m.name} · {m.id}{m.urgent ? " · urgent" : ""}</b><small>{m.summary}</small>{m.preferredTime ? <small>Call back {m.preferredTime}</small> : null}</div>
+          </li>)}</ul>
+        </Card> : null}
+      </div>
+    </div>
+  </Shell>;
+}
+
+
+/* ---------------- Juniper Row Realty ---------------- */
+
+const LEAD_STAGES: RecordStage[] = [
+  { id: "new", label: "New lead" },
+  { id: "contacted", label: "Contacted" },
+  { id: "qualified", label: "Qualified" },
+  { id: "booked", label: "Booked" },
+];
+
+function HomeTile({ h, searching }: { h: RealEstateView["listings"]["homes"][number]; searching: boolean }) {
+  return <li className={d.home} data-matched={h.matched || undefined} data-read={h.read || undefined} data-focus={h.focus || undefined} data-dim={(searching && !h.matched && !h.focus) || undefined}>
+    <div className={d.homeTop}>
+      <span className={d.homeType}><Home size={13} />{h.type}</span>
+      {h.booked ? <em>Showing booked</em> : h.focus ? <em data-tone="focus">On the call</em> : h.read ? <em data-tone="read">Read out</em> : null}
+    </div>
+    <strong>{h.price}</strong>
+    <b>{h.address}</b>
+    <small>{h.beds} bd · {h.baths} ba · {h.sqft.toLocaleString("en-US")} sq ft</small>
+    <small className={d.homeArea}><MapPin size={11} />{h.area}{h.daysOnMarket != null ? ` · ${h.daysOnMarket} days on market` : ""}</small>
+    <span className={d.homeNote}>{h.standout}</span>
+  </li>;
+}
+
+export function RealEstateOffice({ view, state, agentName }: { view: RealEstateView; state: LiveState; agentName: string }) {
+  const r = view.record;
+  const lead = view.lead;
+  const booked = view.appointments.filter((a) => a.status === "booked");
+  const stages = LEAD_STAGES.map((x) => (x.id === "booked" && booked.some((a) => a.purpose === "valuation") ? { ...x, label: "Valuation booked" } : x.id === "booked" ? { ...x, label: "Showing booked" } : x));
+  const at = stages.findIndex((x) => x.id === r.stage);
+  const L = view.listings;
+  const searching = L.criteria != null || L.homes.some((h) => h.focus);
+  const est = view.estimate;
+
+  return <Shell id="realestate" nav={3} kicker={`Leads · Inbound call · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
+    tools={<span className={d.seg}><b>Lead</b><span>Listings</span><span>Calendar</span></span>}>
+    <RecordHeader opened={r.opened} number={r.number ?? "L-····"} tags={[lead.known ? "Known contact" : "New inquiry"]} source={`Phone · AI assistant · ${agentName}`} stages={stages} at={at} label="Lead stage" />
+
+    <Card title={L.criteria ? "Search" : "Active listings · Austin"} meta={L.criteria ? `${L.total} match${L.total === 1 ? "" : "es"}` : L.total ? `${L.total} homes` : "Waiting"}>
+      {L.criteria ? <p className={d.homeCriteria}><Search size={13} />{L.criteria}</p> : null}
+      {L.homes.length ? <ul className={d.homes}>{L.homes.map((h) => <HomeTile key={h.id} h={h} searching={searching} />)}</ul> : <Empty>Homes that match light up here as the caller describes what they want.</Empty>}
+      {L.snapshot ? <p className={d.homeSource}>Real active listings (RentCast), as of {L.snapshot}</p> : null}
+    </Card>
+
+    <div className={d.recGrid}>
+      <RecordForm sections={r.sections} opened={r.opened} waiting={`The lead opens the moment ${agentName} learns something worth keeping.`} />
+
+      <div className={d.stack}>
+        <Card title="Lead score" meta={lead.tier ? lead.tierNote : "Waiting"}>
+          <div className={d.review}>
+            <div className={d.reviewRow} data-state={lead.tier ? "clear" : "waiting"}>
+              <i aria-hidden="true">{lead.tier ? <Check size={11} /> : null}</i>
+              <div>
+                <b>{lead.tier ? "Ranked" : "Not ranked yet"}{lead.tier ? <span className={d.tier} data-tier={lead.tier}>{lead.tier}</span> : null}</b>
+                <small>{lead.tier ? "From timeline, financing and what was booked. The caller never hears it." : "Ranked once the name, buying or selling, and timeline are in"}</small>
+                {lead.points.length || lead.flags.length ? <ul className={d.reviewPoints}>{lead.points.map((p) => <li key={p}>{p}</li>)}{lead.flags.map((fl) => <li key={fl} data-flag>{fl}</li>)}</ul> : null}
+              </div>
+            </div>
+            <div className={d.reviewRow} data-state={lead.agent ? "clear" : "waiting"}>
+              <i aria-hidden="true">{lead.agent ? <Check size={11} /> : null}</i>
+              <div><b>Assigned agent</b><small>{lead.agent ? `${lead.agent.name} · ${lead.agent.role}` : "Routed by area, or to the listing specialist for sellers"}</small></div>
+            </div>
+            {lead.known ? <div className={d.reviewRow} data-state="clear"><i aria-hidden="true"><Check size={11} /></i><div><b>Spoke with {lead.known.spokeWith}</b><small>{lead.known.note}</small></div></div> : null}
+          </div>
+        </Card>
+
+        {view.focus ? <Card title="On the call" meta={view.focus.price}>
+          <div className={d.focusHome}>
+            <b>{view.focus.address}</b>
+            <small>{view.focus.area} · {view.focus.zip} · shows with {view.focus.agent}</small>
+            <dl>{view.focus.facts.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
+          </div>
+        </Card> : null}
+
+        {est ? <Card title="Home value" meta={est.status === "ok" ? "Automated estimate" : "No estimate"}>
+          {est.status === "ok" ? <div className={d.estimate}><small>{est.address}</small><strong>{est.low} – {est.high}</strong><span>From {est.comparables} recent sales nearby · confirmed by an in-person valuation</span></div>
+            : <Empty>No automated estimate for {est.address}. The listing specialist values it in person.</Empty>}
+        </Card> : null}
+
+        <Card title={booked.some((a) => a.purpose === "valuation") || view.calendar?.purpose === "valuation" ? "Valuation" : "Showing"} meta={booked.length ? booked[booked.length - 1].id : view.calendar?.openTimes.length ? `${view.calendar.openTimes.length} open` : "Not booked"}>
+          {booked.length ? booked.map((a) => <div key={a.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{a.address}</b><small>{a.day}, {a.time} · {a.agent}</small></div><em>{a.changes ? `Moved ${a.changes}×` : "Booked"}</em></div>)
+            : view.calendar?.openTimes.length ? <div className={d.openTimes}>{view.calendar.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.agent.split(" ")[0]} · {o.day}</small></span>)}</div>
+            : <Empty>Open times with the right agent appear here.</Empty>}
+          {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `Confirmation for ${view.emailed.reference}` : "Call summary"} /> : null}
+        </Card>
+
+        <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
+          {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the lead.</Empty>}
+        </Card>
+
+        <Card title="Follow-ups" meta={view.tasks.length || "None yet"}>
+          {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Tasks for the agents are created from the lead.</Empty>}
+        </Card>
+
+        {view.messages.length ? <Card title="Messages" meta={view.messages.length}>
+          <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
+            <span className={d.listIcon}><Phone size={15} /></span>
+            <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>For {m.for ?? "the team"} · call back {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
+          </li>)}</ul>
+        </Card> : null}
+      </div>
+    </div>
+  </Shell>;
+}
+
+
+/* ---------------- Bluebird Insurance ---------------- */
+
+function insuranceStages(v: InsuranceView): RecordStage[] {
+  const customer = v.verified;
+  const quoting = (v.record.sections.find((s) => s.id === "quote")?.fields[0]?.value as string[] | null)?.length;
+  if (customer && !quoting) return [{ id: "new", label: "New call" }, { id: "ready", label: "Verified" }, { id: "logged", label: "Request logged" }];
+  return [{ id: "new", label: "New call" }, { id: "intake", label: "Details" }, { id: "ready", label: customer ? "Verified" : "Ready to quote" }, { id: "booked", label: "Agent call booked" }];
+}
+
+export function InsuranceOffice({ view, state, agentName }: { view: InsuranceView; state: LiveState; agentName: string }) {
+  const r = view.record;
+  const stages = insuranceStages(view);
+  const at = Math.max(0, stages.findIndex((x) => x.id === r.stage)) + (r.stage === "logged" && !stages.some((x) => x.id === "logged") ? stages.length - 1 : 0);
+  const booked = view.calls.filter((c) => c.status === "booked");
+  const p = view.policy;
+  const c = view.claim;
+  const rows = view.rows;
+
+  return <Shell id="insurance" nav={3} kicker={`Accounts · ${view.verified ? "Current customer" : "Prospect"} · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
+    tools={<span className={d.seg}><b>Account</b><span>Policies</span><span>Service</span></span>}>
+    <RecordHeader opened={r.opened} number={r.number ?? "Q-····"} tags={[view.verified ? "Verified customer" : "New prospect", ...view.flags]} source={`Phone · AI assistant · ${agentName}`} stages={stages} at={Math.min(at, stages.length - 1)} label="Account stage" />
+
+    <div className={d.recGrid}>
+      <RecordForm sections={r.sections} opened={r.opened} waiting={`The account opens the moment ${agentName} has something to write down.`}>
+        {rows.drivers.length || rows.vehicles.length || rows.home.length ? <Card title="For the quote" meta={`${rows.drivers.length + rows.vehicles.length + rows.home.length} items`}>
+          <ul className={d.list}>
+            {rows.drivers.map((x) => <li key={`d-${x.name}`}><span className={d.listIcon}><User size={15} /></span><div><b>{x.name}</b><small>Driver{x.detail ? ` · ${x.detail}` : ""}</small></div></li>)}
+            {rows.vehicles.map((x) => <li key={`v-${x.name}`}><span className={d.listIcon}><Suitcase size={15} /></span><div><b>{x.name}</b><small>Vehicle</small></div></li>)}
+            {rows.home.map((x) => <li key={`h-${x.name}`}><span className={d.listIcon}><Home size={15} /></span><div><b>{x.detail}</b><small>{x.name}</small></div></li>)}
+          </ul>
+        </Card> : null}
+        {view.accountPolicies.length ? <Card title="Policies on the account" meta={view.accountPolicies.length}>
+          <ul className={d.policies}>{view.accountPolicies.map((x) => <li key={x.number} data-on={p?.number === x.number || undefined}><b>{x.line}</b><span>{x.carrier}</span><small>{x.number} · renews {x.renews}</small></li>)}</ul>
+        </Card> : null}
+      </RecordForm>
+
+      <div className={d.stack}>
+        {p ? <Card title={`${p.line} policy`} meta={`${p.carrier} · ${p.term}`}>
+          <dl className={d.coverages}>{p.coverages.map((x) => <div key={x.name}><dt>{x.name}</dt><dd>{x.limit ?? x.deductible}{x.deductible && !x.limit ? <em>deductible</em> : null}</dd></div>)}</dl>
+          <p className={d.policyMeta}>{[...p.insured, ...p.drivers.map((n) => `Driver: ${n}`)].join(" · ")}</p>
+          <div className={d.billing}><span>{p.billing.plan}</span><b>{p.billing.amount}</b><small>Next due {p.billing.nextDue} · {p.billing.status}</small></div>
+        </Card> : <Card title="Policy" meta="Waiting"><Empty>A current customer&rsquo;s coverages, limits and deductibles open here once {agentName} finds them.</Empty></Card>}
+
+        {c ? <Card title="Claim notice" meta={c.id}>
+          <div className={d.claim} data-injured={c.injured || undefined}>
+            {c.description ? <p>{c.description}</p> : null}
+            <dl>{c.fields.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value ?? <span className={d.dash}>Waiting</span>}</dd></div>)}</dl>
+            <div className={d.claimLine}><Phone size={14} /><div><b>{c.carrier} claims · {c.claimsLine}</b><small>Given to the caller. The carrier&rsquo;s adjuster decides coverage.</small></div></div>
+          </div>
+        </Card> : null}
+
+        {view.requests.length ? <Card title="Service requests" meta={view.requests.length}>
+          <ul className={d.list}>{view.requests.map((x) => <li key={x.id}><span className={d.listIcon}><Inbox size={15} /></span><div><b>{x.kind} · {x.id}</b><small>{x.details}</small><small>{x.policy} · staff confirm before it takes effect</small></div></li>)}</ul>
+        </Card> : null}
+
+        <Card title="Licensed agent" meta={booked.length ? booked[booked.length - 1].id : view.openTimes.length ? `${view.openTimes.length} open` : "Not booked"}>
+          {booked.length ? booked.map((x) => <div key={x.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{x.agent} calls {x.name.split(" ")[0]}</b><small>{x.day}, {x.time} · {x.topic}</small></div><em>{x.changes ? `Moved ${x.changes}×` : "Booked"}</em></div>)
+            : view.openTimes.length ? <div className={d.openTimes}>{view.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.agent.split(" ")[0]} · {o.day}</small></span>)}</div>
+            : <Empty>Quotes go to a licensed agent: open call times appear here.</Empty>}
+          {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `${view.emailed.reference.startsWith("PA-") ? "ID card" : "Confirmation"} for ${view.emailed.reference}` : "Call summary"} /> : null}
+        </Card>
+
+        <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
+          {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the account.</Empty>}
+        </Card>
+
+        <Card title="Tasks created" meta={view.tasks.length || "None yet"}>
+          {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Follow-ups for the team are created from the account.</Empty>}
+        </Card>
+
+        {view.messages.length ? <Card title="Messages" meta={view.messages.length}>
+          <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
+            <span className={d.listIcon}><Phone size={15} /></span>
+            <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>Call back {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
           </li>)}</ul>
         </Card> : null}
       </div>
