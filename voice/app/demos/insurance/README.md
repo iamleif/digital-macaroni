@@ -6,3 +6,4 @@ Not built yet. When it is, this folder follows the same layout as `northline/` (
 - **Agent:** Owen (working name)
 - **What callers want:** Quotes, what a policy covers, starting a claim, policy changes, ID cards. See Macaroni/Docs/studio-preview/HANDOFF_INSURANCE.md.
 - **Today:** Card on step 1 only.
+- **Texts:** intake forms and links go out from (206) 887-9619, the professional-services texting line (see `../README.md`).
