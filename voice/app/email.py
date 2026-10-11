@@ -155,6 +155,7 @@ BRANDS = {
     "northline": Brand("Northline", "Northline Home Services", "northline.png", "#2a5aa8", "#eaf1fc", "#1d2b44"),
     "lawfirm": Brand("Alder & Finch", "Alder & Finch Injury Law", "lawfirm.png", "#1f3459", "#eaeff8", "#1a2540"),
     "formfield": Brand("Form & Field", "Form & Field", "formfield.png", "#4f6a4a", "#eef2ea", "#2b3226", serif=True),
+    "hotels": Brand("Palmetto", "Palmetto Stays", "palmetto.png", "#1f7a6c", "#e6f4f1", "#173a35"),
 }
 
 
@@ -260,6 +261,24 @@ def flight_itinerary(t: dict[str, Any]) -> tuple[str, str, str]:
     lines = [f"{'Outbound' if n == 0 else 'Return'}: {j['date']}, {j['from']} {j['departs']} to {j['to']} {j['arrives']} ({j['duration']}, {'nonstop' if not j['stops'] else str(j['stops']) + ' stop'}), {' · '.join(j['airlines'])}" for n, j in enumerate(t["journeys"])]
     lines += [f"{k}: {v}" for k, v in rows if v] + [f"Total: {t['total']} (quote, not booked)"]
     return f"Your Waypoint itinerary · {route} · {t['total']}", body, _text(b, heading, intro, lines, "Linda", did)
+
+
+def hotel_quote(h: dict[str, Any]) -> tuple[str, str, str]:
+    """Palmetto Stays: the reviewed stay with the hotel's photo. Returns (subject, html, text)."""
+    b = BRANDS["hotels"]
+    photo = f'<img src="{e(h["photo"])}" width="540" alt="{e(h["hotel"])}" style="display:block;width:100%;max-width:540px;height:auto;border:0;border-radius:14px 14px 0 0">' if h.get("photo") else ""
+    card = f"""{_pill("Quote · not booked", b)}<div style="height:14px"></div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr><td>{photo}</td></tr>
+<tr><td style="padding:18px 20px 16px;font-family:{FONT}">
+<div style="font-size:24px;font-weight:800;color:{b.ink};letter-spacing:-.3px">{e(h["hotel"])}</div>
+<div style="padding:4px 0 0;font-size:14px;color:#4f6662">{e(h.get("address", ""))}</div></td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:6px">{_detail_rows([("Dates", h["dates"]), ("Nights", str(h["nights"])), ("Room", h["room"] + " · " + h["board"]), ("Guests", f"{h['adults']} adult{'s' if h['adults'] != 1 else ''}"), ("Lead guest", h["guest"]), ("Check-in", h.get("checkIn", "")), ("Check-out", h.get("checkOut", "")), ("Cancellation", h["cancellation"]), ("At the hotel", h.get("taxes") or "")], b)}{_total("Total", h["total"], b)}</table>"""
+    did = "searched live hotel rates, compared rooms and re-checked the price with the hotel"
+    heading = f"Your stay, {h['guest'].split(' ')[0]}"
+    intro = "Here's the stay we put together on the phone. It's a quote, so nothing is booked: in this demo we stop just before payment."
+    body = layout(b, f"{h['hotel']} · {h['dates']} · {h['total']}", "Hotel quote", heading, intro, card, "Marisol", did)
+    lines = [f"Hotel: {h['hotel']}, {h.get('address', '')}", f"Dates: {h['dates']} ({h['nights']} nights)", f"Room: {h['room']} · {h['board']}", f"Lead guest: {h['guest']}", f"Cancellation: {h['cancellation']}"] + ([f"At the hotel: {h['taxes']}"] if h.get("taxes") else []) + [f"Total: {h['total']} (quote, not booked)"]
+    return f"Your Palmetto Stays quote · {h['hotel']} · {h['total']}", body, _text(b, heading, intro, lines, "Marisol", did)
 
 
 def visit_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:

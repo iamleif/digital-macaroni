@@ -57,5 +57,5 @@ apply. Reply STOP at any time to opt out."
 | | Woodward Motor Co., auto dealership | `dealership/` | No |
 | | Furniture showroom | `furniture/` | No |
 | Travel (Linda) | Waypoint, flights | `travel/` | Yes |
-| | Palmetto Stays, hotels | `hotels/` | No |
+| | Palmetto Stays, hotels (live LiteAPI hotels and rates) | `hotels/` | Yes |
 | | Red Rock Journeys, tours | `tours/` | No |

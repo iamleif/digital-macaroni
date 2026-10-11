@@ -1,0 +1,18 @@
+{
+  "name": "Palmetto Stays",
+  "what": "A small hotel-booking agency in Miami. We find and book hotels in Miami and Miami Beach.",
+  "timeZone": "America/New_York",
+  "phone": "(786) 305-3013",
+  "hours": "Every day, 8 AM to 10 PM Eastern Time.",
+  "areas": {
+    "miami_beach": {"name": "Miami Beach", "city": "Miami Beach", "about": "South Beach and the beachfront: Ocean Drive, Collins Avenue, Mid-Beach."},
+    "downtown": {"name": "Downtown Miami and Brickell", "city": "Miami", "about": "The city side of Biscayne Bay: Brickell, Downtown, Edgewater and the airport."}
+  },
+  "limits": {"maxNights": 14, "maxAdults": 4, "daysAhead": 330},
+  "policies": [
+    "We book one room per call. For several rooms or a group, we take a message and an agent calls back.",
+    "Prices are for the whole stay in US dollars. Hotel taxes and resort fees that are paid at the hotel are shown separately when the hotel tells us.",
+    "Whether a room can be cancelled for free, and until when, depends on the rate. We always say which before booking.",
+    "We never take card details over the phone. Payment is by a secure link."
+  ]
+}

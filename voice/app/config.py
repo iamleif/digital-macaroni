@@ -31,6 +31,7 @@ class Config:
             # (206) 887-9619 is the account's only text-verified number (RankLadder texting, A2P approved), so the law firm
             # has it and can text. Ellie moved to (720) 599-6395; Waypoint has (929) 333-3608 (New York).
             env.get("LAWFIRM_NUMBER", "+12068879619"): "lawfirm",
+            env.get("HOTELS_NUMBER", "+17863053013"): "hotels",
             }.items()
             if number
         }
@@ -38,7 +39,7 @@ class Config:
     # Prebuilt Gemini voice names, or designed voice ids ("voice_…", from AI Studio; the travel default is
     # "Linda 2", designed on gemini-3.8-flash-tts and valid until 2027-10-04).
     voices: dict[str, str] = field(
-        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede")}
+        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede"), "hotels": env.get("HOTELS_VOICE", "Despina")}
     )
     # Demos on the cascade (speech-to-text, a Gemini text model through ADK, then Gemini TTS) instead of Gemini Live.
     cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel").split(",") if d.strip())
@@ -50,6 +51,7 @@ class Config:
     text_model: str = env.get("DEMO_TEXT_MODEL", "gemini-3.5-flash-lite")
     tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-lite-tts")
     duffel_token: str = env.get("DUFFEL_ACCESS_TOKEN", "")
+    liteapi_key: str = env.get("LITEAPI_KEY", "")
     # Confirmation emails (Resend; the sending domain digitalmacaroni.io is verified there).
     resend_api_key: str = env.get("RESEND_API_KEY", "")
     email_from: str = env.get("DEMO_EMAIL_FROM", "demos@digitalmacaroni.io")
