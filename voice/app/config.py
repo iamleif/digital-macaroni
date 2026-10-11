@@ -103,6 +103,8 @@ class Config:
     dry_run_number: str = env.get("DRY_RUN_NUMBER", "")
     # New leads and new clients are emailed here.
     leads_email: str = env.get("LEADS_EMAIL", "hello@digitalmacaroni.io")
+    # Cloudflare Turnstile ("Verify you are human") on the instant demo form; unset skips the check (local runs).
+    turnstile_secret: str = env.get("TURNSTILE_SECRET", "")
     # Client lines have their own cap, apart from the demos'.
     max_client_sessions: int = int(env.get("MAX_CLIENT_SESSIONS", "12"))
     client_max_seconds: int = int(env.get("CLIENT_MAX_SECONDS", "600"))

@@ -167,6 +167,13 @@ class TestInstantForm:
         await asyncio.sleep(0)
 
 
+class TestTurnstile:
+    async def test_needs_a_token_once_configured(self, cfg):
+        assert await factory.human("", "1.1.1.1")
+        cfg(turnstile_secret="secret")
+        assert not await factory.human("", "1.1.1.1")
+
+
 class TestSummary:
     def test_text_reads_well(self):
         m = {"caller_name": "Sam", "caller_number": "+12065550142", "reason": "Cleaning", "summary": "Sam wants a cleaning next week.", "action": "Call Sam to book.", "urgent": True}

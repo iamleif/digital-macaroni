@@ -436,7 +436,10 @@ def _refusal(why: tuple[int, str, str]) -> JSONResponse:
 async def instant(request: Request) -> JSONResponse:
     if not allowed_origin(request.headers.get("origin")):
         return JSONResponse({"error": "origin"}, status_code=403)
-    job, why = factory.start_instant(await _json(request), client_ip(request))
+    body = await _json(request)
+    if not await factory.human(str(body.get("turnstileToken") or ""), client_ip(request)):
+        return JSONResponse({"error": "verify", "message": "Please tick “Verify you are human” and try again."}, status_code=400)
+    job, why = factory.start_instant(body, client_ip(request))
     return _refusal(why) if job is None else JSONResponse(job.public())  # type: ignore[arg-type]
 
 

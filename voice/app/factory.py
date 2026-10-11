@@ -110,6 +110,21 @@ def _clean(s: Any, n: int) -> str:
 # ---- 1. Instant demo call ----
 
 
+async def human(token: str, ip: str) -> bool:
+    """Cloudflare Turnstile's verdict on the form's "Verify you are human" token. Passes when no secret is set."""
+    if not config.turnstile_secret:
+        return True
+    if not token:
+        return False
+    try:
+        async with httpx.AsyncClient(timeout=8) as http:
+            r = await http.post("https://challenges.cloudflare.com/turnstile/v0/siteverify", data={"secret": config.turnstile_secret, "response": token, "remoteip": ip})
+        return bool(r.json().get("success"))
+    except (httpx.HTTPError, ValueError) as err:
+        log.warn("factory.turnstile_failed", {}, err)
+        return False
+
+
 def start_instant(body: dict[str, Any], ip: str) -> tuple[Optional[Job], Optional[tuple[int, str, str]]]:
     """Validates the form and starts the job. Returns the job, or (status, error, message)."""
     if body.get("company"):  # the honeypot

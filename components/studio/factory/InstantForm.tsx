@@ -5,6 +5,7 @@ import { track } from "@/components/studio/consent";
 import { Check } from "@/components/studio/icons";
 import { VOICE_URL } from "@/components/studio/live/client";
 import f from "./factory.module.css";
+import { Turnstile } from "./Turnstile";
 
 /** The voice service's progress for this call (factory.py Job.public). */
 type Job = { job: string; step: string; business: string; error?: string; message?: string };
@@ -22,6 +23,8 @@ export function InstantForm() {
   const [job, setJob] = useState<Job | null>(null);
   const [sending, setSending] = useState(false);
   const [problem, setProblem] = useState("");
+  const [token, setToken] = useState("");
+  const [tries, setTries] = useState(0);
   const shownAt = useRef(0);
 
   useEffect(() => {
@@ -45,6 +48,10 @@ export function InstantForm() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    if (!token) {
+      setProblem("Please tick “Verify you are human” first.");
+      return;
+    }
     setSending(true);
     setProblem("");
     try {
@@ -59,6 +66,7 @@ export function InstantForm() {
           consent: data.get("consent") === "on",
           company: data.get("company"),
           elapsedMs: Date.now() - shownAt.current,
+          turnstileToken: token,
         }),
       });
       const out = (await r.json()) as Job & { message?: string };
@@ -69,6 +77,7 @@ export function InstantForm() {
       setProblem(err instanceof Error ? err.message : "We couldn’t start the call. Please try again.");
     } finally {
       setSending(false);
+      setTries((n) => n + 1);
     }
   }
 
@@ -128,6 +137,7 @@ export function InstantForm() {
         <input type="checkbox" name="consent" required />
         <span>Call me now with an AI agent, and text me the call summary. One call, one text. US and Canadian numbers.</span>
       </label>
+      <Turnstile onToken={setToken} resetKey={tries} />
       <div className="form-action">
         <button className="submit-button" type="submit" disabled={sending}>{sending ? "Starting…" : "Call me now"}</button>
         {problem ? <p className="form-status" data-state="error" role="alert">{problem}</p> : null}
