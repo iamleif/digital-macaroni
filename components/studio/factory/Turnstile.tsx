@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /** Cloudflare Turnstile widget "digitalmacaroni.io instant call" (public site key; the secret lives on the voice service). */
 export const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "0x4AAAAAAFTy4ZbG8AjNRTWC";
@@ -30,8 +30,7 @@ export function Turnstile({ onToken, resetKey = 0 }: { onToken: (token: string) 
       if (gone || !box.current || !window.turnstile || widget.current) return;
       widget.current = window.turnstile.render(box.current, {
         sitekey: TURNSTILE_SITE_KEY,
-        // The normal widget is a fixed 300px; on narrow phones its compact form fits inside the card.
-        size: window.innerWidth < 420 ? "compact" : "normal",
+        size: "normal",
         // Always the light widget, whatever the visitor's system theme: the form card is white.
         theme: "light",
         callback: (t: string) => callback.current(t),
@@ -66,5 +65,14 @@ export function Turnstile({ onToken, resetKey = 0 }: { onToken: (token: string) 
     }
   }, [resetKey]);
 
-  return <div ref={box} style={{ minHeight: 65 }} />;
+  // The widget is a fixed 300 x 65 px; on a narrow phone it's scaled down to the space it has, keeping its shape.
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const fit = () => setScale(Math.min(1, (box.current?.parentElement?.clientWidth ?? 300) / 300));
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
+
+  return <div style={{ height: Math.ceil(65 * scale) }}><div ref={box} style={{ minHeight: 65, width: 300, transform: `scale(${scale})`, transformOrigin: "left top" }} /></div>;
 }
