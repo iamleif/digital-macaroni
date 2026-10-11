@@ -32,7 +32,7 @@ Bought October 11, 2026 on the Twilio account; about $1.15 a month each.
 | Juniper Row Realty | (512) 645-1952 | Austin |
 | Form & Field | (830) 239-2110 | Texas Hill Country |
 | Woodward Motor Co. | (313) 351-1780 | Detroit |
-| Furniture showroom | (312) 820-9899 | Chicago |
+| Aspen Grove Dental | (312) 820-9899 | Chicago |
 | Waypoint flights | (929) 333-3608 | New York |
 | Palmetto Stays | (786) 305-3013 | Miami |
 
@@ -54,6 +54,5 @@ apply. Reply STOP at any time to opt out."
 | | Juniper Row Realty, Austin (real RentCast listings) | `realestate/` | Yes |
 | Retail (Theo) | Form & Field, home goods | `formfield/` | Yes |
 | | Woodward Motor Co., Detroit (real auto.dev cars and photos) | `dealership/` | Yes |
-| | Furniture showroom | `furniture/` | No |
 | Travel (Linda) | Waypoint, flights | `travel/` | Yes |
 | | Palmetto Stays, hotels (live LiteAPI hotels and rates) | `hotels/` | Yes |

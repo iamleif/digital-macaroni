@@ -20,11 +20,11 @@ import f from "./funnel.module.css";
 
 /** What the visitor says they do: a booking business (Ellie) or a legal practice area (Nora). */
 export type LawArea = "injury" | "insurance" | "realestate";
-export type ShopKind = "dtc" | "dealership" | "furniture";
+export type ShopKind = "dtc" | "dealership";
 export type TravelKind = "flights" | "hotels";
 export type Trade = BookingSkin | LawArea | ShopKind | TravelKind;
 /** `demo` is the demo page that runs this kind, when it is not the page the visitor is on. */
-type TradeCard = { id: Trade; label: string; example: string; ready: boolean; demo?: DemoId };
+type TradeCard = { id: Trade; label: string; example: string; demo?: DemoId };
 /** `when` limits a write to calls that went one way: a case the firm took, or one it had to decline. */
 export type Op = { what: string; op: string; when?: "qualified" | "declined" };
 export type Tool = { id: string; name: string; skins: Trade[]; ops: Partial<Record<string, Op[]>>; confirmation: string };
@@ -33,17 +33,17 @@ export type Setup = { trade: Trade; tool: string; email: string; record: boolean
 
 /** The businesses Ellie can answer for: one appointment engine, three front desks. */
 const TRADES: TradeCard[] = [
-  { id: "salon", label: "Salon & med spa", example: "Cuts, colour, nails, facials, injectables", ready: true, demo: "lune" },
-  { id: "clinic", label: "Wellness clinic", example: "Chiropractic, physio, massage", ready: true, demo: "tidewell" },
-  { id: "home", label: "Home services", example: "Heating & cooling visits", ready: true, demo: "northline" },
+  { id: "salon", label: "Salon & med spa", example: "Cuts, colour, nails, facials, injectables", demo: "lune" },
+  { id: "clinic", label: "Wellness clinic", example: "Chiropractic, physio, massage", demo: "tidewell" },
+  { id: "home", label: "Home services", example: "Heating & cooling visits", demo: "northline" },
 ];
 const TRADE_FIRST: Partial<Record<DemoId, Trade>> = { northline: "home", lune: "salon", tidewell: "clinic" };
 
 /** Law and professional services: separate businesses, each with its own agent and number. A card for another one opens its demo. */
 const LAW_AREAS: TradeCard[] = [
-  { id: "injury", label: "Personal injury", example: "Car crashes, falls, dog bites, wrongful death", ready: true, demo: "lawfirm" },
-  { id: "realestate", label: "Real estate", example: "Buyers, sellers, showings, home values", ready: true, demo: "realestate" },
-  { id: "insurance", label: "Insurance", example: "Quotes, coverage, claims, policy changes", ready: true, demo: "insurance" },
+  { id: "injury", label: "Personal injury", example: "Car crashes, falls, dog bites, wrongful death", demo: "lawfirm" },
+  { id: "realestate", label: "Real estate", example: "Buyers, sellers, showings, home values", demo: "realestate" },
+  { id: "insurance", label: "Insurance", example: "Quotes, coverage, claims, policy changes", demo: "insurance" },
 ];
 const LAW_FIRST: Partial<Record<DemoId, Trade>> = { lawfirm: "injury", realestate: "realestate", insurance: "insurance" };
 const LAW_LEDE: Partial<Record<DemoId, string>> = {
@@ -53,14 +53,13 @@ const LAW_LEDE: Partial<Record<DemoId, string>> = {
 };
 /** The kinds of shop and travel business. Each is the same agent with its own catalogue. */
 const SHOP_KINDS: TradeCard[] = [
-  { id: "dtc", label: "Direct-to-consumer brand", example: "Online store: products, orders, returns", ready: true, demo: "formfield" },
-  { id: "dealership", label: "Auto dealership", example: "Real cars, test drives, trade-ins, service", ready: true, demo: "dealership" },
-  { id: "furniture", label: "Furniture showroom", example: "Pieces in stock, delivery, financing", ready: false },
+  { id: "dtc", label: "Direct-to-consumer brand", example: "Online store: products, orders, returns", demo: "formfield" },
+  { id: "dealership", label: "Auto dealership", example: "Real cars, test drives, trade-ins, service", demo: "dealership" },
 ];
 /** Travel is separate businesses, each with its own agent and number: a card for another one opens its demo. */
 const TRAVEL_KINDS: TradeCard[] = [
-  { id: "flights", label: "Flights", example: "Search fares, pick seats, add bags", ready: true, demo: "travel" },
-  { id: "hotels", label: "Hotels & stays", example: "Real hotels, rooms, live rates", ready: true, demo: "hotels" },
+  { id: "flights", label: "Flights", example: "Search fares, pick seats, add bags", demo: "travel" },
+  { id: "hotels", label: "Hotels & stays", example: "Real hotels, rooms, live rates", demo: "hotels" },
 ];
 
 /** What each demo asks on the first step: the cards, the mark on each, and the words around them. */
@@ -303,15 +302,12 @@ const TOOLS: Tool[] = [
   { id: "liteapi", name: "LiteAPI", skins: ["hotels"], confirmation: "", ops: {} },
   { id: "klaviyo", name: "Klaviyo", skins: ["dtc"], confirmation: "", ops: {} },
   { id: "gorgias", name: "Gorgias", skins: ["dtc"], confirmation: "", ops: {} },
-  { id: "quickbooks", name: "QuickBooks", skins: ["furniture"], confirmation: "", ops: {} },
   { id: "tekion", name: "Tekion", skins: ["dealership"], confirmation: "", ops: {} },
   { id: "cdk", name: "CDK Global", skins: ["dealership"], confirmation: "", ops: {} },
   { id: "dealersocket", name: "DealerSocket", skins: ["dealership"], confirmation: "", ops: {} },
   { id: "vinsolutions", name: "VinSolutions", skins: ["dealership"], confirmation: "", ops: {} },
   { id: "reynolds", name: "Reynolds", skins: ["dealership"], confirmation: "", ops: {} },
-  { id: "shopify", name: "Shopify", skins: ["dtc", "furniture"], confirmation: "", ops: {} },
-  { id: "squarepos", name: "Square", skins: ["furniture"], confirmation: "", ops: {} },
-  { id: "lightspeed", name: "Lightspeed", skins: ["furniture"], confirmation: "", ops: {} },
+  { id: "shopify", name: "Shopify", skins: ["dtc"], confirmation: "", ops: {} },
   { id: "woocommerce", name: "WooCommerce", skins: ["dtc"], confirmation: "", ops: {} },
   { id: "bigcommerce", name: "BigCommerce", skins: ["dtc"], confirmation: "", ops: {} },
   { id: "travefy", name: "Travefy", skins: ["flights", "hotels"], confirmation: "", ops: {} },
@@ -548,9 +544,9 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onSaved, onClose, ag
         <h2 id="setup-title">{kinds.title}</h2>
         <p className={f.lede}>{kinds.lede}</p>
         <div className={f.trades}>
-          {kinds.cards.map((t) => <button key={t.id} type="button" className={f.trade} data-selected={trade === t.id || undefined} disabled={!t.ready} onClick={() => { setTrade(t.id); setTool(null); }}>
+          {kinds.cards.map((t) => <button key={t.id} type="button" className={f.trade} data-selected={trade === t.id || undefined} onClick={() => { setTrade(t.id); setTool(null); }}>
             <span className={f.tradeMark}>{kinds.mark(t)}</span>
-            <b>{t.label}</b><span>{t.example}</span>{t.ready ? null : <em>Coming soon</em>}
+            <b>{t.label}</b><span>{t.example}</span>
           </button>)}
         </div>
         <div className={f.actions}><button type="button" className={f.primary} onClick={() => {
