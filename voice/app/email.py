@@ -153,6 +153,7 @@ class Brand:
 BRANDS = {
     "travel": Brand("Waypoint", "Waypoint Travel", "waypoint.png", "#b26f2a", "#fbf1e4", "#2f2a24"),
     "northline": Brand("Northline", "Northline Home Services", "northline.png", "#2a5aa8", "#eaf1fc", "#1d2b44"),
+    "lawfirm": Brand("Alder & Finch", "Alder & Finch Injury Law", "lawfirm.png", "#1f3459", "#eaeff8", "#1a2540"),
     "formfield": Brand("Form & Field", "Form & Field", "formfield.png", "#4f6a4a", "#eef2ea", "#2b3226", serif=True),
 }
 
@@ -294,3 +295,20 @@ def pickup_reservation(r: dict[str, Any]) -> tuple[str, str, str]:
     body = layout(b, f"{r['product']} · held until {r['pickupBy']}", "Pickup reservation", heading, intro, card, "Theo", did)
     lines = [f"Item: {r['quantity']} x {r['product']}, {r['option']} ({r['price']})", f"Pick up by: {r['pickupBy']}", f"Shop: {r['shop']} ({r['hours']})", f"Reference: {r['reference']}"]
     return f"Held for you at Form & Field · {r['product']}", body, _text(b, heading, intro, lines, "Theo", did)
+
+
+def consult_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:
+    """Alder & Finch: the booked free consultation. Returns (subject, html, text)."""
+    b = BRANDS["lawfirm"]
+    card = f"""{_pill("Free consultation · " + v["reference"], b)}<div style="height:14px"></div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr><td style="padding:20px 20px 18px;font-family:{FONT}">
+<div style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:{b.accent}">{e(v["day"])}</div>
+<div style="padding:4px 0 2px;font-size:30px;font-weight:800;color:{b.ink};letter-spacing:-.5px">{e(v["time"])} Mountain</div>
+<div style="font-size:14px;color:#5d6875">{e(v["format"])} with {e(v["attorney"])} &middot; about 45 minutes</div></td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px">{_detail_rows([("Attorney", v["attorney"]), ("Format", v["format"]), ("Name", v["name"]), ("Cost", "Free, no obligation"), ("Bring, if you have it", "Police report number, photos, insurance details, medical bills"), ("Reference", v["reference"])], b)}</table>"""
+    did = "listened to what happened, checked for conflicts, found the right attorney and booked your consultation"
+    heading = f"You're booked, {v['name'].split(' ')[0]}"
+    intro = "Your free consultation is set. Nothing you need to prepare: bring whatever you have, and the attorney will take it from there. This is not legal advice, and booking does not create an attorney-client relationship."
+    body = layout(b, f"Free consultation with {v['attorney']} · {v['day']}, {v['time']}", "Consultation confirmation", heading, intro, card, "Nora", did)
+    lines = [f"When: {v['day']}, {v['time']} Mountain", f"With: {v['attorney']} ({v['format']})", "Cost: free, no obligation", f"Reference: {v['reference']}"]
+    return f"Your free consultation with Alder & Finch · {v['day']}, {v['time']}", body, _text(b, heading, intro, lines, "Nora", did)

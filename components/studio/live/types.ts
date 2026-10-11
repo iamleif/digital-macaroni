@@ -2,7 +2,7 @@
  * The demo voice service's protocol and dashboard records, as the website receives them. Mirrors
  * DigitalMacaroni/voice/src/protocol.ts and each demo's view() output.
  */
-export type DemoId = "northline" | "formfield" | "travel";
+export type DemoId = "northline" | "formfield" | "travel" | "lawfirm";
 
 export type DemoEvent =
   | { type: "session.ready"; sessionId: string; demo: DemoId; channel: "phone" | "browser" }
@@ -150,4 +150,38 @@ export interface AppointmentView {
   emailed?: { to: string; reference: string } | null;
 }
 
-export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView;
+/** One field of the matter record: typed in (text, date), picked from a menu (select), toggled (chips, toggle). */
+export interface RecordField {
+  key: string;
+  label: string;
+  kind: "text" | "select" | "date" | "chips" | "toggle";
+  value: string | string[] | null;
+  options: string[];
+  wide: boolean;
+}
+
+/** Alder & Finch Injury Law: a new matter opened and filled in while the call runs, then reviewed, tasked and (maybe) booked. */
+export interface LawFirmView {
+  timeZone: string;
+  record: {
+    opened: boolean;
+    number: string | null;
+    title: string | null;
+    stage: "new" | "conflict" | "qualified" | "consult" | "declined";
+    sections: { id: string; title: string; fields: RecordField[] }[];
+  };
+  conflict: { status: "clear" | "conflict"; checked: string[] } | null;
+  assessment: { outcome: "qualified" | "declined"; tier: "A" | "B" | "C" | null; reason: string | null; points: string[]; flags: string[]; deadline: string | null } | null;
+  /** The call summary the firm's system would hold on the matter, written from the records. */
+  note: string | null;
+  tasks: { title: string; who: string; due: string }[];
+  /** Openings the agent just found for the free consultation. */
+  openTimes: { slotId: string; day: string; time: string; attorney: string }[];
+  consults: { id: string; status: "booked" | "cancelled"; day: string; time: string; attorney: string; format: string; name: string; changes: number }[];
+  messages: { id: string; name: string; summary: string; preferredTime?: string | null; urgent?: boolean }[];
+  /** Every call since the last brief, best cases first; this call is the one marked `mine`. */
+  brief: { rows: { who: string; summary: string; tier: "A" | "B" | "C" | null; mine: boolean; declined: boolean }[] } | null;
+  emailed?: { to: string; reference: string } | null;
+}
+
+export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView;

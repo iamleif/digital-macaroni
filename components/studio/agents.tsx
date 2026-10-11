@@ -1,73 +1,90 @@
-import type { ReactNode } from "react";
 import { voiceDemos } from "./live/demo-info";
 import type { DemoId } from "./live/types";
-import { FormFieldPreview, NorthlinePreview, WaypointPreview } from "./agent-previews";
+import { LivePreview } from "./live-previews";
 import { architecturePath } from "./agent-pages/content";
-import { BrandLockup } from "./brand-marks";
-import { ArrowRight, ArrowUpRight, Phone } from "./icons";
+import { ArrowRight, Check } from "./icons";
 import { Reveal } from "./reveal";
 import h from "./home.module.css";
 
 /** How each agent is presented on the homepage. */
-const PERSONAS: Record<DemoId, { tone: string; preview: ReactNode; voice: string; pitch: string }> = {
+const PERSONAS: Record<DemoId, { tone: string; label: string; bullets: string[]; title: string; industries: string; pitch: string }> = {
   northline: {
+    label: "Appointments",
+    title: "Booking an appointment by phone.",
+    pitch: "Choose your kind of business, call the example, and watch the agent work the schedule on screen.",
+    bullets: ["Checks the real schedule instead of guessing", "Books a time, then moves it when the caller changes their mind", "Takes a message when nothing fits"],
+    industries: "",
     tone: "blue",
-    preview: <NorthlinePreview />,
-    voice: "gentle and reassuring voice",
-    pitch: "Books service visits from real availability, moves them when plans change, and takes a message when nothing fits.",
   },
   formfield: {
+    label: "Stock and orders",
+    title: "Answering questions about products and orders.",
+    pitch: "Choose your kind of business, call the example, and ask about an item or an order. The agent looks it up while you talk.",
+    bullets: ["Looks up live stock and product details", "Holds an item for pickup", "Answers an order question once the caller is verified"],
+    industries: "",
     tone: "sage",
-    preview: <FormFieldPreview />,
-    voice: "polished and personable voice",
-    pitch: "Finds the right piece, checks what’s actually in stock, reserves it for pickup and answers order questions.",
+  },
+  lawfirm: {
+    label: "New clients and leads",
+    title: "Taking in a new client or lead.",
+    pitch: "Choose your kind of business, call the example, and watch the record fill in as the caller talks.",
+    bullets: ["Fills in the record: what happened, details, who’s involved", "Checks for conflicts and sizes up the lead", "Books the next step and creates the follow-up tasks"],
+    industries: "",
+    tone: "navy",
   },
   travel: {
+    label: "Longer bookings",
+    title: "Booking something with several steps.",
+    pitch: "Call the example and watch the agent search live prices and build the booking one step at a time.",
+    bullets: ["Searches live prices and explains the options", "Adds the extras, one at a time", "Reads everything back before going ahead"],
+    industries: "",
     tone: "sand",
-    preview: <WaypointPreview />,
-    voice: "friendly and efficient voice",
-    pitch: "Searches live airline fares, explains the options and the fine print, and walks you right up to booking.",
   },
 };
 
-const callWave = [5, 9, 6, 11, 8, 12, 6, 9, 5];
+/** The examples shown on the homepage, in order. */
+const LINEUP: DemoId[] = ["northline", "formfield", "lawfirm", "travel"];
 
-function AgentCard({ id, index }: { id: DemoId; index: number }) {
-  const demo = voiceDemos[id];
+function Example({ id, index }: { id: DemoId; index: number }) {
   const p = PERSONAS[id];
-  const href = `/demo/${id}/`;
-  return <Reveal as="article" className={h.agent} delay={index * 90}>
-    <a className={h.agentLink} href={href} target="_blank" rel="noopener" aria-label={`${demo.job}: ${demo.agentName} at ${demo.name}. Open the live demo (opens in a new tab)`}>
-    <div className={h.agentStage} data-tone={p.tone}>
-      <div className={h.stageTop}>
-        <BrandLockup id={id} />
-        <span className={h.livePill}><i />Live demo</span>
+  return <Reveal as="article" className={index % 2 ? `${h.ex} ${h.exFlip}` : h.ex}>
+    <a className={h.exStageLink} href={`/demo/${id}/`} target="_blank" rel="noopener" aria-label={`${p.title}. Try the live example (opens in a new tab)`}>
+      <div className={`${h.agentStage} ${h.exStage}`} data-tone={p.tone}>
+        <div className={h.fragWrap} aria-hidden="true"><LivePreview id={id} /></div>
       </div>
-      <div className={h.fragWrap} aria-hidden="true">{p.preview}</div>
-      <div className={h.callChip} aria-hidden="true">
-        <span className={h.callOrb} />
-        <span><b>{demo.agentName}</b><small>On a call</small></span>
-        <span className={h.callWave}>{callWave.map((v, i) => <i key={i} style={{ height: v, animationDelay: `${i * -0.15}s` }} />)}</span>
-      </div>
-    </div>
-    <div className={h.agentInfo}>
-      <div className={h.agentTitle}>
-        <h3>{demo.job}</h3>
-        <span className={h.agentArrow} aria-hidden="true"><ArrowUpRight size={16} /></span>
-      </div>
-      <p className={h.agentAs}>Answers as {demo.agentName} · {p.voice}</p>
-      <p className={h.agentPitch}>{p.pitch}</p>
-      <dl className={h.specs}>
-        <div><dt><Phone size={14} />Try it</dt><dd>Call from any phone</dd></div>
-      </dl>
-    </div>
     </a>
-    <a className={h.agentMore} href={architecturePath(id)}>How it’s built<ArrowRight size={14} /></a>
+    <div className={h.exText}>
+      <small>Example · {p.label}</small>
+      <h3>{p.title}</h3>
+      <p className={h.exPitch}>{p.pitch}</p>
+      <p className={h.exIn}>What happens in this example</p>
+      <ul className={h.exList}>{p.bullets.map((b) => <li key={b}><Check size={14} />{b}</li>)}</ul>
+      <div className={h.exActions}>
+        <a className={h.exTry} href={`/demo/${id}/`} target="_blank" rel="noopener">Call this example<ArrowRight size={14} /></a>
+        <a className={h.agentMore} href={architecturePath(id)}>How this one is built<ArrowRight size={14} /></a>
+      </div>
+    </div>
+  </Reveal>;
+}
+
+/** The rest of what we build: not an example to call, so it is not a card to open. */
+const MORE = ["Search and book travel", "Order status and returns", "Reminders and no-show follow-up", "Texting links, forms and confirmations", "Call back missed calls", "Take payments", "Hand off to a person", "Your own software, wired in"];
+
+function MoreCard({ index }: { index: number }) {
+  return <Reveal as="article" className={h.agentWide} delay={index * 90}>
+    <div className={h.moreCard}>
+      <small>And much more</small>
+      <h3>Whatever your calls need to do.</h3>
+      <p>The examples are starting points. Every agent is built around your business, your rules and the software you already use.</p>
+      <ul>{MORE.map((m) => <li key={m}>{m}</li>)}</ul>
+      <a href="/contact/">Tell us what you need<ArrowRight size={14} /></a>
+    </div>
   </Reveal>;
 }
 
 export function Agents() {
-  return <div className={h.agentGrid}>
-    {(Object.keys(voiceDemos) as DemoId[]).map((id, i) => <AgentCard key={id} id={id} index={i} />)}
+  return <div className={h.exWrap}>
+    {LINEUP.map((id, i) => <Example key={id} id={id} index={i} />)}
+    <MoreCard index={LINEUP.length} />
   </div>;
 }

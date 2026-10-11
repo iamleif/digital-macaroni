@@ -169,6 +169,8 @@ def _schema(node: dict[str, Any]) -> types.Schema:
     for src, dst in (("pattern", "pattern"), ("minLength", "min_length"), ("maxLength", "max_length"), ("minimum", "minimum"), ("maximum", "maximum")):
         if src in node:
             setattr(s, dst, node[src])
+    if node.get("type") == "array" and "items" in node:
+        s.items = _schema(node["items"])
     if node.get("type") == "object":
         s.properties = {k: _schema(v) for k, v in (node.get("properties") or {}).items()}
         s.required = node.get("required") or None

@@ -1,4 +1,4 @@
-import type { AppointmentView, FormFieldView, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
+import type { AppointmentView, FormFieldView, LawFirmView, RecordField, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
 
 /**
  * Representative records for the homepage cards and the demo window before a conversation starts.
@@ -256,4 +256,84 @@ export const tidewellEmpty: AppointmentView = {
   request: tidewellSample.request.map((r) => ({ label: r.label, value: null })),
   extras: null,
   appointments: [],
+};
+
+const f = (key: string, label: string, kind: RecordField["kind"], value: RecordField["value"] = null, options: string[] = [], wide = false): RecordField => ({ key, label, kind, value, options, wide });
+const TYPES = ["Car crash", "Truck crash", "Motorcycle crash", "Pedestrian or bicycle", "Rideshare crash", "Slip or fall", "Dog bite", "Workplace injury", "Medical malpractice", "Other injury"];
+const AREAS = ["Head / concussion", "Neck", "Back", "Shoulder / arm", "Hand / wrist", "Hip / leg", "Knee / foot", "Broken bones", "Internal", "Cuts / scarring", "Emotional distress"];
+const TREATMENTS = ["No treatment yet", "Doctor or urgent care", "Emergency room", "Ongoing treatment", "Surgery", "Hospitalized"];
+const FAULTS = ["Other party", "Shared", "The caller", "Not sure yet"];
+const YNS = ["Yes", "No", "Not sure"];
+
+/** The matter record with whatever has been filled in so far. Same shape the voice service sends. */
+export function lawRecord(v: Partial<Record<string, string | string[]>> = {}, opened = Object.keys(v).length > 0): LawFirmView["record"]["sections"] {
+  const g = (k: string) => (v[k] as string | undefined) ?? null;
+  return [
+    { id: "contact", title: "Contact", fields: [f("name", "Full name", "text", g("name")), f("phone", "Phone", "text", g("phone")), f("email", "Email", "text", g("email"))] },
+    { id: "matter", title: "Matter", fields: [
+      f("practice", "Practice area", "select", opened ? "Personal injury" : null, ["Personal injury", "Insurance", "Real estate"]),
+      f("type", "Case type", "select", g("type"), TYPES),
+      f("date", "Date of incident", "date", g("date")),
+      f("where", "Location", "text", g("where")),
+      f("source", "Referral source", "select", opened ? "Phone · AI intake" : null, ["Phone · AI intake", "Website", "Referral", "Advertising"]),
+    ] },
+    { id: "injuries", title: "Injuries & treatment", fields: [
+      f("areas", "Injured areas", "chips", (v.areas as string[] | undefined) ?? null, AREAS, true),
+      f("injuries", "In the caller’s words", "text", g("injuries"), [], true),
+      f("treatment", "Treatment so far", "select", g("treatment"), TREATMENTS),
+      f("work", "Missed work", "toggle", g("work"), YNS),
+    ] },
+    { id: "liability", title: "Liability & insurance", fields: [
+      f("fault", "At fault", "select", g("fault"), FAULTS),
+      f("other", "Other party", "text", g("other")),
+      f("police", "Police report", "toggle", g("police"), YNS),
+      f("insured", "Other side insured", "toggle", g("insured"), YNS),
+      f("insurer", "Insurer", "text", g("insurer")),
+      f("lawyer", "Already has a lawyer", "toggle", g("lawyer"), ["Yes", "No"]),
+    ] },
+  ];
+}
+
+const brief0: NonNullable<LawFirmView["brief"]>["rows"] = [
+  { who: "Jordan M.", summary: "Semi-truck hit his car on I-5; surgery on Tuesday, driver cited", tier: "A", mine: false, declined: false },
+  { who: "Aisha K.", summary: "Rear-ended at a light; ER visit, physio booked, other driver insured", tier: "B", mine: false, declined: false },
+  { who: "Chris P.", summary: "Bitten by a neighbour’s dog; urgent care, stitches", tier: "C", mine: false, declined: false },
+  { who: "Lena S.", summary: "Slipped on a wet store floor; no treatment yet", tier: "C", mine: false, declined: false },
+];
+
+/** Before a call: an empty record waiting for the first detail, and last night's brief. */
+export const lawfirmEmpty: LawFirmView = {
+  timeZone: "Mountain Time",
+  record: { opened: false, number: null, title: null, stage: "new", sections: lawRecord({}, false) },
+  conflict: null,
+  assessment: null,
+  note: null,
+  tasks: [],
+  openTimes: [],
+  consults: [],
+  messages: [],
+  brief: { rows: brief0 },
+  emailed: null,
+};
+
+export const lawStory: Record<string, string | string[]> = {
+  type: "Car crash", date: "Sep 20, 2026", where: "Denver, CO", areas: ["Neck", "Back"], injuries: "Neck and lower back pain since the crash", treatment: "Emergency room", work: "Yes",
+  fault: "Other party", other: "Unknown driver", police: "Yes", insured: "Yes", insurer: "State Farm", lawyer: "No",
+};
+export const lawNamed = { ...lawStory, name: "Alex Taylor", phone: "•••• 0142", email: "a•••r@example.com" };
+
+export const lawfirmSample: LawFirmView = {
+  ...lawfirmEmpty,
+  record: { opened: true, number: "PI-482", title: "Alex Taylor", stage: "consult", sections: lawRecord(lawNamed) },
+  conflict: { status: "clear", checked: ["Alex Taylor"] },
+  assessment: { outcome: "qualified", tier: "B", reason: null, points: ["Emergency room", "Fault: other party", "Police report filed", "Other side insured"], flags: [], deadline: "September 20, 2029" },
+  note: "Alex Taylor called the intake line about a car crash on 2026-09-20 in Denver, CO. Injuries: neck and lower back pain since the crash. Treatment: emergency room. Fault: other party. Police report filed. Not represented. Conflict check clear. Tier B. Free consultation booked with Dana Alder, tomorrow at 1 PM.",
+  tasks: [
+    { title: "Free consultation · tomorrow, 1 PM", who: "Dana Alder", due: "Tomorrow" },
+    { title: "Email the consultation confirmation", who: "Nora", due: "Sent" },
+    { title: "Request the police report", who: "Intake team", due: "Tomorrow" },
+    { title: "Send the medical-records release for signature", who: "Intake team", due: "Tomorrow" },
+  ],
+  consults: [{ id: "AF-482", status: "booked", day: "Tomorrow", time: "1 PM", attorney: "Dana Alder", format: "Phone call", name: "Alex Taylor", changes: 0 }],
+  brief: { rows: [brief0[0]!, { who: "Alex T.", summary: "Car crash; emergency room; other party at fault", tier: "B", mine: true, declined: false }, ...brief0.slice(1)] },
 };

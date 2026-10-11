@@ -60,7 +60,7 @@ for _name in ("google_adk", "google_genai", "google.adk", "google.genai"):
 
 PHONE_NOTE = """
 
-This is a phone call. The caller may be watching the demo dashboard on the website: the page shows a four-digit code they can type on their keypad (you will be told when it links) or read out to you, in which case call link_screen with the digits. Only bring it up if they ask how to see the screen."""
+This is a phone call. The caller may be watching the demo dashboard on the website: the page shows a four-digit code they can type on their keypad (you will be told when it links) or read out to you, in which case call link_screen with the digits. Your opening asks for that code. Once it links you will be told, and you then say the connected line you are given. If they talk instead of entering it, help them as normal."""
 BROWSER_NOTE = """
 
 This conversation is in the visitor's web browser; they can see the dashboard update as you work."""

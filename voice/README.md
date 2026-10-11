@@ -4,13 +4,15 @@ The live voice agents behind the website demos, each on its own engine:
 
 - Ellie (Northline Home Services): Gemini Live (`gemini-3.8-live`) through Google ADK.
 - Theo (Form & Field): ElevenLabs Agents when `ELEVENLABS_FORMFIELD_AGENT_ID` is set (it is in production).
+- Nora (Alder & Finch Injury Law, a fictional personal-injury firm in Denver, Colorado): Gemini Live like Ellie (`app/demos/lawfirm.py`). Intake, conflict check,
+  qualify or decline, free consultation on an attorney's calendar. On (206) 887-9619, the account's text-verified number.
 - Linda (Waypoint Travel): the cascade in `app/cascade.py`. AssemblyAI Universal-3.6 Pro hears (`app/stt.py`; `DEMO_STT_PROVIDER=gemini` for `gemini-3.5-transcribe-live`), `gemini-3.5-flash-lite`
   answers through ADK and runs the tools, and `gemini-3.8-flash-lite-tts` speaks in the designed voice "Linda 2". Flights
   come from Duffel in test mode (`app/duffel.py`, read-only); booking stops before any order is created.
   `DEMO_CASCADE` lists the demos on the cascade (default `travel`).
 
-- Phone: Twilio media streams on the three demo numbers (`/twilio/voice`, `/twilio/media`): Northline (206) 887-9619,
-  Form & Field (830) 239-2110, Waypoint (720) 599-6395.
+- Phone: Twilio media streams on the three demo numbers (`/twilio/voice`, `/twilio/media`): Northline (720) 599-6395,
+  Form & Field (830) 239-2110, Alder & Finch (206) 887-9619; Waypoint has none.
 - Website: browser microphone sessions (`/browser/sessions`) and pairing a phone call to a watching page (`/pairings`).
 - One Cloud Run service, `studio-demo-voice` in `digital-macaroni-510610`, single always-on instance (sessions live in memory).
   Built with Google buildpacks from `Procfile` and `.python-version` (no Dockerfile).

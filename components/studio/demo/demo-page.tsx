@@ -4,24 +4,24 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CallWatcher, type WatchStatus } from "../live/client";
 import type { DemoInfo } from "../live/demo-info";
-import { formfieldEmpty, northlineEmpty, travelEmpty } from "../live/sample-views";
-import type { DemoEvent, DemoId, DemoView, FormFieldView, NorthlineView, TravelView } from "../live/types";
+import { formfieldEmpty, lawfirmEmpty, northlineEmpty, travelEmpty } from "../live/sample-views";
+import type { DemoEvent, DemoId, DemoView, FormFieldView, LawFirmView, NorthlineView, TravelView } from "../live/types";
 import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
 import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
 import { ArrowUpRight, Check, Phone } from "../icons";
 import { COMPANY_INSTAGRAM, COMPANY_LINKEDIN, COMPANY_TIKTOK, COMPANY_YOUTUBE } from "../site";
-import { AppointmentOffice, FormFieldOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
+import { AppointmentOffice, FormFieldOffice, LawFirmOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
 import { CookieSettings, track } from "../consent";
 import { VoiceBars } from "./voice-bars";
-import { SKINS, SetupCard, ToolsLane, readSetup, type Setup } from "./funnel";
+import { AfterCall, SKINS, SetupCard, ToolBadge, ToolsLane, type Setup } from "./funnel";
 import { luneSample, tidewellSample } from "../live/sample-views";
-import type { AppointmentView } from "../live/types";
+import type { AppointmentView, BookingSkin } from "../live/types";
 import d from "./demo.module.css";
 
 type Action = Extract<Entry, { kind: "action" }>;
-const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: formfieldEmpty, travel: travelEmpty };
+const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: formfieldEmpty, travel: travelEmpty, lawfirm: lawfirmEmpty };
 
 /**
  * The live demo page. Every demo is reached by phone: a screen code is ready on arrival, and once the
@@ -37,20 +37,22 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   const receive = useCallback((e: DemoEvent) => { if (!voice.take(e)) push(e); }, [voice, push]);
 
   const [replaying, setReplaying] = useState(false);
-  // Preview of the setup flow (business, tools, report email): only with ?funnel until it goes live.
+  // The setup flow (business, tools, report email, then the call) runs for every demo each time the page opens.
   const [funnel, setFunnel] = useState(false);
   const [setup, setSetup] = useState<Setup | null>(null);
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const replay = q.has("replay");
     setReplaying(replay);
-    setFunnel(q.has("funnel") && demo.id === "northline");
-    setSetup(readSetup());
+    setFunnel(true);
     if (!replay) track("demo_viewed", { demo: demo.id });
   }, [demo.id]);
   const gated = funnel && !setup;
+  // After a call in the setup flow: the visitor chooses to go again or to look through the screen.
+  const [exploring, setExploring] = useState(false);
+  const [again, setAgain] = useState(false);
   // Which business Ellie answers for. Salon and clinic are front-end previews until the voice side is wired.
-  const skin = funnel && setup ? setup.trade : "home";
+  const skin = demo.id === "northline" && funnel && setup ? (setup.trade as BookingSkin) : "home";
   const look = SKINS[skin];
   const shown: DemoInfo = skin === "home" ? demo : {
     ...demo, name: look.name, role: look.role, intro: look.intro, prompts: look.prompts, sampleDetails: look.sampleDetails, sampleCard: undefined,
@@ -76,10 +78,18 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   function newCode() { reset(); voice.clear(); setWatch({ status: "requesting" }); startWatcher(); }
 
   useEffect(() => {
-    if (replaying || gated) return;
+    // Started before the setup card closes: its last step shows the code the caller will enter.
+    if (replaying) return;
     startWatcher();
     return () => watcher.current?.stop();
-  }, [replaying, gated, startWatcher]);
+  }, [replaying, startWatcher]);
+
+  // A code is always on offer: when one expires or the link drops, ask for a fresh one without being told to.
+  useEffect(() => {
+    if (replaying || !funnel) return;
+    if (watch.status === "expired") { startWatcher(); return; }
+    if (watch.status === "error") { const t = window.setTimeout(startWatcher, 3000); return () => window.clearTimeout(t); }
+  }, [replaying, funnel, watch.status, startWatcher]);
 
   // When a call ends, go straight back to the normal screen with a fresh code. The finished call's
   // results stay on screen until the next call links.
@@ -104,6 +114,8 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [replaying, gated, demo.id, push, reset]);
 
+  useEffect(() => { if (!feed.ended) setExploring(false); }, [feed.ended]);
+
   const onCall = !feed.ended && (watch.status === "linked" || (replaying && feed.entries.length > 0));
   const view = feed.view ?? EMPTY[demo.id];
   const state: LiveState = feed.view ? (feed.ended ? "finished" : "live") : "sample";
@@ -112,19 +124,20 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     <header className={d.top}>
       <a href="/" className={d.dm} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} /><span>Digital Macaroni</span></a>
       <span className={d.slash} aria-hidden="true">/</span>
-      <BrandLockup id={look.brand} />
+      <BrandLockup id={skin === "home" ? demo.id : look.brand} />
       <span className={d.topRole}>{shown.role} · live demo</span>
       <div className={d.topStatus} role="status">
         {replaying ? <span className={d.replayPill}>Sample replay · not a live call</span> : null}
         {onCall ? <CallBadge demo={demo} feed={feed} voice={voice} /> : null}
       </div>
+      {funnel && setup && !onCall && !again ? <button type="button" className={d.tryAnother} onClick={() => { track("demo_try_another"); newCode(); setExploring(false); setAgain(true); }}><Phone size={14} />Try another call</button> : null}
       <a href="/#agents" className={d.back}>All demos<ArrowUpRight size={14} /></a>
     </header>
 
     <main id="content" className={d.layout}>
       <aside className={d.left}>
         {/* Once the call links, the card folds into the top-bar badge to give the conversation room. */}
-        {onCall ? null : <CallCard demo={shown} feed={feed} voice={voice} onCall={onCall} watch={watch} replaying={replaying} onNewCode={newCode} />}
+        {onCall || funnel ? null : <CallCard demo={shown} feed={feed} voice={voice} onCall={onCall} watch={watch} replaying={replaying} onNewCode={newCode} />}
 
         {shown.sampleCard ? <section className={d.sample} aria-label={shown.sampleCard.title}>
           <h2>{shown.sampleCard.title}</h2>
@@ -145,6 +158,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
 
       <section className={d.center} aria-label={`${shown.name} back office`}>
         {skin !== "home" ? <AppointmentOffice view={(skin === "salon" ? luneSample : tidewellSample) as AppointmentView} state="sample" agentName={demo.agentName} />
+          : demo.id === "lawfirm" ? <LawFirmOffice view={view as LawFirmView} state={state} agentName={demo.agentName} />
           : demo.id === "northline" ? <NorthlineOffice view={view as NorthlineView} state={state} agentName={demo.agentName} />
           : demo.id === "travel" ? <TravelOffice view={view as TravelView} state={state} agentName={demo.agentName} />
           : <FormFieldOffice view={view as FormFieldView} state={state} agentName={demo.agentName} />}
@@ -153,7 +167,11 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
       <BehindTheCall demo={shown} feed={feed} setup={funnel ? setup : null} />
     </main>
 
-    {gated ? <SetupCard demo={demo} onDone={setSetup} /> : null}
+    {gated ? <SetupCard demo={demo} watch={watch} onNewCode={newCode} onDone={setSetup} /> : null}
+    {funnel && setup && again ? <SetupCard demo={demo} watch={watch} onNewCode={newCode} onDone={() => setAgain(false)} onClose={() => setAgain(false)} again={setup} /> : null}
+    {funnel && setup && feed.ended && !exploring && !again ? <AfterCall onExplore={() => setExploring(true)} onAgain={() => { newCode(); setExploring(false); setAgain(true); }}>
+      <Summary demo={shown} feed={feed} done={feed.entries.filter((e): e is Action => e.kind === "action" && (e.status === "done" || isTestStop(e)))} />
+    </AfterCall> : null}
 
     <footer className={d.foot}>
       <span>{shown.name} is a fictional business. Nothing is really booked, sold or charged.</span>
@@ -305,11 +323,11 @@ function BehindTheCall({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; setu
   const usedCount = demo.design.tools.filter((t) => uses(t.name) > 0).length;
 
   return <aside className={d.right} aria-label="Behind the call">
-    <div className={d.sectionHead}><h2>Behind the call</h2></div>
+    <div className={d.sectionHead}><h2>Behind the call</h2>{setup ? <ToolBadge setup={setup} /> : null}</div>
 
     {setup ? <ToolsLane demo={demo} feed={feed} setup={setup} /> : null}
 
-    {feed.ended ? <Summary demo={demo} feed={feed} done={done} /> : null}
+    {feed.ended && !setup ? <Summary demo={demo} feed={feed} done={done} /> : null}
 
     <section className={d.block}>
       <h3>What {demo.agentName} can do<span>{usedCount ? `${usedCount} used` : `${demo.design.tools.length} tools`}</span></h3>

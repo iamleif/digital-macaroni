@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import type { Feed, Entry } from "../live/use-demo-feed";
 import type { DemoInfo } from "../live/demo-info";
 import type { BookingSkin, BrandId } from "../live/types";
-import { BrandMark } from "../brand-marks";
-import { ArrowRight, Check, Code, Lock } from "../icons";
+import { BrandMark, KindMark, type KindId } from "../brand-marks";
+import { ArrowRight, Check, Close, Code, Lock, Phone } from "../icons";
+import type { WatchStatus } from "../live/client";
 import { track } from "../consent";
 import f from "./funnel.module.css";
 
@@ -16,20 +17,50 @@ import f from "./funnel.module.css";
  * ones from each vendor's developer docs (Docs/studio-preview/INTEGRATION_MAP.md in the Macaroni repo).
  */
 
-type Trade = { id: BookingSkin; label: string; example: string; ready: boolean };
-type Op = { what: string; op: string };
-type Tool = { id: string; name: string; skins: BookingSkin[]; ops: Partial<Record<string, Op[]>>; confirmation: string };
+/** What the visitor says they do: a booking business (Ellie) or a legal practice area (Nora). */
+export type LawArea = "injury" | "insurance" | "realestate";
+export type ShopKind = "dtc" | "dealership" | "furniture";
+export type TravelKind = "flights" | "hotels" | "tours";
+export type Trade = BookingSkin | LawArea | ShopKind | TravelKind;
+type TradeCard = { id: Trade; label: string; example: string; ready: boolean };
+/** `when` limits a write to calls that went one way: a case the firm took, or one it had to decline. */
+type Op = { what: string; op: string; when?: "qualified" | "declined" };
+type Tool = { id: string; name: string; skins: Trade[]; ops: Partial<Record<string, Op[]>>; confirmation: string };
 
-const KEY = "dm-demo-setup";
-
-export type Setup = { trade: BookingSkin; tool: string; email: string; record: boolean; updates: boolean };
+export type Setup = { trade: Trade; tool: string; email: string; record: boolean; updates: boolean };
 
 /** The businesses Ellie can answer for: one appointment engine, three front desks. */
-const TRADES: Trade[] = [
+const TRADES: TradeCard[] = [
   { id: "salon", label: "Salon & med spa", example: "Cuts, colour, nails, facials, injectables", ready: true },
   { id: "clinic", label: "Wellness clinic", example: "Chiropractic, physio, massage", ready: true },
   { id: "home", label: "Home services", example: "Heating & cooling visits", ready: true },
 ];
+
+/** The practice areas Nora can answer for. Injury is built; the others are the same agent with other questions. */
+const LAW_AREAS: TradeCard[] = [
+  { id: "injury", label: "Personal injury", example: "Car crashes, falls, dog bites, wrongful death", ready: true },
+  { id: "insurance", label: "Insurance", example: "Claims, quotes, policy questions", ready: true },
+  { id: "realestate", label: "Real estate", example: "Buyers, sellers, showings", ready: true },
+];
+/** The kinds of shop and travel business. Each is the same agent with its own catalogue. */
+const SHOP_KINDS: TradeCard[] = [
+  { id: "dtc", label: "Direct-to-consumer brand", example: "Online store: products, orders, returns", ready: true },
+  { id: "dealership", label: "Auto dealership", example: "Inventory, test drives, trade-ins", ready: true },
+  { id: "furniture", label: "Furniture showroom", example: "Pieces in stock, delivery, financing", ready: true },
+];
+const TRAVEL_KINDS: TradeCard[] = [
+  { id: "flights", label: "Flights", example: "Search fares, pick seats, add bags", ready: true },
+  { id: "hotels", label: "Hotels & stays", example: "Rooms, dates, rates", ready: true },
+  { id: "tours", label: "Tours & packages", example: "Trips with several parts", ready: true },
+];
+
+/** What each demo asks on the first step: the cards, the mark on each, and the words around them. */
+function kindsFor(demoId: string): { cards: TradeCard[]; first: Trade; mark: (t: TradeCard) => React.ReactNode; title: string; lede: string; runs: string; stage: string } {
+  if (demoId === "lawfirm") return { cards: LAW_AREAS, first: "injury", mark: (t) => (t.id === "injury" ? <BrandMark id="lawfirm" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: intake questions, calendar and rules.", runs: "What runs your business today?", stage: "Your business" };
+  if (demoId === "formfield") return { cards: SHOP_KINDS, first: "dtc", mark: (t) => (t.id === "dtc" ? <BrandMark id="formfield" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: inventory, availability and follow-up.", runs: "What runs your business today?", stage: "Your business" };
+  if (demoId === "travel") return { cards: TRAVEL_KINDS, first: "flights", mark: (t) => (t.id === "flights" ? <BrandMark id="travel" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: fares, options and bookings.", runs: "What runs your business today?", stage: "Your business" };
+  return { cards: TRADES, first: "salon", mark: (t) => <BrandMark id={SKINS[t.id as BookingSkin].brand} size={26} />, title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: services, schedule and rules.", runs: "What runs your business today?", stage: "Your business" };
+}
 
 /** How each business appears on the demo page. */
 export const SKINS: Record<BookingSkin, { brand: BrandId; name: string; role: string; intro: string; prompts: string[]; sampleDetails: string }> = {
@@ -49,6 +80,22 @@ export const SKINS: Record<BookingSkin, { brand: BrandId; name: string; role: st
 };
 
 const CUSTOM = "custom";
+/** Logos live in public/studio/logos/tools. A tool without a file shows its first letter. */
+const TOOL_LOGOS: Record<string, string> = {
+  square: "square.svg", gcal: "google-calendar.svg", servicetitan: "servicetitan.png", clio: "clio.svg",
+  shopify: "shopify.svg", squarepos: "square.svg", lightspeed: "lightspeed.png", woocommerce: "woocommerce.png", bigcommerce: "bigcommerce.png",
+  travefy: "travefy.png", traveljoy: "traveljoy.png", sabre: "sabre.png", amadeus: "amadeus.png", duffel: "duffel.svg",
+  klaviyo: "klaviyo.png", gorgias: "gorgias.png", quickbooks: "quickbooks.svg", tekion: "tekion.png", cdk: "cdk.png", dealersocket: "dealersocket.png", vinsolutions: "vinsolutions.png", reynolds: "reynolds.png",
+  ezlynx: "ezlynx.png", hawksoft: "hawksoft.png", hubspot: "hubspot.svg", followupboss: "followupboss.png", kvcore: "kvcore.png", lofty: "lofty.png",
+  cloudbeds: "cloudbeds.png", mews: "mews.png", guesty: "guesty.png", fareharbor: "fareharbor.png", peek: "peek.png", rezdy: "rezdy.png", bokun: "bokun.png",
+  boulevard: "boulevard.png", vagaro: "vagaro.png", shopmonkey: "shopmonkey.png", tekmetric: "tekmetric.jpg", fresha: "fresha.png", mangomint: "mangomint.png", mindbody: "mindbody.png", jane: "jane.png", workiz: "workiz.png",
+  lawmatics: "lawmatics.png", mycase: "mycase.png", practicepanther: "practicepanther.png", cliogrow: "cliogrow.png",
+  housecallpro: "housecallpro.png", jobber: "jobber.png",
+};
+function ToolMark({ id, name }: { id: string; name: string }) {
+  const file = TOOL_LOGOS[id];
+  return <span className={f.toolMark}>{file ? <img src={`/studio/logos/tools/${file}`} alt="" /> : <b>{name.slice(0, 1)}</b>}</span>;
+}
 
 /** What each of Ellie's tools writes in each system, from the vendors' API references. */
 const TOOLS: Tool[] = [
@@ -134,65 +181,208 @@ const TOOLS: Tool[] = [
       ],
     },
   },
+  { id: "ezlynx", name: "EZLynx", skins: ["insurance"], confirmation: "", ops: {} },
+  { id: "hawksoft", name: "HawkSoft", skins: ["insurance"], confirmation: "", ops: {} },
+  { id: "hubspot", name: "HubSpot", skins: ["insurance", "realestate"], confirmation: "", ops: {} },
+  { id: "followupboss", name: "Follow Up Boss", skins: ["realestate"], confirmation: "", ops: {} },
+  { id: "kvcore", name: "kvCORE", skins: ["realestate"], confirmation: "", ops: {} },
+  { id: "lofty", name: "Lofty", skins: ["realestate"], confirmation: "", ops: {} },
+  { id: "cloudbeds", name: "Cloudbeds", skins: ["hotels"], confirmation: "", ops: {} },
+  { id: "mews", name: "Mews", skins: ["hotels"], confirmation: "", ops: {} },
+  { id: "guesty", name: "Guesty", skins: ["hotels"], confirmation: "", ops: {} },
+  { id: "fareharbor", name: "FareHarbor", skins: ["tours"], confirmation: "", ops: {} },
+  { id: "peek", name: "Peek", skins: ["tours"], confirmation: "", ops: {} },
+  { id: "rezdy", name: "Rezdy", skins: ["tours"], confirmation: "", ops: {} },
+  { id: "bokun", name: "Bókun", skins: ["tours"], confirmation: "", ops: {} },
+  { id: "klaviyo", name: "Klaviyo", skins: ["dtc"], confirmation: "", ops: {} },
+  { id: "gorgias", name: "Gorgias", skins: ["dtc"], confirmation: "", ops: {} },
+  { id: "quickbooks", name: "QuickBooks", skins: ["furniture"], confirmation: "", ops: {} },
+  { id: "tekion", name: "Tekion", skins: ["dealership"], confirmation: "", ops: {} },
+  { id: "cdk", name: "CDK Global", skins: ["dealership"], confirmation: "", ops: {} },
+  { id: "dealersocket", name: "DealerSocket", skins: ["dealership"], confirmation: "", ops: {} },
+  { id: "vinsolutions", name: "VinSolutions", skins: ["dealership"], confirmation: "", ops: {} },
+  { id: "reynolds", name: "Reynolds", skins: ["dealership"], confirmation: "", ops: {} },
+  { id: "shopify", name: "Shopify", skins: ["dtc", "furniture"], confirmation: "", ops: {} },
+  { id: "squarepos", name: "Square", skins: ["furniture"], confirmation: "", ops: {} },
+  { id: "lightspeed", name: "Lightspeed", skins: ["furniture"], confirmation: "", ops: {} },
+  { id: "woocommerce", name: "WooCommerce", skins: ["dtc"], confirmation: "", ops: {} },
+  { id: "bigcommerce", name: "BigCommerce", skins: ["dtc"], confirmation: "", ops: {} },
+  { id: "travefy", name: "Travefy", skins: ["flights"], confirmation: "", ops: {} },
+  { id: "traveljoy", name: "TravelJoy", skins: ["flights"], confirmation: "", ops: {} },
+  { id: "sabre", name: "Sabre", skins: ["flights"], confirmation: "", ops: {} },
+  { id: "amadeus", name: "Amadeus", skins: ["flights"], confirmation: "", ops: {} },
+  { id: "duffel", name: "Duffel", skins: ["flights"], confirmation: "", ops: {} },
+  { id: "shopmonkey", name: "Shopmonkey", skins: ["home"], confirmation: "", ops: {} },
+  { id: "tekmetric", name: "Tekmetric", skins: ["home"], confirmation: "", ops: {} },
   { id: "boulevard", name: "Boulevard", skins: ["salon"], confirmation: "", ops: {} },
   { id: "vagaro", name: "Vagaro", skins: ["salon"], confirmation: "", ops: {} },
+  { id: "fresha", name: "Fresha", skins: ["salon"], confirmation: "", ops: {} },
+  { id: "mangomint", name: "Mangomint", skins: ["salon"], confirmation: "", ops: {} },
   { id: "mindbody", name: "Mindbody", skins: ["salon", "clinic"], confirmation: "", ops: {} },
   { id: "jane", name: "Jane", skins: ["clinic"], confirmation: "", ops: {} },
   {
+    id: "lawmatics",
+    name: "Lawmatics",
+    skins: ["injury"],
+    confirmation: "A Lawmatics automation sends the client their consultation confirmation",
+    ops: {
+      get_caller_number: [{ what: "Find an existing matter by phone", op: "GET /v1/prospects/find_by_phone/:phone_number" }],
+      check_conflicts: [
+        { what: "Search contacts for the caller", op: "GET /v1/contacts/find_by_name/:name" },
+        { what: "Check the opposing party's matters", op: "GET /v1/relationships?filter_by=contactable_id" },
+      ],
+      assess_case: [
+        { what: "Create the person, the potential-client matter, practice area and intake answers", op: "POST /v1/prospects", when: "qualified" },
+        { what: "Link the opposing party", op: "POST /v1/relationships", when: "qualified" },
+      ],
+      check_availability: [{ what: "Read the attorneys' booked events", op: "GET /v1/events" }],
+      book_consultation: [
+        { what: "Book the consultation on the matter and invite the client", op: "POST /v1/events · send_invites: true" },
+        { what: "Add the call summary", op: "POST /v1/interactions" },
+      ],
+      take_message: [{ what: "Log a prospect for a callback", op: "POST /v1/prospects" }],
+    },
+  },
+  {
+    id: "clio",
+    name: "Clio Manage",
+    skins: ["injury"],
+    confirmation: "Clio emails the client the calendar invitation",
+    ops: {
+      get_caller_number: [{ what: "Find the contact by phone", op: "GET /contacts.json?query=" }],
+      check_conflicts: [
+        { what: "Search contacts for the caller and the opposing party", op: "GET /contacts.json?query=" },
+        { what: "Search matters for the opposing party", op: "GET /matters.json?query=" },
+      ],
+      assess_case: [
+        { what: "Create the contact", op: "POST /contacts.json", when: "qualified" },
+        { what: "Open a pending matter with the practice area and intake answers", op: "POST /matters.json · status: pending", when: "qualified" },
+        { what: "Link the opposing party", op: "POST /relationships.json", when: "qualified" },
+      ],
+      check_availability: [{ what: "Read the attorney's calendar", op: "GET /calendar_entries.json" }],
+      book_consultation: [
+        { what: "Book the consultation and email the client", op: "POST /calendar_entries.json · send_email_notification" },
+        { what: "Attach the call summary", op: "POST /notes.json" },
+      ],
+      take_message: [{ what: "Log the call for a callback", op: "POST /communications.json" }],
+    },
+  },
+  {
+    id: "mycase",
+    name: "MyCase",
+    skins: ["injury"],
+    confirmation: "",
+    ops: {
+      get_caller_number: [{ what: "Find the lead or client by phone", op: "GET /v1/leads?filter[cell_phone_number]=" }],
+      check_conflicts: [
+        { what: "Search clients for the caller", op: "GET /v1/clients?filter[last_name]=" },
+        { what: "Search cases for the opposing party", op: "GET /v1/cases" },
+      ],
+      assess_case: [{ what: "Create the lead with the intake answers", op: "POST /v1/leads", when: "qualified" }],
+      check_availability: [{ what: "Read the attorneys' events", op: "GET /v1/events" }],
+      book_consultation: [
+        { what: "Book the consultation on the attorney's calendar", op: "POST /v1/events" },
+        { what: "Log the call", op: "POST /v1/calls" },
+      ],
+      take_message: [{ what: "Log the call for a callback", op: "POST /v1/calls" }],
+    },
+  },
+  {
+    id: "cliogrow",
+    name: "Clio Grow",
+    skins: ["injury"],
+    confirmation: "",
+    ops: {
+      check_conflicts: [{ what: "Search contacts and untriaged leads", op: "GET /contacts?query=" }],
+      assess_case: [{ what: "Create the lead for the intake team, with the intake answers", op: "POST /inbox_leads", when: "qualified" }],
+      take_message: [{ what: "Create a lead for a callback", op: "POST /inbox_leads" }],
+    },
+  },
+  {
+    id: "practicepanther",
+    name: "PracticePanther",
+    skins: ["injury"],
+    confirmation: "",
+    ops: {
+      check_conflicts: [{ what: "Search contacts, accounts and matters", op: "GET /api/v2/matters?search_text=" }],
+      assess_case: [
+        { what: "Create the account and primary contact", op: "POST /api/v2/accounts", when: "qualified" },
+        { what: "Open a pending matter", op: "POST /api/v2/matters · status: Pending", when: "qualified" },
+      ],
+      book_consultation: [
+        { what: "Book the consultation", op: "POST /api/v2/events" },
+        { what: "Log the call", op: "POST /api/v2/calllogs" },
+      ],
+    },
+  },
+  {
     id: "gcal",
     name: "Google Calendar",
-    skins: ["salon", "clinic", "home"],
+    skins: ["injury"],
     confirmation: "Google emails the calendar invite",
     ops: {
       check_availability: [{ what: "Check free and busy time", op: "POST /freeBusy" }],
       book_appointment: [{ what: "Create the appointment and invite the client", op: "POST /calendars/{id}/events?sendUpdates=all" }],
+      book_consultation: [{ what: "Create the consultation and invite the client", op: "POST /calendars/{id}/events?sendUpdates=all" }],
     },
   },
 ];
 
 const OTHER = "other";
 
-export function readSetup(): Setup | null {
-  try {
-    const v = sessionStorage.getItem(KEY);
-    return v ? (JSON.parse(v) as Setup) : null;
-  } catch {
-    return null;
-  }
-}
-
 /* ---------------- Setup card ---------------- */
 
-export function SetupCard({ demo, onDone }: { demo: DemoInfo; onDone: (s: Setup) => void }) {
-  const [step, setStep] = useState(0);
-  const [trade, setTrade] = useState<BookingSkin>("salon");
-  const [tool, setTool] = useState<string | null>(null);
-  const [email, setEmail] = useState("");
-  const [record, setRecord] = useState(true);
-  const [updates, setUpdates] = useState(false);
+export function SetupCard({ demo, watch, onNewCode, onDone, onClose, again }: { demo: DemoInfo; watch: { status: WatchStatus; code?: string }; onNewCode: () => void; onDone: (s: Setup) => void; onClose?: () => void; again?: Setup }) {
+  // "Try it again" comes straight back to the call step with the answers they already gave.
+  const [step, setStep] = useState(again ? 3 : 0);
+  const kinds = kindsFor(demo.id);
+  const [trade, setTrade] = useState<Trade>(again?.trade ?? kinds.first);
+  const [tool, setTool] = useState<string | null>(again?.tool ?? null);
+  const [email, setEmail] = useState(again?.email ?? "");
+  const [record, setRecord] = useState(again?.record ?? true);
+  const [updates, setUpdates] = useState(again?.updates ?? false);
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
 
-  useEffect(() => { track("demo_setup_viewed", { demo: demo.id }); }, [demo.id]);
+  useEffect(() => { if (!again) track("demo_setup_viewed", { demo: demo.id }); }, [demo.id, again]);
 
-  function finish() {
-    const s: Setup = { trade, tool: tool ?? CUSTOM, email: email.trim(), record, updates };
-    try { sessionStorage.setItem(KEY, JSON.stringify(s)); } catch {}
+  function currentSetup(): Setup { return { trade, tool: tool ?? CUSTOM, email: email.trim(), record, updates }; }
+  function saveAndContinue() {
+    const s = currentSetup();
     track("demo_setup_done", { demo: demo.id, trade, tool: s.tool, record: record ? 1 : 0, updates: updates ? 1 : 0 });
-    onDone(s);
+    setStep(3);
   }
+  // The call connected: the visitor is on screen, so the card gets out of the way.
+  useEffect(() => { if (step === 3 && watch.status === "linked") onDone(currentSetup()); }, [step, watch.status]); // eslint-disable-line react-hooks/exhaustive-deps
+  const dial = watch.status === "waiting" && watch.code ? `tel:${demo.phone},,${watch.code}` : `tel:${demo.phone}`;
+
+  // First time through, closing means leaving the demo: ask, then go back to the home page. On a retry it just closes.
+  const [leaving, setLeaving] = useState(false);
+  const newCodeBtn = <button type="button" className={f.newCode} onClick={onNewCode}>Create a new code</button>;
+
+  if (leaving) return <div className={f.scrim} role="dialog" aria-modal="true" aria-labelledby="leave-title">
+    <div className={f.card}>
+      <h2 id="leave-title">Leave the demo?</h2>
+      <p className={f.lede}>You’ll go back to the home page.</p>
+      <div className={f.actions}>
+        <button type="button" className={f.back} onClick={() => { track("demo_exit", { demo: demo.id, step }); window.location.href = "/"; }}>Leave</button>
+        <button type="button" className={f.primary} onClick={() => setLeaving(false)}>Stay<ArrowRight size={14} /></button>
+      </div>
+    </div>
+  </div>;
 
   return <div className={f.scrim} role="dialog" aria-modal="true" aria-labelledby="setup-title">
     <div className={f.card}>
+      <button type="button" className={f.close} aria-label="Close" onClick={() => (again && onClose ? onClose() : setLeaving(true))}><Close size={18} /></button>
       <ol className={f.progress} aria-label="Steps">
-        {["Your business", "Your tools", "Your report"].map((s, i) => <li key={s} data-state={i < step ? "done" : i === step ? "now" : "next"}><i>{i < step ? <Check size={11} /> : i + 1}</i>{s}</li>)}
+        {[kinds.stage, "Your tools", "Your report", "Your call"].map((s, i) => <li key={s} data-state={i < step ? "done" : i === step ? "now" : "next"}><i>{i < step ? <Check size={11} /> : i + 1}</i>{s}</li>)}
       </ol>
 
       {step === 0 ? <>
-        <h2 id="setup-title">What kind of business should {demo.agentName} answer for?</h2>
-        <p className={f.lede}>She’ll take the call the way she would for you: your services, your schedule, your rules.</p>
+        <h2 id="setup-title">{kinds.title}</h2>
+        <p className={f.lede}>{kinds.lede}</p>
         <div className={f.trades}>
-          {TRADES.map((t) => <button key={t.id} type="button" className={f.trade} data-selected={trade === t.id || undefined} disabled={!t.ready} onClick={() => { setTrade(t.id); setTool(null); }}>
-            <span className={f.tradeMark}><BrandMark id={SKINS[t.id].brand} size={26} /></span>
+          {kinds.cards.map((t) => <button key={t.id} type="button" className={f.trade} data-selected={trade === t.id || undefined} disabled={!t.ready} onClick={() => { setTrade(t.id); setTool(null); }}>
+            <span className={f.tradeMark}>{kinds.mark(t)}</span>
             <b>{t.label}</b><span>{t.example}</span>{t.ready ? null : <em>Soon</em>}
           </button>)}
         </div>
@@ -200,15 +390,11 @@ export function SetupCard({ demo, onDone }: { demo: DemoInfo; onDone: (s: Setup)
       </> : null}
 
       {step === 1 ? <>
-        <h2 id="setup-title">What runs your business today?</h2>
-        <p className={f.lede}>As {demo.agentName} works, you’ll see exactly what she would write into it.</p>
-        <button type="button" className={f.custom} data-selected={tool === CUSTOM || undefined} onClick={() => setTool(CUSTOM)}>
-          <span className={f.customIcon}><Code size={18} /></span>
-          <span><b>Something custom, or nothing yet</b><small>We build the agent and your own back office around how you work.</small></span>
-        </button>
-        <div className={f.tools}>
-          {TOOLS.filter((t) => t.skins.includes(trade)).map((t) => <button key={t.id} type="button" className={f.tool} data-selected={tool === t.id || undefined} onClick={() => setTool(t.id)}>{t.name}</button>)}
-          <button type="button" className={f.tool} data-selected={tool === OTHER || undefined} onClick={() => setTool(OTHER)}>Something else</button>
+        <h2 id="setup-title">{kinds.runs}</h2>
+        <p className={f.lede}>Pick yours and you’ll see exactly what the agent would write into it.</p>
+        <div className={f.toolGrid}>
+          {TOOLS.filter((t) => t.skins.includes(trade)).map((t) => <button key={t.id} type="button" className={f.toolTile} data-selected={tool === t.id || undefined} onClick={() => setTool(t.id)}><ToolMark id={t.id} name={t.name} /><span>{t.name}</span></button>)}
+          <button type="button" className={f.toolTile} data-selected={tool === OTHER || undefined} onClick={() => setTool(OTHER)}><span className={f.toolMark}><b>+</b></span><span>Something else</span></button>
         </div>
         <div className={f.actions}>
           <button type="button" className={f.back} onClick={() => setStep(0)}>Back</button>
@@ -218,18 +404,36 @@ export function SetupCard({ demo, onDone }: { demo: DemoInfo; onDone: (s: Setup)
 
       {step === 2 ? <>
         <h2 id="setup-title">Where should we send your call report?</h2>
-        <p className={f.lede}>After the call you’ll get what {demo.agentName} did, minute by minute{tool && tool !== CUSTOM && tool !== OTHER ? `, and what it would have written in ${TOOLS.find((t) => t.id === tool)?.name}` : ""}.</p>
+        <p className={f.lede}>After the call you’ll get what the agent did, minute by minute{tool && tool !== CUSTOM && tool !== OTHER ? `, and what it would have written in ${TOOLS.find((t) => t.id === tool)?.name}` : ""}.</p>
         <label className={f.field}><span>Work email</span><input type="email" autoComplete="email" inputMode="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
         <label className={f.check}><input type="checkbox" checked={record} onChange={(e) => setRecord(e.target.checked)} /><span>Record the call so I can listen back in my report</span></label>
         <label className={f.check}><input type="checkbox" checked={updates} onChange={(e) => setUpdates(e.target.checked)} /><span>Send me occasional updates from Digital Macaroni</span></label>
         <p className={f.fine}><Lock size={12} /><span>Kept 30 days, then deleted. See our <a href="/privacy/">privacy policy</a>.</span></p>
         <div className={f.actions}>
           <button type="button" className={f.back} onClick={() => setStep(1)}>Back</button>
-          <button type="button" className={f.primary} disabled={!emailOk} onClick={finish}>Start the demo<ArrowRight size={14} /></button>
+          <button type="button" className={f.primary} disabled={!emailOk} onClick={saveAndContinue}>Continue<ArrowRight size={14} /></button>
+        </div>
+      </> : null}
+
+      {step === 3 ? <>
+        <h2 id="setup-title">Now call it.</h2>
+        <p className={f.lede}>Dial the number and enter the code when asked. This page follows your call.</p>
+        <a className={f.dial} href={dial}><Phone size={20} />{demo.phoneDisplay}</a>
+        {watch.status === "waiting" && watch.code
+          ? <div className={f.codeRow} aria-label={`code ${watch.code.split("").join(" ")}`}><span>Your screen code</span><div className={f.codeBox}><div>{watch.code.split("").map((c, i) => <b key={i}>{c}</b>)}</div>{newCodeBtn}</div></div>
+          : <div className={f.codeRow} data-loading><span>Your screen code</span><div className={f.codeBox}><div>{[0, 1, 2, 3].map((i) => <b key={i} />)}</div>{newCodeBtn}</div></div>}
+        <div className={f.actions}>
+          {again ? null : <button type="button" className={f.back} onClick={() => setStep(2)}>Back</button>}
         </div>
       </> : null}
     </div>
   </div>;
+}
+
+/** The tool the visitor picked, as its logo: shown beside "Behind the call". */
+export function ToolBadge({ setup }: { setup: Setup }) {
+  const tool = TOOLS.find((t) => t.id === setup.tool);
+  return <span className={f.badge} title={tool?.name ?? "Your own system"}>{tool ? <ToolMark id={tool.id} name={tool.name} /> : <Code size={18} />}</span>;
 }
 
 /* ---------------- Live: what lands in their tools ---------------- */
@@ -242,8 +446,8 @@ export function ToolsLane({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; s
   const custom = !tool;
   const rows = custom
     ? done.filter((a) => a.tool !== "link_screen" && a.tool !== "end_call").map((a) => ({ key: a.id, what: a.summary ?? a.label, op: a.tool }))
-    : done.flatMap((a) => (tool.ops[a.tool] ?? []).map((o, i) => ({ key: `${a.id}-${i}`, what: o.what, op: o.op })));
-  const booked = done.some((a) => a.tool === "book_appointment");
+    : done.flatMap((a) => (tool.ops[a.tool] ?? []).filter((o) => !o.when || (o.when === "declined") === /cannot take|conflict/i.test(a.summary ?? "")).map((o, i) => ({ key: `${a.id}-${i}`, what: o.what, op: o.op })));
+  const booked = done.some((a) => a.tool === "book_appointment" || a.tool === "book_consultation");
 
   return <section className={f.lane} aria-label={custom ? "Your back office" : `Sent to ${tool.name}`}>
     <header>
@@ -252,7 +456,27 @@ export function ToolsLane({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; s
     </header>
     {rows.length ? <ol>
       {rows.map((r) => <li key={r.key}><i><Check size={11} /></i><span>{r.what}<code>{r.op}</code></span></li>)}
-      {!custom && booked ? <li data-kind="native"><i><Check size={11} /></i><span>{tool.confirmation}</span></li> : null}
+      {!custom && booked && tool.confirmation ? <li data-kind="native"><i><Check size={11} /></i><span>{tool.confirmation}</span></li> : null}
     </ol> : <p className={f.laneEmpty}>{custom ? `Each record ${demo.agentName} creates appears here.` : Object.keys(tool.ops).length ? `Each call ${demo.agentName} would make to ${tool.name} appears here as she works.` : `We connect ${demo.agentName} to ${tool.name} through its API when we build yours.`}</p>}
   </section>;
+}
+
+
+/* ---------------- After the call ---------------- */
+
+/** The call is over: the screen stays put behind this. Most people want another go, a few want to read what happened. */
+export function AfterCall({ onAgain, onExplore, children }: { onAgain: () => void; onExplore: () => void; children?: React.ReactNode }) {
+  useEffect(() => { track("demo_after_call_viewed"); }, []);
+  return <div className={f.scrim} role="dialog" aria-modal="true" aria-labelledby="after-title">
+    <div className={f.card}>
+      <button type="button" className={f.close} aria-label="Close" onClick={onExplore}><Close size={18} /></button>
+      <h2 id="after-title">That was the call.</h2>
+      <p className={f.lede}>Here’s what the agent handled. Run it again to try something different, or explore the screen to see every step.</p>
+      {children ? <div className={f.recap}>{children}</div> : null}
+      <div className={f.actions}>
+        <button type="button" className={f.back} onClick={() => { track("demo_after_call", { choice: "explore" }); onExplore(); }}>Explore the screen</button>
+        <button type="button" className={f.primary} onClick={() => { track("demo_after_call", { choice: "again" }); onAgain(); }}>Try it again<ArrowRight size={14} /></button>
+      </div>
+    </div>
+  </div>;
 }

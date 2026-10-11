@@ -28,7 +28,7 @@ GREET_NOTE = "[The call has just connected. Greet the caller now.]"
 NUDGE_NOTE = "[The line has been quiet for a while. Briefly and warmly check whether the caller is still there.]"
 SILENT_GOODBYE_NOTE = "[The line is still quiet. Say a short, friendly goodbye, then call end_call.]"
 TIME_NOTE = "[The demo call has reached its time limit. Kindly tell the caller the demo is ending, thank them for trying it, mention they can try it again or get in touch on the website, then call end_call.]"
-LINKED_NOTE = "[The caller has just linked their screen with the keypad code; they can now see the dashboard. Acknowledge it in a few words and carry on.]"
+LINKED_NOTE = "[The caller has just linked their screen with the keypad code; they can now see the dashboard. Say exactly \"Great, you're connected. How can I help you today?\" and nothing more.]"
 HANGUP_MARK = "demo-hangup"
 SPEECH_RMS = 700
 # Caller audio held while the live session connects: about five seconds of 20 ms frames.

@@ -1,7 +1,7 @@
 import { Calendar, Check, Home, Inbox, Phone, Search, Settings, Users } from "./icons";
 import h from "./home.module.css";
 
-/** Today's calls at Northline, the fictional home-services business from the live demo. */
+/** A sample day of calls for an example business, shown without naming it. */
 const calls = [
   { initials: "CB", name: "Chloe Bennett", tone: "a", intent: "Booking", outcome: "Visit booked · Thu 2–4 PM", time: "9:41 AM", length: "2:14", live: true },
   { initials: "MT", name: "Marcus Tran", tone: "b", intent: "Reschedule", outcome: "Moved to Fri 10–12", time: "9:12 AM", length: "1:38" },
@@ -17,7 +17,7 @@ export function HeroApp() {
     <div className={h.appShell} aria-hidden="true">
       <div className={h.appChrome}>
         <span className={h.dots}><i /><i /><i /></span>
-        <span className={h.appAddress}>Northline · Front desk</span>
+        <span className={h.appAddress}>Front desk</span>
         <span className={h.appChromeEnd}>Sample data</span>
       </div>
       <div className={h.appBody}>
@@ -58,7 +58,7 @@ export function HeroApp() {
           <div className={h.detailHead}><i data-tone="a">CB</i><div><b>Chloe Bennett</b><small>(206) 555-0148 · new customer</small></div></div>
           <p className={h.detailLabel}>Summary</p>
           <p className={h.detailSummary}>Furnace not igniting. Wants someone tomorrow afternoon. Address 48 Birch Lane, Seattle.</p>
-          <p className={h.detailLabel}>Ellie did</p>
+          <p className={h.detailLabel}>The agent did</p>
           <ul className={h.toolList}>
             <li><Check size={12} />Checked the schedule<code>180ms</code></li>
             <li><Check size={12} />Read the time back<code>yes</code></li>
@@ -71,11 +71,11 @@ export function HeroApp() {
     </div>
 
     <div className={h.liveCard} aria-hidden="true">
-      <div className={h.liveTop}><span className={h.orbSmall} /><div><b>Ellie</b><small>Northline · on a call</small></div><span className={h.liveTimer}>01:12</span></div>
+      <div className={h.liveTop}><span className={h.orbSmall} /><div><b>AI voice agent</b><small>On a call</small></div><span className={h.liveTimer}>01:12</span></div>
       <div className={h.bigWave}>{[10, 18, 13, 26, 20, 34, 24, 14, 22, 30, 38, 24, 16, 28, 34, 20, 26, 14, 10, 18, 12, 22, 16].map((v, i) => <i key={i} style={{ height: v, animationDelay: `${i * -0.11}s` }} />)}</div>
       <p>“Maya can be there between 2 and 4.”</p>
     </div>
 
-    <div className={h.toast} aria-hidden="true"><span><Check size={14} /></span><div><b>Visit booked · NL-345</b><small>Maya · Thu 2–4 PM · by Ellie</small></div></div>
+    <div className={h.toast} aria-hidden="true"><span><Check size={14} /></span><div><b>Visit booked</b><small>Thu 2–4 PM · by the AI agent</small></div></div>
   </div>;
 }

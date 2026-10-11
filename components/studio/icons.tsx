@@ -6,6 +6,7 @@ export const ArrowUpRight = ({ size }: P) => <svg {...base(size)}><path d="M7 17
 export const ArrowDown = ({ size }: P) => <svg {...base(size)}><path d="M12 5v14M6 13l6 6 6-6" /></svg>;
 export const Phone = ({ size }: P) => <svg {...base(size)}><path d="M5 4h3.5l1.8 4.4-2.3 1.4a11 11 0 0 0 5.2 5.2l1.4-2.3L19 14.5V18a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z" /></svg>;
 export const Mic = ({ size }: P) => <svg {...base(size)}><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" /></svg>;
+export const Close = ({ size }: P) => <svg {...base(size)}><path d="m6 6 12 12M18 6 6 18" /></svg>;
 export const Check = ({ size }: P) => <svg {...base(size)}><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>;
 export const Wave = ({ size }: P) => <svg {...base(size)}><path d="M3 12h1.5M7 8v8M10.5 5v14M14 9v6M17.5 7v10M21 12h-.5" /></svg>;
 export const Grid = ({ size }: P) => <svg {...base(size)}><rect x="3.5" y="3.5" width="7" height="7" rx="2" /><rect x="13.5" y="3.5" width="7" height="7" rx="2" /><rect x="3.5" y="13.5" width="7" height="7" rx="2" /><rect x="13.5" y="13.5" width="7" height="7" rx="2" /></svg>;

@@ -27,7 +27,7 @@ MAX_DAYS_AHEAD = 330
 CURRENCY = {"USD": "$", "GBP": "£", "EUR": "€", "CAD": "CA$", "AUD": "A$"}
 TEST_MODE_LINE = "I'm sorry, I'm in test mode, so I can't book this for you right now."
 PAYMENT_LINE = "Everything's ready. This is where I'd take payment, but I'm in test mode, so I can't book this for you right now."
-OPENING_PHONE = "Thanks for calling Waypoint Travel, this is Linda. If you're following along on our website, type the four-digit code on your screen, or just read it to me. Otherwise, where are you hoping to fly?"
+OPENING_PHONE = "Thanks for calling Waypoint Travel, this is Linda. Please enter your screen code."
 OPENING_WEB = "Thanks for calling Waypoint Travel, this is Linda. Where are you hoping to fly?"
 # Departure windows the caller can ask for, in the airport's local time.
 TIME_WINDOWS = {"morning": ("05:00", "11:59"), "afternoon": ("12:00", "16:59"), "evening": ("17:00", "23:59")}

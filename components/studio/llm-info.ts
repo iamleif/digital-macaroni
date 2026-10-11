@@ -97,6 +97,7 @@ export const LLM_INFO: Section[] = [
     items: [
       { label: "Book a service visit", href: "https://digitalmacaroni.io/demo/northline/", text: "Northline, a fictional home-services business. The agent books, moves and cancels service visits." },
       { label: "Help a shop’s callers", href: "https://digitalmacaroni.io/demo/formfield/", text: "Form & Field, a fictional shop. The agent answers product questions, checks stock and holds items for pickup." },
+      { label: "A new client calls a law firm", href: "https://digitalmacaroni.io/demo/lawfirm/", text: "Alder & Finch Injury Law, a fictional personal-injury firm. The agent takes the intake, runs the conflict check, qualifies the case and books a free consultation." },
       { label: "Search and book a flight", href: "https://digitalmacaroni.io/demo/travel/", text: "Waypoint Travel, a fictional travel agency. The agent searches live fares and books up to payment." },
     ],
   },

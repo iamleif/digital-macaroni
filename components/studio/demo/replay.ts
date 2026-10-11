@@ -1,5 +1,5 @@
-import { formfieldEmpty, formfieldSample, northlineEmpty, northlineSample, travelEmpty, travelSample } from "../live/sample-views";
-import type { DemoEvent, DemoId, FormFieldView, NorthlineView, TravelView } from "../live/types";
+import { formfieldEmpty, formfieldSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, travelEmpty, travelSample } from "../live/sample-views";
+import type { DemoEvent, DemoId, FormFieldView, LawFirmView, NorthlineView, TravelView } from "../live/types";
 
 /**
  * Sample calls for reviewing the demo pages without phoning in (`?replay`). Each is a timeline of the
@@ -26,7 +26,7 @@ let v = 0;
 const say = (speaker: "visitor" | "agent", text: string, id = `t${++v}`): DemoEvent => ({ type: "transcript", id, speaker, text, final: true });
 const tool = (callId: string, name: string, label: string): DemoEvent => ({ type: "tool.started", callId, tool: name, label });
 const ok = (callId: string, name: string, label: string, summary: string): DemoEvent => ({ type: "tool.succeeded", callId, tool: name, label, summary, version: 0 });
-const state = (version: number, s: NorthlineView | FormFieldView | TravelView): DemoEvent => ({ type: "state", version, state: s });
+const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView): DemoEvent => ({ type: "state", version, state: s });
 const speaking = (on: boolean): DemoEvent => ({ type: "agent.speaking", speaking: on });
 
 const nlRequest = (patch: Partial<NorthlineView["request"]>): NorthlineView => ({ ...northlineEmpty, request: { ...northlineEmpty.request, ...patch } });
@@ -229,4 +229,71 @@ const travel = timeline([
   { type: "session.ended", reason: "agent_ended" },
 ]);
 
-export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel };
+const lawView = (values: Record<string, string | string[]>, patch: Partial<LawFirmView> = {}, stage: LawFirmView["record"]["stage"] = "new"): LawFirmView => ({
+  ...lawfirmEmpty, ...patch,
+  record: { opened: true, number: "PI-482", title: (values.name as string) ?? null, stage, sections: lawRecord(values) },
+});
+const lawChecked = lawView(lawNamed, { conflict: lawfirmSample.conflict }, "conflict");
+const lawReviewed = lawView(lawNamed, { conflict: lawfirmSample.conflict, assessment: lawfirmSample.assessment, brief: lawfirmSample.brief, note: lawfirmSample.note, tasks: lawfirmSample.tasks.slice(1, 4) }, "qualified");
+const lawOpen = { ...lawReviewed, openTimes: [{ slotId: "a", day: "Tomorrow", time: "1 PM", attorney: "Dana Alder" }, { slotId: "b", day: "Tomorrow", time: "3 PM", attorney: "Dana Alder" }] };
+const lawBooked: LawFirmView = lawfirmSample;
+
+const lawfirm = timeline([
+  { type: "session.ready", sessionId: "replay", demo: "lawfirm", channel: "phone" },
+  { type: "pairing.linked" },
+  speaking(true),
+  say("agent", "Thank you for calling Alder and Finch Injury Law, this is Nora. How can I help?"),
+  speaking(false),
+  1600,
+  say("visitor", "Hi. I was rear-ended on the freeway a couple of weeks ago and my neck and back are really hurting."),
+  tool("c1", "note_intake", "Fill in the intake form"),
+  600,
+  ok("c1", "note_intake", "Fill in the intake form", "Noted 8 details"),
+  state(1, lawView({ type: "Car crash", date: "Sep 20, 2026", where: "Denver, CO", areas: ["Neck", "Back"], injuries: "Neck and lower back pain since the crash" })),
+  speaking(true),
+  say("agent", "I’m so sorry, that sounds painful. Have you been seen by a doctor, and do you already have a lawyer for this?"),
+  speaking(false),
+  1500,
+  say("visitor", "I went to the ER that night. No, I haven’t got a lawyer. My name’s Alex Taylor."),
+  tool("c2", "check_conflicts", "Run the conflict check"),
+  900,
+  ok("c2", "check_conflicts", "Run the conflict check", "No conflicts found"),
+  state(2, lawChecked),
+  tool("c3", "assess_case", "Review the case"),
+  800,
+  ok("c3", "assess_case", "Review the case", "Can take it"),
+  state(3, lawReviewed),
+  speaking(true),
+  say("agent", "Thank you, Alex. Our attorneys can take a look at this with you, and the first consultation is free. Would you like to set one up, by phone, video or in our office?"),
+  speaking(false),
+  1500,
+  say("visitor", "By phone, tomorrow afternoon if possible."),
+  tool("c4", "check_availability", "Check the attorneys’ calendars"),
+  700,
+  ok("c4", "check_availability", "Check the attorneys’ calendars", "2 open · Dana free at 1 PM tomorrow"),
+  state(4, lawOpen),
+  speaking(true),
+  say("agent", "Dana Alder has one o’clock tomorrow. To confirm: a free phone consultation with Dana tomorrow at one, for Alex Taylor. Shall I book it?"),
+  speaking(false),
+  1800,
+  say("visitor", "Yes, please."),
+  tool("c5", "book_consultation", "Book a free consultation"),
+  800,
+  ok("c5", "book_consultation", "Book a free consultation", "Consultation booked · AF-482"),
+  state(5, lawBooked),
+  speaking(true),
+  say("agent", "You’re booked, and Dana will call you. Would you like a confirmation by email?"),
+  speaking(false),
+  1500,
+  say("visitor", "Yes please."),
+  tool("c6", "email_confirmation", "Emailing the confirmation"),
+  700,
+  ok("c6", "email_confirmation", "Emailing the confirmation", "Confirmation emailed · a•••r@example.com"),
+  state(6, { ...lawBooked, emailed: { to: "a•••r@example.com", reference: "AF-482" } }),
+  speaking(true),
+  say("agent", "Sent. Take care of yourself, Alex."),
+  speaking(false),
+  { type: "session.ended", reason: "agent_ended" },
+]);
+
+export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm };

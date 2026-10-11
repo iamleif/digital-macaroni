@@ -235,7 +235,8 @@ export const STORIES: ArchitectureStory[] = [
 ];
 
 export const storyFor = (slug: string) => STORIES.find((s) => s.slug === slug);
-export const architecturePath = (demo: DemoId) => `/architecture/${STORIES.find((s) => s.demo === demo)!.slug}/`;
+// The law-firm intake agent runs on the same Gemini Live build as Northline, so it shares that page.
+export const architecturePath = (demo: DemoId) => `/architecture/${(STORIES.find((s) => s.demo === demo) ?? STORIES.find((s) => s.architecture === "bidirectional")!).slug}/`;
 
 /** The comparison on /architecture/. One value per architecture, in plain words; relative, not benchmarks. */
 export const COMPARISON: { label: string; values: Record<ArchitectureId, string> }[] = [

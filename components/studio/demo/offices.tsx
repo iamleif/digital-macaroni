@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ProductArt, swatch } from "../live/product-art";
 import { formfieldEmpty } from "../live/sample-views";
-import type { AppointmentView, BrandId, FormFieldView, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
+import type { AppointmentView, BrandId, FormFieldView, LawFirmView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
 import { BrandMark } from "../brand-marks";
 import { ArrowRight, Calendar, Check, Home, Inbox, Lock, Phone, Search, Seat, Settings, Suitcase, User, Users } from "../icons";
 import d from "./demo.module.css";
@@ -13,6 +13,9 @@ import d from "./demo.module.css";
  */
 
 export type LiveState = "sample" | "live" | "finished";
+
+/** True when a back office is shown as a still picture (the homepage examples): nothing types itself or opens. */
+export const StaticPreview = createContext(false);
 
 const STATE_LABEL: Record<LiveState, string> = { sample: "Sample data", live: "Your call · live", finished: "Your call · finished" };
 
@@ -142,8 +145,8 @@ export function NorthlineOffice({ view, state, agentName }: { view: NorthlineVie
 /* ---------------- Ellie's other front desks: salon / med spa and clinic ---------------- */
 
 const WORDS = {
-  salon: { brand: "lune" as const, kicker: "Front desk", staff: "Stylist", staffs: "Team today", menu: "Service menu", request: "New booking", list: "Appointments", mine: "Your appointment" },
-  clinic: { brand: "tidewell" as const, kicker: "Reception", staff: "Practitioner", staffs: "Practitioners", menu: "Visit types", request: "Patient booking", list: "Visits", mine: "Your visit" },
+  salon: { brand: "lune" as const, kicker: "Front desk", staff: "Stylist", staffs: "Team today", menu: "Service menu", request: "New booking", list: "Appointments", mine: "Booked on this call" },
+  clinic: { brand: "tidewell" as const, kicker: "Reception", staff: "Practitioner", staffs: "Practitioners", menu: "Visit types", request: "Patient booking", list: "Visits", mine: "Booked on this call" },
 };
 
 export function AppointmentOffice({ view, state, agentName }: { view: AppointmentView; state: LiveState; agentName: string }) {
@@ -373,8 +376,10 @@ function Ticker({ value, like }: { value: number; like: string }) {
 
 /** Text that types itself in, as if someone at the desk were filling the field. */
 function Typed({ text, delay = 0 }: { text: string; delay?: number }) {
+  const still = useContext(StaticPreview);
   const [n, setN] = useState(0);
   useEffect(() => {
+    if (still) return;
     let i = 0;
     let timer: ReturnType<typeof setInterval> | undefined;
     const wait = setTimeout(() => {
@@ -385,7 +390,8 @@ function Typed({ text, delay = 0 }: { text: string; delay?: number }) {
       }, 42);
     }, delay);
     return () => { clearTimeout(wait); if (timer) clearInterval(timer); };
-  }, [text, delay]);
+  }, [text, delay, still]);
+  if (still) return <span className={d.typed}>{text}</span>;
   return <span className={d.typed}><span className={d.srOnly}>{text}</span><span aria-hidden="true">{text.slice(0, n)}{n < text.length ? <i className={d.caret} /> : null}</span></span>;
 }
 
@@ -704,5 +710,142 @@ export function TravelOffice({ view, state, agentName }: { view: TravelView; sta
     <Stepper stage={stage} shown={shown} onShow={(s) => setPeek(s === stage ? null : { at: stage, show: s })} view={view} />
     <div className={d.stagePanel} key={shown}>{panel}</div>
     <TripSummary view={view} stage={stage} />
+  </Shell>;
+}
+
+
+/* ---------------- Alder & Finch Injury Law ---------------- */
+
+const TIER_NOTE: Record<"A" | "B" | "C", string> = { A: "Serious case · senior partner", B: "Solid case", C: "Smaller or early-stage" };
+const STAGES: { id: LawFirmView["record"]["stage"]; label: string }[] = [
+  { id: "new", label: "New lead" },
+  { id: "conflict", label: "Conflict check" },
+  { id: "qualified", label: "Qualified" },
+  { id: "consult", label: "Consult booked" },
+];
+
+/** A menu that opens when the agent picks a value, shows the choice being made, then closes on it. */
+function SelectField({ field }: { field: RecordField }) {
+  const value = field.value as string | null;
+  const still = useContext(StaticPreview);
+  const [open, setOpen] = useState(false);
+  const prev = useRef<string | null>(null);
+  useEffect(() => {
+    if (still) return;
+    if (value && value !== prev.current) {
+      setOpen(true);
+      const t = setTimeout(() => setOpen(false), 1700);
+      prev.current = value;
+      return () => clearTimeout(t);
+    }
+    prev.current = value;
+  }, [value, still]);
+  return <div className={d.select} data-open={open || undefined} data-filled={Boolean(value)}>
+    <span className={d.selectValue}>{value ?? <i>Select…</i>}</span>
+    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    {open ? <ul className={d.menu} role="listbox">{field.options.map((o) => <li key={o} data-picked={o === value || undefined} role="option" aria-selected={o === value}>{o === value ? <Check size={11} /> : null}{o}</li>)}</ul> : null}
+  </div>;
+}
+
+function RecordInput({ field }: { field: RecordField }) {
+  const value = field.value;
+  if (field.kind === "select") return <SelectField field={field} />;
+  if (field.kind === "chips") {
+    const picked = (value as string[] | null) ?? [];
+    return <div className={d.chips}>{field.options.map((o) => <span key={o} data-on={picked.includes(o) || undefined}>{picked.includes(o) ? <Check size={10} /> : null}{o}</span>)}</div>;
+  }
+  if (field.kind === "toggle") return <div className={d.yn} role="radiogroup" aria-label={field.label}>{field.options.map((o) => <span key={o} data-on={o === value || undefined} role="radio" aria-checked={o === value}>{o}</span>)}</div>;
+  return <div className={d.input} data-filled={Boolean(value)} data-kind={field.kind}>
+    {field.kind === "date" ? <Calendar size={13} /> : null}
+    {value ? <Typed key={value as string} text={value as string} /> : <i>Waiting</i>}
+  </div>;
+}
+
+export function LawFirmOffice({ view, state, agentName }: { view: LawFirmView; state: LiveState; agentName: string }) {
+  const r = view.record;
+  const a = view.assessment;
+  const conflict = view.conflict;
+  const stages = r.stage === "declined" ? [...STAGES.slice(0, 2), { id: "declined" as const, label: "Declined" }] : STAGES;
+  const at = stages.findIndex((x) => x.id === r.stage);
+  const filled = r.sections.flatMap((s) => s.fields).filter((x) => (Array.isArray(x.value) ? x.value.length : x.value)).length;
+  const total = r.sections.flatMap((s) => s.fields).length;
+  const booked = [...view.consults].reverse().find((c) => c.status === "booked");
+
+  return <Shell id="lawfirm" nav={2} kicker={`Matters · New potential client · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
+    tools={<span className={d.seg}><b>Record</b><span>7 AM brief</span></span>}>
+    <header className={d.recHead} data-opened={r.opened || undefined}>
+      <div className={d.recId}>
+        <span className={d.recNum}>{r.number ?? "PI-····"}</span>
+        <span className={d.recTag}>Potential new client</span>
+        <span className={d.recTag} data-tone="src">Phone · AI intake · {agentName}</span>
+      </div>
+      <ol className={d.stages} aria-label="Matter stage">
+        {stages.map((x, i) => <li key={x.id} data-state={i < at ? "done" : i === at ? "now" : "next"} data-declined={x.id === "declined" || undefined}><i>{i < at ? <Check size={10} /> : i + 1}</i>{x.label}</li>)}
+      </ol>
+    </header>
+
+    <div className={d.recGrid}>
+      <div className={d.recForm}>
+        {!r.opened ? <p className={d.recWaiting}>The matter record opens the moment {agentName} has something to write down.</p> : null}
+        {r.sections.map((sec) => <section key={sec.id} className={d.recSection}>
+          <h3>{sec.title}{sec.id === "contact" ? <span>{filled}/{total} filled</span> : null}</h3>
+          <div className={d.recFields}>
+            {sec.fields.map((fl) => <div key={fl.key} className={d.recField} data-wide={fl.wide || undefined}>
+              <label>{fl.label}</label>
+              <RecordInput field={fl} />
+            </div>)}
+          </div>
+        </section>)}
+      </div>
+
+      <div className={d.stack}>
+        <Card title="Case review" meta={a ? (a.outcome === "qualified" ? "Can take it" : "Cannot take it") : "Waiting"}>
+          <div className={d.review}>
+            <div className={d.reviewRow} data-state={conflict?.status ?? "waiting"}>
+              <i aria-hidden="true">{conflict ? (conflict.status === "clear" ? <Check size={11} /> : "!") : null}</i>
+              <div><b>Conflict check</b><small>{conflict ? (conflict.status === "clear" ? `No match for ${conflict.checked.join(" or ")} in clients or open matters` : "A conflict was found. The firm cannot take this matter.") : "Runs once the caller gives a name"}</small></div>
+            </div>
+            <div className={d.reviewRow} data-state={a ? (a.outcome === "qualified" ? "clear" : "conflict") : "waiting"}>
+              <i aria-hidden="true">{a ? (a.outcome === "qualified" ? <Check size={11} /> : "!") : null}</i>
+              <div>
+                <b>{a?.outcome === "declined" ? "Declined" : "Qualified"}{a?.tier ? <span className={d.tier} data-tier={a.tier}>Tier {a.tier}</span> : null}</b>
+                <small>{a ? (a.outcome === "declined" ? a.reason : TIER_NOTE[a.tier!]) : "Decided from the record once the basics are in"}</small>
+                {a?.outcome === "qualified" ? <ul className={d.reviewPoints}>{a.points.map((p) => <li key={p}>{p}</li>)}{a.flags.map((fl) => <li key={fl} data-flag>{fl}</li>)}</ul> : null}
+                {a?.deadline ? <small className={d.deadline}>Colorado limit · {a.deadline}</small> : null}
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written after the call"}>
+          {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the matter once the case is reviewed.</Empty>}
+        </Card>
+
+        <Card title="Tasks created" meta={view.tasks.length || "None yet"}>
+          {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Follow-ups for the team are created from the record.</Empty>}
+        </Card>
+
+        <Card title="Free consultation" meta={booked ? booked.id : view.openTimes.length ? `${view.openTimes.length} open` : "Not booked"}>
+          {booked ? <div className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{booked.attorney}</b><small>{booked.day}, {booked.time} · {booked.format}</small></div><em>{booked.changes ? `Moved ${booked.changes}×` : "Booked"}</em></div>
+            : view.openTimes.length ? <div className={d.openTimes}>{view.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.attorney.split(" ")[0]} · {o.day}</small></span>)}</div>
+            : <Empty>Open times with the right attorney appear here.</Empty>}
+          {view.emailed ? <Emailed to={view.emailed.to} what={`Confirmation for ${view.emailed.reference}`} /> : null}
+        </Card>
+
+        <Card title="7 AM case brief" meta={view.brief ? `${view.brief.rows.length} calls` : "Last night"}>
+          {view.brief ? <ol className={d.brief}>{view.brief.rows.map((row, i) => <li key={`${row.who}-${i}`} data-mine={row.mine || undefined}>
+            <span className={d.tier} data-tier={row.tier ?? "none"}>{row.tier ?? "—"}</span>
+            <div><b>{row.who}{row.mine ? <em>This call</em> : null}</b><small>{row.summary}</small></div>
+          </li>)}</ol> : <Empty>Every call ranked by case value, ready at 7 AM.</Empty>}
+        </Card>
+
+        {view.messages.length ? <Card title="Messages" meta={view.messages.length}>
+          <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
+            <span className={d.listIcon}><Phone size={15} /></span>
+            <div><b>{m.name} · {m.id}{m.urgent ? " · urgent" : ""}</b><small>{m.summary}</small>{m.preferredTime ? <small>Call back {m.preferredTime}</small> : null}</div>
+          </li>)}</ul>
+        </Card> : null}
+      </div>
+    </div>
   </Shell>;
 }

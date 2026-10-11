@@ -11,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: `${base}/`, lastModified: "2026-10-09", changeFrequency: "monthly", priority: 1 },
-    ...["northline", "formfield", "travel"].map((demo) => ({
+    ...["northline", "formfield", "travel", "lawfirm"].map((demo) => ({
       url: `${base}/demo/${demo}/`,
       lastModified: "2026-10-09",
       changeFrequency: "monthly" as const,

@@ -23,15 +23,22 @@ class Config:
     # Which demo each dialled number reaches (E.164).
     numbers: dict[str, str] = field(
         default_factory=lambda: {
-            env.get("NORTHLINE_NUMBER", "+12068879619"): "northline",
+            number: demo
+            for number, demo in {
+            env.get("NORTHLINE_NUMBER", "+17205996395"): "northline",
             env.get("FORMFIELD_NUMBER", "+18302392110"): "formfield",
-            env.get("TRAVEL_NUMBER", "+17205996395"): "travel",
+            env.get("TRAVEL_NUMBER", ""): "travel",
+            # (206) 887-9619 is the account's only text-verified number (RankLadder texting, A2P approved), so the law firm
+            # has it and can text. Ellie moved to (720) 599-6395; Waypoint has no number. Both stay on this service in Twilio.
+            env.get("LAWFIRM_NUMBER", "+12068879619"): "lawfirm",
+            }.items()
+            if number
         }
     )
     # Prebuilt Gemini voice names, or designed voice ids ("voice_…", from AI Studio; the travel default is
     # "Linda 2", designed on gemini-3.8-flash-tts and valid until 2027-10-04).
     voices: dict[str, str] = field(
-        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu")}
+        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede")}
     )
     # Demos on the cascade (speech-to-text, a Gemini text model through ADK, then Gemini TTS) instead of Gemini Live.
     cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel").split(",") if d.strip())
