@@ -4,14 +4,14 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CallWatcher, type WatchStatus } from "../live/client";
 import type { DemoInfo } from "../live/demo-info";
-import { formfieldEmpty, lawfirmEmpty, northlineEmpty, travelEmpty } from "../live/sample-views";
-import type { DemoEvent, DemoId, DemoView, FormFieldView, LawFirmView, NorthlineView, TravelView } from "../live/types";
+import { formfieldEmpty, hotelsEmpty, lawfirmEmpty, northlineEmpty, travelEmpty } from "../live/sample-views";
+import type { DemoEvent, DemoId, DemoView, FormFieldView, HotelsView, LawFirmView, NorthlineView, TravelView } from "../live/types";
 import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
 import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
 import { ArrowUpRight, Check, Phone } from "../icons";
 import { COMPANY_INSTAGRAM, COMPANY_LINKEDIN, COMPANY_TIKTOK, COMPANY_YOUTUBE } from "../site";
-import { AppointmentOffice, FormFieldOffice, LawFirmOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
+import { AppointmentOffice, FormFieldOffice, HotelsOffice, LawFirmOffice, NorthlineOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
 import { CookieSettings, track } from "../consent";
 import { VoiceBars } from "./voice-bars";
@@ -21,7 +21,7 @@ import type { AppointmentView, BookingSkin } from "../live/types";
 import d from "./demo.module.css";
 
 type Action = Extract<Entry, { kind: "action" }>;
-const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: formfieldEmpty, travel: travelEmpty, lawfirm: lawfirmEmpty };
+const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: formfieldEmpty, travel: travelEmpty, lawfirm: lawfirmEmpty, hotels: hotelsEmpty };
 
 /**
  * The live demo page. Every demo is reached by phone: a screen code is ready on arrival, and once the
@@ -47,7 +47,8 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
     setFunnel(true);
     if (!replay) track("demo_viewed", { demo: demo.id });
   }, [demo.id]);
-  const gated = funnel && !setup;
+  // A sample replay is for reviewing the screen: it skips the setup card and plays straight away.
+  const gated = funnel && !setup && !replaying;
   // After a call in the setup flow: the visitor chooses to go again or to look through the screen.
   const [exploring, setExploring] = useState(false);
   const [again, setAgain] = useState(false);
@@ -161,6 +162,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
           : demo.id === "lawfirm" ? <LawFirmOffice view={view as LawFirmView} state={state} agentName={demo.agentName} />
           : demo.id === "northline" ? <NorthlineOffice view={view as NorthlineView} state={state} agentName={demo.agentName} />
           : demo.id === "travel" ? <TravelOffice view={view as TravelView} state={state} agentName={demo.agentName} />
+          : demo.id === "hotels" ? <HotelsOffice view={view as HotelsView} state={state} agentName={demo.agentName} />
           : <FormFieldOffice view={view as FormFieldView} state={state} agentName={demo.agentName} />}
       </section>
 

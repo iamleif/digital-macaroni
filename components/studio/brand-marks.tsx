@@ -1,7 +1,7 @@
 import type { BrandId } from "./live/types";
 import h from "./home.module.css";
 
-/** Logo marks for the three fictional demo businesses. Shared by the homepage cards and, later, the demo pages. */
+/** Logo marks for the fictional demo businesses. Shared by the homepage cards and, later, the demo pages. */
 export function BrandMark({ id, size = 22 }: { id: BrandId; size?: number }) {
   if (id === "lune") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <defs><linearGradient id="ln-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#c9739a" /><stop offset="1" stopColor="#7a3b66" /></linearGradient></defs>
@@ -29,6 +29,12 @@ export function BrandMark({ id, size = 22 }: { id: BrandId; size?: number }) {
     <path d="M12 18.5c-3.6-1.2-5.5-4-5.5-8.2 3.4.2 5.5 2.4 5.5 5.6 0-3.2 2.1-5.4 5.5-5.6 0 4.2-1.9 7-5.5 8.2Z" fill="#e9efe2" />
     <path d="M12 15.8V8" stroke="#e9efe2" strokeWidth="1.2" strokeLinecap="round" />
   </svg>;
+  if (id === "hotels") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <defs><linearGradient id="ps-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2b8a70" /><stop offset="1" stopColor="#135a47" /></linearGradient></defs>
+    <rect width="24" height="24" rx="7" fill="url(#ps-g)" />
+    <path d="M12 13.4 5.3 11.3M12 13.4 6.9 8.1M12 13.4 9.5 6.3M12 13.4V5.8M12 13.4l2.5-7.1M12 13.4l5.1-5.3M12 13.4l6.7-2.1" stroke="#fff" strokeWidth="1.45" strokeLinecap="round" fill="none" />
+    <path d="M12 13.4c.2 2.2-.3 4-1.3 5.4" stroke="#f3c766" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+  </svg>;
   return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <defs><linearGradient id="wp-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#e8a65a" /><stop offset="1" stopColor="#b26f2a" /></linearGradient></defs>
     <rect width="24" height="24" rx="7" fill="url(#wp-g)" />
@@ -41,6 +47,7 @@ const WORDMARK: Record<BrandId, { text: string; className: string }> = {
   formfield: { text: "Form & Field", className: h.wmFormfield },
   travel: { text: "Waypoint", className: h.wmWaypoint },
   lawfirm: { text: "Alder & Finch", className: h.wmLawfirm },
+  hotels: { text: "Palmetto Stays", className: h.wmPalmetto },
   lune: { text: "lune", className: h.wmLune },
   tidewell: { text: "Tidewell", className: h.wmTidewell },
 };

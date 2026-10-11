@@ -1,9 +1,9 @@
 import { Fragment, createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ProductArt, swatch } from "../live/product-art";
 import { formfieldEmpty } from "../live/sample-views";
-import type { AppointmentView, BrandId, FormFieldView, LawFirmView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
+import type { AppointmentView, BrandId, FormFieldView, HotelsStage, HotelsView, LawFirmView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
 import { BrandMark } from "../brand-marks";
-import { ArrowRight, Calendar, Check, Home, Inbox, Lock, Phone, Search, Seat, Settings, Suitcase, User, Users } from "../icons";
+import { ArrowRight, Bed, Calendar, Check, Clock, Coffee, Home, Inbox, Lock, MapPin, Phone, Search, Seat, Settings, Suitcase, User, Users } from "../icons";
 import d from "./demo.module.css";
 
 /*
@@ -710,6 +710,273 @@ export function TravelOffice({ view, state, agentName }: { view: TravelView; sta
     <Stepper stage={stage} shown={shown} onShow={(s) => setPeek(s === stage ? null : { at: stage, show: s })} view={view} />
     <div className={d.stagePanel} key={shown}>{panel}</div>
     <TripSummary view={view} stage={stage} />
+  </Shell>;
+}
+
+
+/* ---------------- Palmetto Stays ---------------- */
+
+const HOTEL_STEPS: { id: HotelsStage; label: string }[] = [
+  { id: "trip", label: "Trip" }, { id: "options", label: "Hotels" }, { id: "hotel", label: "Hotel" }, { id: "room", label: "Room" },
+  { id: "guest", label: "Guest" }, { id: "review", label: "Review" }, { id: "payment", label: "Payment" },
+];
+const hotelStep = (s: HotelsStage) => HOTEL_STEPS.findIndex((x) => x.id === s);
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
+/** How far the stay has got: the service says so; a partial record falls back to what it holds. */
+function hotelStageOf(v: HotelsView): HotelsStage {
+  if (v.stage) return v.stage;
+  if (v.booking) return "payment";
+  if (v.review) return "review";
+  if (v.guest) return "guest";
+  if (v.room) return "room";
+  if (v.hotel) return "hotel";
+  return v.options.length ? "options" : "trip";
+}
+
+/** The guest score in the words booking sites use for it. */
+const ratingWord = (r: number) => (r >= 9 ? "Superb" : r >= 8.5 ? "Excellent" : r >= 8 ? "Very good" : r >= 7 ? "Good" : "Review score");
+
+/** A hotel's own photo; without one (or if it fails to load), a quiet tile with the hotel's initials. */
+function HotelPhoto({ src, name }: { src: string | null | undefined; name: string }) {
+  const [failed, setFailed] = useState(false);
+  // eslint-disable-next-line @next/next/no-img-element
+  if (src && !failed) return <img className={d.hotelImg} src={src} alt={name} loading="lazy" onError={() => setFailed(true)} />;
+  return <span className={d.hotelImg} data-none aria-hidden="true"><Bed size={20} /><small>{initials(name.replace(/^The\s+/i, ""))}</small></span>;
+}
+
+function Stars({ n }: { n: number | null }) {
+  if (!n) return null;
+  const whole = Math.max(1, Math.min(5, Math.round(n)));
+  return <span className={d.stars} aria-label={`${whole}-star hotel`}>{"★".repeat(whole)}</span>;
+}
+
+function Rating({ rating, reviews }: { rating: number | null; reviews: number | null }) {
+  if (rating == null) return <span className={d.rating} data-none><small>No guest score yet</small></span>;
+  return <span className={d.rating}><b>{rating.toFixed(1)}</b><small>{ratingWord(rating)}{reviews ? ` · ${reviews.toLocaleString("en-US")} reviews` : ""}</small></span>;
+}
+
+function Refund({ refundable, text }: { refundable: boolean; text?: string }) {
+  return <span className={d.refund} data-ok={refundable || undefined}>{refundable ? <Check size={11} /> : null}{text ?? (refundable ? "Free cancellation" : "Non-refundable")}</span>;
+}
+
+function HotelStepper({ stage, shown, onShow, view }: { stage: HotelsStage; shown: HotelsStage; onShow: (s: HotelsStage) => void; view: HotelsView }) {
+  const at = hotelStep(stage);
+  const room = view.rooms.find((r) => r.room === view.room);
+  const note: Partial<Record<HotelsStage, string | null>> = {
+    trip: view.search ? `${plural(view.search.nights, "night")}` : null,
+    options: view.selected ? `Option ${view.selected}` : view.options.length ? `${view.options.length} picked` : null,
+    hotel: view.hotel?.name.replace(/^The\s+/i, "").split(/[ ,]/)[0] ?? null,
+    room: room?.board ?? null,
+    guest: view.guest?.name.split(" ")[0] ?? null,
+    review: view.review ? (view.review.priceChanged ? "New price" : "Re-checked") : null,
+    payment: view.emailed ? "Emailed" : view.booking ? "Test mode" : null,
+  };
+  return <ol className={d.steps} style={{ gridTemplateColumns: `repeat(${HOTEL_STEPS.length}, minmax(0, 1fr))` }} aria-label="Booking progress">
+    {HOTEL_STEPS.map((s, i) => {
+      const state = i < at ? "done" : i === at ? (s.id === "payment" ? "stopped" : "now") : "next";
+      const body = <><i>{state === "done" ? <Check size={11} /> : state === "stopped" ? <Lock size={11} /> : i + 1}</i><span>{s.label}<small>{note[s.id] ?? " "}</small></span></>;
+      // While an earlier step is open, the current one is a button too, to come back to it.
+      const back = state !== "next" && state !== "done" && shown !== stage;
+      return <li key={s.id} data-state={state} data-shown={shown === s.id || undefined}>
+        {state === "done" || back ? <button type="button" onClick={() => onShow(s.id)} aria-pressed={shown === s.id} aria-current={back ? "step" : undefined}>{body}</button> : <div aria-current={state !== "next" ? "step" : undefined}>{body}</div>}
+      </li>;
+    })}
+  </ol>;
+}
+
+function HotelOption({ o, view, live }: { o: HotelsView["options"][number]; view: HotelsView; live: boolean }) {
+  const isSelected = view.selected === o.option;
+  return <article className={d.stay} data-selected={isSelected || undefined}>
+    <div className={d.stayPhoto}><HotelPhoto src={o.photo} name={o.name} /><span className={d.optionNo}>{o.option}</span></div>
+    <div className={d.stayBody}>
+      <div className={d.stayTags}>
+        {o.label ? <span className={d.fareLabel} data-label={o.label}>{o.label}</span> : null}
+        {isSelected && live ? <span className={d.badge} data-tone="soft"><Check size={11} />Chosen</span> : null}
+      </div>
+      <b className={d.stayName}>{o.name} <Stars n={o.stars} /></b>
+      <small className={d.stayAddr}><MapPin size={12} />{o.address}</small>
+      <Rating rating={o.rating} reviews={o.reviews} />
+    </div>
+    <div className={d.stayPrice}>
+      <strong>{o.total}</strong>
+      <small>{o.perNight} a night</small>
+      <Refund refundable={o.refundable} />
+    </div>
+  </article>;
+}
+
+function HotelPanel({ h, agentName }: { h: NonNullable<HotelsView["hotel"]>; agentName: string }) {
+  const photos = h.photos.slice(0, 4);
+  return <section className={d.hotelPanel} aria-label={h.name}>
+    <div className={d.gallery} data-count={Math.max(1, photos.length)}>
+      {photos.length ? photos.map((p, i) => <div key={p} style={{ animationDelay: `${i * 80}ms` }}><HotelPhoto src={p} name={i ? "" : h.name} /></div>)
+        : <div><HotelPhoto src={null} name={h.name} /></div>}
+    </div>
+    <div className={d.hotelInfo}>
+      <div className={d.hotelTitle}>
+        <div><h3>{h.name} <Stars n={h.stars} /></h3><small className={d.stayAddr}><MapPin size={12} />{h.address}</small></div>
+        <Rating rating={h.rating} reviews={h.reviews} />
+      </div>
+      <div className={d.hotelTimes}>
+        <div><Clock size={14} /><span>Check-in<b>{h.checkIn || "—"}</b></span></div>
+        <div><Clock size={14} /><span>Check-out<b>{h.checkOut || "—"}</b></span></div>
+      </div>
+      {h.highlights.length ? <ul className={d.highlights}>{h.highlights.slice(0, 6).map((x, i) => <li key={x} style={{ animationDelay: `${i * 60}ms` }}>{x}</li>)}</ul> : null}
+      {h.pros.length || h.cons.length ? <div className={d.proCon}>
+        <div><small>Guests like</small><ul>{h.pros.map((p) => <li key={p} data-tone="pro"><Check size={12} />{p}</li>)}</ul></div>
+        <div><small>Worth knowing</small><ul>{h.cons.map((c) => <li key={c} data-tone="con"><i />{c}</li>)}</ul></div>
+      </div> : null}
+      <p className={d.panelNote}>From the hotel&rsquo;s own listing and guest reviews. {agentName} reads out only what is here.</p>
+    </div>
+  </section>;
+}
+
+function RoomsPanel({ view, agentName }: { view: HotelsView; agentName: string }) {
+  const nights = view.search?.nights ?? null;
+  return <section className={d.roomsPanel} aria-label="Rooms">
+    <div className={d.panelHead}><h3>Rooms at {view.hotel?.name ?? "this hotel"}</h3><span>Live rates{nights ? ` · ${plural(nights, "night")}` : ""}</span></div>
+    {view.rooms.length ? <ul className={d.roomList}>{view.rooms.map((r, i) => {
+      const chosen = view.room === r.room;
+      const breakfast = /breakfast/i.test(r.board);
+      return <li key={r.room} data-chosen={chosen || undefined} style={{ animationDelay: `${i * 70}ms` }}>
+        <span className={d.roomIcon}><Bed size={18} /></span>
+        <div>
+          <b>{r.name}{chosen ? <span className={d.badge}><Check size={11} />Chosen</span> : null}</b>
+          <div className={d.roomTags}>
+            <span className={d.board} data-breakfast={breakfast || undefined}>{breakfast ? <Coffee size={12} /> : null}{r.board}</span>
+            <Refund refundable={r.refundable} text={r.cancellation} />
+          </div>
+        </div>
+        <div className={d.roomPrice}><strong>{r.total}</strong><small>{r.perNight} a night</small></div>
+      </li>;
+    })}</ul> : <Empty>{agentName} is checking the rooms and rates…</Empty>}
+  </section>;
+}
+
+function GuestCard({ g }: { g: NonNullable<HotelsView["guest"]> }) {
+  const rows = [
+    { label: "Full name", value: g.name, key: "name", sample: false },
+    { label: "Email", value: g.email, key: "email", sample: true },
+    { label: "Phone", value: g.phone, key: "phone", sample: true },
+  ];
+  let delay = 150;
+  return <section className={d.traveller} aria-label="Lead guest">
+    <div className={d.panelHead}><h3>Lead guest</h3><span>Name on the reservation</span></div>
+    <div className={d.travellerBody}>
+      <span className={d.travellerAvatar}>{initials(g.name)}</span>
+      <dl>{rows.map((r) => {
+        const at = delay;
+        delay += r.value.length * 42 + 220;
+        return <div key={r.key} data-sample={r.sample || undefined}><dt>{r.label}{r.sample ? <em>Sample</em> : <em data-tone="caller">From the call</em>}</dt><dd><Typed text={r.value} delay={at} /></dd></div>;
+      })}</dl>
+    </div>
+    <p className={d.panelNote}>Only the name comes from the call. Email and phone are marked samples: this demo never asks for card details.</p>
+  </section>;
+}
+
+function StayReview({ r, waiting }: { r: NonNullable<HotelsView["review"]>; waiting: boolean }) {
+  const rows: [string, string | null][] = [
+    ["Hotel", r.hotel], ["Dates", `${r.dates} · ${plural(r.nights, "night")}`], ["Room", r.room], ["Board", r.board],
+    ["Guests", plural(r.adults, "adult")], ["Lead guest", r.guest], ["Cancellation", r.cancellation], ["At the hotel", r.taxes],
+  ];
+  return <section className={d.review} aria-label="Stay review">
+    <header>
+      <i className={d.airline} style={{ background: "var(--accent)" }}><Bed size={16} /></i>
+      <div><small>Reservation · read back to the caller</small><b>{r.hotel}</b></div>
+      {r.priceChanged ? <span className={d.badge}>Price changed on re-check</span> : <span className={d.badge} data-tone="soft"><Check size={11} />Price re-checked · held</span>}
+    </header>
+    <dl>{rows.filter(([, v]) => v).map(([k, v], i) => <div key={k} style={{ animationDelay: `${i * 80}ms` }}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+    <footer><span>{waiting ? "Waiting for the caller’s yes" : "Total for the stay"}</span><strong>{r.total}</strong></footer>
+  </section>;
+}
+
+function StayPaymentStopped({ view }: { view: HotelsView }) {
+  const r = view.review;
+  return <>
+    <section className={d.payment} aria-label="Payment">
+      <span className={d.paymentLock}><Lock size={20} /></span>
+      <div>
+        <small>Payment · stopped in test mode</small>
+        <b>Everything up to payment is done</b>
+        <p>{r ? `${r.room} at ${r.hotel} for ${r.guest}, ${r.total} in total. ` : ""}A live agency would send a secure payment link and confirm the room here. Nothing was booked or charged.</p>
+      </div>
+    </section>
+    {view.emailed ? <div className={d.emailed} role="status"><span><Inbox size={16} /></span><div><b>Quote emailed to {view.emailed.to}</b><small>{r?.total ? `${r.total} · ` : ""}sent from Palmetto Stays after the caller&rsquo;s yes</small></div></div> : null}
+  </>;
+}
+
+function StaySummary({ view }: { view: HotelsView }) {
+  const q = view.search;
+  const o = view.options.find((x) => x.option === view.selected);
+  const h = view.hotel;
+  if (!h && !o) return null;
+  const name = h?.name ?? o!.name;
+  const room = view.rooms.find((r) => r.room === view.room);
+  const totalText = view.review?.total ?? room?.total ?? o?.total ?? null;
+  return <section className={d.summaryCard} aria-label="Stay summary">
+    <div className={d.summaryTrip}>
+      <div className={d.panelHead}><h3>Stay summary</h3><span>{o ? `Option ${o.option}` : ""}</span></div>
+      <div className={d.staySum}>
+        <span className={d.staySumPhoto}><HotelPhoto src={h?.photos[0] ?? o?.photo} name={name} /></span>
+        <div>
+          <b>{name} <Stars n={h?.stars ?? o?.stars ?? null} /></b>
+          {q ? <small>{q.checkinLabel} – {q.checkoutLabel} · {plural(q.nights, "night")} · {plural(q.adults, "adult")}</small> : null}
+          <small className={d.stayAddr}><MapPin size={12} />{h?.address ?? o?.address}</small>
+        </div>
+      </div>
+    </div>
+    <dl className={d.summaryLines}>
+      <div data-empty={!room || undefined}><dt>Room<small>{room?.name ?? "Not chosen"}</small></dt><dd key={room?.room ?? "none"}>{room ? room.perNight : "—"}</dd></div>
+      <div data-empty={!room || undefined}><dt>Rate<small>{room ? room.board : "—"}</small></dt><dd key={`r${room?.room ?? "none"}`}>{room ? (room.refundable ? "Refundable" : "Non-refundable") : "—"}</dd></div>
+      <div data-empty={!view.guest || undefined}><dt>Lead guest<small>{view.guest?.name ?? "Not yet"}</small></dt><dd><User size={14} /></dd></div>
+      <div className={d.totalLine}><dt>{view.review ? "Total · re-checked" : "Total for the stay"}</dt><dd>{totalText ? <Ticker value={amountOf(totalText)} like={totalText} /> : "—"}</dd></div>
+    </dl>
+  </section>;
+}
+
+export function HotelsOffice({ view, state, agentName }: { view: HotelsView; state: LiveState; agentName: string }) {
+  const q = view.search;
+  const live = state !== "sample";
+  const stage = hotelStageOf(view);
+  // A finished step can be opened again; the next step the agent takes brings the view forward.
+  const [peek, setPeek] = useState<{ at: HotelsStage; show: HotelsStage } | null>(null);
+  const shown = peek && peek.at === stage ? peek.show : stage;
+
+  let panel: ReactNode;
+  if (shown === "trip" || (shown === "options" && !view.options.length)) panel = <section className={d.fares} aria-label="Hotels">
+    <div className={d.faresHead}><h3>Hotels</h3><span>{q ? "Searching…" : "Nothing searched yet"}</span></div>
+    <Empty>{q ? `${agentName} is searching Miami hotels and live rates…` : `Real Miami hotels appear here, with live rates, as ${agentName} searches.`}</Empty>
+    {[0, 1, 2].map((i) => <div key={i} className={d.fareGhost} data-searching={Boolean(q) || undefined} aria-hidden="true"><i /><span /><span /><b /></div>)}
+  </section>;
+  else if (shown === "options") panel = <section className={d.fares} aria-label="Hotels">
+    <div className={d.faresHead}><h3>{agentName}&rsquo;s short list</h3><span>Real hotels · live rates for your dates</span></div>
+    {view.options.map((o) => <HotelOption key={`${o.option}-${o.name}`} o={o} view={view} live={live} />)}
+  </section>;
+  else if (shown === "hotel") panel = view.hotel ? <HotelPanel key={view.hotel.name} h={view.hotel} agentName={agentName} /> : <Empty>{agentName} is opening the hotel…</Empty>;
+  else if (shown === "room") panel = <RoomsPanel view={view} agentName={agentName} />;
+  else if (shown === "guest") panel = view.guest ? <GuestCard key={view.guest.name} g={view.guest} /> : <Empty>The lead guest&rsquo;s name appears here.</Empty>;
+  else panel = <>
+    {view.review ? <StayReview r={view.review} waiting={stage === "review" && !view.booking} /> : null}
+    {shown === "payment" && view.booking ? <StayPaymentStopped view={view} /> : null}
+  </>;
+
+  // Once a hotel is chosen the search has done its job: it folds into the header to give the booking the room.
+  const searching = !q || hotelStep(shown) <= hotelStep("options");
+  const kicker = searching || !q ? "Hotel desk" : `${q.checkinLabel} – ${q.checkoutLabel} · ${plural(q.nights, "night")} · ${plural(q.adults, "adult")}`;
+
+  return <Shell id="hotels" nav={1} kicker={kicker} title={q ? q.area : "Hotels"} state={state}
+    tools={<span className={d.seg}><b>Booking</b><span>Stays</span></span>}>
+    {searching ? <div className={d.trip}>
+      <Field label="Area" value={q?.area} />
+      <Field label="Check-in" value={q?.checkinLabel} />
+      <Field label="Check-out" value={q?.checkoutLabel} />
+      <Field label="Nights" value={q ? String(q.nights) : null} />
+      <Field label="Guests" value={q ? plural(q.adults, "adult") : null} />
+    </div> : null}
+    <HotelStepper stage={stage} shown={shown} onShow={(s) => setPeek(s === stage ? null : { at: stage, show: s })} view={view} />
+    <div className={d.stagePanel} key={shown}>{panel}</div>
+    {hotelStep(stage) >= hotelStep("hotel") ? <StaySummary view={view} /> : null}
   </Shell>;
 }
 

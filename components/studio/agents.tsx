@@ -7,7 +7,9 @@ import { Reveal } from "./reveal";
 import h from "./home.module.css";
 
 /** How each agent is presented on the homepage. */
-const PERSONAS: Record<DemoId, { tone: string; label: string; bullets: string[]; title: string; industries: string; pitch: string }> = {
+/** Only the homepage lineup has a persona; other demos (hotels) are reached from their own pages. */
+type HomeDemo = Exclude<DemoId, "hotels">;
+const PERSONAS: Record<HomeDemo, { tone: string; label: string; bullets: string[]; title: string; industries: string; pitch: string }> = {
   northline: {
     label: "Appointments",
     title: "Booking an appointment by phone.",
@@ -43,9 +45,9 @@ const PERSONAS: Record<DemoId, { tone: string; label: string; bullets: string[];
 };
 
 /** The examples shown on the homepage, in order. */
-const LINEUP: DemoId[] = ["northline", "formfield", "lawfirm", "travel"];
+const LINEUP: HomeDemo[] = ["northline", "formfield", "lawfirm", "travel"];
 
-function Example({ id, index }: { id: DemoId; index: number }) {
+function Example({ id, index }: { id: HomeDemo; index: number }) {
   const p = PERSONAS[id];
   return <Reveal as="article" className={index % 2 ? `${h.ex} ${h.exFlip}` : h.ex}>
     <a className={h.exStageLink} href={`/demo/${id}/`} target="_blank" rel="noopener" aria-label={`${p.title}. Try the live example (opens in a new tab)`}>

@@ -308,6 +308,7 @@
 .wmFormfield { font-family: Georgia, "Times New Roman", serif; font-size: 14.5px; letter-spacing: 0.01em; }
 .wmLawfirm { white-space: nowrap; font-family: Georgia, "Times New Roman", serif; font-size: 14px; font-weight: 600; letter-spacing: 0.01em; }
 .wmWaypoint { font-size: 11.5px; font-weight: 650; letter-spacing: 0.16em; text-transform: uppercase; }
+.wmPalmetto { white-space: nowrap; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: #135a47; }
 .wmLune { font-size: 15px; font-weight: 500; letter-spacing: 0.12em; color: #6e3159; }
 .wmTidewell { font-size: 14px; font-weight: 650; letter-spacing: -0.01em; color: #1d6f6c; }
 .livePill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 7px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.94); color: var(--ink); box-shadow: 0 6px 16px -10px rgba(15, 15, 13, 0.4); }

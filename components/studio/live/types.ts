@@ -2,7 +2,7 @@
  * The demo voice service's protocol and dashboard records, as the website receives them. Mirrors
  * DigitalMacaroni/voice/src/protocol.ts and each demo's view() output.
  */
-export type DemoId = "northline" | "formfield" | "travel" | "lawfirm";
+export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels";
 
 export type DemoEvent =
   | { type: "session.ready"; sessionId: string; demo: DemoId; channel: "phone" | "browser" }
@@ -122,6 +122,26 @@ export interface TravelView {
   emailed?: { to: string; total: string } | null;
 }
 
+export type HotelsStage = "trip" | "options" | "hotel" | "room" | "guest" | "review" | "payment";
+
+/** Palmetto Stays: real Miami hotels with live rates, one hotel's rooms, the lead guest, and a stop at payment (test mode). */
+export interface HotelsView {
+  stage: HotelsStage;
+  search: { area: string; checkin: string; checkout: string; checkinLabel: string; checkoutLabel: string; nights: number; adults: number; label: string } | null;
+  /** The short list read out: "Best rated", "Best value" or "Cheapest". `rating` is out of 10. */
+  options: { option: number; label: string; name: string; stars: number | null; rating: number | null; reviews: number | null; photo: string | null; address: string; total: string; perNight: string; refundable: boolean }[];
+  selected: number | null;
+  hotel: { name: string; stars: number | null; rating: number | null; reviews: number | null; photos: string[]; address: string; checkIn: string; checkOut: string; highlights: string[]; pros: string[]; cons: string[] } | null;
+  rooms: { room: number; name: string; board: string; refundable: boolean; cancellation: string; total: string; perNight: string }[];
+  room: number | null;
+  /** The lead guest: the name is the caller's; email and phone are marked samples, never collected. */
+  guest: { name: string; email: string; phone: string } | null;
+  review: { hotel: string; room: string; board: string; dates: string; nights: number; adults: number; guest: string; total: string; taxes: string | null; cancellation: string; priceChanged: boolean } | null;
+  booking: { status: "payment_stopped" } | null;
+  /** The quote emailed after the payment stop, to a masked address (the full address never reaches the page). */
+  emailed: { to: string } | null;
+}
+
 /** The businesses Ellie can answer for. Northline uses NorthlineView; the others share AppointmentView. */
 export type BookingSkin = "home" | "salon" | "clinic";
 export type BrandId = DemoId | "lune" | "tidewell";
@@ -184,4 +204,4 @@ export interface LawFirmView {
   emailed?: { to: string; reference: string } | null;
 }
 
-export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView;
+export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView | HotelsView;

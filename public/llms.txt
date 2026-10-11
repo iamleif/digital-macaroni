@@ -45,3 +45,4 @@ Three example voice agents show the kind of work the studio builds. They are dem
 - [Book a service visit](https://digitalmacaroni.io/demo/northline/): Northline, a fictional home-services business. The agent books, moves and cancels service visits.
 - [Help a shop's callers](https://digitalmacaroni.io/demo/formfield/): Form & Field, a fictional shop. The agent answers product questions, checks stock and holds items for pickup.
 - [Search and book a flight](https://digitalmacaroni.io/demo/travel/): Waypoint Travel, a fictional travel agency. The agent searches live fares and books up to payment.
+- [Search and book hotels](https://digitalmacaroni.io/demo/hotels/): Palmetto Stays, a fictional hotel-booking agency in Miami. The agent searches real Miami hotels with live rates, walks through the rooms and books up to payment.

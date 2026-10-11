@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Feed, Entry } from "../live/use-demo-feed";
 import type { DemoInfo } from "../live/demo-info";
-import type { BookingSkin, BrandId } from "../live/types";
+import type { BookingSkin, BrandId, DemoId } from "../live/types";
 import { BrandMark, KindMark, type KindId } from "../brand-marks";
 import { ArrowRight, Check, Close, Code, Lock, Phone } from "../icons";
 import type { WatchStatus } from "../live/client";
@@ -22,7 +22,8 @@ export type LawArea = "injury" | "insurance" | "realestate";
 export type ShopKind = "dtc" | "dealership" | "furniture";
 export type TravelKind = "flights" | "hotels" | "tours";
 export type Trade = BookingSkin | LawArea | ShopKind | TravelKind;
-type TradeCard = { id: Trade; label: string; example: string; ready: boolean };
+/** `demo` is the demo page that runs this kind, when it is not the page the visitor is on. */
+type TradeCard = { id: Trade; label: string; example: string; ready: boolean; demo?: DemoId };
 /** `when` limits a write to calls that went one way: a case the firm took, or one it had to decline. */
 type Op = { what: string; op: string; when?: "qualified" | "declined" };
 type Tool = { id: string; name: string; skins: Trade[]; ops: Partial<Record<string, Op[]>>; confirmation: string };
@@ -48,17 +49,18 @@ const SHOP_KINDS: TradeCard[] = [
   { id: "dealership", label: "Auto dealership", example: "Inventory, test drives, trade-ins", ready: true },
   { id: "furniture", label: "Furniture showroom", example: "Pieces in stock, delivery, financing", ready: true },
 ];
+/** Travel is separate businesses, each with its own agent and number: a card for another one opens its demo. */
 const TRAVEL_KINDS: TradeCard[] = [
-  { id: "flights", label: "Flights", example: "Search fares, pick seats, add bags", ready: true },
-  { id: "hotels", label: "Hotels & stays", example: "Rooms, dates, rates", ready: true },
-  { id: "tours", label: "Tours & packages", example: "Trips with several parts", ready: true },
+  { id: "flights", label: "Flights", example: "Search fares, pick seats, add bags", ready: true, demo: "travel" },
+  { id: "hotels", label: "Hotels & stays", example: "Real hotels, rooms, live rates", ready: true, demo: "hotels" },
+  { id: "tours", label: "Tours & packages", example: "Trips with several parts", ready: false },
 ];
 
 /** What each demo asks on the first step: the cards, the mark on each, and the words around them. */
 function kindsFor(demoId: string): { cards: TradeCard[]; first: Trade; mark: (t: TradeCard) => React.ReactNode; title: string; lede: string; runs: string; stage: string } {
   if (demoId === "lawfirm") return { cards: LAW_AREAS, first: "injury", mark: (t) => (t.id === "injury" ? <BrandMark id="lawfirm" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: intake questions, calendar and rules.", runs: "What runs your business today?", stage: "Your business" };
   if (demoId === "formfield") return { cards: SHOP_KINDS, first: "dtc", mark: (t) => (t.id === "dtc" ? <BrandMark id="formfield" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: inventory, availability and follow-up.", runs: "What runs your business today?", stage: "Your business" };
-  if (demoId === "travel") return { cards: TRAVEL_KINDS, first: "flights", mark: (t) => (t.id === "flights" ? <BrandMark id="travel" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: fares, options and bookings.", runs: "What runs your business today?", stage: "Your business" };
+  if (demoId === "travel" || demoId === "hotels") return { cards: TRAVEL_KINDS, first: demoId === "hotels" ? "hotels" : "flights", mark: (t) => (t.id === "flights" ? <BrandMark id="travel" size={26} /> : t.id === "hotels" ? <BrandMark id="hotels" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: demoId === "hotels" ? "Pick one and we’ll set the call up that way: hotels, rooms and rates." : "Pick one and we’ll set the call up that way: fares, options and bookings.", runs: "What runs your business today?", stage: "Your business" };
   return { cards: TRADES, first: "salon", mark: (t) => <BrandMark id={SKINS[t.id as BookingSkin].brand} size={26} />, title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: services, schedule and rules.", runs: "What runs your business today?", stage: "Your business" };
 }
 
@@ -190,6 +192,7 @@ const TOOLS: Tool[] = [
   { id: "cloudbeds", name: "Cloudbeds", skins: ["hotels"], confirmation: "", ops: {} },
   { id: "mews", name: "Mews", skins: ["hotels"], confirmation: "", ops: {} },
   { id: "guesty", name: "Guesty", skins: ["hotels"], confirmation: "", ops: {} },
+  { id: "liteapi", name: "LiteAPI", skins: ["hotels"], confirmation: "", ops: {} },
   { id: "fareharbor", name: "FareHarbor", skins: ["tours"], confirmation: "", ops: {} },
   { id: "peek", name: "Peek", skins: ["tours"], confirmation: "", ops: {} },
   { id: "rezdy", name: "Rezdy", skins: ["tours"], confirmation: "", ops: {} },
@@ -207,10 +210,10 @@ const TOOLS: Tool[] = [
   { id: "lightspeed", name: "Lightspeed", skins: ["furniture"], confirmation: "", ops: {} },
   { id: "woocommerce", name: "WooCommerce", skins: ["dtc"], confirmation: "", ops: {} },
   { id: "bigcommerce", name: "BigCommerce", skins: ["dtc"], confirmation: "", ops: {} },
-  { id: "travefy", name: "Travefy", skins: ["flights"], confirmation: "", ops: {} },
-  { id: "traveljoy", name: "TravelJoy", skins: ["flights"], confirmation: "", ops: {} },
-  { id: "sabre", name: "Sabre", skins: ["flights"], confirmation: "", ops: {} },
-  { id: "amadeus", name: "Amadeus", skins: ["flights"], confirmation: "", ops: {} },
+  { id: "travefy", name: "Travefy", skins: ["flights", "hotels"], confirmation: "", ops: {} },
+  { id: "traveljoy", name: "TravelJoy", skins: ["flights", "hotels"], confirmation: "", ops: {} },
+  { id: "sabre", name: "Sabre", skins: ["flights", "hotels"], confirmation: "", ops: {} },
+  { id: "amadeus", name: "Amadeus", skins: ["flights", "hotels"], confirmation: "", ops: {} },
   { id: "duffel", name: "Duffel", skins: ["flights"], confirmation: "", ops: {} },
   { id: "shopmonkey", name: "Shopmonkey", skins: ["home"], confirmation: "", ops: {} },
   { id: "tekmetric", name: "Tekmetric", skins: ["home"], confirmation: "", ops: {} },
@@ -332,9 +335,22 @@ const OTHER = "other";
 
 /* ---------------- Setup card ---------------- */
 
+const SETUP_PARAM = "setup";
+/** True when the page was opened from another demo's first step (the visitor already picked this kind). */
+const arrivedWithKind = () => new URLSearchParams(window.location.search).get(SETUP_PARAM) === "tools";
+/** Opens another demo on its setup card's second step, keeping a sample replay if one is running. */
+function openDemoAt(id: DemoId) {
+  const q = new URLSearchParams(window.location.search);
+  const next = new URLSearchParams();
+  if (q.has("replay")) next.set("replay", "");
+  next.set(SETUP_PARAM, "tools");
+  window.location.href = `/demo/${id}/?${next.toString().replace(/^replay=&/, "replay&")}`;
+}
+
 export function SetupCard({ demo, watch, onNewCode, onDone, onClose, again }: { demo: DemoInfo; watch: { status: WatchStatus; code?: string }; onNewCode: () => void; onDone: (s: Setup) => void; onClose?: () => void; again?: Setup }) {
   // "Try it again" comes straight back to the call step with the answers they already gave.
-  const [step, setStep] = useState(again ? 3 : 0);
+  // Arriving from another travel demo's first step (?setup=tools): that choice is made, so open on the tools.
+  const [step, setStep] = useState(() => (again ? 3 : arrivedWithKind() ? 1 : 0));
   const kinds = kindsFor(demo.id);
   const [trade, setTrade] = useState<Trade>(again?.trade ?? kinds.first);
   const [tool, setTool] = useState<string | null>(again?.tool ?? null);
@@ -344,6 +360,13 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onClose, again }: { 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
 
   useEffect(() => { if (!again) track("demo_setup_viewed", { demo: demo.id }); }, [demo.id, again]);
+  // The marker has done its job once the card is open: clear it so a reload starts at the beginning.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has(SETUP_PARAM)) return;
+    url.searchParams.delete(SETUP_PARAM);
+    window.history.replaceState(window.history.state, "", url.pathname + url.search.replace(/=(?=&|$)/g, "") + url.hash);
+  }, []);
 
   function currentSetup(): Setup { return { trade, tool: tool ?? CUSTOM, email: email.trim(), record, updates }; }
   function saveAndContinue() {
@@ -383,10 +406,15 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onClose, again }: { 
         <div className={f.trades}>
           {kinds.cards.map((t) => <button key={t.id} type="button" className={f.trade} data-selected={trade === t.id || undefined} disabled={!t.ready} onClick={() => { setTrade(t.id); setTool(null); }}>
             <span className={f.tradeMark}>{kinds.mark(t)}</span>
-            <b>{t.label}</b><span>{t.example}</span>{t.ready ? null : <em>Soon</em>}
+            <b>{t.label}</b><span>{t.example}</span>{t.ready ? null : <em>Coming soon</em>}
           </button>)}
         </div>
-        <div className={f.actions}><button type="button" className={f.primary} onClick={() => { track("demo_setup_trade", { demo: demo.id, trade }); setStep(1); }}>Continue<ArrowRight size={14} /></button></div>
+        <div className={f.actions}><button type="button" className={f.primary} onClick={() => {
+          track("demo_setup_trade", { demo: demo.id, trade });
+          const other = kinds.cards.find((t) => t.id === trade)?.demo;
+          if (other && other !== demo.id) { openDemoAt(other); return; }
+          setStep(1);
+        }}>Continue<ArrowRight size={14} /></button></div>
       </> : null}
 
       {step === 1 ? <>

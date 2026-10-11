@@ -1,4 +1,4 @@
-import type { AppointmentView, FormFieldView, LawFirmView, RecordField, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
+import type { AppointmentView, FormFieldView, HotelsView, LawFirmView, RecordField, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
 
 /**
  * Representative records for the homepage cards and the demo window before a conversation starts.
@@ -337,3 +337,37 @@ export const lawfirmSample: LawFirmView = {
   consults: [{ id: "AF-482", status: "booked", day: "Tomorrow", time: "1 PM", attorney: "Dana Alder", format: "Phone call", name: "Alex Taylor", changes: 0 }],
   brief: { rows: [brief0[0]!, { who: "Alex T.", summary: "Car crash; emergency room; other party at fault", tier: "B", mine: true, declined: false }, ...brief0.slice(1)] },
 };
+
+/* Palmetto Stays: real Miami Beach hotels; rates and reviews here are illustrative, live calls bring the real ones. */
+export const hotelsSample: HotelsView = {
+  stage: "payment",
+  search: { area: "Miami Beach", checkin: "2026-11-20", checkout: "2026-11-22", checkinLabel: "Fri, Nov 20", checkoutLabel: "Sun, Nov 22", nights: 2, adults: 2, label: "Miami Beach · Nov 20–22 · 2 adults" },
+  options: [
+    { option: 1, label: "Best rated", name: "The Betsy Hotel, South Beach", stars: 5, rating: 9.2, reviews: 2779, photo: "https://static.cupid.travel/hotels/448099852.jpg", address: "1440 Ocean Drive, Miami Beach", total: "$1,118", perNight: "$559", refundable: false },
+    { option: 2, label: "Best value", name: "Nautilus Sonesta Miami Beach", stars: 4, rating: 8.6, reviews: 3001, photo: "https://static.cupid.travel/hotels/488247392.jpg", address: "1825 Collins Avenue, Miami Beach", total: "$742", perNight: "$371", refundable: true },
+    { option: 3, label: "Cheapest", name: "The Goodtime Hotel", stars: 4, rating: 8.1, reviews: 2199, photo: "https://static.cupid.travel/hotels/595742196.jpg", address: "601 Washington Avenue, Miami Beach", total: "$538", perNight: "$269", refundable: false },
+  ],
+  selected: 1,
+  hotel: {
+    name: "The Betsy Hotel, South Beach", stars: 5, rating: 9.2, reviews: 2779, photos: ["https://static.cupid.travel/hotels/448099852.jpg", "https://static.cupid.travel/hotels/452995447.jpg", "https://static.cupid.travel/hotels/319016195.jpg", "https://static.cupid.travel/hotels/184187576.jpg"], address: "1440 Ocean Drive, Miami Beach, FL 33139",
+    checkIn: "4:00 PM", checkOut: "11:00 AM",
+    highlights: ["Rooftop pool", "Beach service", "Restaurant", "Bar", "Fitness room", "Free WiFi"],
+    pros: ["On Ocean Drive, across from the beach", "Guests praise the staff and the breakfast"],
+    cons: ["Some rooms are compact", "Parking is valet only"],
+  },
+  rooms: [
+    { room: 1, name: "Deluxe King, City View", board: "Room only", refundable: false, cancellation: "Non-refundable", total: "$1,118", perNight: "$559" },
+    { room: 2, name: "Deluxe King, City View", board: "Breakfast included", refundable: true, cancellation: "Free cancellation until Tue, Nov 17", total: "$1,218", perNight: "$609" },
+    { room: 3, name: "Ocean View Queen", board: "Breakfast included", refundable: true, cancellation: "Free cancellation until Tue, Nov 17", total: "$1,396", perNight: "$698" },
+  ],
+  room: 2,
+  guest: { name: "Alex Taylor", email: "guest@example.com", phone: "+1 555 0142" },
+  review: {
+    hotel: "The Betsy Hotel, South Beach", room: "Deluxe King, City View", board: "Breakfast included", dates: "Fri, Nov 20 – Sun, Nov 22", nights: 2, adults: 2,
+    guest: "Alex Taylor", total: "$1,218", taxes: "Resort fee of $40 a night, paid at the hotel", cancellation: "Free cancellation until Tue, Nov 17", priceChanged: false,
+  },
+  booking: { status: "payment_stopped" },
+  emailed: null,
+};
+
+export const hotelsEmpty: HotelsView = { stage: "trip", search: null, options: [], selected: null, hotel: null, rooms: [], room: null, guest: null, review: null, booking: null, emailed: null };

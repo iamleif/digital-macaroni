@@ -1,5 +1,5 @@
-import { formfieldEmpty, formfieldSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, travelEmpty, travelSample } from "../live/sample-views";
-import type { DemoEvent, DemoId, FormFieldView, LawFirmView, NorthlineView, TravelView } from "../live/types";
+import { formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, travelEmpty, travelSample } from "../live/sample-views";
+import type { DemoEvent, DemoId, FormFieldView, HotelsView, LawFirmView, NorthlineView, TravelView } from "../live/types";
 
 /**
  * Sample calls for reviewing the demo pages without phoning in (`?replay`). Each is a timeline of the
@@ -26,7 +26,7 @@ let v = 0;
 const say = (speaker: "visitor" | "agent", text: string, id = `t${++v}`): DemoEvent => ({ type: "transcript", id, speaker, text, final: true });
 const tool = (callId: string, name: string, label: string): DemoEvent => ({ type: "tool.started", callId, tool: name, label });
 const ok = (callId: string, name: string, label: string, summary: string): DemoEvent => ({ type: "tool.succeeded", callId, tool: name, label, summary, version: 0 });
-const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView): DemoEvent => ({ type: "state", version, state: s });
+const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView): DemoEvent => ({ type: "state", version, state: s });
 const speaking = (on: boolean): DemoEvent => ({ type: "agent.speaking", speaking: on });
 
 const nlRequest = (patch: Partial<NorthlineView["request"]>): NorthlineView => ({ ...northlineEmpty, request: { ...northlineEmpty.request, ...patch } });
@@ -296,4 +296,100 @@ const lawfirm = timeline([
   { type: "session.ended", reason: "agent_ended" },
 ]);
 
-export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm };
+const hv = (patch: Partial<HotelsView>): HotelsView => ({ ...hotelsEmpty, ...patch });
+const hSearch = hv({ stage: "options", search: hotelsSample.search });
+const hFound = { ...hSearch, options: hotelsSample.options };
+const hHotel = { ...hFound, stage: "hotel" as const, selected: 1, hotel: hotelsSample.hotel, rooms: hotelsSample.rooms };
+const hRooms = { ...hHotel, stage: "room" as const };
+const hRoom = { ...hRooms, room: 2 };
+const hGuest = { ...hRoom, stage: "guest" as const, guest: hotelsSample.guest };
+const hReview = { ...hGuest, stage: "review" as const, review: hotelsSample.review };
+const hPayment = { ...hReview, stage: "payment" as const, booking: hotelsSample.booking };
+const hEmailed = { ...hPayment, emailed: { to: "a•••r@example.com" } };
+
+const hotels = timeline([
+  { type: "session.ready", sessionId: "replay", demo: "hotels", channel: "phone" },
+  { type: "pairing.linked" },
+  speaking(true),
+  say("agent", "Thanks for calling Palmetto Stays, this is Marisol. Where would you like to stay?"),
+  speaking(false),
+  1600,
+  say("visitor", "A hotel in Miami Beach next Friday to Sunday, two adults."),
+  tool("c1", "search_hotels", "Searching hotels"),
+  state(1, hSearch),
+  1600,
+  ok("c1", "search_hotels", "Searching hotels", "Short list of 3 · live rates"),
+  state(2, hFound),
+  speaking(true),
+  say("agent", "I’ve got three for you. The Betsy on Ocean Drive is the best rated, at 1,118 dollars for both nights. The Nautilus Sonesta is the best value at 742, and the Goodtime Hotel is the cheapest at 538."),
+  speaking(false),
+  1500,
+  say("visitor", "Which one has the best reviews?"),
+  speaking(true),
+  say("agent", "The Betsy: 9.2 out of 10 from nearly 2,800 guests. Would you like to hear about its rooms?"),
+  speaking(false),
+  1400,
+  say("visitor", "Yes, the Betsy."),
+  tool("c2", "choose_hotel", "Opening the hotel"),
+  900,
+  ok("c2", "choose_hotel", "Opening the hotel", "The Betsy Hotel · 3 room rates"),
+  state(3, hHotel),
+  speaking(true),
+  say("agent", "It’s on Ocean Drive, across from the beach, with a rooftop pool. Check-in is from 4 PM. The lowest rate is a Deluxe King, room only, for 1,118, and that one is non-refundable."),
+  speaking(false),
+  1500,
+  say("visitor", "Is there a room with breakfast?"),
+  state(4, hRooms),
+  speaking(true),
+  say("agent", "Yes. The same Deluxe King with breakfast included is 1,218 for both nights."),
+  speaking(false),
+  1400,
+  say("visitor", "Can I cancel for free?"),
+  speaking(true),
+  say("agent", "On that rate, yes: free cancellation until Tuesday, November 17th. Shall I go with it?"),
+  speaking(false),
+  1400,
+  say("visitor", "Yes, that one."),
+  tool("c3", "choose_room", "Choosing the room"),
+  600,
+  ok("c3", "choose_room", "Choosing the room", "Deluxe King · breakfast · $1,218"),
+  state(5, hRoom),
+  speaking(true),
+  say("agent", "Done. And the lead guest’s full name?"),
+  speaking(false),
+  1400,
+  say("visitor", "Alex Taylor."),
+  tool("c4", "set_guest", "Adding the lead guest"),
+  500,
+  ok("c4", "set_guest", "Adding the lead guest", "Lead guest · Alex Taylor"),
+  state(6, hGuest),
+  2600,
+  tool("c5", "review_stay", "Re-checking the price"),
+  1000,
+  ok("c5", "review_stay", "Re-checking the price", "Price held · $1,218"),
+  state(7, hReview),
+  speaking(true),
+  say("agent", "Here’s everything: the Betsy, Friday November 20th to Sunday the 22nd, a Deluxe King with breakfast for two adults, under Alex Taylor. I’ve re-checked the price: 1,218 dollars, with free cancellation until the 17th. Is that all correct?"),
+  speaking(false),
+  1600,
+  say("visitor", "Yes, that’s right."),
+  tool("c6", "book_stay", "Taking payment"),
+  700,
+  { type: "tool.failed", callId: "c6", tool: "book_stay", label: "Taking payment", summary: "Stopped at payment · test mode" },
+  state(8, hPayment),
+  speaking(true),
+  say("agent", "Everything’s ready. This is where I’d send you a secure payment link, but I’m in test mode, so nothing is booked or charged. Would you like the quote by email?"),
+  speaking(false),
+  1500,
+  say("visitor", "Sure, send it over."),
+  tool("c7", "email_quote", "Emailing the quote"),
+  800,
+  ok("c7", "email_quote", "Emailing the quote", "Quote emailed to a•••r@example.com"),
+  state(9, hEmailed),
+  speaking(true),
+  say("agent", "Sent. Enjoy Miami Beach, Alex!"),
+  speaking(false),
+  { type: "session.ended", reason: "agent_ended" },
+]);
+
+export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels };

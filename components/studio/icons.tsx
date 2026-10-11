@@ -26,6 +26,11 @@ export const Code = ({ size }: P) => <svg {...base(size)}><path d="m8.5 7.5-5 4.
 export const Lock = ({ size }: P) => <svg {...base(size)}><rect x="5" y="10.5" width="14" height="10" rx="2.5" /><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3M12 14.5v2" /></svg>;
 export const Suitcase = ({ size }: P) => <svg {...base(size)}><rect x="5" y="7" width="14" height="13" rx="2.5" /><path d="M9.5 7V4.5h5V7M9 11v5M15 11v5M8 20v1.5M16 20v1.5" /></svg>;
 export const Seat = ({ size }: P) => <svg {...base(size)}><path d="M7 4.5h5a1.5 1.5 0 0 1 1.5 1.5v7H8.5A1.5 1.5 0 0 1 7 11.5v-7Z" /><path d="M5 13.5h11.5a2 2 0 0 1 2 2V17H6.5A1.5 1.5 0 0 1 5 15.5v-2ZM8 17v3M16 17v3" /></svg>;
+export const Bed = ({ size }: P) => <svg {...base(size)}><path d="M3.5 18.5V6M3.5 14h17v4.5M20.5 14v-2.5a2.5 2.5 0 0 0-2.5-2.5h-7V14" /><circle cx="7.2" cy="11.2" r="1.7" /></svg>;
+export const Coffee = ({ size }: P) => <svg {...base(size)}><path d="M5 9.5h11v4.5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9.5ZM16 11h1.5a2.5 2.5 0 0 1 0 5H15.5M8.5 3.5v3M12 3.5v3" /></svg>;
+export const Star = ({ size }: P) => <svg {...base(size)}><path d="m12 4 2.4 5 5.4.7-4 3.7 1 5.4L12 16.2l-4.8 2.6 1-5.4-4-3.7 5.4-.7L12 4Z" /></svg>;
+export const MapPin = ({ size }: P) => <svg {...base(size)}><path d="M12 20.5s6-5.4 6-10.5a6 6 0 0 0-12 0c0 5.1 6 10.5 6 10.5Z" /><circle cx="12" cy="10" r="2.2" /></svg>;
+export const Clock = ({ size }: P) => <svg {...base(size)}><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></svg>;
 export const User = ({ size }: P) => <svg {...base(size)}><circle cx="12" cy="8.5" r="3.5" /><path d="M5 20a7 7 0 0 1 14 0" /></svg>;
 
 // Brand mark (filled, not a line icon): the LinkedIn "in", from Simple Icons (CC0).
