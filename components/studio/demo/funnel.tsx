@@ -40,7 +40,7 @@ const TRADES: TradeCard[] = [
 /** Law and professional services: separate businesses, each with its own agent and number. A card for another one opens its demo. */
 const LAW_AREAS: TradeCard[] = [
   { id: "injury", label: "Personal injury", example: "Car crashes, falls, dog bites, wrongful death", ready: true, demo: "lawfirm" },
-  { id: "realestate", label: "Real estate", example: "Buyers, sellers, showings, home values", ready: true, demo: "realestate" },
+  { id: "realestate", label: "Real estate", example: "Buyers, sellers, showings, home values", ready: false, demo: "realestate" },
   { id: "insurance", label: "Insurance", example: "Quotes, coverage, claims, policy changes", ready: true, demo: "insurance" },
 ];
 const LAW_FIRST: Partial<Record<DemoId, Trade>> = { lawfirm: "injury", realestate: "realestate", insurance: "insurance" };
