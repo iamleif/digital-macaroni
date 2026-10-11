@@ -7,6 +7,9 @@ import { VOICE_URL } from "@/components/studio/live/client";
 import f from "./factory.module.css";
 import { Turnstile } from "./Turnstile";
 
+/** Leif's Cal.com page (a 30-minute discovery call), the same link the emails use. */
+export const MEETING_URL = "https://cal.com/leif-johansen-pnbduq/ai-agent";
+
 /** The voice service's progress for this call (factory.py Job.public). */
 type Job = { job: string; step: string; business: string; error?: string; message?: string };
 
@@ -87,8 +90,8 @@ export function InstantForm() {
     const done = job.step === "done";
     return (
       <div className={f.progress} role="status" aria-live="polite">
-        <h2>{done ? "That’s what your callers get." : failed ? "We couldn’t reach you." : at >= 1 ? "Calling you now" : "Building your agent now"}</h2>
-        <p>{done ? (job.message || "Check your email: that’s the summary you’d get after every call, with a link to book a time with us.") : failed ? job.message : at >= 1 ? "Pick up when your phone rings. Pretend you’re one of your customers." : "Stay close to your phone. We’re reading your website and it calls you in under a minute."}</p>
+        <h2 className={f.title}>{done ? "That was your demo call." : failed ? "We couldn’t reach you." : at >= 1 ? "Calling you now" : "Building your agent now"}{done || failed ? null : <span className={f.spinner} aria-hidden="true" />}</h2>
+        <p>{done ? (job.message || "Check your email for the call summary, the same one you’d get after every real call, and a link to book a discovery call with Leif.") : failed ? job.message : at >= 1 ? "Pick up when your phone rings. Pretend you’re one of your customers." : "Stay close to your phone. We’re reading your website and it calls you in under a minute."}</p>
         {failed ? null : (
           <ol className={f.steps}>
             {STEPS.map((s, i) => (
@@ -100,7 +103,7 @@ export function InstantForm() {
         )}
         {done || failed ? (
           <div className={f.actions}>
-            <a className={f.primary} href="/pricing/">Get it for real</a>
+            <a className={`${f.primary} ${f.callButton}`} href={MEETING_URL} target="_blank" rel="noopener">Book a discovery call</a>
             <button className={f.secondary} type="button" onClick={() => { setJob(null); shownAt.current = Date.now(); }}>Try again</button>
           </div>
         ) : null}

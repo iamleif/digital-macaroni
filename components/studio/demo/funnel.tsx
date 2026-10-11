@@ -481,6 +481,8 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onSaved, onClose, ag
   const [checking, setChecking] = useState(false);
   const [emailProblem, setEmailProblem] = useState("");
   const [pass, setPass] = useState(again?.pass ?? "");
+  // A field people never see; anything typed in it came from a bot.
+  const [trap, setTrap] = useState("");
 
   useEffect(() => { if (!again) track("demo_setup_viewed", { demo: demo.id }); }, [demo.id, again]);
   // The marker has done its job once the card is open: clear it so a reload starts at the beginning.
@@ -497,7 +499,7 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onSaved, onClose, ag
     setChecking(true);
     setEmailProblem("");
     try {
-      const r = await fetch(`${VOICE_URL}/check-email`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: email.trim(), turnstileToken: human }) });
+      const r = await fetch(`${VOICE_URL}/check-email`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: email.trim(), turnstileToken: human, company: trap }) });
       const out = (await r.json()) as { ok: boolean; pass?: string; message?: string };
       if (!out.ok || !out.pass) { setEmailProblem(out.message || "Please check your email address."); return; }
       setPass(out.pass);
@@ -578,6 +580,7 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onSaved, onClose, ag
         <label className={f.check}><input type="checkbox" checked={record} onChange={(e) => setRecord(e.target.checked)} /><span>Record the call so I can listen back in my report</span></label>
         <label className={f.check}><input type="checkbox" checked={updates} onChange={(e) => setUpdates(e.target.checked)} /><span>Send me occasional updates from Digital Macaroni</span></label>
         <p className={f.fine}><Lock size={12} /><span>Kept 30 days, then deleted. See our <a href="/privacy/">privacy policy</a>.</span></p>
+        <div className="honeypot" aria-hidden="true" style={{ position: "absolute", left: -10000, width: 1, height: 1, overflow: "hidden" }}><label>Leave this empty<input tabIndex={-1} autoComplete="off" value={trap} onChange={(e) => setTrap(e.target.value)} /></label></div>
         <div style={{ marginTop: 14 }}><Turnstile onToken={setHuman} resetKey={checks} /></div>
         {emailProblem ? <p className={f.fine} role="alert" style={{ color: "#b03a26" }}>{emailProblem}</p> : null}
         <div className={f.actions}>

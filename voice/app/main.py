@@ -308,6 +308,8 @@ async def check_email(request: Request) -> JSONResponse:
     if not allow_start(f"check:{client_ip(request)}", 20):
         return JSONResponse({"ok": False, "message": "Please wait a few minutes and try again."}, status_code=429)
     body = await _json(request)
+    if body.get("company"):  # the hidden field only bots fill in
+        return JSONResponse({"ok": False, "message": "Something went wrong. Please try again."}, status_code=400)
     if not await verify.human(str(body.get("turnstileToken") or ""), client_ip(request)):
         return JSONResponse({"ok": False, "message": "Please tick “Verify you are human” and try again."}, status_code=400)
     address = str(body.get("email") or "").strip().lower()

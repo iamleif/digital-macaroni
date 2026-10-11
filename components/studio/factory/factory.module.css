@@ -38,3 +38,12 @@
 /* "Call me now": the site's yellow pill, not the black submit button. Repeated class beats .formCard's button rule. */
 .callButton.callButton.callButton { background: var(--yellow, #f6cf4a); color: var(--ink, #0f0f0d); }
 .callButton.callButton.callButton:hover:not(:disabled) { background: #ffd95e; }
+
+/* The progress card's title, with a small spinner while the agent is being built or the call is ringing. */
+.title { display: flex; align-items: center; gap: 12px; }
+.spinner { width: 18px; height: 18px; flex: none; border-radius: 999px; border: 2px solid var(--hair, rgba(15, 15, 13, 0.12)); border-top-color: var(--ink, #0f0f0d); animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }
+/* Links styled as buttons keep their text colour wherever the card sits (the homepage resets link colours). */
+.primary.primary, .secondary.secondary { text-decoration: none; }
+.primary.primary { color: #fff; }

@@ -163,6 +163,10 @@ export function OnboardForm() {
         <input id="neverSay" name="neverSay" maxLength={600} />
       </div>
       <p className={f.note}>We read your website to build your agent. Your new number is local to the area code you choose.</p>
+      <div className="honeypot" aria-hidden="true">
+        <label htmlFor="company_url">Leave this field empty</label>
+        <input id="company_url" name="company_url" tabIndex={-1} autoComplete="off" />
+      </div>
       <Turnstile onToken={setToken} resetKey={tries} />
       <div className="form-action">
         <button className={`submit-button ${f.callButton}`} type="submit" disabled={sending}>{sending ? "Starting…" : "Build my agent"}</button>

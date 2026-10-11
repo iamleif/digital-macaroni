@@ -364,6 +364,8 @@ async def check_invite(token: str) -> tuple[Optional[agents_store.Invite], str]:
 
 
 async def start_onboard(body: dict[str, Any]) -> tuple[Optional[Job], Optional[tuple[int, str, str]]]:
+    if body.get("company_url"):  # the hidden field only bots fill in
+        return None, (400, "invalid", "Something went wrong. Please try again.")
     inv, why = await check_invite(str(body.get("invite") or ""))
     if not inv:
         return None, (403, "invite", why)
