@@ -8,6 +8,7 @@ const READY = [
   "Knowledge base: trained on your services, prices, FAQs and policies",
   "One integration: your calendar, CRM or any software with an API",
   "Texts callers confirmations and links, and texts you a summary after every call",
+  "Full admin control, plus unlimited users",
   "Transfers urgent calls to you or your team",
   "Your brand: business name, voice, greeting and hours",
   "Transcripts and summaries in your dashboard, plus Zapier for thousands of other apps",

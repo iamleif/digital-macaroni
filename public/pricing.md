@@ -9,7 +9,7 @@ Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io
 - Price: $2,500 one-time
 - Live in: 2 to 5 days
 - For: inbound calls
-- Includes: answers every call day or night; books appointments, answers questions and takes messages; a knowledge base trained on the business's services, prices, FAQs and policies; one integration of the business's choice (calendar, CRM or any software with an API); texts callers confirmations and links and texts the business a summary after every call; transfers urgent calls; custom branding (business name, voice, greeting and hours); transcripts and summaries in a dashboard, plus Zapier to reach thousands of other apps; email support and 30 days of fixes after launch
+- Includes: answers every call day or night; books appointments, answers questions and takes messages; a knowledge base trained on the business's services, prices, FAQs and policies; one integration of the business's choice (calendar, CRM or any software with an API); texts callers confirmations and links and texts the business a summary after every call; transfers urgent calls; custom branding (business name, voice, greeting and hours); full admin control, plus unlimited users; transcripts and summaries in a dashboard, plus Zapier to reach thousands of other apps; email support and 30 days of fixes after launch
 - Extra connections: $750 each
 
 ### Custom agent

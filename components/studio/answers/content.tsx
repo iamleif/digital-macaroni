@@ -262,7 +262,7 @@ export const ANSWERS: Answer[] = [
       <table>
         <thead><tr><th>Plan</th><th>Price</th><th>Includes</th></tr></thead>
         <tbody>
-          <tr><td>Core agent</td><td>$2,500 one-time</td><td>A proven agent branded as your business and trained on your services, prices and policies: answers every call, books, takes messages, texts confirmations and summaries, transfers urgent calls, dashboard. One integration of your choice (calendar, CRM or any software with an API), Zapier, email support and 30 days of fixes included. Live in 2 to 5 days.</td></tr>
+          <tr><td>Core agent</td><td>$2,500 one-time</td><td>A proven agent branded as your business and trained on your services, prices and policies: answers every call, books, takes messages, texts confirmations and summaries, transfers urgent calls, dashboard, full admin control plus unlimited users. One integration of your choice (calendar, CRM or any software with an API), Zapier, email support and 30 days of fixes included. Live in 2 to 5 days.</td></tr>
           <tr><td>Custom agent</td><td>From $6,000</td><td>Everything above, plus a deep knowledge base, five or more connections that write back to your systems, your own intake and routing, outbound callbacks and reminders with two-way texting, multiple numbers, locations and languages, and 90 days of tuning after launch. Live in 2 to 4 weeks.</td></tr>
         </tbody>
       </table>

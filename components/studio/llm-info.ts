@@ -85,7 +85,7 @@ export const LLM_INFO: Section[] = [
   {
     heading: "Pricing",
     items: [
-      { label: "Core agent", text: "$2,500 one-time, live in 2 to 5 days, with a knowledge base trained on the business, custom branding, one integration of the business’s choice (calendar, CRM or any software with an API), Zapier, email support and 30 days of fixes." },
+      { label: "Core agent", text: "$2,500 one-time, live in 2 to 5 days, with a knowledge base trained on the business, custom branding, full admin control plus unlimited users, one integration of the business’s choice (calendar, CRM or any software with an API), Zapier, email support and 30 days of fixes." },
       { label: "Custom agent", text: "from $6,000, live in 2 to 4 weeks: a deep knowledge base, five or more connections that write back to the business’s systems, custom intake and routing, outbound callbacks and reminders, multiple numbers, locations and languages, and 90 days of tuning after launch." },
       { label: "Running plans", text: "separate from the one-time build: self-hosted (no monthly fee from us, $500 one-time setup), hosted at $349/month, or managed at $749/month. Hosted and managed are billed monthly in advance, with a 3-month minimum, then month-to-month." },
       { label: "Consulting", text: "for companies putting voice AI into a product, moving phones or support to AI agents, or reviewing an existing build: a few days, a project of weeks to months, or ongoing. Scoped and priced per engagement.", href: "https://digitalmacaroni.io/consulting/" },
