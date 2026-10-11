@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const updated = "2026-10-05";
 
   return [
-    { url: `${base}/`, lastModified: "2026-10-09", changeFrequency: "monthly", priority: 1 },
+    { url: `${base}/`, lastModified: "2026-10-11", changeFrequency: "monthly", priority: 1 },
     ...["northline", "formfield", "travel", "lawfirm", "hotels"].map((demo) => ({
       url: `${base}/demo/${demo}/`,
       lastModified: "2026-10-09",
@@ -24,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    { url: `${base}/pricing/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/pricing/`, lastModified: "2026-10-11", changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/your-agent/`, lastModified: "2026-10-11", changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/consulting/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/about/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },

@@ -4,23 +4,24 @@ import h from "./home.module.css";
 
 /** Every feature line; the homepage shows the first few of each, /pricing/ shows them all. */
 const READY = [
-  "Answers every call, day or night",
-  "Books appointments, answers questions and takes messages",
-  "Texts callers confirmations and links",
-  "Texts you a summary after every call",
+  "Answers every call, day or night: books appointments, answers questions and takes messages",
+  "Knowledge base: trained on your services, prices, FAQs and policies",
   "One integration: your calendar, CRM or any software with an API",
+  "Texts callers confirmations and links, and texts you a summary after every call",
   "Transfers urgent calls to you or your team",
-  "Your brand: business name, logo, voice, greeting, hours and services",
-  "Zapier, to reach thousands of other apps",
-  "Every call’s transcript and summary in your dashboard",
-  "Email support, plus 30 days of fixes after launch",
+  "Your brand: business name, voice, greeting and hours",
+  "Transcripts and summaries in your dashboard, plus Zapier for thousands of other apps",
+  "Email support and 30 days of fixes after launch",
 ];
 const CUSTOM = [
   "Everything in the ready-made agent",
-  "Five or more connections: calendar, CRM, booking or field-service software, through their APIs",
-  "Two-way texting: reminders, follow-ups and replies",
-  "Your own rules, call flows and handoffs",
-  "Designed and tested on your real calls",
+  "Deep knowledge base: built from your website, documents and past calls, and kept current",
+  "Five or more connections that write back: creates leads, updates records and books into your CRM, calendar or practice software",
+  "Your own intake and qualification scripts, with routing by department, location or case type",
+  "Outbound: callbacks, reminders, follow-ups and two-way texting",
+  "Multiple numbers, locations and languages",
+  "Designed and tested on your real calls before launch",
+  "90 days of tuning after launch and priority support",
   "Fixed scope and price, agreed up front",
 ];
 const SHORT = 5;
@@ -81,11 +82,11 @@ export function ConsultingCard() {
 /** Running plans and extras: the full breakdown that lives on /pricing/. */
 export function RunningCosts() {
   return <Reveal className={h.running}>
-    <div className={h.runningHead}><h3>Keeping it running</h3><p>Every agent needs a phone line, call minutes and texts. Run it yourself, or let us handle it.</p></div>
+    <div className={h.runningHead}><h3>Keeping it running</h3><p>The agent price is a one-time build. Every agent also needs a phone line, call minutes and texts: run it yourself, or let us handle it.</p></div>
     <div className={h.runningPlans}>
       <div><p className={h.runName}>Self-hosted</p><p className={h.runPrice}>Free<span>/mo from us</span></p><p>We get you set up with your own phone and AI accounts and build your agent there. You run it yourself, with 30 days of fixes included. One-time $500 setup.</p></div>
-      <div><p className={h.runName}>Hosted</p><p className={h.runPrice}>$249<span>/mo</span></p><p>We keep it running: your number, 500 call minutes, 500 texts, your dashboard and email support. Changes are quoted when you need them.</p></div>
-      <div data-featured><p className={h.runName}>Managed<em>Hands-off</em></p><p className={h.runPrice}>$500<span>/mo</span></p><p>We run it for you: 1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning from real calls, a monthly report and same-day email support.</p></div>
+      <div><p className={h.runName}>Hosted</p><p className={h.runPrice}>$249<span>/mo</span></p><p>We keep it running: your number, 500 call minutes, 500 texts, your dashboard and email support. Changes are quoted when you need them. Billed monthly in advance, 3-month minimum, then month-to-month.</p></div>
+      <div data-featured><p className={h.runName}>Managed<em>Hands-off</em></p><p className={h.runPrice}>$500<span>/mo</span></p><p>We run it for you: 1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning from real calls, a monthly report and same-day email support. Billed monthly in advance, 3-month minimum, then month-to-month.</p></div>
     </div>
     <div className={h.extras}>
       <div className={h.runningHead}><h3>Extras</h3><p>Add-ons for either agent, ready-made or custom.</p></div>
@@ -97,6 +98,6 @@ export function RunningCosts() {
         <div><p className={h.runName}>Extra minutes &amp; texts</p><p className={h.extraPrice}>As needed</p><p>Billed per minute and per text at the rate in your proposal if you go over your plan’s allowance.</p></div>
       </div>
     </div>
-    <p className={h.offerNote}>Need several agents or outbound calling? <a href="/contact/">Let’s talk</a>.</p>
+    <p className={h.offerNote}>Need several agents? <a href="/contact/">Let’s talk</a>.</p>
   </Reveal>;
 }

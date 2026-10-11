@@ -62,9 +62,9 @@ Examples of tools with documented APIs that agents can connect to. These are exa
 
 ## Pricing
 
-- Ready-made agent: $3,000 one-time, live in 2 to 5 days, with custom branding, one integration of the business’s choice (calendar, CRM or any software with an API), Zapier and email support.
-- Custom agent: from $6,000, live in 2 to 4 weeks, with five or more connections to the business’s systems.
-- Running plans: self-hosted (no monthly fee from us, $500 one-time setup), hosted at $249/month, or managed at $500/month.
+- Ready-made agent: $3,000 one-time, live in 2 to 5 days, with a knowledge base trained on the business, custom branding, one integration of the business’s choice (calendar, CRM or any software with an API), Zapier, email support and 30 days of fixes.
+- Custom agent: from $6,000, live in 2 to 4 weeks: a deep knowledge base, five or more connections that write back to the business’s systems, custom intake and routing, outbound callbacks and reminders, multiple numbers, locations and languages, and 90 days of tuning after launch.
+- Running plans: separate from the one-time build: self-hosted (no monthly fee from us, $500 one-time setup), hosted at $249/month, or managed at $500/month. Hosted and managed are billed monthly in advance, with a 3-month minimum, then month-to-month.
 - Consulting: for companies putting voice AI into a product, moving phones or support to AI agents, or reviewing an existing build: a few days, a project of weeks to months, or ongoing. Scoped and priced per engagement. (https://digitalmacaroni.io/consulting/)
 - Full pricing: https://digitalmacaroni.io/pricing/
 

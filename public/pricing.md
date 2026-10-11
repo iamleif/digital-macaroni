@@ -9,15 +9,17 @@ Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io
 - Price: $3,000 one-time
 - Live in: 2 to 5 days
 - For: inbound calls
-- Includes: answers every call day or night; books appointments, answers questions and takes messages; texts callers confirmations and links; texts the business a summary after every call; transfers urgent calls; custom branding (business name, logo, voice, greeting, hours and services); one integration of the business's choice (calendar, CRM or any software with an API); Zapier to reach thousands of other apps; every call's transcript and summary in a dashboard; email support and 30 days of fixes after launch
+- Includes: answers every call day or night; books appointments, answers questions and takes messages; a knowledge base trained on the business's services, prices, FAQs and policies; one integration of the business's choice (calendar, CRM or any software with an API); texts callers confirmations and links and texts the business a summary after every call; transfers urgent calls; custom branding (business name, voice, greeting and hours); transcripts and summaries in a dashboard, plus Zapier to reach thousands of other apps; email support and 30 days of fixes after launch
 - Extra connections: $750 each
 
 ### Custom agent
 - Price: from $6,000
 - Live in: 2 to 4 weeks
-- Includes: everything in the ready-made agent; five or more connections to the business's systems through their APIs (calendar, CRM, booking or field-service software); two-way texting with reminders, follow-ups and replies; custom rules, call flows and handoffs; designed and tested on real calls; fixed scope and price agreed up front
+- Includes: everything in the ready-made agent; a deep knowledge base built from the business's website, documents and past calls, kept current; five or more connections that write back (creates leads, updates records, books into the CRM, calendar or practice software); custom intake and qualification scripts with routing by department, location or case type; outbound callbacks, reminders and follow-ups with two-way texting; multiple numbers, locations and languages; designed and tested on real calls before launch; 90 days of tuning after launch and priority support; fixed scope and price agreed up front
 
-## Running plans (monthly)
+## Running plans
+
+The agent price is a one-time build; a running plan is separate. Hosted and Managed are billed monthly in advance, with a 3-month minimum, then month-to-month.
 
 ### Self-hosted
 - Price: no monthly fee from Digital Macaroni; $500 one-time setup
@@ -25,11 +27,11 @@ Full details: https://digitalmacaroni.io/pricing/ and https://digitalmacaroni.io
 - Includes: 30 days of fixes and a guide for running it
 
 ### Hosted
-- Price: $249/month
+- Price: $249/month, billed in advance (3-month minimum, then month-to-month)
 - Includes: phone number, 500 call minutes, 500 texts, dashboard, email support; changes quoted when needed
 
 ### Managed
-- Price: $500/month
+- Price: $500/month, billed in advance (3-month minimum, then month-to-month)
 - Includes: 1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning from real calls, monthly report, same-day email support
 
 ## Extras

@@ -262,8 +262,8 @@ export const ANSWERS: Answer[] = [
       <table>
         <thead><tr><th>Plan</th><th>Price</th><th>Includes</th></tr></thead>
         <tbody>
-          <tr><td>Ready-made agent</td><td>$3,000 one-time</td><td>A proven agent branded as your business: answers every call, books, takes messages, texts confirmations and summaries, transfers urgent calls, dashboard. One integration of your choice (calendar, CRM or any software with an API), Zapier and email support included. Live in 2 to 5 days.</td></tr>
-          <tr><td>Custom agent</td><td>From $6,000</td><td>Everything above, with five or more connections to your systems through their APIs, with two-way texting and your own call flows. Live in 2 to 4 weeks.</td></tr>
+          <tr><td>Ready-made agent</td><td>$3,000 one-time</td><td>A proven agent branded as your business and trained on your services, prices and policies: answers every call, books, takes messages, texts confirmations and summaries, transfers urgent calls, dashboard. One integration of your choice (calendar, CRM or any software with an API), Zapier, email support and 30 days of fixes included. Live in 2 to 5 days.</td></tr>
+          <tr><td>Custom agent</td><td>From $6,000</td><td>Everything above, plus a deep knowledge base, five or more connections that write back to your systems, your own intake and routing, outbound callbacks and reminders with two-way texting, multiple numbers, locations and languages, and 90 days of tuning after launch. Live in 2 to 4 weeks.</td></tr>
         </tbody>
       </table>
       <h2>Keeping it running</h2>
@@ -275,6 +275,7 @@ export const ANSWERS: Answer[] = [
           <tr><td>Managed</td><td>$500</td><td>1,000 call minutes, 1,000 texts, up to 2 hours of changes a month, tuning, monthly report</td></tr>
         </tbody>
       </table>
+      <p>Hosted and managed are billed monthly in advance, with a 3-month minimum, then month-to-month.</p>
       <p>Extras: $50 one-time to register your number for business texting, premium voices from $80 a month, and extra minutes or texts at the rate in your proposal. See the <a href="/pricing/">pricing page</a> and <a href="/answers/hosted-vs-managed-vs-self-hosted-ai-phone-agent/">how the running plans differ</a>.</p>
       <p>Before you compare prices, run your own numbers in the <a href="/missed-call-calculator/">missed call calculator</a>: it shows what unanswered calls cost you each month.</p>
       <h2>What actually drives the price</h2>
@@ -288,7 +289,7 @@ export const ANSWERS: Answer[] = [
     faqs: [
       { q: "How much does an AI receptionist cost per month?", a: "Off-the-shelf AI receptionists start at about $29 a month and rise with call volume or features. Agency-run agents typically cost $300 to $800 a month on top of a setup fee." },
       { q: "How much does a custom AI phone agent cost?", a: "At Digital Macaroni, custom agents start at $6,000, plus a running plan. Industry estimates for larger agency builds run from $30,000 to $150,000 in the first year." },
-      { q: "Is there a monthly fee?", a: "Hosted plans are $249 a month and managed plans $500. Self-hosted agents have no monthly fee from us; you pay your phone and AI providers directly." },
+      { q: "Is there a monthly fee?", a: "Yes, the build is one-time and the running plan is separate. Hosted plans are $249 a month and managed plans $500, billed monthly in advance with a 3-month minimum, then month-to-month. Self-hosted agents have no monthly fee from us; you pay your phone and AI providers directly." },
     ],
     sources: ["aira", "ciela", "groovy"],
     related: ["hosted-vs-managed-vs-self-hosted-ai-phone-agent", "custom-ai-phone-agent-vs-template-build", "can-i-keep-my-business-phone-number"],
@@ -315,6 +316,7 @@ export const ANSWERS: Answer[] = [
           <tr><td>Tuning from real calls</td><td>Your team</td><td>On request</td><td>Included</td></tr>
           <tr><td>Monthly report</td><td>No</td><td>No</td><td>Yes</td></tr>
           <tr><td>Fixes</td><td>30 days included</td><td>Included</td><td>Included</td></tr>
+          <tr><td>Term</td><td>One-time</td><td>Billed monthly in advance, 3-month minimum</td><td>Billed monthly in advance, 3-month minimum</td></tr>
         </tbody>
       </table>
       <h2>How to choose</h2>
@@ -329,7 +331,7 @@ export const ANSWERS: Answer[] = [
     faqs: [
       { q: "What is a managed AI phone agent?", a: "One that the builder runs and maintains for you: hosting, call minutes, changes on request, tuning from real calls and a monthly report. At Digital Macaroni, managed plans are $500 a month." },
       { q: "Can I self-host an AI phone agent?", a: "Yes. For a one-time $500 setup we build it in your own phone and AI accounts, you pay those providers directly, and you get 30 days of fixes." },
-      { q: "Can I switch plans later?", a: "Yes. You can move between hosted and managed at any time. Moving to self-hosted later means setting the agent up in your accounts, so it's easiest to choose that at the start." },
+      { q: "Can I switch plans later?", a: "Yes. You can move between hosted and managed at any time, and the 3-month minimum carries over. Moving to self-hosted later means setting the agent up in your accounts, so it's easiest to choose that at the start." },
     ],
     sources: ["assemblyai"],
     related: ["how-much-does-an-ai-phone-agent-cost", "custom-ai-phone-agent-vs-template-build", "what-happens-when-an-ai-phone-agent-gets-something-wrong"],
