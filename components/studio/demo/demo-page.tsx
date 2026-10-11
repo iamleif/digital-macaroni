@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CallWatcher, type WatchStatus } from "../live/client";
+import { CallWatcher, type SetupChoices, type WatchStatus } from "../live/client";
 import type { DemoInfo } from "../live/demo-info";
 import { formfieldEmpty, hotelsEmpty, lawfirmEmpty, northlineEmpty, travelEmpty } from "../live/sample-views";
 import type { DemoEvent, DemoId, DemoView, FormFieldView, HotelsView, LawFirmView, NorthlineView, TravelView } from "../live/types";
@@ -64,17 +64,27 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   feedRef.current = feed;
 
   const [watch, setWatch] = useState<{ status: WatchStatus; code?: string }>({ status: "requesting" });
+  // The last call's own page (/call/?r=…), offered once the call is over. Kept while a fresh code is fetched.
+  const [report, setReport] = useState<string | null>(null);
   const watcher = useRef<CallWatcher | null>(null);
+  // The visitor's setup goes with every pairing, so a fresh code after a call still carries it.
+  const choices = useRef<SetupChoices | null>(null);
   const startWatcher = useCallback(() => {
     watcher.current?.stop();
-    const w = new CallWatcher(demo.id, receive, (status, code) => {
+    const w = new CallWatcher(demo.id, receive, (status, code, token) => {
       // A new call: clear the last call's results before its events arrive.
-      if (status === "linked") { reset(); voice.clear(); track("demo_call_started", { agent: demo.agentName, demo: demo.id }); }
+      if (status === "linked") { reset(); voice.clear(); setReport(token ?? null); track("demo_call_started", { agent: demo.agentName, demo: demo.id }); }
       setWatch((prev) => ({ status, code: code ?? prev.code }));
     });
     watcher.current = w;
+    if (choices.current) w.sendSetup(choices.current);
     void w.start();
   }, [demo.id, demo.agentName, receive, reset, voice]);
+  /** The setup card's answers, stored on the pairing so the call (and its page) know them. */
+  const sendSetup = useCallback((s: Setup) => {
+    choices.current = { trade: s.trade, tool: s.tool, email: s.email, record: s.record, updates: s.updates };
+    watcher.current?.sendSetup(choices.current);
+  }, []);
   /** "Call again" / "Get a new code": clear the last call's results, then ask for a fresh code. */
   function newCode() { reset(); voice.clear(); setWatch({ status: "requesting" }); startWatcher(); }
 
@@ -169,9 +179,9 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
       <BehindTheCall demo={shown} feed={feed} setup={funnel ? setup : null} />
     </main>
 
-    {gated ? <SetupCard demo={demo} watch={watch} onNewCode={newCode} onDone={setSetup} /> : null}
+    {gated ? <SetupCard demo={demo} watch={watch} onNewCode={newCode} onSaved={sendSetup} onDone={(s) => { sendSetup(s); setSetup(s); }} /> : null}
     {funnel && setup && again ? <SetupCard demo={demo} watch={watch} onNewCode={newCode} onDone={() => setAgain(false)} onClose={() => setAgain(false)} again={setup} /> : null}
-    {funnel && setup && feed.ended && !exploring && !again ? <AfterCall onExplore={() => setExploring(true)} onAgain={() => { newCode(); setExploring(false); setAgain(true); }}>
+    {funnel && setup && feed.ended && !exploring && !again ? <AfterCall report={report} onExplore={() => setExploring(true)} onAgain={() => { newCode(); setExploring(false); setAgain(true); }}>
       <Summary demo={shown} feed={feed} done={feed.entries.filter((e): e is Action => e.kind === "action" && (e.status === "done" || isTestStop(e)))} />
     </AfterCall> : null}
 

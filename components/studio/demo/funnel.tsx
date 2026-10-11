@@ -25,8 +25,8 @@ export type Trade = BookingSkin | LawArea | ShopKind | TravelKind;
 /** `demo` is the demo page that runs this kind, when it is not the page the visitor is on. */
 type TradeCard = { id: Trade; label: string; example: string; ready: boolean; demo?: DemoId };
 /** `when` limits a write to calls that went one way: a case the firm took, or one it had to decline. */
-type Op = { what: string; op: string; when?: "qualified" | "declined" };
-type Tool = { id: string; name: string; skins: Trade[]; ops: Partial<Record<string, Op[]>>; confirmation: string };
+export type Op = { what: string; op: string; when?: "qualified" | "declined" };
+export type Tool = { id: string; name: string; skins: Trade[]; ops: Partial<Record<string, Op[]>>; confirmation: string };
 
 export type Setup = { trade: Trade; tool: string; email: string; record: boolean; updates: boolean };
 
@@ -93,7 +93,7 @@ const TOOL_LOGOS: Record<string, string> = {
   lawmatics: "lawmatics.png", mycase: "mycase.png", practicepanther: "practicepanther.png", cliogrow: "cliogrow.png",
   housecallpro: "housecallpro.png", jobber: "jobber.png",
 };
-function ToolMark({ id, name }: { id: string; name: string }) {
+export function ToolMark({ id, name }: { id: string; name: string }) {
   const file = TOOL_LOGOS[id];
   return <span className={f.toolMark}>{file ? <img src={`/studio/logos/tools/${file}`} alt="" /> : <b>{name.slice(0, 1)}</b>}</span>;
 }
@@ -328,6 +328,20 @@ const TOOLS: Tool[] = [
 
 const OTHER = "other";
 
+/** The tool a setup names, when it is one we map (not "custom" or "something else"). */
+export function findTool(id: string | null | undefined): Tool | null {
+  return TOOLS.find((t) => t.id === id) ?? null;
+}
+
+/** What one finished step would write into a tool: a case the firm declined skips the "qualified" writes, and the other way round. */
+export function opsFor(tool: Tool, step: { tool: string; summary?: string | null }): Op[] {
+  const declined = /cannot take|conflict/i.test(step.summary ?? "");
+  return (tool.ops[step.tool] ?? []).filter((o) => !o.when || (o.when === "declined") === declined);
+}
+
+/** Steps that book something, after which the tool sends its own confirmation. */
+export const BOOKING_TOOLS = ["book_appointment", "book_consultation"];
+
 /* ---------------- Setup card ---------------- */
 
 const SETUP_PARAM = "setup";
@@ -342,7 +356,7 @@ function openDemoAt(id: DemoId) {
   window.location.href = `/demo/${id}/?${next.toString().replace(/^replay=&/, "replay&")}`;
 }
 
-export function SetupCard({ demo, watch, onNewCode, onDone, onClose, again }: { demo: DemoInfo; watch: { status: WatchStatus; code?: string }; onNewCode: () => void; onDone: (s: Setup) => void; onClose?: () => void; again?: Setup }) {
+export function SetupCard({ demo, watch, onNewCode, onDone, onSaved, onClose, again }: { demo: DemoInfo; watch: { status: WatchStatus; code?: string }; onNewCode: () => void; onDone: (s: Setup) => void; onSaved?: (s: Setup) => void; onClose?: () => void; again?: Setup }) {
   // "Try it again" comes straight back to the call step with the answers they already gave.
   // Arriving from another travel demo's first step (?setup=tools): that choice is made, so open on the tools.
   const [step, setStep] = useState(() => (again ? 3 : arrivedWithKind() ? 1 : 0));
@@ -367,6 +381,7 @@ export function SetupCard({ demo, watch, onNewCode, onDone, onClose, again }: { 
   function saveAndContinue() {
     const s = currentSetup();
     track("demo_setup_done", { demo: demo.id, trade, tool: s.tool, record: record ? 1 : 0, updates: updates ? 1 : 0 });
+    onSaved?.(s);
     setStep(3);
   }
   // The call connected: the visitor is on screen, so the card gets out of the way.
@@ -469,8 +484,8 @@ export function ToolsLane({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; s
   const custom = !tool;
   const rows = custom
     ? done.filter((a) => a.tool !== "link_screen" && a.tool !== "end_call").map((a) => ({ key: a.id, what: a.summary ?? a.label, op: a.tool }))
-    : done.flatMap((a) => (tool.ops[a.tool] ?? []).filter((o) => !o.when || (o.when === "declined") === /cannot take|conflict/i.test(a.summary ?? "")).map((o, i) => ({ key: `${a.id}-${i}`, what: o.what, op: o.op })));
-  const booked = done.some((a) => a.tool === "book_appointment" || a.tool === "book_consultation");
+    : done.flatMap((a) => opsFor(tool, a).map((o, i) => ({ key: `${a.id}-${i}`, what: o.what, op: o.op })));
+  const booked = done.some((a) => BOOKING_TOOLS.includes(a.tool));
 
   return <section className={f.lane} aria-label={custom ? "Your back office" : `Sent to ${tool.name}`}>
     <header>
@@ -488,7 +503,7 @@ export function ToolsLane({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; s
 /* ---------------- After the call ---------------- */
 
 /** The call is over: the screen stays put behind this. Most people want another go, a few want to read what happened. */
-export function AfterCall({ onAgain, onExplore, children }: { onAgain: () => void; onExplore: () => void; children?: React.ReactNode }) {
+export function AfterCall({ onAgain, onExplore, report, children }: { onAgain: () => void; onExplore: () => void; report?: string | null; children?: React.ReactNode }) {
   useEffect(() => { track("demo_after_call_viewed"); }, []);
   return <div className={f.scrim} role="dialog" aria-modal="true" aria-labelledby="after-title">
     <div className={f.card}>
@@ -496,6 +511,9 @@ export function AfterCall({ onAgain, onExplore, children }: { onAgain: () => voi
       <h2 id="after-title">That was the call.</h2>
       <p className={f.lede}>Here’s what the agent handled. Run it again to try something different, or explore the screen to see every step.</p>
       {children ? <div className={f.recap}>{children}</div> : null}
+      {report ? <a className={f.fullCall} href={`/call/?r=${encodeURIComponent(report)}`} target="_blank" rel="noopener" onClick={() => track("demo_after_call", { choice: "full_call" })}>
+        <span><b>See your full call</b><small>The recording, every word and every step, on its own page</small></span><ArrowRight size={16} />
+      </a> : null}
       <div className={f.actions}>
         <button type="button" className={f.back} onClick={() => { track("demo_after_call", { choice: "explore" }); onExplore(); }}>Explore the screen</button>
         <button type="button" className={f.primary} onClick={() => { track("demo_after_call", { choice: "again" }); onAgain(); }}>Try it again<ArrowRight size={14} /></button>

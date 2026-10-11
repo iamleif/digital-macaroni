@@ -850,7 +850,7 @@ function RoomsPanel({ view, agentName }: { view: HotelsView; agentName: string }
         <div>
           <b>{r.name}{chosen ? <span className={d.badge}><Check size={11} />Chosen</span> : null}</b>
           <div className={d.roomTags}>
-            <span className={d.board} data-breakfast={breakfast || undefined}>{breakfast ? <Coffee size={12} /> : null}{r.board}</span>
+            <span className={d.roomBoard} data-breakfast={breakfast || undefined}>{breakfast ? <Coffee size={12} /> : null}{r.board}</span>
             <Refund refundable={r.refundable} text={r.cancellation} />
           </div>
         </div>

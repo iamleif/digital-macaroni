@@ -18,7 +18,8 @@ export type DemoEvent =
   /** The agent's voice as waveform bars: `bands` bytes per frame, low pitches first; the first frame plays `in` ms after it was sent. */
   | { type: "agent.levels"; in: number; frameMs: number; bands: number; levels: string }
   | { type: "pairing.waiting"; code: string; expiresAt: number }
-  | { type: "pairing.linked" }
+  /** `report` is the call's own page token (/call/?r=…). */
+  | { type: "pairing.linked"; report?: string }
   | { type: "pairing.expired" };
 
 export interface NorthlineView {

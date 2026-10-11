@@ -201,16 +201,37 @@ const CONNECT_TIMEOUT_MS = 8000;
 
 export type WatchStatus = "requesting" | "waiting" | "linked" | "expired" | "ended" | "error";
 
+/** The setup card's choices as the voice service stores them on a pairing. */
+export type SetupChoices = { trade: string; tool: string; email: string; record: boolean; updates: boolean };
+
 /** Shows a phone call on this page once the caller types the code shown here. */
 export class CallWatcher {
   private socket: WebSocket | null = null;
   private stopped = false;
+  /** This page's key to its pairing: the setup is stored against it. */
+  private viewerToken: string | null = null;
+  private setup: SetupChoices | null = null;
 
   constructor(
     private demo: DemoId,
     private onEvent: (e: DemoEvent) => void,
-    private onStatus: (s: WatchStatus, code?: string) => void,
+    /** `report` arrives with "linked": the token of the call's own page. */
+    private onStatus: (s: WatchStatus, code?: string, report?: string) => void,
   ) {}
+
+  /** Tells the service what the visitor chose, so the call and its page know it. Sent once the pairing exists. */
+  sendSetup(setup: SetupChoices) {
+    this.setup = setup;
+    if (this.viewerToken) void this.postSetup(this.viewerToken, setup);
+  }
+
+  private async postSetup(token: string, setup: SetupChoices) {
+    try {
+      await fetch(`${VOICE_URL}/pairings/${encodeURIComponent(token)}/setup`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(setup) });
+    } catch {
+      // The call still works without it; the page only loses the visitor's choices.
+    }
+  }
 
   async start() {
     this.onStatus("requesting");
@@ -219,6 +240,8 @@ export class CallWatcher {
       if (!r.ok) throw new Error(String(r.status));
       const { viewerToken } = (await r.json()) as { viewerToken: string };
       if (this.stopped) return;
+      this.viewerToken = viewerToken;
+      if (this.setup) void this.postSetup(viewerToken, this.setup);
       const socket = new WebSocket(`${VOICE_URL.replace(/^http/, "ws")}/pairings/${viewerToken}`);
       this.socket = socket;
       // A connection that stalls never fails on its own: give up after a few seconds so a fresh code is fetched.
@@ -229,7 +252,7 @@ export class CallWatcher {
         window.clearTimeout(stalled);
         const e = JSON.parse(m.data as string) as DemoEvent;
         if (e.type === "pairing.waiting") this.onStatus("waiting", e.code);
-        else if (e.type === "pairing.linked") this.onStatus("linked");
+        else if (e.type === "pairing.linked") this.onStatus("linked", undefined, e.report);
         else if (e.type === "pairing.expired") this.onStatus("expired");
         else if (e.type === "session.ended") this.onStatus("ended");
         this.onEvent(e);
