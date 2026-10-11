@@ -522,6 +522,9 @@
 .planName em { font-style: normal; font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--yellow); color: var(--ink); }
 .planPrice { display: flex; align-items: baseline; gap: 10px; margin: 14px 0 0; font-size: 60px; font-weight: 500; letter-spacing: -0.06em; line-height: 1; color: #fff; }
 .planPrice span, .planPrice small { font-size: 15px; letter-spacing: 0; color: #a3a097; font-weight: 400; }
+.planNote { margin: 10px 0 0; font-size: 13px; color: #87847a; }
+.planNote a { color: #d9d6cc; text-decoration: underline; text-underline-offset: 3px; }
+#running { scroll-margin-top: 96px; }
 .planPitch { margin: 16px 0 0; font-size: 15.5px; line-height: 1.55; color: #b3b0a6; max-width: 380px; }
 .plan ul { list-style: none; margin: 24px 0 28px; padding: 22px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.08); display: grid; gap: 11px; }
 .plan li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.4; color: #d9d6cc; }

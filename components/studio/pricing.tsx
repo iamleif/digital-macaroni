@@ -44,6 +44,7 @@ export function PlanCards() {
       <article className={h.plan}>
         <p className={h.planName}>Core agent</p>
         <p className={h.planPrice}>$2,500<span>one-time</span></p>
+        <p className={h.planNote}>Plus a <a href="/pricing/#running">hosting option</a></p>
         <p className={h.planPitch}>One of our proven agents, branded as your business, connected to your calendar or CRM, tested and launched for you in 2 to 5 days.</p>
         <ul>{ready.map((f) => <li key={f}><Check size={15} />{f}</li>)}</ul>
         <a className={h.pillOutline} href="/contact/?topic=core-agent">Start with a core agent <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
@@ -53,6 +54,7 @@ export function PlanCards() {
       <article className={h.plan} data-featured>
         <p className={h.planName}>Custom agent<em>Most flexible</em></p>
         <p className={h.planPrice}><small>from</small>$6,000</p>
+        <p className={h.planNote}>Plus a <a href="/pricing/#running">hosting option</a></p>
         <p className={h.planPitch}>Everything in the core agent, built around your business and connected to the tools you already use.</p>
         <ul>{custom.map((f) => <li key={f}><Check size={15} />{f}</li>)}</ul>
         <a className={h.pillYellow} href="/contact/?topic=custom-agent">Shape a custom project <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
@@ -82,7 +84,7 @@ export function ConsultingCard() {
 /** Running plans and extras: the full breakdown that lives on /pricing/. */
 export function RunningCosts() {
   return <Reveal className={h.running}>
-    <div className={h.runningHead}><h3>Keeping it running</h3><p>The agent price is a one-time build. Every agent also needs a phone line, call minutes and texts: run it yourself, or let us handle it.</p></div>
+    <div className={h.runningHead}><h3 id="running">Keeping it running</h3><p>The agent price is a one-time build. Every agent also needs a phone line, call minutes and texts: run it yourself, or let us handle it.</p></div>
     <div className={h.runningPlans}>
       <div><p className={h.runName}>Self-hosted</p><p className={h.runPrice}>Free<span>/mo from us</span></p><p>We get you set up with your own phone and AI accounts and build your agent there. You run it yourself, with 30 days of fixes included. One-time $500 setup.</p></div>
       <div><p className={h.runName}>Hosted</p><p className={h.runPrice}>$349<span>/mo</span></p><p>We keep it running: your number, 500 call minutes, 500 texts, your dashboard and email support. Changes are quoted when you need them. Billed monthly in advance, 3-month minimum, then month-to-month.</p></div>
