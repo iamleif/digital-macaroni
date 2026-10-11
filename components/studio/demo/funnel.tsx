@@ -33,10 +33,11 @@ export type Setup = { trade: Trade; tool: string; email: string; record: boolean
 
 /** The businesses Ellie can answer for: one appointment engine, three front desks. */
 const TRADES: TradeCard[] = [
-  { id: "salon", label: "Salon & med spa", example: "Cuts, colour, nails, facials, injectables", ready: true },
-  { id: "clinic", label: "Wellness clinic", example: "Chiropractic, physio, massage", ready: true },
-  { id: "home", label: "Home services", example: "Heating & cooling visits", ready: true },
+  { id: "salon", label: "Salon & med spa", example: "Cuts, colour, nails, facials, injectables", ready: true, demo: "lune" },
+  { id: "clinic", label: "Wellness clinic", example: "Chiropractic, physio, massage", ready: true, demo: "tidewell" },
+  { id: "home", label: "Home services", example: "Heating & cooling visits", ready: true, demo: "northline" },
 ];
+const TRADE_FIRST: Partial<Record<DemoId, Trade>> = { northline: "home", lune: "salon", tidewell: "clinic" };
 
 /** Law and professional services: separate businesses, each with its own agent and number. A card for another one opens its demo. */
 const LAW_AREAS: TradeCard[] = [
@@ -67,7 +68,7 @@ function kindsFor(demoId: string): { cards: TradeCard[]; first: Trade; mark: (t:
   if (demoId === "lawfirm" || demoId === "realestate" || demoId === "insurance") return { cards: LAW_AREAS, first: LAW_FIRST[demoId]!, mark: (t) => <BrandMark id={t.demo!} size={26} />, title: "What kind of business do you want to try?", lede: LAW_LEDE[demoId]!, runs: "What runs your business today?", stage: "Your business" };
   if (demoId === "formfield") return { cards: SHOP_KINDS, first: "dtc", mark: (t) => (t.id === "dtc" ? <BrandMark id="formfield" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: inventory, availability and follow-up.", runs: "What runs your business today?", stage: "Your business" };
   if (demoId === "travel" || demoId === "hotels") return { cards: TRAVEL_KINDS, first: demoId === "hotels" ? "hotels" : "flights", mark: (t) => (t.id === "flights" ? <BrandMark id="travel" size={26} /> : t.id === "hotels" ? <BrandMark id="hotels" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: demoId === "hotels" ? "Pick one and we’ll set the call up that way: hotels, rooms and rates." : "Pick one and we’ll set the call up that way: fares, options and bookings.", runs: "What runs your business today?", stage: "Your business" };
-  return { cards: TRADES, first: "salon", mark: (t) => <BrandMark id={SKINS[t.id as BookingSkin].brand} size={26} />, title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: services, schedule and rules.", runs: "What runs your business today?", stage: "Your business" };
+  return { cards: TRADES, first: TRADE_FIRST[demoId as DemoId] ?? "salon", mark: (t) => <BrandMark id={SKINS[t.id as BookingSkin].brand} size={26} />, title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: services, schedule and rules.", runs: "What runs your business today?", stage: "Your business" };
 }
 
 /** How each business appears on the demo page. */

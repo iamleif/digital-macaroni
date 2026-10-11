@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CallWatcher, type SetupChoices, type WatchStatus } from "../live/client";
 import type { DemoInfo } from "../live/demo-info";
-import { formfieldEmpty, hotelsEmpty, insuranceEmpty, lawfirmEmpty, northlineEmpty, realestateEmpty, travelEmpty } from "../live/sample-views";
+import { formfieldEmpty, hotelsEmpty, insuranceEmpty, lawfirmEmpty, luneEmpty, northlineEmpty, realestateEmpty, tidewellEmpty, travelEmpty } from "../live/sample-views";
 import type { DemoEvent, DemoId, DemoView, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
 import { VoiceLevels } from "../live/voice-levels";
@@ -21,7 +21,7 @@ import type { AppointmentView, BookingSkin } from "../live/types";
 import d from "./demo.module.css";
 
 type Action = Extract<Entry, { kind: "action" }>;
-const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: formfieldEmpty, travel: travelEmpty, lawfirm: lawfirmEmpty, hotels: hotelsEmpty, realestate: realestateEmpty, insurance: insuranceEmpty };
+const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: formfieldEmpty, travel: travelEmpty, lawfirm: lawfirmEmpty, hotels: hotelsEmpty, realestate: realestateEmpty, insurance: insuranceEmpty, lune: luneEmpty, tidewell: tidewellEmpty };
 
 /**
  * The live demo page. Every demo is reached by phone: a screen code is ready on arrival, and once the
@@ -173,6 +173,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
           : demo.id === "northline" ? <NorthlineOffice view={view as NorthlineView} state={state} agentName={demo.agentName} />
           : demo.id === "travel" ? <TravelOffice view={view as TravelView} state={state} agentName={demo.agentName} />
           : demo.id === "hotels" ? <HotelsOffice view={view as HotelsView} state={state} agentName={demo.agentName} />
+          : demo.id === "lune" || demo.id === "tidewell" ? <AppointmentOffice view={view as AppointmentView} state={state} agentName={demo.agentName} />
           : demo.id === "realestate" ? <RealEstateOffice view={view as RealEstateView} state={state} agentName={demo.agentName} />
           : demo.id === "insurance" ? <InsuranceOffice view={view as InsuranceView} state={state} agentName={demo.agentName} />
           : <FormFieldOffice view={view as FormFieldView} state={state} agentName={demo.agentName} />}

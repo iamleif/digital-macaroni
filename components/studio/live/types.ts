@@ -2,7 +2,7 @@
  * The demo voice service's protocol and dashboard records, as the website receives them. Mirrors
  * DigitalMacaroni/voice/src/protocol.ts and each demo's view() output.
  */
-export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels" | "realestate" | "insurance";
+export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels" | "realestate" | "insurance" | "lune" | "tidewell";
 
 export type DemoEvent =
   | { type: "session.ready"; sessionId: string; demo: DemoId; channel: "phone" | "browser" }

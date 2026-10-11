@@ -1,5 +1,5 @@
-import { formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
-import type { DemoEvent, DemoId, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
+import { luneEmpty, luneSample, tidewellEmpty, tidewellSample, formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
+import type { AppointmentView, DemoEvent, DemoId, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 
 /**
  * Sample calls for reviewing the demo pages without phoning in (`?replay`). Each is a timeline of the
@@ -26,7 +26,7 @@ let v = 0;
 const say = (speaker: "visitor" | "agent", text: string, id = `t${++v}`): DemoEvent => ({ type: "transcript", id, speaker, text, final: true });
 const tool = (callId: string, name: string, label: string): DemoEvent => ({ type: "tool.started", callId, tool: name, label });
 const ok = (callId: string, name: string, label: string, summary: string): DemoEvent => ({ type: "tool.succeeded", callId, tool: name, label, summary, version: 0 });
-const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView | RealEstateView | InsuranceView): DemoEvent => ({ type: "state", version, state: s });
+const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView | RealEstateView | InsuranceView | AppointmentView): DemoEvent => ({ type: "state", version, state: s });
 const speaking = (on: boolean): DemoEvent => ({ type: "agent.speaking", speaking: on });
 
 const nlRequest = (patch: Partial<NorthlineView["request"]>): NorthlineView => ({ ...northlineEmpty, request: { ...northlineEmpty.request, ...patch } });
@@ -500,4 +500,76 @@ const insurance = timeline([
   { type: "session.ended", reason: "agent_ended" },
 ]);
 
-export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels, realestate, insurance };
+const rq = (base: AppointmentView, values: (string | null)[], patch: Partial<AppointmentView> = {}): AppointmentView => ({ ...base, ...patch, request: base.request.map((r, i) => ({ label: r.label, value: values[i] ?? null })) });
+const luneOpen = rq(luneEmpty, ["Cut & style", "Maria", null, null, null], { open: luneSample.open, menu: luneSample.menu.map((m) => ({ ...m, chosen: m.id === "cut" })) });
+const lunePicked = { ...luneOpen, request: luneSample.request.map((r) => (r.label === "Time" ? { label: r.label, value: "Saturday, 3 PM", note: "Proposed" } : r)), proposed: { staffId: "maria", hour: 15 } };
+
+const lune = timeline([
+  { type: "session.ready", sessionId: "replay", demo: "lune", channel: "phone" },
+  { type: "pairing.linked" },
+  speaking(true),
+  say("agent", "Thanks for calling Lune, this is Ellie. What can I book for you?"),
+  speaking(false),
+  1500,
+  say("visitor", "Can I get a cut with Maria on Saturday afternoon?"),
+  tool("c1", "check_availability", "Check the book"),
+  700,
+  ok("c1", "check_availability", "Check the book", "3 open on Saturday"),
+  state(1, luneOpen),
+  speaking(true),
+  say("agent", "Maria has three or four on Saturday. Would three work? And what name should I put it under?"),
+  speaking(false),
+  1500,
+  say("visitor", "Three is perfect. Priya Shah."),
+  tool("c2", "note_booking", "Fill in the booking card"),
+  500,
+  ok("c2", "note_booking", "Fill in the booking card", "Noted 2 details"),
+  state(2, lunePicked),
+  speaking(true),
+  say("agent", "Welcome back, Priya. A cut and style with Maria, Saturday at three. Want to add a gloss? It’s thirty-five dollars and makes the colour pop."),
+  speaking(false),
+  1500,
+  say("visitor", "Sure, add it."),
+  tool("c3", "book_appointment", "Book the appointment"),
+  700,
+  ok("c3", "book_appointment", "Book the appointment", "Booked · LN-218"),
+  state(3, luneSample),
+  speaking(true),
+  say("agent", "You’re all set, Priya. See you Saturday at three. Anything else?"),
+  speaking(false),
+  { type: "session.ended", reason: "agent_ended" },
+]);
+
+const twOpen = rq(tidewellEmpty, [null, "Chiropractic · new patient", "Lower back pain after lifting, 1 week", null, null], { open: tidewellSample.open, menu: tidewellSample.menu.map((m) => ({ ...m, chosen: m.id === "chiro-new" })), extras: { title: "Intake & coverage", rows: [{ label: "Patient type", value: "New · assessment first", tone: "good" }, { label: "Red flags", value: "None mentioned", tone: "good" }] } });
+
+const tidewell = timeline([
+  { type: "session.ready", sessionId: "replay", demo: "tidewell", channel: "phone" },
+  { type: "pairing.linked" },
+  speaking(true),
+  say("agent", "Thanks for calling Tidewell Clinic, this is Ellie. How can I help?"),
+  speaking(false),
+  1500,
+  say("visitor", "I hurt my back lifting a box last week. Can I see someone on Tuesday? I’ve never been in."),
+  tool("c1", "note_visit", "Fill in the patient booking"),
+  500,
+  ok("c1", "note_visit", "Fill in the patient booking", "Noted 4 details"),
+  tool("c2", "check_availability", "Check the schedule"),
+  700,
+  ok("c2", "check_availability", "Check the schedule", "3 open on Tuesday"),
+  state(1, twOpen),
+  speaking(true),
+  say("agent", "Oh, I’m sorry, back pain is miserable. A new patient visit with Dr. Lee would be a good start. She has ten, eleven or four on Tuesday."),
+  speaking(false),
+  1500,
+  say("visitor", "Eleven. Jordan Reyes. I have Regence."),
+  tool("c3", "book_appointment", "Book the visit"),
+  700,
+  ok("c3", "book_appointment", "Book the visit", "Booked · TW-407"),
+  state(2, tidewellSample),
+  speaking(true),
+  say("agent", "You’re booked with Dr. Lee on Tuesday at eleven. We bill Regence directly, and I’ll email your intake forms. Please come ten minutes early."),
+  speaking(false),
+  { type: "session.ended", reason: "agent_ended" },
+]);
+
+export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels, realestate, insurance, lune, tidewell };
