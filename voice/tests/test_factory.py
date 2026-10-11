@@ -84,7 +84,7 @@ class TestInvites:
 
     async def test_single_use(self, cfg, tmp_path):
         cfg(admin_token="secret", agents_dir=str(tmp_path))
-        inv, token = await agents_store.create_invite("Acme", "ready-made")
+        inv, token = await agents_store.create_invite("Acme", "core")
         got, why = await factory.check_invite(token)
         assert got and got.id == inv.id and not why
         inv.used_by = "ag_1"

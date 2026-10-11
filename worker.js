@@ -4,7 +4,7 @@ const RECIPIENT = "hello@digitalmacaroni.io";
 const SENDER = "website@digitalmacaroni.io";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TOPICS = new Map([
-  ["ready-made", "Ready-made voice agent"],
+  ["core-agent", "Core voice agent"],
   ["custom-agent", "Custom voice agent"],
   ["consulting", "Consulting on a project"],
   ["software", "Business software or dashboard"],
@@ -15,6 +15,7 @@ const TOPICS = new Map([
   ["new-project", "New project"],
   ["existing-project", "Existing project"],
   ["collaboration", "Collaboration"],
+  ["ready-made", "Core voice agent"],
 ]);
 
 // Optional details the form asks for depending on the topic. Only these are read, each capped.

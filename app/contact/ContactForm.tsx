@@ -22,7 +22,7 @@ function bioSource(): string {
 }
 
 const TOPICS = [
-  ["ready-made", "A core voice agent"],
+  ["core-agent", "A core voice agent"],
   ["custom-agent", "A custom voice agent"],
   ["consulting", "Consulting on a project"],
   ["software", "Business software or a dashboard"],
@@ -40,7 +40,7 @@ const CONSULTING_TIMELINES = ["As soon as possible", "Within a month", "This qua
 const CONSULTING_BUDGETS = ["Under $10,000", "$10,000 to $25,000", "$25,000 to $50,000", "$50,000 to $100,000", "Over $100,000", "Not sure yet"];
 
 const MESSAGE: Record<string, { label: string; placeholder: string }> = {
-  "ready-made": { label: "Anything we should know?", placeholder: "What should callers be able to do? Book a visit, check stock, leave a message…" },
+  "core-agent": { label: "Anything we should know?", placeholder: "What should callers be able to do? Book a visit, check stock, leave a message…" },
   "custom-agent": { label: "What should your agent do?", placeholder: "The calls you get, what should happen on them, and where the details should end up." },
   consulting: { label: "Tell us about the project", placeholder: "What you’re changing, from what to what, the team involved, and when you’d like it done." },
   software: { label: "Tell us about it", placeholder: "Who uses it, what it replaces, and what a good day with it looks like." },
@@ -76,7 +76,8 @@ export function ContactForm() {
     setSource(bioSource());
     setLanding(window.location.pathname);
     const params = new URLSearchParams(window.location.search);
-    const asked = params.get("topic");
+    // Old links used ?topic=ready-made for the core agent.
+    const asked = params.get("topic") === "ready-made" ? "core-agent" : params.get("topic");
     if (asked && TOPICS.some(([v]) => v === asked)) setTopic(asked as Topic);
     if (params.get("sent") === "1") {
       setStatus({ state: "success", message: "Thanks. Your message is on its way." });
@@ -124,7 +125,7 @@ export function ContactForm() {
   }
 
   const message = MESSAGE[topic] ?? { label: "What’s on your mind?", placeholder: "Tell us a little about your business and what you’re hoping for." };
-  const agent = topic === "ready-made" || topic === "custom-agent";
+  const agent = topic === "core-agent" || topic === "custom-agent";
 
   return (
     <form
@@ -163,7 +164,7 @@ export function ContactForm() {
           <Select name="business_type" label="Type of business" options={BUSINESS_TYPES} required />
           <Select name="call_volume" label="Calls a month" options={CALL_VOLUMES} />
         </Row>
-        {topic === "ready-made" ? <Row>
+        {topic === "core-agent" ? <Row>
           <Select name="texting" label="Should it send texts?" options={["Yes", "No", "Not sure"]} />
           <Select name="hosting" label="How should it run?" options={["Hosted by Digital Macaroni", "Managed by Digital Macaroni", "Self-hosted on my own accounts", "Not sure yet"]} />
         </Row> : <>

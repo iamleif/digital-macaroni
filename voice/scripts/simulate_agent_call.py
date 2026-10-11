@@ -62,7 +62,7 @@ def stamp() -> str:
 async def main() -> None:
     website = sys.argv[1] if len(sys.argv) > 1 else "https://www.ballarddentalcare.com"
     async with httpx.AsyncClient(base_url=BASE, timeout=30) as http:
-        invite = (await http.post("/admin/invites", json={"label": "Simulation", "plan": "ready-made"}, headers=ADMIN)).json()
+        invite = (await http.post("/admin/invites", json={"label": "Simulation", "plan": "core"}, headers=ADMIN)).json()
         token = invite["url"].split("invite=")[1]
         print(stamp(), "invite", invite["id"], "check:", (await http.get("/onboard/check", params={"invite": token})).json())
         job = (await http.post("/onboard", headers={"origin": ORIGIN}, json={

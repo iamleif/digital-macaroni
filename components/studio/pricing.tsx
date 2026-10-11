@@ -46,7 +46,7 @@ export function PlanCards({ full = false }: { full?: boolean }) {
         <p className={h.planPrice}>$2,500<span>one-time</span></p>
         <p className={h.planPitch}>One of our proven agents, branded as your business, connected to your calendar or CRM, tested and launched for you in 2 to 5 days.</p>
         <ul>{ready.map((f) => <li key={f}><Check size={15} />{f}</li>)}</ul>
-        <a className={h.pillOutline} href="/contact/?topic=ready-made">Start with a core agent <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
+        <a className={h.pillOutline} href="/contact/?topic=core-agent">Start with a core agent <span className={h.pillIcon}><ArrowUpRight size={14} /></span></a>
       </article>
     </Reveal>
     <Reveal delay={90} className={h.planShell}>
