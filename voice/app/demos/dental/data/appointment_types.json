@@ -1,0 +1,68 @@
+{
+  "types": [
+    {
+      "id": "new_patient",
+      "name": "New patient exam & cleaning",
+      "short": "NP",
+      "procedures": "CompEx, FMX, Prophy",
+      "minutes": 90,
+      "with": "hygiene",
+      "price": "$129 without insurance (new-patient special)"
+    },
+    {
+      "id": "cleaning",
+      "name": "Cleaning & checkup",
+      "short": "Recall",
+      "procedures": "PerEx, 4BWX, Prophy",
+      "minutes": 60,
+      "with": "hygiene",
+      "price": "Usually covered by insurance; $165 without"
+    },
+    {
+      "id": "perio_maintenance",
+      "name": "Periodontal maintenance",
+      "short": "PerioMaint",
+      "procedures": "PerEx, PerioMaint",
+      "minutes": 60,
+      "with": "hygiene",
+      "price": "Usually partly covered; $195 without",
+      "existingOnly": true
+    },
+    {
+      "id": "child_cleaning",
+      "name": "Child cleaning & checkup",
+      "short": "Child",
+      "procedures": "PerEx, ProphyCh, Fl",
+      "minutes": 30,
+      "with": "hygiene",
+      "price": "Usually covered; $95 without"
+    },
+    {
+      "id": "emergency",
+      "name": "Emergency visit",
+      "short": "Emerg",
+      "procedures": "LimEx, PA",
+      "minutes": 30,
+      "with": "dentist",
+      "price": "$95 exam and X-ray; treatment quoted at the visit"
+    },
+    {
+      "id": "filling_consult",
+      "name": "Filling or crown consult",
+      "short": "Consult",
+      "procedures": "LimEx, PA, Consult",
+      "minutes": 30,
+      "with": "dentist",
+      "price": "$65"
+    },
+    {
+      "id": "whitening_consult",
+      "name": "Whitening consult",
+      "short": "Whiten",
+      "procedures": "Consult",
+      "minutes": 20,
+      "with": "dentist",
+      "price": "Free"
+    }
+  ]
+}

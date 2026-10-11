@@ -1,0 +1,6 @@
+{
+  "inNetwork": ["Delta Dental", "Cigna", "MetLife", "Aetna", "Guardian", "United Concordia"],
+  "aliases": {"delta": "Delta Dental", "cigna": "Cigna", "metlife": "MetLife", "met life": "MetLife", "aetna": "Aetna", "guardian": "Guardian", "united concordia": "United Concordia"},
+  "outOfNetwork": "We're out of network with that plan, but we file the claim for you, and many PPO plans still pay toward the visit. The office checks before the visit.",
+  "medicaid": "We don't take Medicaid or All Kids; the Chicago Department of Public Health runs low-cost dental clinics."
+}

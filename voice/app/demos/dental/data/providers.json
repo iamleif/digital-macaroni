@@ -1,0 +1,14 @@
+{
+  "providers": [
+    {"id": "patel", "name": "Dr. Maya Patel", "short": "Dr. Patel", "code": "DDS1", "role": "Dentist", "tone": "dds1"},
+    {"id": "okafor", "name": "Dr. Sam Okafor", "short": "Dr. Okafor", "code": "DDS2", "role": "Dentist", "tone": "dds2"},
+    {"id": "morris", "name": "Jenna Morris", "short": "Jenna", "code": "HYG1", "role": "Hygienist", "tone": "hyg1"},
+    {"id": "ortega", "name": "Luis Ortega", "short": "Luis", "code": "HYG2", "role": "Hygienist", "tone": "hyg2"}
+  ],
+  "operatories": [
+    {"id": "op1", "name": "OP-1", "provider": "patel"},
+    {"id": "op2", "name": "OP-2", "provider": "okafor"},
+    {"id": "op3", "name": "OP-3", "provider": "morris"},
+    {"id": "op4", "name": "OP-4", "provider": "ortega"}
+  ]
+}

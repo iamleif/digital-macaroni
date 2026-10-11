@@ -170,6 +170,7 @@ BRANDS = {
     "lune": Brand("Lune", "Lune Salon & Med Spa", "lune.png", "#9b4a7c", "#f8e9f1", "#3d1a33"),
     "tidewell": Brand("Tidewell", "Tidewell Clinic", "tidewell.png", "#1f8a85", "#e2f4f2", "#123c3a"),
     "dealership": Brand("Woodward", "Woodward Motor Co.", "woodward.png", "#b4312c", "#fbecea", "#2a1a19"),
+    "dental": Brand("Aspen Grove", "Aspen Grove Dental", "aspengrove.png", "#5b4bb7", "#efedfb", "#1f1a3d"),
 }
 
 

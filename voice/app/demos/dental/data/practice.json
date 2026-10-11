@@ -1,0 +1,21 @@
+{
+  "name": "Aspen Grove Dental",
+  "kind": "A family dental practice: cleanings and exams, fillings, crowns, emergencies, and kids from age 3.",
+  "city": "Chicago, IL",
+  "timeZone": "America/Chicago",
+  "phone": "(312) 820-9899",
+  "address": "2240 N Lincoln Avenue, Chicago, IL 60614, in Lincoln Park. Street parking, and the Fullerton L stop is two blocks away.",
+  "hours": "Monday to Thursday 8 AM to 5 PM, Friday 8 AM to 2 PM, Central Time. Closed weekends. Lunch is 12 to 1. This line answers around the clock.",
+  "newPatientSpecial": "New patients without insurance: exam, X-rays and cleaning for $129.",
+  "kids": "We see children from age 3. A parent or guardian comes to the first visit.",
+  "emergencies": "Same-day emergency visits for pain, swelling, a broken tooth or a lost crown: two are held every weekday, at 10:30 AM and 2 PM (Friday 10:30 only).",
+  "paymentPlans": "Payment plans through CareCredit and Sunbit for treatment over $500. Card, cash and HSA/FSA cards at the visit.",
+  "cancellation": "Please give 24 hours' notice to move or cancel. Repeated no-shows may only book same-day.",
+  "policies": [
+    "The assistant is an AI, not a dentist or hygienist. It never diagnoses or says what treatment is needed.",
+    "Prices are only what this information lists; the office confirms the rest after the exam.",
+    "The office verifies insurance benefits before the visit; the assistant never says what a plan covers or what the patient will owe.",
+    "Swelling that affects breathing, swallowing or speaking or is spreading toward the eye or neck, a high fever with swelling, bleeding that won't stop, or a broken jaw or face injury: call 911 or go to the emergency room now.",
+    "Deep cleanings (scaling and root planing) and treatment are booked after the dentist has examined the patient."
+  ]
+}

@@ -43,6 +43,7 @@ class Config:
             env.get("LUNE_NUMBER", "+13233123248"): "lune",
             env.get("TIDEWELL_NUMBER", "+19713662375"): "tidewell",
             env.get("DEALERSHIP_NUMBER", "+13133511780"): "dealership",
+            env.get("DENTAL_NUMBER", "+13128209899"): "dental",
             }.items()
             if number
         }
@@ -50,7 +51,7 @@ class Config:
     # Prebuilt Gemini voice names, or designed voice ids ("voice_…", from AI Studio; the travel default is
     # "Linda 2", designed on gemini-3.8-flash-tts and valid until 2027-10-04).
     voices: dict[str, str] = field(
-        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede"), "hotels": env.get("HOTELS_VOICE", "Despina"), "realestate": env.get("REALESTATE_VOICE", "Achird"), "insurance": env.get("INSURANCE_VOICE", "Charon"), "lune": env.get("LUNE_VOICE", "Sulafat"), "tidewell": env.get("TIDEWELL_VOICE", "Sulafat"), "dealership": env.get("DEALERSHIP_VOICE", "Fenrir"), "agent": env.get("AGENT_VOICE", "Sulafat")}
+        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede"), "hotels": env.get("HOTELS_VOICE", "Despina"), "realestate": env.get("REALESTATE_VOICE", "Achird"), "insurance": env.get("INSURANCE_VOICE", "Charon"), "lune": env.get("LUNE_VOICE", "Sulafat"), "tidewell": env.get("TIDEWELL_VOICE", "Sulafat"), "dealership": env.get("DEALERSHIP_VOICE", "Fenrir"), "dental": env.get("DENTAL_VOICE", "Kore"), "agent": env.get("AGENT_VOICE", "Sulafat")}
     )
     # Demos on the cascade (speech-to-text, a Gemini text model through ADK, then Gemini TTS) instead of Gemini Live.
     cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel").split(",") if d.strip())
