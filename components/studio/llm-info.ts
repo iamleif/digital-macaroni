@@ -113,6 +113,7 @@ export const LLM_INFO: Section[] = [
       { label: "Customers call an insurance agency", href: "https://digitalmacaroni.io/demo/insurance/", text: "Bluebird Insurance, a fictional independent agency in Georgia. The agent takes quote requests for a licensed agent, reads customers their coverage, logs claims with the carrier's claims line and takes policy changes." },
       { label: "Book a salon or med-spa appointment", href: "https://digitalmacaroni.io/demo/lune/", text: "Lune Salon & Med Spa, a fictional salon in Los Angeles. The agent books cuts, colour, nails and med-spa treatments with the right person, offers an add-on, holds bigger services with a deposit link and starts new injectable clients with a consultation." },
       { label: "Book a clinic visit", href: "https://digitalmacaroni.io/demo/tidewell/", text: "Tidewell Clinic, a fictional chiropractic, physio and massage clinic in Portland. The agent books new patients into the right assessment, finds returning patients, notes insurance or self-pay and sends emergencies to 911." },
+      { label: "Car buyers call a dealership", href: "https://digitalmacaroni.io/demo/dealership/", text: "Woodward Motor Co., a fictional pre-owned superstore in Detroit with about 1,200 real cars for sale. The agent searches the lot, answers from the listing, books test drives and service, and takes trade-in details for an appraisal." },
     ],
   },
   {

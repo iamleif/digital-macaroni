@@ -37,6 +37,7 @@
 .page:has([data-demo="travel"]) { --accent: #a4621f; --accent-soft: #fbefdf; --accent-ink: #6e3f10; --orb: radial-gradient(circle at 35% 30%, #ffffff, #fbe1bd 30%, #e0a35a 62%, #9a6328); }
 .page:has([data-demo="realestate"]) { --accent: #2e6650; --accent-soft: #e5f0ea; --accent-ink: #1d4335; --rec: #24503f; --orb: radial-gradient(circle at 35% 30%, #ffffff, #cfe5d8 30%, #5f9c80 62%, #24503f); }
 .page:has([data-demo="insurance"]) { --accent: #2563a8; --accent-soft: #e6effa; --accent-ink: #17406f; --rec: #1f5596; --orb: radial-gradient(circle at 35% 30%, #ffffff, #cfe0f5 30%, #5d93d4 62%, #1f5596); }
+.page:has([data-demo="dealership"]) { --accent: #b4312c; --accent-soft: #fbeceb; --accent-ink: #7a1f1b; --rec: #8e2420; --orb: radial-gradient(circle at 35% 30%, #ffffff, #f4cfcc 30%, #d2645d 62%, #8e2420); }
 .page:has([data-demo="hotels"]) { --accent: #1c7560; --accent-soft: #e2f2eb; --accent-ink: #114a3c; --orb: radial-gradient(circle at 35% 30%, #ffffff, #c6ead9 30%, #4fae8c 62%, #145a47); }
 .page *, .page *::before, .page *::after { box-sizing: border-box; }
 .page :where(a) { color: inherit; text-decoration: none; }
@@ -829,6 +830,7 @@
 .previewScope:has([data-demo="travel"]) { --accent: #a4621f; --accent-soft: #fbefdf; --accent-ink: #6e3f10; }
 .previewScope:has([data-demo="realestate"]) { --accent: #2e6650; --accent-soft: #e5f0ea; --accent-ink: #1d4335; --rec: #24503f; }
 .previewScope:has([data-demo="insurance"]) { --accent: #2563a8; --accent-soft: #e6effa; --accent-ink: #17406f; --rec: #1f5596; }
+.previewScope:has([data-demo="dealership"]) { --accent: #b4312c; --accent-soft: #fbeceb; --accent-ink: #7a1f1b; --rec: #8e2420; }
 .previewScope:has([data-demo="hotels"]) { --accent: #1c7560; --accent-soft: #e2f2eb; --accent-ink: #114a3c; }
 .previewScope .railLogo { visibility: hidden; }
 
@@ -882,3 +884,28 @@
 .claimLine b { display: block; font-size: 13px; }
 .claimLine small { font-size: 11.5px; color: var(--muted); }
 @media (max-width: 560px) { .focusHome dl, .coverages, .claim dl { grid-template-columns: 1fr; } }
+
+
+/* ---- Woodward: the lot and the car on the call ---- */
+.cars { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; padding: 0; list-style: none; }
+.car { display: flex; flex-direction: column; border-radius: 13px; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px var(--hair); transition: opacity .4s var(--ease), box-shadow .4s var(--ease), background-color .4s var(--ease); min-width: 0; }
+.car[data-dim] { opacity: .4; }
+.car[data-matched] { box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, var(--hair)); animation: rise .45s var(--ease) both; }
+.car[data-read] { box-shadow: 0 0 0 1.5px var(--accent), 0 10px 22px -18px var(--accent); }
+.car[data-focus] { background: var(--accent-soft); box-shadow: 0 0 0 2px var(--accent); }
+.carPhoto { position: relative; display: block; aspect-ratio: 4 / 3; background: #f1efea; }
+.carPhoto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carPhoto em { position: absolute; left: 6px; top: 6px; font-style: normal; font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 999px; background: #e6f6ee; color: #17744c; }
+.carPhoto em[data-tone="focus"] { background: var(--accent); color: #fff; }
+.carPhoto em[data-tone="cpo"] { background: #fff; color: var(--ink-2); }
+.car > div { display: flex; flex-direction: column; gap: 1px; padding: 8px 10px 10px; }
+.car b { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.car strong { font-size: 16px; font-weight: 650; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.car small { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.focusCar img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 12px; display: block; margin-bottom: 10px; background: #f1efea; }
+.focusCar b { display: block; font-size: 15px; font-weight: 650; letter-spacing: -0.02em; }
+.focusCar > small { display: block; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.focusCar dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; }
+.focusCar dl > div { display: flex; flex-direction: column; gap: 1px; padding: 6px 0; border-bottom: 1px dashed var(--hair); min-width: 0; }
+.focusCar dt { font-size: 11px; color: var(--muted); }
+.focusCar dd { font-size: 12.5px; font-weight: 600; overflow-wrap: anywhere; }

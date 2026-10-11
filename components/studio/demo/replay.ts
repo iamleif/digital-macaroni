@@ -1,5 +1,5 @@
-import { luneEmpty, luneSample, tidewellEmpty, tidewellSample, formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
-import type { AppointmentView, DemoEvent, DemoId, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
+import { dealershipCars, dealershipEmpty, dealershipFocus, dealershipNamed, dealershipRecord, dealershipSample, luneEmpty, luneSample, tidewellEmpty, tidewellSample, formfieldEmpty, formfieldSample, hotelsEmpty, hotelsSample, insuranceEmpty, insuranceNamed, insuranceRecord, insuranceSample, lawfirmEmpty, lawfirmSample, lawNamed, lawRecord, northlineEmpty, northlineSample, realestateEmpty, realestateHomes, realestateNamed, realestateRecord, realestateSample, travelEmpty, travelSample } from "../live/sample-views";
+import type { AppointmentView, DealershipView, DemoEvent, DemoId, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 
 /**
  * Sample calls for reviewing the demo pages without phoning in (`?replay`). Each is a timeline of the
@@ -26,7 +26,7 @@ let v = 0;
 const say = (speaker: "visitor" | "agent", text: string, id = `t${++v}`): DemoEvent => ({ type: "transcript", id, speaker, text, final: true });
 const tool = (callId: string, name: string, label: string): DemoEvent => ({ type: "tool.started", callId, tool: name, label });
 const ok = (callId: string, name: string, label: string, summary: string): DemoEvent => ({ type: "tool.succeeded", callId, tool: name, label, summary, version: 0 });
-const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView | RealEstateView | InsuranceView | AppointmentView): DemoEvent => ({ type: "state", version, state: s });
+const state = (version: number, s: NorthlineView | FormFieldView | TravelView | LawFirmView | HotelsView | RealEstateView | InsuranceView | AppointmentView | DealershipView): DemoEvent => ({ type: "state", version, state: s });
 const speaking = (on: boolean): DemoEvent => ({ type: "agent.speaking", speaking: on });
 
 const nlRequest = (patch: Partial<NorthlineView["request"]>): NorthlineView => ({ ...northlineEmpty, request: { ...northlineEmpty.request, ...patch } });
@@ -572,4 +572,60 @@ const tidewell = timeline([
   { type: "session.ended", reason: "agent_ended" },
 ]);
 
-export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels, realestate, insurance, lune, tidewell };
+const dv = (values: Record<string, string | string[]>, patch: Partial<DealershipView> = {}, stage: DealershipView["record"]["stage"] = "searching", trade = false): DealershipView => ({
+  ...dealershipEmpty, ...patch,
+  record: { opened: true, number: "D-512", title: (values.name as string) ?? null, stage, sections: dealershipRecord(values, true, trade) },
+});
+const dSearch = dv({ want: "Ford F-150", body: ["Truck"], budget: "Up to $40,000" }, { lot: { criteria: "Ford F-150 · under $40,000", total: 8, snapshot: "2026-10-11", cars: dealershipCars.map((c, i) => ({ ...c, matched: i === 0, read: i === 0 })) } });
+const dFocus = { ...dSearch, focus: dealershipFocus, lot: { ...dSearch.lot, cars: dSearch.lot.cars.map((c, i) => ({ ...c, focus: i === 0 })) }, record: { ...dSearch.record, stage: "interested" as const } };
+const dNamed = { ...dFocus, record: { ...dFocus.record, title: "Andre Williams", sections: dealershipRecord(dealershipNamed, true, true) } };
+const dOpen = { ...dNamed, calendar: { purpose: "test_drive" as const, openTimes: [{ slotId: "a", day: "Saturday", time: "10 AM", with: "Ben Kowalski" }, { slotId: "b", day: "Saturday", time: "11 AM", with: "Ben Kowalski" }] } };
+
+const dealership = timeline([
+  { type: "session.ready", sessionId: "replay", demo: "dealership", channel: "phone" },
+  { type: "pairing.linked" },
+  speaking(true),
+  say("agent", "Thanks for calling Woodward Motor Company, this is Wes. What can I help you find?"),
+  speaking(false),
+  1500,
+  say("visitor", "Do you have an F-150 under forty thousand?"),
+  tool("c1", "search_inventory", "Search the lot"),
+  700,
+  ok("c1", "search_inventory", "Search the lot", "8 on the lot · reading 3"),
+  state(1, dSearch),
+  speaking(true),
+  say("agent", "We do. There’s a 2025 F-150 XLT, certified, about thirty-one thousand miles, at thirty-eight thousand and forty-two. Black, four-wheel drive. Want to hear about it?"),
+  speaking(false),
+  1500,
+  say("visitor", "Yeah. I’d finance it, and trade in my 2016 Malibu, about 98,000 miles. I’m Andre Williams."),
+  tool("c2", "get_vehicle", "Pull up a car"),
+  tool("c3", "note_lead", "Fill in the lead and trade-in"),
+  700,
+  ok("c2", "get_vehicle", "Pull up a car", "2025 Ford F-150 XLT · $38,042"),
+  ok("c3", "note_lead", "Fill in the lead and trade-in", "Noted 7 details"),
+  state(2, dNamed),
+  speaking(true),
+  say("agent", "Good to hear from you again, Andre. We’ll appraise the Malibu in person, about twenty minutes, and Rita can go through financing. Want to drive the F-150?"),
+  speaking(false),
+  1500,
+  say("visitor", "Saturday morning?"),
+  tool("c4", "check_availability", "Check test drives and service"),
+  600,
+  ok("c4", "check_availability", "Check test drives and service", "3 open on Saturday"),
+  state(3, dOpen),
+  speaking(true),
+  say("agent", "Ben, our truck guy, has ten or eleven on Saturday. Ten?"),
+  speaking(false),
+  1400,
+  say("visitor", "Ten works."),
+  tool("c5", "book_appointment", "Book a test drive or service"),
+  700,
+  ok("c5", "book_appointment", "Book a test drive or service", "Test drive booked · WM-512"),
+  state(4, dealershipSample),
+  speaking(true),
+  say("agent", "You’re set, Saturday at ten with Ben. Bring your licence; we’ll hold the truck for you. Anything else?"),
+  speaking(false),
+  { type: "session.ended", reason: "agent_ended" },
+]);
+
+export const REPLAYS: Record<DemoId, Step[]> = { northline, formfield, travel, lawfirm, hotels, realestate, insurance, lune, tidewell, dealership };

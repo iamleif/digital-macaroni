@@ -41,6 +41,12 @@ export function BrandMark({ id, size = 22 }: { id: BrandId; size?: number }) {
     <path d="M5.2 12.2 12 6.4l6.8 5.8M7.4 10.6v7.4h9.2v-7.4" stroke="#fff" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round" fill="none" />
     <circle cx="11" cy="14.6" r="1.25" fill="#9fc4e8" /><circle cx="13.4" cy="14" r="1.25" fill="#9fc4e8" /><circle cx="12.4" cy="16.2" r="1.25" fill="#9fc4e8" />
   </svg>;
+  if (id === "dealership") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+    <defs><linearGradient id="wm-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#c8463f" /><stop offset="1" stopColor="#8e2420" /></linearGradient></defs>
+    <rect width="24" height="24" rx="7" fill="url(#wm-g)" />
+    <path d="M5 7.5 8 16.5l4-6.2 4 6.2 3-9" stroke="#fff" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <path d="M5 19h14" stroke="#f3c766" strokeWidth="1.4" strokeLinecap="round" />
+  </svg>;
   if (id === "insurance") return <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
     <defs><linearGradient id="bb-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#3f86d6" /><stop offset="1" stopColor="#1f5596" /></linearGradient></defs>
     <rect width="24" height="24" rx="7" fill="url(#bb-g)" />
@@ -64,6 +70,7 @@ const WORDMARK: Record<BrandId, { text: string; className: string }> = {
   hotels: { text: "Palmetto Stays", className: h.wmPalmetto },
   realestate: { text: "Juniper Row", className: h.wmJuniper },
   insurance: { text: "Bluebird", className: h.wmBluebird },
+  dealership: { text: "Woodward Motor Co.", className: h.wmWoodward },
   lune: { text: "lune", className: h.wmLune },
   tidewell: { text: "Tidewell", className: h.wmTidewell },
 };

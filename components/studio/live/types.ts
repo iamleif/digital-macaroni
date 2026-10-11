@@ -2,7 +2,7 @@
  * The demo voice service's protocol and dashboard records, as the website receives them. Mirrors
  * DigitalMacaroni/voice/src/protocol.ts and each demo's view() output.
  */
-export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels" | "realestate" | "insurance" | "lune" | "tidewell";
+export type DemoId = "northline" | "formfield" | "travel" | "lawfirm" | "hotels" | "realestate" | "insurance" | "lune" | "tidewell" | "dealership";
 
 export type DemoEvent =
   | { type: "session.ready"; sessionId: string; demo: DemoId; channel: "phone" | "browser" }
@@ -286,4 +286,36 @@ export interface InsuranceView {
   emailed?: { to: string; reference?: string } | null;
 }
 
-export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView | HotelsView | RealEstateView | InsuranceView;
+/** One car on Woodward's lot: real retail listings around Detroit; the photo is our own copy, served by the voice service. */
+export interface DealershipCar {
+  stock: string;
+  vin: string;
+  name: string;
+  price: string;
+  miles: string;
+  color: string | null;
+  drivetrain: string | null;
+  fuel: string | null;
+  cpo: boolean;
+  matched: boolean;
+  read: boolean;
+  focus: boolean;
+  booked: boolean;
+}
+
+/** Woodward Motor Co.: the lead and trade-in filling in, the lot as it's searched, the car on the call, test drives and service. */
+export interface DealershipView {
+  timeZone: string;
+  record: RecordHead<"new" | "searching" | "interested" | "booked">;
+  known: { car: string; lastService: string; salesperson: string } | null;
+  lot: { criteria: string | null; total: number; cars: DealershipCar[]; snapshot: string };
+  focus: { stock: string; vin: string; name: string; price: string; cpo: boolean; facts: { label: string; value: string }[]; warranty: string } | null;
+  calendar: { purpose: "test_drive" | "service"; openTimes: { slotId: string; day: string; time: string; with: string }[] } | null;
+  appointments: { id: string; purpose: "test_drive" | "service"; status: "booked" | "cancelled"; vehicle: string; stock: string | null; name: string; changes: number; service: string | null; day: string; time: string; with: string }[];
+  messages: { id: string; name: string; summary: string; preferredTime: string | null; callback: string; for: string }[];
+  note: string | null;
+  tasks: { title: string; who: string; due: string }[];
+  emailed?: { to: string; reference?: string } | null;
+}
+
+export type DemoView = NorthlineView | FormFieldView | TravelView | AppointmentView | LawFirmView | HotelsView | RealEstateView | InsuranceView | DealershipView;

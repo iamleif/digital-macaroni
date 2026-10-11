@@ -53,9 +53,9 @@ const LAW_LEDE: Partial<Record<DemoId, string>> = {
 };
 /** The kinds of shop and travel business. Each is the same agent with its own catalogue. */
 const SHOP_KINDS: TradeCard[] = [
-  { id: "dtc", label: "Direct-to-consumer brand", example: "Online store: products, orders, returns", ready: true },
-  { id: "dealership", label: "Auto dealership", example: "Inventory, test drives, trade-ins", ready: true },
-  { id: "furniture", label: "Furniture showroom", example: "Pieces in stock, delivery, financing", ready: true },
+  { id: "dtc", label: "Direct-to-consumer brand", example: "Online store: products, orders, returns", ready: true, demo: "formfield" },
+  { id: "dealership", label: "Auto dealership", example: "Real cars, test drives, trade-ins, service", ready: true, demo: "dealership" },
+  { id: "furniture", label: "Furniture showroom", example: "Pieces in stock, delivery, financing", ready: false },
 ];
 /** Travel is separate businesses, each with its own agent and number: a card for another one opens its demo. */
 const TRAVEL_KINDS: TradeCard[] = [
@@ -66,7 +66,7 @@ const TRAVEL_KINDS: TradeCard[] = [
 /** What each demo asks on the first step: the cards, the mark on each, and the words around them. */
 function kindsFor(demoId: string): { cards: TradeCard[]; first: Trade; mark: (t: TradeCard) => React.ReactNode; title: string; lede: string; runs: string; stage: string } {
   if (demoId === "lawfirm" || demoId === "realestate" || demoId === "insurance") return { cards: LAW_AREAS, first: LAW_FIRST[demoId]!, mark: (t) => <BrandMark id={t.demo!} size={26} />, title: "What kind of business do you want to try?", lede: LAW_LEDE[demoId]!, runs: "What runs your business today?", stage: "Your business" };
-  if (demoId === "formfield") return { cards: SHOP_KINDS, first: "dtc", mark: (t) => (t.id === "dtc" ? <BrandMark id="formfield" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: inventory, availability and follow-up.", runs: "What runs your business today?", stage: "Your business" };
+  if (demoId === "formfield" || demoId === "dealership") return { cards: SHOP_KINDS, first: demoId === "dealership" ? "dealership" : "dtc", mark: (t) => (t.demo ? <BrandMark id={t.demo} size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: inventory, availability and follow-up.", runs: "What runs your business today?", stage: "Your business" };
   if (demoId === "travel" || demoId === "hotels") return { cards: TRAVEL_KINDS, first: demoId === "hotels" ? "hotels" : "flights", mark: (t) => (t.id === "flights" ? <BrandMark id="travel" size={26} /> : t.id === "hotels" ? <BrandMark id="hotels" size={26} /> : <KindMark id={t.id as KindId} size={26} />), title: "What kind of business do you want to try?", lede: demoId === "hotels" ? "Pick one and we’ll set the call up that way: hotels, rooms and rates." : "Pick one and we’ll set the call up that way: fares, options and bookings.", runs: "What runs your business today?", stage: "Your business" };
   return { cards: TRADES, first: TRADE_FIRST[demoId as DemoId] ?? "salon", mark: (t) => <BrandMark id={SKINS[t.id as BookingSkin].brand} size={26} />, title: "What kind of business do you want to try?", lede: "Pick one and we’ll set the call up that way: services, schedule and rules.", runs: "What runs your business today?", stage: "Your business" };
 }

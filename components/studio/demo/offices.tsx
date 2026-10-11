@@ -1,7 +1,7 @@
 import { Fragment, createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ProductArt, swatch } from "../live/product-art";
 import { formfieldEmpty } from "../live/sample-views";
-import type { AppointmentView, BrandId, FormFieldView, HotelsStage, HotelsView, InsuranceView, LawFirmView, RealEstateView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
+import type { AppointmentView, BrandId, DealershipView, FormFieldView, HotelsStage, HotelsView, InsuranceView, LawFirmView, RealEstateView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
 import { BrandMark } from "../brand-marks";
 import { ArrowRight, Bed, Calendar, Check, Clock, Coffee, Home, Inbox, Lock, MapPin, Phone, Search, Seat, Settings, Suitcase, User, Users } from "../icons";
 import d from "./demo.module.css";
@@ -1324,6 +1324,90 @@ export function InsuranceOffice({ view, state, agentName }: { view: InsuranceVie
           <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
             <span className={d.listIcon}><Phone size={15} /></span>
             <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>Call back {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
+          </li>)}</ul>
+        </Card> : null}
+      </div>
+    </div>
+  </Shell>;
+}
+
+
+/* ---------------- Woodward Motor Co. ---------------- */
+
+const DEAL_STAGES: RecordStage[] = [
+  { id: "new", label: "New lead" },
+  { id: "searching", label: "Searching" },
+  { id: "interested", label: "Car picked" },
+  { id: "booked", label: "Booked" },
+];
+/** Our own copy of each car's photo, served by the voice service through this site. */
+const carPhoto = (vin: string) => `/voice/media/cars/${vin}.jpg`;
+
+function CarTile({ c, searching }: { c: DealershipView["lot"]["cars"][number]; searching: boolean }) {
+  return <li className={d.car} data-matched={c.matched || undefined} data-read={c.read || undefined} data-focus={c.focus || undefined} data-dim={(searching && !c.matched && !c.focus) || undefined}>
+    <span className={d.carPhoto}><img src={carPhoto(c.vin)} alt="" loading="lazy" />{c.booked ? <em>Test drive</em> : c.focus ? <em data-tone="focus">On the call</em> : c.cpo ? <em data-tone="cpo">Certified</em> : null}</span>
+    <div>
+      <b>{c.name}</b>
+      <strong>{c.price}</strong>
+      <small>{c.miles}{c.drivetrain ? ` · ${c.drivetrain}` : ""}{c.color ? ` · ${c.color}` : ""}</small>
+    </div>
+  </li>;
+}
+
+export function DealershipOffice({ view, state, agentName }: { view: DealershipView; state: LiveState; agentName: string }) {
+  const r = view.record;
+  const at = DEAL_STAGES.findIndex((x) => x.id === r.stage);
+  const L = view.lot;
+  const searching = L.criteria != null || L.cars.some((c) => c.focus);
+  const booked = view.appointments.filter((a) => a.status === "booked");
+  const f = view.focus;
+
+  return <Shell id="dealership" nav={1} kicker={`Sales desk · ${view.timeZone}`} title={r.title ?? "New call"} state={state}
+    tools={<span className={d.seg}><b>Lead</b><span>Inventory</span><span>Service</span></span>}>
+    <RecordHeader opened={r.opened} number={r.number ?? "D-····"} tags={[view.known ? "Returning customer" : "New lead"]} source={`Phone · AI assistant · ${agentName}`} stages={DEAL_STAGES} at={at} label="Lead stage" />
+
+    <Card title={L.criteria ? "Inventory search" : "On the lot"} meta={L.criteria ? `${L.total} match${L.total === 1 ? "" : "es"}` : `${L.total.toLocaleString("en-US")} cars`}>
+      {L.criteria ? <p className={d.homeCriteria}><Search size={13} />{L.criteria}</p> : null}
+      {L.cars.length ? <ul className={d.cars}>{L.cars.map((c) => <CarTile key={c.stock} c={c} searching={searching} />)}</ul> : <Empty>Cars that match light up here as the caller describes what they want.</Empty>}
+      <p className={d.homeSource}>Real cars for sale around Detroit, as of {L.snapshot}</p>
+    </Card>
+
+    <div className={d.recGrid}>
+      <RecordForm sections={r.sections} opened={r.opened} waiting={`The lead opens the moment ${agentName} learns something worth keeping.`} />
+
+      <div className={d.stack}>
+        {f ? <Card title="On the call" meta={f.price}>
+          <div className={d.focusCar}>
+            <img src={carPhoto(f.vin)} alt={f.name} />
+            <b>{f.name}</b>
+            <small>{f.warranty} warranty{f.cpo ? " · certified pre-owned" : ""}</small>
+            <dl>{f.facts.map((x) => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
+          </div>
+        </Card> : null}
+
+        {view.known ? <Card title="Returning customer" meta={view.known.salesperson}>
+          <div className={d.reviewRow} data-state="clear"><i aria-hidden="true"><Check size={11} /></i><div><b>{view.known.car}</b><small>Last service: {view.known.lastService}</small></div></div>
+        </Card> : null}
+
+        <Card title={view.calendar?.purpose === "service" || booked.some((a) => a.purpose === "service") ? "Service bay" : "Test drive"} meta={booked.length ? booked[booked.length - 1].id : view.calendar?.openTimes.length ? `${view.calendar.openTimes.length} open` : "Not booked"}>
+          {booked.length ? booked.map((a) => <div key={a.id} className={d.consult}><span className={d.listIcon}><Calendar size={15} /></span><div><b>{a.purpose === "test_drive" ? a.vehicle : `${a.service} · ${a.vehicle}`}</b><small>{a.day}, {a.time}{a.with ? ` · ${a.with}` : ""}</small></div><em>{a.changes ? `Moved ${a.changes}×` : "Booked"}</em></div>)
+            : view.calendar?.openTimes.length ? <div className={d.openTimes}>{view.calendar.openTimes.map((o) => <span key={o.slotId}><b>{o.time}</b><small>{o.with ? `${o.with.split(" ")[0]} · ` : ""}{o.day}</small></span>)}</div>
+            : <Empty>Open test-drive and service times appear here.</Empty>}
+          {view.emailed ? <Emailed to={view.emailed.to} what={view.emailed.reference ? `Confirmation for ${view.emailed.reference}` : "Call summary"} /> : null}
+        </Card>
+
+        <Card title="Call summary" meta={view.note ? `Added to ${r.number}` : "Written as the call goes"}>
+          {view.note ? <p className={d.noteText}><Typed key={view.note} text={view.note} /></p> : <Empty>{agentName} writes the summary onto the lead.</Empty>}
+        </Card>
+
+        <Card title="Follow-ups" meta={view.tasks.length || "None yet"}>
+          {view.tasks.length ? <ul className={d.tasks}>{view.tasks.map((t) => <li key={t.title}><i aria-hidden="true"><Check size={10} /></i><div><b>{t.title}</b><small>{t.who} · {t.due}</small></div></li>)}</ul> : <Empty>Tasks for sales, finance and service are created from the lead.</Empty>}
+        </Card>
+
+        {view.messages.length ? <Card title="Messages" meta={view.messages.length}>
+          <ul className={d.list}>{view.messages.map((m) => <li key={m.id}>
+            <span className={d.listIcon}><Phone size={15} /></span>
+            <div><b>{m.name} · {m.id}</b><small>{m.summary}</small><small>For {m.for} · call back {m.callback}{m.preferredTime ? `, ${m.preferredTime}` : ""}</small></div>
           </li>)}</ul>
         </Card> : null}
       </div>

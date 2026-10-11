@@ -1,4 +1,4 @@
-import type { AppointmentView, FormFieldView, HotelsView, InsuranceView, LawFirmView, RealEstateHome, RealEstateView, RecordField, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
+import type { AppointmentView, DealershipCar, DealershipView, FormFieldView, HotelsView, InsuranceView, LawFirmView, RealEstateHome, RealEstateView, RecordField, NorthlineView, TravelJourney, TravelSeatCell, TravelSeatMap, TravelView } from "./types";
 
 /**
  * Representative records for the homepage cards and the demo window before a conversation starts.
@@ -458,4 +458,51 @@ export const insuranceSample: InsuranceView = {
   calls: [{ id: "BB-318", status: "booked", topic: "Auto and renters quote", name: "Jamie Cole", changes: 0, day: "Tomorrow", time: "10 AM", agent: "Tasha Greene" }],
   note: "Jamie Cole called. Wants a quote: auto, renters. Vehicles: 2020 Honda Accord. Currently with GEICO, renews Oct 28, 2026. Call with Tasha Greene booked, tomorrow at 10 AM.",
   tasks: [{ title: "Call Jamie Cole · Auto and renters quote", who: "Tasha Greene", due: "Tomorrow, 10 AM" }, { title: "Run quotes with the carriers", who: "Tasha Greene", due: "Before the call" }],
+};
+
+
+/* Woodward Motor Co.: the lead record and real cars from the lot (auto.dev, October 11, 2026). */
+const DEAL_BODIES = ["SUV", "Car", "Truck", "Van", "Minivan"];
+const DEAL_PAY = ["Cash", "Finance", "Lease", "Not sure yet"];
+const DEAL_WHEN = ["This week", "This month", "In a few months", "Just looking"];
+export function dealershipRecord(v: Partial<Record<string, string | string[]>> = {}, opened = Object.keys(v).length > 0, trade = false): DealershipView["record"]["sections"] {
+  const g = (k: string) => (v[k] as string | undefined) ?? null;
+  return [
+    { id: "contact", title: "Contact", fields: [f("name", "Full name", "text", g("name")), f("phone", "Phone", "text", g("phone")), f("email", "Email", "text", g("email")), f("source", "Source", "select", opened ? "Phone · AI assistant" : null, ["Phone · AI assistant", "Website", "Cars.com", "Walk-in"])] },
+    { id: "want", title: "Looking for", fields: [f("want", "Make & model", "text", g("want")), f("body", "Body style", "chips", (v.body as string[] | undefined) ?? null, DEAL_BODIES), f("budget", "Budget", "text", g("budget")), f("payment", "Paying", "select", g("payment"), DEAL_PAY), f("timeline", "Timeline", "select", g("timeline"), DEAL_WHEN)] },
+    ...(trade ? [{ id: "trade", title: "Trade-in", fields: [f("tradeCar", "Vehicle", "text", g("tradeCar")), f("tradeMiles", "Miles", "text", g("tradeMiles")), f("tradeCondition", "Condition", "select", g("tradeCondition"), ["Excellent", "Good", "Fair", "Rough"]), f("tradeOwed", "Loan", "toggle", g("tradeOwed"), ["Paid off", "Still owes", "Not sure"])] }] : []),
+  ];
+}
+const lotCar = (stock: string, vin: string, name: string, price: string, miles: string, color: string, drivetrain: string, fuel: string, cpo: boolean): DealershipCar => ({ stock, vin, name, price, miles, color, drivetrain, fuel, cpo, matched: false, read: false, focus: false, booked: false });
+export const dealershipCars: DealershipCar[] = [
+  lotCar("W2413", "1FTEW3LP6SKE13367", "2025 Ford F-150 XLT", "$38,042", "30,877 miles", "Agate Black Metallic", "4WD", "Gasoline", true),
+  lotCar("W2667", "1C4RJKBR7T8551530", "2026 Jeep Grand Cherokee L Limited", "$41,704", "3,065 miles", "Baltic Grey Metallic", "4WD", "Gasoline", false),
+  lotCar("W2527", "2HKRS4H70TH457568", "2026 Honda CR-V EX-L", "$36,688", "3,068 miles", "Meteorite Gray Metallic", "AWD", "Gasoline", true),
+  lotCar("W2166", "3GNKDJRJ8TS141188", "2026 Chevrolet Blazer EV RS", "$50,689", "3,249 miles", "Black", "AWD", "Electric", false),
+  lotCar("W3202", "3TYLB5JN6TT107820", "2026 Toyota Tacoma SR5", "$39,917", "3,559 miles", "Supersonic Red", "4WD", "Gasoline", false),
+  lotCar("W3139", "4T1DAACK4TU741228", "2026 Toyota Camry LE", "$30,605", "3,089 miles", "Celestial Silver Metallic", "FWD", "Gasoline", false),
+];
+export const dealershipEmpty: DealershipView = {
+  timeZone: "Eastern Time",
+  record: { opened: false, number: null, title: null, stage: "new", sections: dealershipRecord({}, false) },
+  known: null,
+  lot: { criteria: null, total: 1168, cars: dealershipCars, snapshot: "2026-10-11" },
+  focus: null, calendar: null, appointments: [], messages: [], note: null, tasks: [], emailed: null,
+};
+export const dealershipNamed = { name: "Andre Williams", phone: "•••• 5530", want: "Ford F-150", body: ["Truck"], budget: "Up to $40,000", payment: "Finance", timeline: "This week", tradeCar: "2016 Chevrolet Malibu", tradeMiles: "98,000", tradeCondition: "Good", tradeOwed: "Paid off" };
+export const dealershipFocus: DealershipView["focus"] = { stock: "W2413", vin: "1FTEW3LP6SKE13367", name: "2025 Ford F-150 XLT", price: "$38,042", cpo: true, warranty: "Certified pre-owned", facts: [{ label: "Miles", value: "30,877" }, { label: "Colour", value: "Agate Black Metallic" }, { label: "Interior", value: "Black/Medium Dark Slate cloth" }, { label: "Drivetrain", value: "4WD" }, { label: "Engine", value: "2.7L 6Cyl Gasoline" }, { label: "Seats", value: "6" }] };
+export const dealershipSample: DealershipView = {
+  ...dealershipEmpty,
+  record: { opened: true, number: "D-512", title: "Andre Williams", stage: "booked", sections: dealershipRecord(dealershipNamed, true, true) },
+  known: { car: "2021 Ford F-150 XLT", lastService: "Oil change in June", salesperson: "Ben Kowalski" },
+  lot: { criteria: "Ford F-150 · under $40,000", total: 8, snapshot: "2026-10-11", cars: dealershipCars.map((c, i) => ({ ...c, matched: i === 0, read: i === 0, focus: i === 0, booked: i === 0 })) },
+  focus: dealershipFocus,
+  appointments: [{ id: "WM-512", purpose: "test_drive", status: "booked", vehicle: "2025 Ford F-150 XLT", stock: "W2413", name: "Andre Williams", changes: 0, service: null, day: "Saturday", time: "10 AM", with: "Ben Kowalski" }],
+  note: "Andre Williams called the dealership. Interested in the 2025 Ford F-150 XLT ($38,042, stock W2413). Budget up to $40,000. Paying: finance. Trade-in: 2016 Chevrolet Malibu, 98,000 miles. Test drive booked Saturday at 10 AM with Ben Kowalski.",
+  tasks: [
+    { title: "Pull up the 2025 Ford F-150 XLT", who: "Ben Kowalski", due: "Saturday, 10 AM" },
+    { title: "Hold the car 24 hours", who: "Lot manager", due: "Now" },
+    { title: "Appraise the trade-in at the visit", who: "Used car manager", due: "At the visit" },
+    { title: "Pre-qualify for financing", who: "Rita Alvarez", due: "Before the visit" },
+  ],
 };

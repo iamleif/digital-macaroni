@@ -4,14 +4,14 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CallWatcher, type SetupChoices, type WatchStatus } from "../live/client";
 import type { DemoInfo } from "../live/demo-info";
-import { formfieldEmpty, hotelsEmpty, insuranceEmpty, lawfirmEmpty, luneEmpty, northlineEmpty, realestateEmpty, tidewellEmpty, travelEmpty } from "../live/sample-views";
-import type { DemoEvent, DemoId, DemoView, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
+import { dealershipEmpty, formfieldEmpty, hotelsEmpty, insuranceEmpty, lawfirmEmpty, luneEmpty, northlineEmpty, realestateEmpty, tidewellEmpty, travelEmpty } from "../live/sample-views";
+import type { DealershipView, DemoEvent, DemoId, DemoView, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
 import { VoiceLevels } from "../live/voice-levels";
 import { BrandLockup } from "../brand-marks";
 import { ArrowUpRight, Check, Phone } from "../icons";
 import { COMPANY_INSTAGRAM, COMPANY_LINKEDIN, COMPANY_TIKTOK, COMPANY_YOUTUBE } from "../site";
-import { AppointmentOffice, FormFieldOffice, HotelsOffice, InsuranceOffice, LawFirmOffice, NorthlineOffice, RealEstateOffice, TravelOffice, type LiveState } from "./offices";
+import { AppointmentOffice, DealershipOffice, FormFieldOffice, HotelsOffice, InsuranceOffice, LawFirmOffice, NorthlineOffice, RealEstateOffice, TravelOffice, type LiveState } from "./offices";
 import { REPLAYS } from "./replay";
 import { CookieSettings, track } from "../consent";
 import { VoiceBars } from "./voice-bars";
@@ -21,7 +21,7 @@ import type { AppointmentView, BookingSkin } from "../live/types";
 import d from "./demo.module.css";
 
 type Action = Extract<Entry, { kind: "action" }>;
-const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: formfieldEmpty, travel: travelEmpty, lawfirm: lawfirmEmpty, hotels: hotelsEmpty, realestate: realestateEmpty, insurance: insuranceEmpty, lune: luneEmpty, tidewell: tidewellEmpty };
+const EMPTY: Record<DemoId, DemoView> = { northline: northlineEmpty, formfield: formfieldEmpty, travel: travelEmpty, lawfirm: lawfirmEmpty, hotels: hotelsEmpty, realestate: realestateEmpty, insurance: insuranceEmpty, lune: luneEmpty, tidewell: tidewellEmpty, dealership: dealershipEmpty };
 
 /**
  * The live demo page. Every demo is reached by phone: a screen code is ready on arrival, and once the
@@ -174,6 +174,7 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
           : demo.id === "travel" ? <TravelOffice view={view as TravelView} state={state} agentName={demo.agentName} />
           : demo.id === "hotels" ? <HotelsOffice view={view as HotelsView} state={state} agentName={demo.agentName} />
           : demo.id === "lune" || demo.id === "tidewell" ? <AppointmentOffice view={view as AppointmentView} state={state} agentName={demo.agentName} />
+          : demo.id === "dealership" ? <DealershipOffice view={view as DealershipView} state={state} agentName={demo.agentName} />
           : demo.id === "realestate" ? <RealEstateOffice view={view as RealEstateView} state={state} agentName={demo.agentName} />
           : demo.id === "insurance" ? <InsuranceOffice view={view as InsuranceView} state={state} agentName={demo.agentName} />
           : <FormFieldOffice view={view as FormFieldView} state={state} agentName={demo.agentName} />}
