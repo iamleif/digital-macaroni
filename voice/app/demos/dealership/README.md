@@ -1,4 +1,4 @@
-# Auto dealership (name to pick)
+# Woodward Motor Co. (Detroit auto dealership)
 
 Not built yet. When it is, this folder follows the same layout as `northline/` (see `../README.md`).
 

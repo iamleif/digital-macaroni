@@ -31,11 +31,11 @@ Bought October 11, 2026 on the Twilio account; about $1.15 a month each.
 | Bluebird Insurance | (478) 707-3907 | Macon, GA |
 | Juniper Row Realty | (512) 645-1952 | Austin |
 | Form & Field | (830) 239-2110 | Texas Hill Country |
-| Dealership | (313) 351-1780 | Detroit |
+| Woodward Motor Co. | (313) 351-1780 | Detroit |
 | Furniture showroom | (312) 820-9899 | Chicago |
 | Waypoint flights | (929) 333-3608 | New York |
-| Waypoint hotels | (786) 305-3013 | Miami |
-| Waypoint tours | (702) 830-4942 | Las Vegas |
+| Palmetto Stays | (786) 305-3013 | Miami |
+| Red Rock Journeys | (702) 830-4942 | Las Vegas |
 
 Only (206) 887-9619 is A2P-approved, so it sends every real text for the law & professional businesses
 (Alder & Finch, insurance, real estate): intake forms and links. Every other business shows its texts on screen.
@@ -54,8 +54,8 @@ apply. Reply STOP at any time to opt out."
 | | Bluebird Insurance Agency | `insurance/` | No |
 | | Juniper Row Realty | `realestate/` | No |
 | Retail (Theo) | Form & Field, home goods | `formfield/` | Yes |
-| | Auto dealership | `dealership/` | No |
+| | Woodward Motor Co., auto dealership | `dealership/` | No |
 | | Furniture showroom | `furniture/` | No |
 | Travel (Linda) | Waypoint, flights | `travel/` | Yes |
-| | Waypoint, hotels & stays | `hotels/` | No |
-| | Waypoint, tours & packages | `tours/` | No |
+| | Palmetto Stays, hotels | `hotels/` | No |
+| | Red Rock Journeys, tours | `tours/` | No |

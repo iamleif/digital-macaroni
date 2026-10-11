@@ -1,4 +1,4 @@
-# Waypoint Travel, tours & packages
+# Red Rock Journeys (Las Vegas tours & packages)
 
 Not built yet. When it is, this folder follows the same layout as `northline/` (see `../README.md`).
 
