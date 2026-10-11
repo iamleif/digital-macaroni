@@ -203,16 +203,11 @@ class LevelMeter:
 
 def retro_ring(rate: int = 8000) -> bytes:
     """
-    One short, retro phone ring as 8 kHz mu-law for Twilio: a square-wave trill (two tones swapping every
-    40 ms, like an old electronic phone) in two bursts, "brr-brr", then a beat of quiet before the answer.
+    One soft ring as 8 kHz mu-law for Twilio: the gentle ringback a caller hears while a phone rings
+    (440 Hz and 480 Hz blended), quiet, with soft edges, then a beat of quiet before the answer.
     """
-    def trill(seconds: float) -> np.ndarray:
-        t = np.arange(int(rate * seconds)) / rate
-        freq = np.where((t // 0.04) % 2 == 0, 1000.0, 1250.0)
-        wave = np.sign(np.sin(2 * np.pi * np.cumsum(freq) / rate))
-        fade = np.minimum(1.0, np.minimum(t, seconds - t) / 0.01)
-        return wave * fade * 5000
-
-    gap = np.zeros(int(rate * 0.2))
-    tail = np.zeros(int(rate * 0.45))
-    return encode_mu_law(np.concatenate([trill(0.4), gap, trill(0.4), tail]))
+    seconds = 1.2
+    t = np.arange(int(rate * seconds)) / rate
+    tone = (np.sin(2 * np.pi * 440 * t) + np.sin(2 * np.pi * 480 * t)) / 2
+    fade = np.minimum(1.0, np.minimum(t, seconds - t) / 0.08)
+    return encode_mu_law(np.concatenate([tone * fade * 1800, np.zeros(int(rate * 0.4))]))
