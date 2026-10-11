@@ -111,4 +111,4 @@ async def test_the_report_goes_once_to_the_setup_address_with_the_page_button(st
     await report_email.send(s, recorded=True)
     assert len(sent) == 1 and sent[0]["to"] == "leif@example.com" and sent[0]["subject"] == "Your call with Marisol at Palmetto Stays"
     assert "Message for an agent · MSG-412" in sent[0]["text"] and "linked" not in sent[0]["text"]
-    assert s.report_url in sent[0]["html"] and "See your full call" in sent[0]["html"] and "Book a chat with us" in sent[0]["html"]
+    assert s.report_url in sent[0]["html"] and "See your full call" in sent[0]["html"] and "Book a call with Leif" in sent[0]["html"]

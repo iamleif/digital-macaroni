@@ -233,4 +233,4 @@ async def test_summary_email_after_a_message_with_the_digital_macaroni_card(lite
     r = await run(s, "email_quote", {"email": "leif at example dot com", "recap": "You wanted two rooms for twenty nights; I took a message for an agent.", "callerConfirmed": True})
     assert r.ok and sent[0]["to"] == "leif@example.com" and sent[0]["subject"] == "Your call with Palmetto Stays"
     assert "Thanks for calling, Leif" in sent[0]["text"] and "Two rooms in Miami Beach" in sent[0]["text"] and "•••• 5382" in sent[0]["text"]
-    assert "This is just the tip of the iceberg." in sent[0]["html"] and "Book a chat with us" in sent[0]["html"]
+    assert "This is just the tip of the iceberg." in sent[0]["html"] and "Book a call with Leif" in sent[0]["html"]

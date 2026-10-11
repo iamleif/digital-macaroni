@@ -186,4 +186,4 @@ class TestSummary:
         t = factory.summary_text("Acme Dental", m)
         assert t.startswith("URGENT · New call for Acme Dental") and "(206) 555-0142" in t and "Next: Call Sam to book." in t
         subject, body, _ = factory.summary_email("Acme Dental", {**m, "messages": []}, demo=True)
-        assert subject.startswith("URGENT · Sam called Acme Dental") and "Book a time with our team" in body
+        assert subject.startswith("URGENT · Sam called Acme Dental") and "Book a call with Leif" in body
