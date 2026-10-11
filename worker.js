@@ -56,9 +56,24 @@ const SHORT_LINKS = {
   "/li": "linkedin",
 };
 
+// The demo voice service, reached as digitalmacaroni.io/voice/… so the browser only ever talks to this site.
+const VOICE_ORIGIN = "https://studio-demo-voice-361680400699.us-central1.run.app";
+
+function proxyVoice(request, env, url) {
+  const headers = new Headers(request.headers);
+  headers.delete("host");
+  // The service limits paid sessions per visitor; behind this proxy it needs the visitor's own address.
+  headers.set("x-dm-client-ip", request.headers.get("cf-connecting-ip") || "");
+  headers.set("x-dm-proxy-key", env.VOICE_PROXY_KEY || "");
+  const target = VOICE_ORIGIN + url.pathname.slice("/voice".length) + url.search;
+  // A WebSocket upgrade passes straight through: fetch returns the 101 and its socket.
+  return fetch(target, { method: request.method, headers, body: request.body, redirect: "manual" });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname.startsWith("/voice/")) return proxyVoice(request, env, url);
 
     const path = url.pathname.replace(/\/+$/, "").toLowerCase();
     const source = SHORT_LINKS[path];

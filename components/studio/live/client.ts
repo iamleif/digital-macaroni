@@ -6,7 +6,16 @@ import type { DemoEvent, DemoId } from "./types";
  * CallWatcher: a code the visitor types during a phone call, then that call's events.
  * Nothing here holds credentials; the service issues a per-session token.
  */
-export const VOICE_URL = (process.env.NEXT_PUBLIC_DEMO_VOICE_URL ?? "https://studio-demo-voice-361680400699.us-central1.run.app").replace(/\/$/, "");
+const DIRECT_URL = "https://studio-demo-voice-361680400699.us-central1.run.app";
+/**
+ * On digitalmacaroni.io the service is reached through the site itself (/voice, proxied by worker.js), so
+ * ad blockers and DNS filters that stop unfamiliar third-party domains never get in the way. Elsewhere
+ * (local development) it is called directly.
+ */
+export const VOICE_URL = (
+  process.env.NEXT_PUBLIC_DEMO_VOICE_URL ??
+  (typeof window !== "undefined" && /(^|\.)digitalmacaroni\.io$/.test(window.location.hostname) ? `${window.location.origin}/voice` : DIRECT_URL)
+).replace(/\/$/, "");
 
 // Runs on the audio thread: downsamples the microphone to 16 kHz and posts 20 ms Int16 frames.
 const CAPTURE_WORKLET = `
