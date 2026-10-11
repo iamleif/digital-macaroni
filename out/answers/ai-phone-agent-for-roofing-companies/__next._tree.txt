@@ -2,4 +2,4 @@
 :HL["/_next/static/media/7d4881bb7e1bf84d-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/_next/static/css/e4f35023043adb74.css","style"]
 :HL["/_next/static/css/5214d8baf8bf3609.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"answers","param":null,"prefetchHints":4192,"slots":{"children":{"name":"slug","param":{"type":"d","key":"ai-phone-agent-for-roofing-companies","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"sdWoStqXCUchIl8jLs0xv"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"answers","param":null,"prefetchHints":4192,"slots":{"children":{"name":"slug","param":{"type":"d","key":"ai-phone-agent-for-roofing-companies","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"eeo499UTAETWLw1CnzCHV"}
