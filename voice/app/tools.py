@@ -118,6 +118,13 @@ async def _link_screen(session: DemoSession, args: dict[str, Any]) -> Result:
     return {"ok": False, "error": result, "message": "That code did not match a waiting screen. Ask them to check the code on the page."}
 
 
+async def _play_ring(session: DemoSession, _: dict[str, Any]) -> Result:
+    if not session.play_ring:
+        return {"ok": False, "error": "not_a_phone_call", "message": "No ring on this channel; just answer as the business."}
+    await asyncio.sleep(session.play_ring())
+    return {"ok": True, "rang": True, "next": "Answer now, as the business."}
+
+
 async def _end_call(session: DemoSession, _: dict[str, Any]) -> Result:
     session.request_end("agent_ended")
     return {"ok": True}
@@ -143,6 +150,7 @@ def tool_specs(demo: DemoDefinition[Any]) -> list[ToolSpec]:
             if demo.screen
             else []
         ),
+        *([ToolSpec("play_ring", "Play one phone ring down the line, then answer as the business when it returns.", _play_ring)] if demo.ring else []),
         ToolSpec("end_call", "End the conversation after you have said goodbye.", _end_call, background=True),
     ]
 

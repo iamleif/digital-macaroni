@@ -121,7 +121,7 @@ class TestAgent:
 
     def test_instant_prompt_greets_the_prospect(self):
         p = instruction(self.state(mode="instant", visitor_name="Jamie"), PHONE)
-        assert "Hi Jamie! I'm set up with the basic information from Acme Dental's website." in p and '"Thanks for calling Acme Dental, this is Ava. How can I help?"' in p and "send_meeting_link" in p
+        assert "Hi Jamie! I'm set up with the basic information from Acme Dental's website. Okay, here we go." in p and "play_ring" in p and '"Hi, thanks for calling Acme Dental, how can I help you?"' in p and "send_meeting_link" in p
 
     def test_client_prompt_uses_owner_notes(self):
         p = instruction(self.state(mode="client", notes="We don't take Delta Dental.", never_say="Never quote crowns."), PHONE)
@@ -129,7 +129,13 @@ class TestAgent:
 
     def test_no_screen_code_tool(self):
         names = [s.name for s in tool_specs(agent)]
-        assert "link_screen" not in names and {"get_business_info", "take_message", "text_booking_link", "end_call"} <= set(names)
+        assert "link_screen" not in names and {"get_business_info", "take_message", "text_booking_link", "play_ring", "end_call"} <= set(names)
+
+    def test_ring_is_short_phone_audio(self):
+        from app.audio import retro_ring
+
+        ring = retro_ring()
+        assert 1.2 < len(ring) / 8000 < 1.8
 
 
     async def test_meeting_link_only_in_instant_mode(self):

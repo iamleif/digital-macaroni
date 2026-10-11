@@ -125,6 +125,18 @@ class PhoneBridge:
             log.info("phone.screen_linked", {"session": self.session.id})
         return result
 
+    def play_ring(self) -> float:
+        """One ring, queued after whatever the agent is still saying. Returns seconds until it has played."""
+        from .audio import retro_ring
+
+        ring = retro_ring()
+        now = _now()
+        plays_at = max(now, self.playback_ends_at)
+        self.playback_ends_at = plays_at + len(ring) / 8000
+        for o in range(0, len(ring), 160):
+            self.send({"event": "media", "streamSid": self.stream_sid, "media": {"payload": base64.b64encode(ring[o : o + 160]).decode()}})
+        return self.playback_ends_at - now
+
     def set_speaking(self, on: bool) -> None:
         if self.speaking == on or not self.session:
             return
@@ -306,6 +318,7 @@ class PhoneBridge:
         self.handles.append(self.loop.call_later(s.max_seconds + 10, self.close_twilio))
         s.request_end = lambda reason: self.request_hangup(reason)
         s.link_screen = self.link
+        s.play_ring = self.play_ring
         self.tracker = TranscriptTracker(s)
         s.emit({"type": "session.ready", "sessionId": s.id, "demo": s.demo_id, "channel": "phone"})
         # Recording starts only once the caller's screen links and they chose it on the form (pairing.link_call).

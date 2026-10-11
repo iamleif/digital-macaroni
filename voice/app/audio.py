@@ -199,3 +199,20 @@ class LevelMeter:
         db = 10 * np.log10(bands + 1e-12) + self.tilt
         level = np.clip((db - self.FLOOR_DB) / self.RANGE_DB, 0, 1)
         return np.rint(level * 255).astype(np.uint8).tobytes()
+
+
+def retro_ring(rate: int = 8000) -> bytes:
+    """
+    One short, retro phone ring as 8 kHz mu-law for Twilio: a square-wave trill (two tones swapping every
+    40 ms, like an old electronic phone) in two bursts, "brr-brr", then a beat of quiet before the answer.
+    """
+    def trill(seconds: float) -> np.ndarray:
+        t = np.arange(int(rate * seconds)) / rate
+        freq = np.where((t // 0.04) % 2 == 0, 1000.0, 1250.0)
+        wave = np.sign(np.sin(2 * np.pi * np.cumsum(freq) / rate))
+        fade = np.minimum(1.0, np.minimum(t, seconds - t) / 0.01)
+        return wave * fade * 5000
+
+    gap = np.zeros(int(rate * 0.2))
+    tail = np.zeros(int(rate * 0.45))
+    return encode_mu_law(np.concatenate([trill(0.4), gap, trill(0.4), tail]))

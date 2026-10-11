@@ -77,6 +77,8 @@ class DemoDefinition(Generic[S]):
     max_seconds: int = 0
     # Has a dashboard page a phone caller can link with a screen code (the generic agent has none).
     screen: bool = True
+    # Can play a phone ring down the line (the instant demo: "Okay, here we go", ring, then the business answers).
+    ring: bool = False
 
 
 def Confirmed() -> Any:

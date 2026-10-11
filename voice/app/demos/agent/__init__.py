@@ -151,6 +151,7 @@ agent: DemoDefinition[AgentState] = DemoDefinition(
     instruction=instruction,
     view=view,
     screen=False,
+    ring=True,
     operations={
         "get_business_info": Operation("Looking up the business", "Everything known about the business: services, hours, location, service area, prices, policies, FAQs, the owner's notes and the local time right now. Call it before answering any question about the business, and answer only from what it returns.", get_business_info),
         "take_message": Operation("Taking a message", "Take a message for the business after the caller confirmed their callback number. It reaches the owner by text and email the moment the call ends.", take_message, TakeMessage),
