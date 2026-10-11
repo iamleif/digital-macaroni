@@ -1,0 +1,28 @@
+{
+  "calls": [
+    {
+      "who": "Jordan M.",
+      "summary": "Semi-truck hit his car on I-5; surgery on Tuesday, driver cited",
+      "tier": "A",
+      "score": 11
+    },
+    {
+      "who": "Aisha K.",
+      "summary": "Rear-ended at a light; ER visit, physio booked, other driver insured",
+      "tier": "B",
+      "score": 8
+    },
+    {
+      "who": "Chris P.",
+      "summary": "Bitten by a neighbour's dog; urgent care, stitches",
+      "tier": "C",
+      "score": 5
+    },
+    {
+      "who": "Lena S.",
+      "summary": "Slipped on a wet store floor; no treatment yet",
+      "tier": "C",
+      "score": 3
+    }
+  ]
+}

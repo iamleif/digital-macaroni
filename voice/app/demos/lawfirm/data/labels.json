@@ -1,0 +1,46 @@
+{
+  "accidentTypes": {
+    "car": "Car crash",
+    "truck": "Truck crash",
+    "motorcycle": "Motorcycle crash",
+    "pedestrian_bike": "Pedestrian or bicycle",
+    "rideshare": "Rideshare crash",
+    "slip_fall": "Slip or fall",
+    "dog_bite": "Dog bite",
+    "workplace": "Workplace injury",
+    "medical_malpractice": "Medical malpractice",
+    "other": "Other injury"
+  },
+  "injuryAreas": {
+    "head_or_concussion": "Head / concussion",
+    "neck": "Neck",
+    "back": "Back",
+    "shoulder_or_arm": "Shoulder / arm",
+    "hand_or_wrist": "Hand / wrist",
+    "hip_or_leg": "Hip / leg",
+    "knee_or_foot": "Knee / foot",
+    "broken_bones": "Broken bones",
+    "internal": "Internal",
+    "cuts_or_scarring": "Cuts / scarring",
+    "emotional": "Emotional distress"
+  },
+  "treatments": {
+    "none": "No treatment yet",
+    "doctor_or_urgent_care": "Doctor or urgent care",
+    "emergency_room": "Emergency room",
+    "ongoing_care": "Ongoing treatment",
+    "surgery": "Surgery",
+    "hospitalized": "Hospitalized"
+  },
+  "fault": {
+    "other_party": "Other party",
+    "shared": "Shared",
+    "me": "The caller",
+    "unsure": "Not sure yet"
+  },
+  "formats": {
+    "phone": "Phone call",
+    "video": "Video call",
+    "office": "At our Denver office"
+  }
+}

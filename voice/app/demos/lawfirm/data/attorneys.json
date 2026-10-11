@@ -1,0 +1,43 @@
+{
+  "attorneys": [
+    {
+      "id": "dana",
+      "name": "Dana Alder",
+      "focus": "Car & rideshare crashes",
+      "types": [
+        "car",
+        "rideshare",
+        "truck",
+        "motorcycle",
+        "other"
+      ]
+    },
+    {
+      "id": "marcus",
+      "name": "Marcus Finch",
+      "focus": "Serious injury & wrongful death",
+      "types": [
+        "truck",
+        "motorcycle",
+        "pedestrian_bike",
+        "rideshare",
+        "car",
+        "other"
+      ]
+    },
+    {
+      "id": "priya",
+      "name": "Priya Rao",
+      "focus": "Falls, bites & cyclists",
+      "types": [
+        "slip_fall",
+        "dog_bite",
+        "pedestrian_bike",
+        "car",
+        "other"
+      ]
+    }
+  ],
+  "seniorPartner": "marcus",
+  "conflictsAttorney": "dana"
+}

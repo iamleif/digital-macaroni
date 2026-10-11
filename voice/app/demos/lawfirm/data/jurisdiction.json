@@ -1,0 +1,11 @@
+{
+  "licensedState": "CO",
+  "limitationYears": 2,
+  "vehicleLimitationYears": 3,
+  "vehicleTypes": [
+    "car",
+    "truck",
+    "motorcycle",
+    "rideshare"
+  ]
+}

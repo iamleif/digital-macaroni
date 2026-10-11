@@ -1,0 +1,95 @@
+{
+  "required": [
+    {
+      "key": "name",
+      "ask": "the caller's name"
+    },
+    {
+      "key": "accidentType",
+      "ask": "what kind of accident"
+    },
+    {
+      "key": "accidentDate",
+      "ask": "the date it happened"
+    },
+    {
+      "key": "accidentState",
+      "ask": "the state where it happened"
+    },
+    {
+      "key": "treatment",
+      "ask": "what medical treatment so far"
+    },
+    {
+      "key": "atFault",
+      "ask": "who was at fault"
+    },
+    {
+      "key": "hasLawyer",
+      "ask": "whether they already have a lawyer for it"
+    }
+  ],
+  "points": {
+    "treatment": {
+      "none": 0,
+      "doctor_or_urgent_care": 1,
+      "emergency_room": 2,
+      "ongoing_care": 3,
+      "surgery": 5,
+      "hospitalized": 6
+    },
+    "fault": {
+      "other_party": 3,
+      "shared": 1,
+      "unsure": 1,
+      "me": 0
+    },
+    "policeReport": {
+      "yes": 1
+    },
+    "otherPartyInsured": {
+      "yes": 1,
+      "no": -1
+    },
+    "someoneDied": 6
+  },
+  "tiers": {
+    "A": 9,
+    "B": 6
+  },
+  "otherwiseTier": "C",
+  "outsidePractice": [
+    "workplace",
+    "medical_malpractice"
+  ],
+  "declines": {
+    "outside_practice": {
+      "why": "This kind of case is outside what the firm handles.",
+      "say": "Say kindly that the firm does not take this kind of case (workplace injuries and medical malpractice are handled by other specialists), and that the Colorado Bar Association's lawyer referral service can point them to the right kind of lawyer."
+    },
+    "out_of_state": {
+      "why": "The accident was outside Colorado; the firm is licensed in Colorado only.",
+      "say": "Say kindly that the firm's attorneys are licensed in Colorado only, so it cannot take an accident from another state, and that the state bar where it happened can refer them to a local injury lawyer. Do not offer a consultation."
+    },
+    "has_lawyer": {
+      "why": "The caller already has a lawyer for this.",
+      "say": "Say kindly that the firm cannot take on a matter another lawyer is already handling, and that they are best placed speaking with their current lawyer. Do not offer a consultation."
+    },
+    "no_injury": {
+      "why": "Nobody was hurt, so this is not an injury case.",
+      "say": "Say kindly that the firm handles cases where someone was injured, so this is not one it can help with, and that if anyone is hurt later they are welcome to call back."
+    },
+    "at_fault": {
+      "why": "The caller says they alone were at fault.",
+      "say": "Say kindly that the firm takes cases where someone else caused the injury, so it is not the right fit here. Do not give an opinion on fault, and do not give legal advice."
+    },
+    "out_of_time": {
+      "why": "The Colorado time limit to file looks to have passed.",
+      "say": "Say gently that, from the date given, the time limit that normally applies looks to have passed, so the firm cannot take it, and that a lawyer elsewhere could confirm. Do not give legal advice beyond that."
+    },
+    "conflict": {
+      "why": "The firm has a conflict of interest and cannot take this matter.",
+      "say": "Say only that the firm is not able to help with this matter. Never say why, never say who or what was found, and suggest the Colorado Bar Association's lawyer referral service."
+    }
+  }
+}

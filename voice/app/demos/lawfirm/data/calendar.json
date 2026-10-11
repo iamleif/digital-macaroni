@@ -1,0 +1,17 @@
+{
+  "timeZone": "America/Denver",
+  "consultHours": [
+    9,
+    10,
+    11,
+    13,
+    14,
+    15,
+    16
+  ],
+  "daysAhead": 9,
+  "closedWeekdays": [
+    0,
+    6
+  ]
+}
