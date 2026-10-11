@@ -18,6 +18,12 @@ class Config:
     gemini_api_key: str = env.get("GEMINI_API_KEY", "")
     model: str = env.get("DEMO_LIVE_MODEL", "gemini-3.8-live")
     twilio_auth_token: str = env.get("TWILIO_AUTH_TOKEN", "")
+    # Twilio REST, with the demo-only API key (secrets studio-demo-twilio-*): call recordings and the like.
+    twilio_account_sid: str = env.get("TWILIO_ACCOUNT_SID", "")
+    twilio_api_key_sid: str = env.get("TWILIO_API_KEY_SID", "")
+    twilio_api_key_secret: str = env.get("TWILIO_API_KEY_SECRET", "")
+    # The website: each call's page lives at {site_url}/call/?r=<token>.
+    site_url: str = env.get("SITE_URL", "https://digitalmacaroni.io").rstrip("/")
     # Local test harness only: never honoured on Cloud Run.
     skip_twilio_signature: bool = not on_cloud_run and env.get("DEMO_SKIP_TWILIO_SIGNATURE") == "1"
     # Which demo each dialled number reaches (E.164).

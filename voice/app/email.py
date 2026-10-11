@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import html
+from contextvars import ContextVar
 import re
 import time
 from dataclasses import dataclass
@@ -137,6 +138,9 @@ REFUSALS = {
 FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
 SERIF = "Georgia,'Times New Roman',serif"
 CONTACT_URL = "https://digitalmacaroni.io/contact/"
+# The page for the call this email comes from (set by the tool layer for each tool call): the recording,
+# the transcript and every step, which an email cannot carry. Every template shows the button when it is set.
+REPORT_URL: ContextVar[Optional[str]] = ContextVar("report_url", default=None)
 
 
 @dataclass(frozen=True)
@@ -200,6 +204,17 @@ def promo_card(agent: str, did: str) -> str:
 </table></td></tr></table>"""
 
 
+def _report_button(b: Brand) -> str:
+    url = REPORT_URL.get()
+    if not url:
+        return ""
+    return f"""<tr><td style="padding:22px 0 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ece8e1;border-radius:14px"><tr><td style="padding:18px 20px;font-family:{FONT}">
+<div style="font-size:15px;font-weight:700;color:{b.ink}">Hear your call again</div>
+<div style="padding:4px 0 14px;font-size:14px;line-height:1.55;color:#6b645a">The recording, the full transcript and every step the agent took, on one page.</div>
+<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:{b.accent};border-radius:999px"><a href="{e(url)}" style="display:inline-block;padding:11px 20px;font-family:{FONT};font-size:14px;font-weight:700;color:#ffffff;text-decoration:none">See your full call &rarr;</a></td></tr></table>
+</td></tr></table></td></tr>"""
+
+
 def layout(b: Brand, preheader: str, kicker: str, heading: str, intro: str, card: str, agent: str, did: str) -> str:
     name_font = SERIF if b.serif else FONT
     return f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"></head>
@@ -217,6 +232,7 @@ def layout(b: Brand, preheader: str, kicker: str, heading: str, intro: str, card
 <tr><td style="padding:8px 0 6px;font-family:{FONT};font-size:26px;line-height:1.25;font-weight:800;color:{b.ink}">{e(heading)}</td></tr>
 <tr><td style="padding:0 0 22px;font-family:{FONT};font-size:15px;line-height:1.6;color:#6b645a">{e(intro)}</td></tr>
 <tr><td>{card}</td></tr>
+{_report_button(b)}
 <tr><td style="padding:22px 0 0;font-family:{FONT};font-size:12px;line-height:1.6;color:#9a9286">Sent by {e(agent)}, the AI agent you spoke with. {e(b.full)} is a fictional business in a live demo by Digital Macaroni: nothing was booked, sold or charged.</td></tr>
 </table></td></tr>
 <tr><td>{promo_card(agent, did)}</td></tr>
@@ -228,6 +244,7 @@ def _text(b: Brand, heading: str, intro: str, lines: list[str], agent: str, did:
     return "\n".join(
         [b.full.upper(), "", heading, intro, ""]
         + lines
+        + (["", f"See your full call (recording, transcript, every step): {REPORT_URL.get()}"] if REPORT_URL.get() else [])
         + ["", f"Sent by {agent}, the AI agent you spoke with. {b.full} is a fictional business in a live demo by Digital Macaroni: nothing was booked, sold or charged.", "", "This is just the tip of the iceberg.", f"{agent} {did}, then wrote this email, without a human stepping in. Digital Macaroni builds AI voice agents like {agent} for real businesses.", f"Book a chat with us: {CONTACT_URL}", "Or just reply to this email. It comes straight to our team."]
     )
 

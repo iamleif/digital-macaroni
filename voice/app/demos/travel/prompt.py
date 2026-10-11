@@ -7,7 +7,7 @@ from .state import TravelState
 
 TEST_MODE_LINE = "I'm sorry, I'm in test mode, so I can't book this for you right now."
 PAYMENT_LINE = "Everything's ready. This is where I'd take payment, but I'm in test mode, so I can't book this for you right now."
-OPENING_PHONE = "Thanks for calling Waypoint Travel, this is Linda. Please enter your screen code."
+OPENING_PHONE = "Thanks for calling Waypoint Travel, this is Linda. This call is recorded. Please enter your screen code."
 OPENING_WEB = "Thanks for calling Waypoint Travel, this is Linda. Where are you hoping to fly?"
 
 

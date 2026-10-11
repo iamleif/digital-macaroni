@@ -20,14 +20,14 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect
 
-from . import log
+from . import calllog, log, recording
 from .browser import bridge_browser
 from .config import config
 from .demos import is_demo_id
 from .live import warm_up
-from .pairing import create_pairing, drop_pairing, now_ms, pairing_for_viewer
+from .pairing import create_pairing, drop_pairing, now_ms, pairing_for_viewer, set_setup
 from .phone import bridge_phone
-from .session import DemoSession, active_count, admit, get_session, sweeper
+from .session import DemoSession, active_count, admit, get_session, sessions, sweeper
 from .twilio import hangup_twiml, notice_twiml, reject_twiml, stream_twiml, valid_media_signature, valid_twilio_signature
 
 E164 = re.compile(r"^\+[1-9][0-9]{6,14}$")
@@ -151,15 +151,15 @@ def allowed_origin(origin: Optional[str]) -> bool:
 @app.middleware("http")
 async def cors(request: Request, call_next):
     path = request.url.path
-    if not (path.startswith("/browser/") or path.startswith("/pairings")):
+    if not (path.startswith("/browser/") or path.startswith("/pairings") or path.startswith("/reports/")):
         return await call_next(request)
     origin = request.headers.get("origin")
     response = Response(status_code=204) if request.method == "OPTIONS" else await call_next(request)
     if allowed_origin(origin):
         response.headers["access-control-allow-origin"] = origin  # type: ignore[assignment]
         response.headers["vary"] = "origin"
-        response.headers["access-control-allow-methods"] = "POST, OPTIONS"
-        response.headers["access-control-allow-headers"] = "content-type"
+        response.headers["access-control-allow-methods"] = "GET, POST, OPTIONS"
+        response.headers["access-control-allow-headers"] = "content-type, range"
     return response
 
 
@@ -237,6 +237,98 @@ async def pairings(request: Request) -> JSONResponse:
         return JSONResponse({"error": "rate_limited"}, status_code=429)
     p = create_pairing(demo)
     return JSONResponse({"code": p.code, "viewerToken": p.viewer_token, "expiresAt": p.expires_at})
+
+
+SETUP_KEYS = {"trade": 40, "tool": 40, "email": 120, "record": 0, "updates": 0}
+
+
+@app.post("/pairings/{token}/setup")
+async def pairing_setup(request: Request, token: str) -> JSONResponse:
+    """What the visitor chose on the setup card: the call's page and its follow-up use it."""
+    if not allowed_origin(request.headers.get("origin")):
+        return JSONResponse({"error": "origin"}, status_code=403)
+    try:
+        body = await request.json()
+    except (ValueError, json.JSONDecodeError):
+        return JSONResponse({"error": "body"}, status_code=400)
+    setup: dict[str, Any] = {}
+    for key, cap in SETUP_KEYS.items():
+        v = body.get(key) if isinstance(body, dict) else None
+        if cap and isinstance(v, str):
+            setup[key] = v.strip()[:cap]
+        elif not cap and isinstance(v, bool):
+            setup[key] = v
+    return JSONResponse({"ok": set_setup(token, setup)})
+
+
+@app.post("/twilio/recording")
+async def twilio_recording(request: Request, session: str = "") -> Response:
+    """Twilio: a call's recording is ready. It is moved to our bucket and deleted from Twilio."""
+    params = {k: str(v) for k, v in (await request.form()).items()}
+    if not signed(f"/twilio/recording?session={session}", params, request.headers.get("x-twilio-signature")):
+        log.warn("twilio.bad_signature", {"route": "recording"})
+        return Response(status_code=403)
+    if params.get("RecordingStatus") == "completed" and params.get("RecordingSid") and params.get("RecordingUrl"):
+        asyncio.get_running_loop().create_task(recording.finished(session, params["RecordingSid"], params["RecordingUrl"]))
+    return Response(status_code=204)
+
+
+_TOKEN = re.compile(r"^[A-Za-z0-9_-]{20,40}$")
+
+
+def _public_entry(e: dict[str, Any]) -> Optional[dict[str, Any]]:
+    """What a call's page may show: words and steps, never a tool's arguments or raw results."""
+    if e.get("kind") == "say":
+        return {"kind": "say", "t": e["t"], "speaker": e.get("speaker"), "text": e.get("text", "")}
+    if e.get("kind") == "tool" and e.get("tool") not in ("link_screen", "get_caller_number", "end_call"):
+        return {"kind": "step", "t": e["t"], "tool": e.get("tool"), "label": e.get("label") or e.get("tool"), "summary": e.get("summary") or "", "ok": bool(e.get("ok")), "ms": e.get("ms")}
+    return None
+
+
+@app.get("/reports/{token}")
+async def report(token: str) -> JSONResponse:
+    """A call's page: its outcome, the transcript, every step and whether the recording is ready. The token is the key."""
+    if not _TOKEN.match(token):
+        return JSONResponse({"error": "not_found"}, status_code=404)
+    live = next((s for s in sessions.values() if s.report_token == token), None)
+    got = await calllog.get(calllog.report_name(token, "json"))
+    if got is None and live is None:
+        return JSONResponse({"error": "not_found"}, status_code=404)
+    doc = json.loads(got[1]) if got else live.record.document(live)  # type: ignore[union-attr]
+    audio = await calllog.get(calllog.report_name(token, "mp3"), "bytes=0-0")
+    from .demos import demos
+
+    d = demos.get(doc.get("demo", ""))
+    return JSONResponse(
+        {
+            "demo": doc.get("demo"),
+            "business": d.business_name if d else None,
+            "agent": d.agent_name if d else None,
+            "channel": doc.get("channel"),
+            "callerNumber": doc.get("callerNumber"),
+            "startedAt": doc.get("startedAt"),
+            "durationMs": doc.get("durationMs"),
+            "status": "complete" if got else "live",
+            "recording": {"url": f"reports/{token}/audio", "offsetMs": doc.get("recordingOffsetMs") or 0} if audio else None,
+            # Ended within the last few minutes with a recording started: it is probably still on its way.
+            "recordingPending": bool(not audio and doc.get("recordingOffsetMs") is not None),
+            "setup": {k: v for k, v in (doc.get("setup") or {}).items() if k in ("trade", "tool", "record")} or None,
+            "entries": [p for p in (_public_entry(e) for e in doc.get("entries", [])) if p],
+            "view": doc.get("finalState"),
+        },
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.get("/reports/{token}/audio")
+async def report_audio(request: Request, token: str) -> Response:
+    if not _TOKEN.match(token):
+        return Response(status_code=404)
+    got = await calllog.get(calllog.report_name(token, "mp3"), request.headers.get("range"))
+    if got is None:
+        return Response(status_code=404)
+    status, body, headers = got
+    return Response(content=body, status_code=status, media_type="audio/mpeg", headers={**headers, "Accept-Ranges": "bytes", "Cache-Control": "private, max-age=3600"})
 
 
 @app.websocket("/pairings/{token}")

@@ -65,8 +65,8 @@ class CallRecord:
         else:
             self.entries[at]["text"] = mask_emails(text)
 
-    def tool(self, name: str, args: dict[str, Any], ok: bool, result: dict[str, Any], ms: int) -> None:
-        self._add({"kind": "tool", "tool": name, "args": mask_emails(args), "ok": ok, "result": mask_emails(result), "ms": ms})
+    def tool(self, name: str, args: dict[str, Any], ok: bool, result: dict[str, Any], ms: int, summary: str = "", label: str = "") -> None:
+        self._add({"kind": "tool", "tool": name, "label": label, "summary": mask_emails(summary), "args": mask_emails(args), "ok": ok, "result": mask_emails(result), "ms": ms})
 
     def note(self, kind: str, **data: Any) -> None:
         self._add({"kind": kind, **data})
@@ -81,6 +81,10 @@ class CallRecord:
             "ended": session.ended,
             "entries": self.entries,
             "finalState": mask_emails(session.view()),
+            "report": session.report_token,
+            "setup": session.setup,
+            "recordingOffsetMs": session.recording_offset_ms,
+            "callerNumber": ("•••• " + session.caller_number[-4:]) if session.caller_number else None,
         }
 
 
@@ -89,13 +93,67 @@ def _object_name(session: "DemoSession", record: CallRecord) -> str:
     return f"calls/{at:%Y-%m-%d}/{session.demo_id}/{at:%H%M%S}-{session.channel}-{session.id[:8]}.json"
 
 
+_creds: Any = None
+
+
 def _token() -> str:
+    global _creds
     import google.auth
     import google.auth.transport.requests
 
-    creds, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/devstorage.read_write"])
-    creds.refresh(google.auth.transport.requests.Request())
-    return creds.token
+    if _creds is None:
+        _creds, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/devstorage.read_write"])
+    if not _creds.valid:
+        _creds.refresh(google.auth.transport.requests.Request())
+    return _creds.token
+
+
+def report_name(token: str, ext: str) -> str:
+    """Each call's page reads from here: the call document (.json) and its recording (.mp3)."""
+    return f"reports/{token}.{ext}"
+
+
+async def put(name: str, body: bytes, content_type: str) -> bool:
+    """Writes one object to the call log bucket (or the local folder). True when it was stored."""
+    if config.call_log_dir:
+        path = os.path.join(config.call_log_dir, name)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "wb") as f:
+            f.write(body)
+        return True
+    if not config.call_log_bucket:
+        return False
+    token = await asyncio.to_thread(_token)
+    async with httpx.AsyncClient(timeout=60) as http:
+        r = await http.post(
+            f"https://storage.googleapis.com/upload/storage/v1/b/{config.call_log_bucket}/o?uploadType=media&name={quote(name, safe='')}",
+            content=body,
+            headers={"Authorization": f"Bearer {token}", "Content-Type": content_type},
+        )
+    return r.status_code < 300
+
+
+async def get(name: str, byte_range: Optional[str] = None) -> Optional[tuple[int, bytes, dict[str, str]]]:
+    """Reads one object (or a byte range of it): (status, body, headers), or None when it does not exist."""
+    if config.call_log_dir:
+        path = os.path.join(config.call_log_dir, name)
+        if not os.path.exists(path):
+            return None
+        with open(path, "rb") as f:
+            data = f.read()
+        return 200, data, {"content-length": str(len(data))}
+    if not config.call_log_bucket:
+        return None
+    token = await asyncio.to_thread(_token)
+    headers = {"Authorization": f"Bearer {token}"}
+    if byte_range:
+        headers["Range"] = byte_range
+    async with httpx.AsyncClient(timeout=30) as http:
+        r = await http.get(f"https://storage.googleapis.com/storage/v1/b/{config.call_log_bucket}/o/{quote(name, safe='')}?alt=media", headers=headers)
+    if r.status_code == 404:
+        return None
+    keep = {k: v for k, v in r.headers.items() if k.lower() in ("content-length", "content-range", "accept-ranges")}
+    return r.status_code, r.content, keep
 
 
 async def save(session: "DemoSession") -> None:
@@ -103,27 +161,16 @@ async def save(session: "DemoSession") -> None:
     record: Optional[CallRecord] = session.record
     if record is None or not any(e["kind"] == "say" for e in record.entries):
         return
-    name = _object_name(session, record)
+    if not (config.call_log_dir or bucket):
+        return
     body = json.dumps(record.document(session), ensure_ascii=False, indent=1).encode()
-    if config.call_log_dir:
-        path = os.path.join(config.call_log_dir, name)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, "wb") as f:
-            f.write(body)
-        return
-    if not bucket:
-        return
     try:
-        token = await asyncio.to_thread(_token)
-        async with httpx.AsyncClient(timeout=20) as http:
-            r = await http.post(
-                f"https://storage.googleapis.com/upload/storage/v1/b/{bucket}/o?uploadType=media&name={quote(name, safe='')}",
-                content=body,
-                headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-            )
-        if r.status_code >= 300:
-            log.warn("calllog.save_failed", {"session": session.id, "outcome": r.status_code})
-        else:
+        # The review copy, by date and demo; and the call's own page, by its private token.
+        stored = await put(_object_name(session, record), body, "application/json")
+        stored = await put(report_name(session.report_token, "json"), body, "application/json") and stored
+        if stored:
             log.info("calllog.saved", {"session": session.id, "entries": len(record.entries)})
+        else:
+            log.warn("calllog.save_failed", {"session": session.id})
     except Exception as err:  # noqa: BLE001
         log.warn("calllog.save_failed", {"session": session.id}, err)

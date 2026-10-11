@@ -59,6 +59,16 @@ class DemoSession:
         self._history: list[Event] = []
         # The words of the call, saved when it ends (calllog.py).
         self.record = calllog.CallRecord()
+        # The call's own page ({site_url}/call/?r=…): the outcome, the recording and the transcript. The token is the only key.
+        self.report_token = secrets.token_urlsafe(18)
+        # What the visitor chose on the setup card (kind of business, their tool, report email, recording), once linked.
+        self.setup: Optional[dict[str, Any]] = None
+        # When the recording started, in ms from the start of the call (Twilio phone calls only).
+        self.recording_offset_ms: Optional[int] = None
+
+    @property
+    def report_url(self) -> str:
+        return f"{config.site_url}/call/?r={self.report_token}"
 
     @property
     def max_seconds(self) -> int:

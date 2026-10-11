@@ -27,7 +27,7 @@ from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from pydantic import BaseModel, ValidationError
 
-from . import log
+from . import email, log
 from .demos.types import DemoDefinition, OpContext, OpResult, fail, mask_number
 from .session import DemoSession, get_session
 
@@ -65,6 +65,8 @@ def _operation_spec(name: str, op: Any) -> ToolSpec:
             r = fail("not_confirmed", "Read the details back and get a clear yes from the caller first.")
         else:
             try:
+                # Any email this tool sends carries the button to the call's own page.
+                email.REPORT_URL.set(session.report_url)
                 out = op.run(session.state, parsed, OpContext(now=datetime.now(timezone.utc), channel=session.channel))  # type: ignore[arg-type]
                 r = await out if inspect.isawaitable(out) else out
             except asyncio.CancelledError:
@@ -79,7 +81,7 @@ def _operation_spec(name: str, op: Any) -> ToolSpec:
         # A failure can change records too (the travel demo notes a booking it stopped).
         if r.changed:
             session.publish_state()
-        session.record.tool(name, args, r.ok, r.result if r.ok else {"error": r.error, "message": r.message, **r.result}, int((time.monotonic() - started) * 1000))
+        session.record.tool(name, args, r.ok, r.result if r.ok else {"error": r.error, "message": r.message, **r.result}, int((time.monotonic() - started) * 1000), r.summary or r.message, op.label)
         if r.ok:
             session.emit({"type": "tool.succeeded", "callId": call_id, "tool": name, "label": op.label, "summary": r.summary, "version": session.version})
             return {"ok": True, **r.result}

@@ -145,5 +145,10 @@ async def open_elevenlabs(session: DemoSession, agent_id: str, instruction: str)
     if r.status_code != 200:
         raise RuntimeError(f"signed url {r.status_code}")
     ws = await asyncio.wait_for(websockets.connect(r.json()["signed_url"], max_size=None), timeout=8)
-    await ws.send(json.dumps({"type": "conversation_initiation_client_data", "conversation_config_override": {"agent": {"prompt": {"prompt": prompt}}}}))
+    agent: dict[str, Any] = {"prompt": {"prompt": prompt}}
+    # The greeting comes from the demo's own instructions, so it always matches the other agents' (and says the call is recorded).
+    opening = re.search(r'Opening on a phone call: exactly "([^"]+)"', instruction)
+    if opening and session.channel == "phone":
+        agent["first_message"] = opening.group(1)
+    await ws.send(json.dumps({"type": "conversation_initiation_client_data", "conversation_config_override": {"agent": agent}}))
     return ElevenLabsLive(session, ws)

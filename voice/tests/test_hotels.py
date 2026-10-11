@@ -197,7 +197,7 @@ async def test_view_keeps_ids_and_amounts_server_side(lite: dict[str, Any]) -> N
 def test_opening_lines_and_instruction() -> None:
     s = hotels.create_state(NOW)
     text = hotels.instruction(s, CTX)
-    assert "Thanks for calling Palmetto Stays, this is Marisol. Please enter your screen code." in text
+    assert "Thanks for calling Palmetto Stays, this is Marisol. This call is recorded. Please enter your screen code." in text
     assert "receptionist" not in text.lower()
     assert s.today == "2026-10-11"
 

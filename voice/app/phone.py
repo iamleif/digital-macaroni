@@ -15,7 +15,7 @@ from typing import Any, Optional
 
 from starlette.websockets import WebSocket, WebSocketDisconnect
 
-from . import log
+from . import log, recording
 from .audio import LevelMeter, PhoneEncoder, rms, twilio_to_gemini, voice_stats
 from .config import config
 from .live import LiveSession, TranscriptTracker, open_live
@@ -306,6 +306,7 @@ class PhoneBridge:
         s.link_screen = self.link
         self.tracker = TranscriptTracker(s)
         s.emit({"type": "session.ready", "sessionId": s.id, "demo": s.demo_id, "channel": "phone"})
+        self.tasks.append(asyncio.create_task(recording.start(s, start.get("callSid"))))
         s.publish_state()
         self.tasks.append(asyncio.create_task(self.connect_live(s)))
 

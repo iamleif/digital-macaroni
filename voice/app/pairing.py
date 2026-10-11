@@ -10,7 +10,7 @@ from __future__ import annotations
 import secrets
 import time
 from dataclasses import dataclass
-from typing import Callable, Optional
+from typing import Any, Callable, Optional
 
 from .session import DemoSession
 
@@ -29,6 +29,8 @@ class Pairing:
     demo: str
     expires_at: int
     session: Optional[DemoSession] = None
+    # What the visitor chose on the setup card; handed to the call once it links.
+    setup: Optional[dict[str, Any]] = None
     # The viewer's socket hook: called once the call is linked.
     on_linked: Optional[Callable[[DemoSession], None]] = None
 
@@ -71,10 +73,23 @@ def link_call(code: str, session: DemoSession) -> str:
     if p.session:
         return "already_linked"
     p.session = session
+    if p.setup:
+        session.setup = p.setup
     _by_code.pop(code, None)
     if p.on_linked:
         p.on_linked(session)
     return "linked"
+
+
+def set_setup(token: str, setup: dict[str, Any]) -> bool:
+    """The page's setup choices, before or after the call links."""
+    p = _by_token.get(token)
+    if not p:
+        return False
+    p.setup = setup
+    if p.session:
+        p.session.setup = setup
+    return True
 
 
 def drop_pairing(p: Pairing) -> None:
