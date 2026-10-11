@@ -59,14 +59,13 @@ export function BrandLockup({ id }: { id: BrandId }) {
 
 
 /** Marks for the kinds of business on the first setup step, one look each. Kinds with a demo brand reuse it. */
-export type KindId = "insurance" | "realestate" | "dealership" | "furniture" | "hotels" | "tours";
+export type KindId = "insurance" | "realestate" | "dealership" | "furniture" | "hotels";
 const KIND_MARKS: Record<KindId, { bg: string; glyph: string }> = {
   insurance: { bg: "#2f6f8f", glyph: "M12 5 18 7.5v4.2c0 3.4-2.4 5.9-6 7.3-3.6-1.4-6-3.9-6-7.3V7.5L12 5ZM9.5 12l1.8 1.8 3.3-3.6" },
   realestate: { bg: "#b5503a", glyph: "M5.5 11.5 12 6l6.5 5.5M7 10.5V18h10v-7.5M10.5 18v-4h3v4" },
   dealership: { bg: "#3a4a63", glyph: "M5 14.5V12l1.6-3.6A1.5 1.5 0 0 1 8 7.5h8a1.5 1.5 0 0 1 1.4.9L19 12v2.5M5 14.5h14M5 14.5v2h2.2v-2M16.8 14.5v2H19v-2M7.5 12h9" },
   furniture: { bg: "#8a6a3f", glyph: "M6 11V9.5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2V11M4.5 12.5a1.5 1.5 0 0 1 3 0V14h9v-1.5a1.5 1.5 0 0 1 3 0V16.5h-15v-4ZM7 16.5v1.5M17 16.5v1.5" },
   hotels: { bg: "#4a4f9c", glyph: "M5 17.5V7.5M5 14h14v3.5M19 14v-2.2a2 2 0 0 0-2-2h-6V14M7.8 11.6h.01" },
-  tours: { bg: "#d4604a", glyph: "M12 5.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM14.8 9.2l-1.6 4-4 1.6 1.6-4 4-1.6Z" },
 };
 export function KindMark({ id, size = 22 }: { id: KindId; size?: number }) {
   const m = KIND_MARKS[id];

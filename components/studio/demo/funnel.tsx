@@ -20,7 +20,7 @@ import f from "./funnel.module.css";
 /** What the visitor says they do: a booking business (Ellie) or a legal practice area (Nora). */
 export type LawArea = "injury" | "insurance" | "realestate";
 export type ShopKind = "dtc" | "dealership" | "furniture";
-export type TravelKind = "flights" | "hotels" | "tours";
+export type TravelKind = "flights" | "hotels";
 export type Trade = BookingSkin | LawArea | ShopKind | TravelKind;
 /** `demo` is the demo page that runs this kind, when it is not the page the visitor is on. */
 type TradeCard = { id: Trade; label: string; example: string; ready: boolean; demo?: DemoId };
@@ -53,7 +53,6 @@ const SHOP_KINDS: TradeCard[] = [
 const TRAVEL_KINDS: TradeCard[] = [
   { id: "flights", label: "Flights", example: "Search fares, pick seats, add bags", ready: true, demo: "travel" },
   { id: "hotels", label: "Hotels & stays", example: "Real hotels, rooms, live rates", ready: true, demo: "hotels" },
-  { id: "tours", label: "Tours & packages", example: "Trips with several parts", ready: false },
 ];
 
 /** What each demo asks on the first step: the cards, the mark on each, and the words around them. */
@@ -89,7 +88,7 @@ const TOOL_LOGOS: Record<string, string> = {
   travefy: "travefy.png", traveljoy: "traveljoy.png", sabre: "sabre.png", amadeus: "amadeus.png", duffel: "duffel.svg",
   klaviyo: "klaviyo.png", gorgias: "gorgias.png", quickbooks: "quickbooks.svg", tekion: "tekion.png", cdk: "cdk.png", dealersocket: "dealersocket.png", vinsolutions: "vinsolutions.png", reynolds: "reynolds.png",
   ezlynx: "ezlynx.png", hawksoft: "hawksoft.png", hubspot: "hubspot.svg", followupboss: "followupboss.png", kvcore: "kvcore.png", lofty: "lofty.png",
-  cloudbeds: "cloudbeds.png", mews: "mews.png", guesty: "guesty.png", fareharbor: "fareharbor.png", peek: "peek.png", rezdy: "rezdy.png", bokun: "bokun.png",
+  cloudbeds: "cloudbeds.png", mews: "mews.png", guesty: "guesty.png",
   boulevard: "boulevard.png", vagaro: "vagaro.png", shopmonkey: "shopmonkey.png", tekmetric: "tekmetric.jpg", fresha: "fresha.png", mangomint: "mangomint.png", mindbody: "mindbody.png", jane: "jane.png", workiz: "workiz.png",
   lawmatics: "lawmatics.png", mycase: "mycase.png", practicepanther: "practicepanther.png", cliogrow: "cliogrow.png",
   housecallpro: "housecallpro.png", jobber: "jobber.png",
@@ -193,10 +192,6 @@ const TOOLS: Tool[] = [
   { id: "mews", name: "Mews", skins: ["hotels"], confirmation: "", ops: {} },
   { id: "guesty", name: "Guesty", skins: ["hotels"], confirmation: "", ops: {} },
   { id: "liteapi", name: "LiteAPI", skins: ["hotels"], confirmation: "", ops: {} },
-  { id: "fareharbor", name: "FareHarbor", skins: ["tours"], confirmation: "", ops: {} },
-  { id: "peek", name: "Peek", skins: ["tours"], confirmation: "", ops: {} },
-  { id: "rezdy", name: "Rezdy", skins: ["tours"], confirmation: "", ops: {} },
-  { id: "bokun", name: "Bókun", skins: ["tours"], confirmation: "", ops: {} },
   { id: "klaviyo", name: "Klaviyo", skins: ["dtc"], confirmation: "", ops: {} },
   { id: "gorgias", name: "Gorgias", skins: ["dtc"], confirmation: "", ops: {} },
   { id: "quickbooks", name: "QuickBooks", skins: ["furniture"], confirmation: "", ops: {} },

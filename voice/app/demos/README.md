@@ -35,7 +35,6 @@ Bought October 11, 2026 on the Twilio account; about $1.15 a month each.
 | Furniture showroom | (312) 820-9899 | Chicago |
 | Waypoint flights | (929) 333-3608 | New York |
 | Palmetto Stays | (786) 305-3013 | Miami |
-| Red Rock Journeys | (702) 830-4942 | Las Vegas |
 
 Only (206) 887-9619 is A2P-approved, so it sends every real text for the law & professional businesses
 (Alder & Finch, insurance, real estate): intake forms and links. Every other business shows its texts on screen.
@@ -43,7 +42,7 @@ Texts from (206) 887-9619 start with "Digital Macaroni demo:", link only to digi
 shorteners), and go out only after the agent has asked on the call and said "Message and data rates may
 apply. Reply STOP at any time to opt out."
 
-## The twelve
+## The eleven
 
 | Demo (phone line) | Business | Folder | Built |
 |---|---|---|---|
@@ -58,4 +57,3 @@ apply. Reply STOP at any time to opt out."
 | | Furniture showroom | `furniture/` | No |
 | Travel (Linda) | Waypoint, flights | `travel/` | Yes |
 | | Palmetto Stays, hotels (live LiteAPI hotels and rates) | `hotels/` | Yes |
-| | Red Rock Journeys, tours | `tours/` | No |
