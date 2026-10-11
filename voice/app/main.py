@@ -347,7 +347,7 @@ async def pairing_socket(ws: WebSocket, token: str) -> None:
 
     def attach(session: DemoSession) -> None:
         nonlocal unsubscribe
-        send({"type": "pairing.linked"})
+        send({"type": "pairing.linked", "report": session.report_token})
         for e in session.snapshot():
             send(e)
         unsubscribe = session.subscribe(lambda e: e["type"] != "audio" and send(e))
