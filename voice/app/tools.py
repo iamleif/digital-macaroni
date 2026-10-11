@@ -131,11 +131,17 @@ def tool_specs(demo: DemoDefinition[Any]) -> list[ToolSpec]:
             'The phone number this caller is calling from, when the network provides it. Use it instead of asking them to recite a number: confirm it by its last four digits ("the number ending 0142"), and use the full number for take_message if they agree. Not available in website conversations.',
             _get_caller_number,
         ),
-        ToolSpec(
-            "link_screen",
-            "Link this phone call to the caller's screen when they read you the four-digit code shown on the website, so they can watch the dashboard. Pass only the digits.",
-            _link_screen,
-            LinkScreen,
+        *(
+            [
+                ToolSpec(
+                    "link_screen",
+                    "Link this phone call to the caller's screen when they read you the four-digit code shown on the website, so they can watch the dashboard. Pass only the digits.",
+                    _link_screen,
+                    LinkScreen,
+                )
+            ]
+            if demo.screen
+            else []
         ),
         ToolSpec("end_call", "End the conversation after you have said goodbye.", _end_call, background=True),
     ]

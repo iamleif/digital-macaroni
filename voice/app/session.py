@@ -12,7 +12,7 @@ import asyncio
 import secrets
 import time
 import uuid
-from typing import Any, Callable, Optional
+from typing import Any, Awaitable, Callable, Optional
 
 from . import calllog, log
 from .config import config
@@ -55,6 +55,13 @@ class DemoSession:
         self.link_screen: Optional[Callable[[str], str]] = None
         # Phone calls only: the caller's number as Twilio reported it (E.164), or None. Held in memory, never logged.
         self.caller_number: Optional[str] = None
+        # The agent factory's calls (factory.py): a voice and time limit of their own, the client agent
+        # this line belongs to, and the work to do when the call ends (the owner's summary).
+        self.voice: Optional[str] = None
+        self.max_override = 0
+        self.client = False
+        self.agent_id: Optional[str] = None
+        self.after_call: Optional[Callable[["DemoSession"], Awaitable[None]]] = None
         self._listeners: list[Listener] = []
         self._history: list[Event] = []
         # The words of the call, saved when it ends (calllog.py).
@@ -85,7 +92,7 @@ class DemoSession:
 
     @property
     def max_seconds(self) -> int:
-        return self.demo.max_seconds or config.max_session_seconds
+        return self.max_override or self.demo.max_seconds or config.max_session_seconds
 
     def emit(self, e: Event) -> None:
         if e["type"] == "transcript":
@@ -143,9 +150,18 @@ class DemoSession:
         self.emit({"type": "session.ended", "reason": reason})
         log.info("session.ended", {"session": self.id, "demo": self.demo_id, "channel": self.channel, "outcome": reason, "duration_ms": int((self.ended_at - self.created_at) * 1000), "version": self.version})
         try:
-            asyncio.get_running_loop().create_task(calllog.save(self))
+            loop = asyncio.get_running_loop()
+            loop.create_task(calllog.save(self))
+            if self.after_call:
+                loop.create_task(self._after_call(self.after_call))
         except RuntimeError:
             pass
+
+    async def _after_call(self, work: Callable[["DemoSession"], Awaitable[None]]) -> None:
+        try:
+            await work(self)
+        except Exception as err:  # noqa: BLE001
+            log.error("session.after_call_failed", {"session": self.id, "demo": self.demo_id}, err)
 
 
 def _utc_now():
@@ -157,12 +173,24 @@ def _utc_now():
 sessions: dict[str, DemoSession] = {}
 
 
-def active_count() -> int:
-    return sum(1 for s in sessions.values() if not s.ended)
+def active_count(client: bool = False) -> int:
+    return sum(1 for s in sessions.values() if not s.ended and s.client == client)
 
 
-def admit(demo_id: str, channel: str) -> tuple[Optional[DemoSession], Optional[str]]:
-    """A new session, or why not: "disabled" or "busy"."""
+def admit(demo_id: str, channel: str, client: bool = False) -> tuple[Optional[DemoSession], Optional[str]]:
+    """
+    A new session, or why not: "disabled" or "busy". A client's line (client=True) is not a demo: the
+    demo kill switch and the demo cap don't apply to it; client lines have their own cap.
+    """
+    if client:
+        if active_count(True) >= config.max_client_sessions:
+            log.warn("session.refused_busy", {"demo": demo_id, "channel": channel, "count": active_count(True)})
+            return None, "busy"
+        session = DemoSession(demo_id, channel)
+        session.client = True
+        sessions[session.id] = session
+        log.info("session.created", {"session": session.id, "demo": demo_id, "channel": channel, "outcome": "client"})
+        return session, None
     if not config.enabled:
         return None, "disabled"
     if active_count() >= config.max_concurrent:

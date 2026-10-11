@@ -20,7 +20,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect
 
-from . import calllog, log, recording
+from . import agents_store, calllog, factory, log, recording
 from .browser import bridge_browser
 from .config import config
 from .demos import is_demo_id
@@ -67,6 +67,7 @@ async def lifespan(_: FastAPI):
         tasks.append(asyncio.create_task(_warm_loop()))
         tasks.append(asyncio.create_task(_warm_phrases()))
     log.info("service.started", {"model": config.model, "enabled": config.enabled, "max_concurrent": config.max_concurrent, "runtime": "python-adk"})
+    log.info("agents.loaded", {"count": await agents_store.load()})
     yield
     for t in tasks:
         t.cancel()
@@ -96,6 +97,9 @@ async def twilio_voice(request: Request) -> Response:
     if not signed("/twilio/voice", params, request.headers.get("x-twilio-signature")):
         log.warn("twilio.bad_signature", {"route": "voice"})
         return Response(status_code=403)
+    client = agents_store.agent_for_number(params.get("To", ""))
+    if client:
+        return xml(_client_call(client, params.get("From", "")))
     demo = config.numbers.get(params.get("To", ""))
     if not demo:
         log.warn("twilio.unrouted_number")
@@ -114,6 +118,28 @@ async def twilio_voice(request: Request) -> Response:
     stream_url = "ws" + config.public_url[4:] + "/twilio/media" if config.public_url.startswith("http") else config.public_url + "/twilio/media"
     after = f"{config.public_url}/twilio/after-stream?session={session.id}"
     return xml(stream_twiml(stream_url, {"sessionId": session.id}, after))
+
+
+def _client_call(a: agents_store.ClientAgent, caller: str) -> str:
+    """A call to a client's own number (agent factory). Not a demo: no demo notices, no demo limits."""
+    if a.status != "live":
+        return notice_twiml(f"Thanks for calling {a.business_name}. We can't take your call right now. Please call back a little later.")
+    session, _ = factory.start_client_call(a, caller if E164.match(caller) else None)
+    if session is None:
+        return notice_twiml(f"Thanks for calling {a.business_name}. All our lines are busy right now. Please call back in a few minutes.")
+    log.info("twilio.call_answered", {"session": session.id, "demo": "agent", "outcome": a.id, "caller_id": bool(session.caller_number)})
+    stream_url = "ws" + config.public_url[4:] + "/twilio/media"
+    return stream_twiml(stream_url, {"sessionId": session.id}, f"{config.public_url}/twilio/after-stream?session={session.id}")
+
+
+@app.post("/twilio/instant-status")
+async def twilio_instant_status(request: Request, job: str = "") -> Response:
+    params = {k: str(v) for k, v in (await request.form()).items()}
+    if not signed(f"/twilio/instant-status?job={job}", params, request.headers.get("x-twilio-signature")):
+        log.warn("twilio.bad_signature", {"route": "instant-status"})
+        return Response(status_code=403)
+    await factory.instant_status(job, params.get("CallStatus", ""))
+    return Response(status_code=204)
 
 
 @app.post("/twilio/after-stream")
@@ -151,7 +177,7 @@ def allowed_origin(origin: Optional[str]) -> bool:
 @app.middleware("http")
 async def cors(request: Request, call_next):
     path = request.url.path
-    if not (path.startswith("/browser/") or path.startswith("/pairings") or path.startswith("/reports/")):
+    if not (path.startswith("/browser/") or path.startswith("/pairings") or path.startswith("/reports/") or path.startswith("/instant") or path.startswith("/onboard")):
         return await call_next(request)
     origin = request.headers.get("origin")
     response = Response(status_code=204) if request.method == "OPTIONS" else await call_next(request)
@@ -388,3 +414,104 @@ async def pairing_socket(ws: WebSocket, token: str) -> None:
         if not p.session:
             drop_pairing(p)
         w.cancel()
+
+
+# ---- Agent factory (factory.py): the instant demo call, client setup, and Macaroni OS's admin calls ----
+
+
+async def _json(request: Request) -> dict[str, Any]:
+    try:
+        body = await request.json()
+    except (ValueError, json.JSONDecodeError):
+        return {}
+    return body if isinstance(body, dict) else {}
+
+
+def _refusal(why: tuple[int, str, str]) -> JSONResponse:
+    status, error, message = why
+    return JSONResponse({"error": error, "message": message}, status_code=status)
+
+
+@app.post("/instant")
+async def instant(request: Request) -> JSONResponse:
+    if not allowed_origin(request.headers.get("origin")):
+        return JSONResponse({"error": "origin"}, status_code=403)
+    job, why = factory.start_instant(await _json(request), client_ip(request))
+    return _refusal(why) if job is None else JSONResponse(job.public())  # type: ignore[arg-type]
+
+
+@app.get("/instant/{job_id}")
+async def instant_job(job_id: str) -> JSONResponse:
+    j = factory.get_job(job_id)
+    return JSONResponse(j.public()) if j and j.kind == "instant" else JSONResponse({"error": "not_found"}, status_code=404)
+
+
+@app.get("/onboard/check")
+async def onboard_check(invite: str = "") -> JSONResponse:
+    inv, why = await factory.check_invite(invite)
+    return JSONResponse({"ok": True, "label": inv.label}) if inv else JSONResponse({"ok": False, "message": why}, status_code=403)
+
+
+@app.post("/onboard")
+async def onboard(request: Request) -> JSONResponse:
+    if not allowed_origin(request.headers.get("origin")):
+        return JSONResponse({"error": "origin"}, status_code=403)
+    if not allow_start(f"onboard:{client_ip(request)}", 10):
+        return JSONResponse({"error": "rate_limited", "message": "Please wait a few minutes and try again."}, status_code=429)
+    job, why = await factory.start_onboard(await _json(request))
+    return _refusal(why) if job is None else JSONResponse(job.public())  # type: ignore[arg-type]
+
+
+@app.get("/onboard/{job_id}")
+async def onboard_job(job_id: str) -> JSONResponse:
+    j = factory.get_job(job_id)
+    return JSONResponse(j.public()) if j and j.kind == "onboard" else JSONResponse({"error": "not_found"}, status_code=404)
+
+
+def _admin(request: Request) -> bool:
+    given = request.headers.get("authorization", "").removeprefix("Bearer ").strip()
+    return bool(config.admin_token) and hmac.compare_digest(given, config.admin_token)
+
+
+def _agent_row(a: agents_store.ClientAgent) -> dict[str, Any]:
+    return {
+        "id": a.id, "status": a.status, "number": a.number, "businessName": a.business_name, "agentName": a.agent_name, "website": a.profile.get("website", ""),
+        "summary": a.profile.get("summary", ""), "owner": a.owner.model_dump(), "plan": a.plan, "createdAt": a.created_at, "calls": a.calls, "lastCallAt": a.last_call_at,
+    }
+
+
+@app.get("/admin/agents")
+async def admin_agents(request: Request) -> JSONResponse:
+    if not _admin(request):
+        return JSONResponse({"error": "unauthorized"}, status_code=401)
+    invites = await agents_store.all_invites()
+    return JSONResponse({
+        "agents": [_agent_row(a) for a in agents_store.all_agents()],
+        "invites": [{**i.model_dump(), "url": agents_store.invite_url(agents_store.invite_token(i)) if not i.used_by else ""} for i in invites],
+    })
+
+
+@app.post("/admin/invites")
+async def admin_invite(request: Request) -> JSONResponse:
+    if not _admin(request):
+        return JSONResponse({"error": "unauthorized"}, status_code=401)
+    body = await _json(request)
+    inv, token = await agents_store.create_invite(str(body.get("label") or ""), str(body.get("plan") or ""))
+    return JSONResponse({"id": inv.id, "url": agents_store.invite_url(token), "expiresAt": inv.expires_at})
+
+
+@app.post("/admin/agents/{agent_id}")
+async def admin_agent_update(request: Request, agent_id: str) -> JSONResponse:
+    if not _admin(request):
+        return JSONResponse({"error": "unauthorized"}, status_code=401)
+    a = agents_store.agent_by_id(agent_id)
+    if not a:
+        return JSONResponse({"error": "not_found"}, status_code=404)
+    body = await _json(request)
+    if body.get("status") in ("live", "paused"):
+        a.status = body["status"]
+    for key, attr, n in (("notes", "notes", 1500), ("neverSay", "never_say", 600)):
+        if isinstance(body.get(key), str):
+            setattr(a, attr, body[key].strip()[:n])
+    await agents_store.save_agent(a)
+    return JSONResponse(_agent_row(a))

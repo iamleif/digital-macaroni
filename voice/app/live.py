@@ -70,6 +70,8 @@ def full_instruction(session: DemoSession) -> str:
     from datetime import datetime, timezone
 
     ctx = OpContext(now=datetime.now(timezone.utc), channel=session.channel)  # type: ignore[arg-type]
+    if not session.demo.screen:
+        return session.demo.instruction(session.state, ctx)
     return session.demo.instruction(session.state, ctx) + (PHONE_NOTE if session.channel == "phone" else BROWSER_NOTE)
 
 
@@ -126,7 +128,7 @@ class GeminiLive:
         run_config = RunConfig(
             streaming_mode=StreamingMode.BIDI,
             response_modalities=[types.Modality.AUDIO],
-            speech_config=types.SpeechConfig(voice_config=types.VoiceConfig(prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=config.voices[self.session.demo_id]))),
+            speech_config=types.SpeechConfig(voice_config=types.VoiceConfig(prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=self.session.voice or config.voices[self.session.demo_id]))),
             input_audio_transcription=types.AudioTranscriptionConfig(),
             output_audio_transcription=types.AudioTranscriptionConfig(),
             # Reply sooner after the visitor stops; a pause shorter than this does not end their turn.

@@ -45,7 +45,7 @@ class Config:
     # Prebuilt Gemini voice names, or designed voice ids ("voice_…", from AI Studio; the travel default is
     # "Linda 2", designed on gemini-3.8-flash-tts and valid until 2027-10-04).
     voices: dict[str, str] = field(
-        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede"), "hotels": env.get("HOTELS_VOICE", "Despina")}
+        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede"), "hotels": env.get("HOTELS_VOICE", "Despina"), "agent": env.get("AGENT_VOICE", "Sulafat")}
     )
     # Demos on the cascade (speech-to-text, a Gemini text model through ADK, then Gemini TTS) instead of Gemini Live.
     cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel").split(",") if d.strip())
@@ -88,6 +88,25 @@ class Config:
     # Exact website origins allowed to start browser sessions.
     allowed_origins: list[str] = field(default_factory=_origins)
     debug_adk: bool = not on_cloud_run and env.get("DEMO_DEBUG_ADK") == "1"
+
+    # ---- Agent factory (factory.py): instant demo calls, client agents, post-call summaries ----
+    # Uses the Twilio API key above. Texts go from the A2P-approved number; instant demo calls ring from INSTANT_FROM.
+    sms_from: str = env.get("SMS_FROM", "+12068879619")
+    instant_from: str = env.get("INSTANT_FROM", "+19293333608")
+    # Macaroni OS calls /admin/* with this bearer token; it also signs onboarding links.
+    admin_token: str = env.get("VOICE_ADMIN_TOKEN", "")
+    # Client agents: one JSON file each, kept (no expiry). Local runs can use a folder instead.
+    agents_bucket: str = env.get("AGENTS_BUCKET", "")
+    agents_dir: str = env.get("AGENTS_DIR", "")
+    # Testing: onboarding uses DRY_RUN_NUMBER instead of buying a number.
+    provision_dry_run: bool = env.get("PROVISION_DRY_RUN") == "1"
+    dry_run_number: str = env.get("DRY_RUN_NUMBER", "")
+    # New leads and new clients are emailed here.
+    leads_email: str = env.get("LEADS_EMAIL", "hello@digitalmacaroni.io")
+    # Client lines have their own cap, apart from the demos'.
+    max_client_sessions: int = int(env.get("MAX_CLIENT_SESSIONS", "12"))
+    client_max_seconds: int = int(env.get("CLIENT_MAX_SECONDS", "600"))
+    instant_max_seconds: int = int(env.get("INSTANT_MAX_SECONDS", "240"))
 
 
 config = Config()

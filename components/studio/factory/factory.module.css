@@ -1,0 +1,32 @@
+/* The instant demo call and the client setup form: their progress steps and finished states. Form fields take their look from contact.module.css (.formCard). */
+.consent { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); cursor: pointer; }
+.consent input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--ink); flex: none; }
+.note { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--muted); }
+.voices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.voice { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #f6f5f1; box-shadow: inset 0 0 0 1px rgba(15, 15, 13, 0.06); font-size: 14.5px; cursor: pointer; }
+.voice:has(input:checked) { background: #fff; box-shadow: inset 0 0 0 1.5px var(--ink); }
+.voices .voice input[type="radio"] { width: 18px; height: 18px; flex: none; padding: 0; margin: 0; background: none; box-shadow: none; accent-color: var(--ink); }
+.voice small { display: block; color: var(--muted); font-size: 12.5px; }
+
+.progress { display: grid; gap: 18px; padding: 28px; border-radius: 24px; background: #fff; box-shadow: 0 0 0 1px rgba(15, 15, 13, 0.06), 0 20px 40px -28px rgba(15, 15, 13, 0.35); }
+.progress h2 { margin: 0; font-size: 24px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.2; }
+.progress > p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--muted); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.step { display: flex; align-items: center; gap: 12px; font-size: 15px; color: var(--faint); transition: color 0.3s var(--ease); }
+.step i { width: 22px; height: 22px; border-radius: 999px; flex: none; display: grid; place-items: center; box-shadow: inset 0 0 0 1.5px currentColor; }
+.step[data-state="active"] { color: var(--ink); }
+.step[data-state="active"] i { box-shadow: inset 0 0 0 1.5px var(--ink); background: radial-gradient(circle, var(--ink) 0 4px, transparent 4.5px); animation: pulse 1.4s ease-in-out infinite; }
+.step[data-state="done"] { color: var(--ink-2); }
+.step[data-state="done"] i { background: var(--ink); color: #fff; box-shadow: none; }
+.step[data-state="done"] i svg { width: 13px; height: 13px; }
+@keyframes pulse { 50% { opacity: 0.45; } }
+@media (prefers-reduced-motion: reduce) { .step[data-state="active"] i { animation: none; } }
+
+.number { display: block; font-size: clamp(30px, 4vw, 40px); font-weight: 600; letter-spacing: -0.03em; color: var(--ink); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.primary, .secondary { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: 999px; font-size: 15px; font-weight: 500; border: 0; cursor: pointer; font-family: inherit; }
+.primary { background: var(--ink); color: #fff; }
+.secondary { background: #f2f1ec; color: var(--ink); }
+.forward { margin: 0; padding: 16px 18px; border-radius: 16px; background: #f6f5f1; font-size: 14px; line-height: 1.65; color: var(--ink-2); }
+.forward b { color: var(--ink); }
+.problem { color: #b03a26; }

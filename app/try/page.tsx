@@ -34,6 +34,7 @@ export default function TryPage() {
             <span className={t.eyebrow}><i />Live demos</span>
             <h1 id="try-title">Call an AI agent. <span>Watch it work.</span></h1>
             <p>Pick one and call it from your phone. The screen fills in as it talks: the booking, the stock check, the flight search.</p>
+            <p><a href="/your-agent/" style={{ textDecoration: "underline", textUnderlineOffset: 3 }}>Or get a call from an agent that has read your own website →</a></p>
           </div>
           <div className={t.agents}><Agents /></div>
         </section>

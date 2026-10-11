@@ -25,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     { url: `${base}/pricing/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/your-agent/`, lastModified: "2026-10-11", changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/consulting/`, lastModified: "2026-10-08", changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/about/`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
     { url: `${base}/contact/`, lastModified: "2026-10-08", changeFrequency: "yearly", priority: 0.7 },

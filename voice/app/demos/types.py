@@ -75,6 +75,8 @@ class DemoDefinition(Generic[S]):
     fixed_lines: list[str] = field(default_factory=list)
     # Longest conversation in seconds; 0 uses the service-wide DEMO_MAX_SESSION_SECONDS.
     max_seconds: int = 0
+    # Has a dashboard page a phone caller can link with a screen code (the generic agent has none).
+    screen: bool = True
 
 
 def Confirmed() -> Any:
