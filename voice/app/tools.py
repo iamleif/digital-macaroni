@@ -70,7 +70,7 @@ def _operation_spec(name: str, op: Any) -> ToolSpec:
             try:
                 # Any email this tool sends carries the button to the call's own page.
                 email.REPORT_URL.set(session.report_url)
-                out = op.run(session.state, parsed, OpContext(now=datetime.now(timezone.utc), channel=session.channel))  # type: ignore[arg-type]
+                out = op.run(session.state, parsed, OpContext(now=datetime.now(timezone.utc), channel=session.channel, customer_email=(session.setup or {}).get("email") or None))  # type: ignore[arg-type]
                 r = await out if inspect.isawaitable(out) else out
             except asyncio.CancelledError:
                 # The caller cut in and the reply was abandoned mid-tool: close the card rather than leave it running.

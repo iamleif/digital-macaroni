@@ -8,7 +8,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, email_target, weekday
 from . import store
 from .intake import SKIPPABLE, next_fields, triage_next
 from .state import Appt, DentalState, Message, active, bookable_days, describe_slot, free, horizon_end, op, open_slots, parse_slot
@@ -49,6 +49,9 @@ class NotePatient(BaseModel):
 
 def note_patient(state: DentalState, i: NotePatient, ctx: OpContext) -> OpResult:
     new = {k: (v.strip() if isinstance(v, str) else v) for k, v in i.model_dump().items() if v is not None}
+    if ctx.customer_email:
+        new.pop("email", None)
+        state.patient["email"] = ctx.customer_email
     have = state.patient.get("name") or ""
     if new.get("name") and len(new["name"].split()) < 2 and have.lower().startswith(new["name"].lower()):
         new.pop("name")  # the first name again: keep what we have
@@ -315,19 +318,22 @@ def take_message(state: DentalState, i: TakeMessage, ctx: OpContext) -> OpResult
 
 
 class EmailConfirmation(BaseModel):
-    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    email: Optional[str] = Field(None, max_length=120, description="Only when no signup email is on file: the caller's email address as they gave it. Leave out otherwise.")
     recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP + " Never include symptoms or health details.")
     callerConfirmed: bool = Confirmed()
 
 
 async def email_confirmation(state: DentalState, i: EmailConfirmation, ctx: OpContext) -> OpResult:
+    to, refused = email_target(ctx, i.email)
+    if refused:
+        return refused
     booked = active(state)
     kind = "booking" if booked else "summary"
-    if already_sent(state.emailed, i.email, kind):
+    if already_sent(state.emailed, to, kind):
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
-        r, sent = await send_summary("dental", "Josh", i.email, i.recap, state.patient.get("name"), messages, did="answered your questions and passed your message to the front office")
+        r, sent = await send_summary("dental", "Josh", to, i.recap, state.patient.get("name"), messages, did="answered your questions and passed your message to the front office")
         if sent:
             state.emailed = sent
         return r
@@ -339,7 +345,7 @@ async def email_confirmation(state: DentalState, i: EmailConfirmation, ctx: OpCo
         rows.append(("Bring", "Photo ID and your insurance card; arrive 15 minutes early"))
     rows.append(("Changes", "24 hours' notice, please"))
     v = {"brand": "dental", "agent": "Josh", "service": t["name"], "day": s["day"], "time": s["time"], "zone": "Central", "name": a.patient, "reference": a.id, "rows": rows, "did": "checked the book and saved you the right chair"}
-    masked, why = await email.confirm(i.email, email.appointment_confirmation(v))
+    masked, why = await email.confirm(to, email.appointment_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

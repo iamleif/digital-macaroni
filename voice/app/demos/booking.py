@@ -11,12 +11,12 @@ member ("2026-10-03T1430@maria"), so the agent offers a person and a time togeth
 
 from __future__ import annotations
 
-import random
 import re
 from dataclasses import dataclass, field
-from datetime import date as _date, datetime
+from datetime import datetime
 from typing import Any, Literal, Optional
 
+from . import schedule as sched
 from .types import OpContext, OpResult, add_days, date_in, date_label, fail, mask_number, ok, reference, weekday
 
 
@@ -30,6 +30,8 @@ class Busy:
     ref: str
     existing: bool
     name: Optional[str] = None
+    # Time the person isn't working (a day off, lunch, admin), shown as an existing block so the day has its real shape.
+    off: bool = False
 
 
 @dataclass
@@ -75,33 +77,6 @@ class BookingState:
     emailed: Optional[dict[str, Any]] = None
 
 
-# Busier toward the weekend, lighter mid-week (0 is Sunday).
-WEEKDAY_FULLNESS = {0: 0.5, 1: 0.5, 2: 0.42, 3: 0.4, 4: 0.55, 5: 0.78, 6: 0.86}
-
-
-def day_rng(*parts: str) -> random.Random:
-    """A generator seeded by the calendar date (and business, staff): the same date looks the same on every call."""
-    return random.Random(":".join(parts))
-
-
-def day_fullness(prefix: str, day: str) -> float:
-    """How booked a given date is, 0.15 to 0.92: the weekday's habit, plus that week's mood, plus that day's own luck.
-    A few dates are quiet, a few nearly full."""
-    d = _date.fromisoformat(day)
-    year, week, _ = d.isocalendar()
-    base = WEEKDAY_FULLNESS[(d.weekday() + 1) % 7]
-    week_mood = day_rng(prefix, "week", str(year), str(week)).uniform(-0.12, 0.12)
-    r = day_rng(prefix, "day", day)
-    luck = r.uniform(-0.15, 0.15)
-    roll = r.random()
-    x = base + week_mood + luck
-    if roll < 0.12:
-        x -= 0.3  # a quiet day
-    elif roll > 0.9:
-        x += 0.3  # a nearly full day
-    return min(0.92, max(0.15, x))
-
-
 def last_name_missing(name: Optional[str]) -> Optional[OpResult]:
     """A booking needs a first and last name: one word is refused with an instruction to ask."""
     if name is not None and len(name.split()) < 2:
@@ -127,7 +102,7 @@ def slot_id(day: str, start: int, pid: str) -> str:
 
 
 class Calendar:
-    def __init__(self, *, prefix: str, time_zone: str, open_hour: int, close_hour: int, closed_weekdays: frozenset[int], days_ahead: int, staff: list[dict[str, Any]], services: list[dict[str, Any]], busy_titles: Optional[dict[str, list[str]]] = None):
+    def __init__(self, *, prefix: str, time_zone: str, open_hour: int, close_hour: int, closed_weekdays: frozenset[int], days_ahead: int, staff: list[dict[str, Any]], services: list[dict[str, Any]], busy_titles: Optional[dict[str, list[str]]] = None, shifts: Optional[dict[str, Any]] = None, deck: Optional[list[Any]] = None, forced: Optional[list[Any]] = None, open_weights: Optional[list[Any]] = None, extras: Optional[dict[str, list[Any]]] = None):
         self.prefix = prefix
         self.time_zone = time_zone
         self.open, self.close = open_hour * 60, close_hour * 60
@@ -135,6 +110,13 @@ class Calendar:
         self.days_ahead = days_ahead
         self.staff = staff
         self.services = services
+        # Who works when, the kinds of opening the days keep in turn, and other appointments only the book shows.
+        self.shifts = shifts or {}
+        self.deck: list[sched.Card] = [(tuple(c[0]) if isinstance(c[0], list) else (c[0],), int(c[1])) for c in (deck or [])]
+        self.open_weights: tuple[tuple[int, float], ...] = tuple((int(n), float(w)) for n, w in (open_weights or sched.OPEN_WEIGHTS_MANY))
+        # Openings that come round on a fixed rhythm so the long, specialised services always have room: [who, minutes, period, phase].
+        self.forced: list[tuple[sched.Card, int, int]] = [(((f[0],), int(f[1])), int(f[2]), int(f[3])) for f in (forced or [])]
+        self.extras: dict[str, list[tuple[str, int]]] = {k: [(t, int(m)) for t, m in v] for k, v in (extras or {}).items()}
 
     # ---- Lookups ----
 
@@ -163,51 +145,45 @@ class Calendar:
     # ---- The calendar ----
 
     def create_state(self, now: datetime) -> BookingState:
-        """Other clients' bookings: each person's own services at their real lengths, about two-thirds of the day."""
+        """Other clients' bookings. Each person works their own shifts (half days, days off, different lunches); the
+        day keeps two to four openings, for different people at different times; every other working minute is
+        already taken by an existing appointment at a real length. Deterministic per date, business and person."""
         today, hour, minute = date_in(self.time_zone, now)
         state = BookingState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today=hour * 60 + minute + 60)
         n = 0
         for day in self.bookable_days(state):
-            fullness = day_fullness(self.prefix, day)
             blocks: list[Busy] = []
+            segs = {p["id"]: sched.shift_of(self.shifts, p["id"], day, self.open, self.close) for p in self.staff}
+            floor = -(-state.earliest_today // 30) * 30 if day == state.today else 0
+            pools: dict[str, list[tuple[str, int]]] = {}
+            low: dict[str, int] = {}
             for p in self.staff:
-                r = day_rng(self.prefix, day, p["id"])
                 theirs = [x for x in self.services if p["id"] in x["staff"] and not x.get("hidden")]
-                mine = min(0.94, max(0.1, fullness + r.uniform(-0.18, 0.18)))
-                t = self.open + r.choice((0, 0, 30, 60, 90))
-                while t < self.close:
-                    if r.random() > mine:  # an open stretch; sometimes a long one, so a three-hour colour can still fit
-                        t += r.choice((30, 30, 60, 60, 90, 180))
-                        continue
-                    svc = r.choice(theirs)
-                    mins = self.length(svc["id"])
-                    if t + mins > self.close:
-                        break
-                    blocks.append(Busy(p["id"], day, t, mins, svc["name"], "", True))
-                    t += mins + r.choice((0, 0, 0, 15, 30))
-            # Every service keeps at least one opening, even on the fullest day.
-            r = day_rng(self.prefix, day, "room")
-            for svc in self.services:
-                while not self._has_room(blocks, svc):
-                    owners = [b for b in blocks if b.staff_id in svc["staff"]]
-                    if not owners:
-                        break
-                    blocks.remove(r.choice(owners))
+                pools[p["id"]] = [(x["name"], self.length(x["id"])) for x in theirs] * 2 + [(t, m) for t, m in self.extras.get(p["id"], [])]
+                low[p["id"]] = min(self.length(x["id"]) for x in theirs)
+            k = sched.cap_budget(sched.open_budget(self.prefix, day, self.open_weights), sum(e - a for ss in segs.values() for a, e in ss), 70)
+            idx = sched.business_index(day, self.closed_weekdays)
+
+            def make(min_start: int, segs=segs) -> list[sched.Hole]:
+                def starts(who: str, minutes: int, holes: list[sched.Hole]) -> list[int]:
+                    free = sched.subtract(segs[who], [h.span() for h in holes if h.who == who])
+                    return sched.hole_starts(free, minutes, 30, min_start, min_side=min(m for _, m in pools[who]))
+
+                return sched.choose_holes(sched.rng(self.prefix, "holes", day), k=k, deck=self.deck, idx=idx, starts=starts, span=(self.open, self.close), forced=[c for c, period, phase in self.forced if idx % period == phase])
+
+            holes = sched.settle(make, floor, min(k, 2), lambda hs: [h.start for h in hs])
+            for p in self.staff:
+                pid = p["id"]
+                for a, m, title in sched.off_blocks(segs[pid], self.open, self.close, seed=f"{self.prefix}{day}{pid}"):
+                    blocks.append(Busy(pid, day, a, m, title, "", True, off=True))
+                mine = sched.subtract(segs[pid], [h.span() for h in holes if h.who == pid])
+                for a, m, title in sched.fill(sched.rng(self.prefix, "fill", day, pid), mine, pools[pid], UNIT, low[pid]):
+                    blocks.append(Busy(pid, day, a, m, title, "", True))
             for b in blocks:
                 b.ref = f"existing-{n}"
                 n += 1
             state.busy += blocks
         return state
-
-    def _has_room(self, blocks: list[Busy], svc: dict[str, Any]) -> bool:
-        mins = self.length(svc["id"])
-        for start in range(self.open, self.close, 30):
-            if start + mins > self.close:
-                continue
-            for pid in svc["staff"]:
-                if not any(b.staff_id == pid and b.start < start + mins and start < b.start + b.minutes for b in blocks):
-                    return True
-        return False
 
     def free(self, state: BookingState, pid: str, day: str, start: int, minutes: int, ignore_ref: Optional[str] = None) -> bool:
         if start < self.open or start + minutes > self.close:
@@ -360,7 +336,7 @@ class Calendar:
             "dayEnd": self.close,
             "staff": [{"id": p["id"], "name": p["short"], "role": p["role"], **({"photo": p["photo"]} if p.get("photo") else {})} for p in self.staff],
             "schedule": [
-                {"staffId": b.staff_id, "start": b.start, "minutes": b.minutes, "kind": "existing" if b.existing else "demo", "title": b.title, "group": svc_group.get(b.title.split(" + ")[0], ""), **({"ref": b.ref, "name": b.name} if not b.existing else {})}
+                {"staffId": b.staff_id, "start": b.start, "minutes": b.minutes, "kind": "existing" if b.existing else "demo", "title": b.title, "group": "" if b.off else svc_group.get(b.title.split(" + ")[0], ""), **({"off": True} if b.off else {}), **({"ref": b.ref, "name": b.name} if not b.existing else {})}
                 for b in state.busy if b.date == day and (b.existing or any(a.id == b.ref and a.status == "booked" for a in state.appointments))
             ],
             "open": opened,

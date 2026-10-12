@@ -186,11 +186,12 @@ def test_busy_blocks_differ_by_date_and_not_by_call():
     days = list(dict.fromkeys(x.date for x in a.calendar))
     assert len(days) >= 9
     assert len({tuple(_pattern(a, d)) for d in days}) == len(days)
-    assert all(_pattern(a, d) == _pattern(b, d) for d in days if d in {x.date for x in b.calendar})
+    assert all(_pattern(a, d) == _pattern(b, d) for d in days if d in {x.date for x in b.calendar} and d not in (a.today, b.today))
     assert [_pattern(a, d) for d in days[:5]] != [_pattern(a, d) for d in days[5:10]]
     assert len({len(_pattern(a, d)) for d in days}) > 2
     assert len({x.title for x in a.calendar}) > 3
     assert all(insurance_open(a, d) for d in days if d != a.today)
+    assert sum(1 for d in days if insurance_open(a, d)) >= 9
 
 
 def insurance_open(state, day):

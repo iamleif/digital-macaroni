@@ -28,6 +28,10 @@ _staff = _load("staff.json")
 STAFF: list[dict[str, Any]] = _staff["staff"]
 LICENSED: tuple[str, ...] = tuple(_staff["licensed"])
 SERVICE: str = _staff["service"]
+# Who works when (weekday -> shift), the order openings come round in, and what the other calls are called.
+SHIFTS: dict[str, Any] = _staff["shifts"]
+DECK: list[str] = _staff["deck"]
+TITLES: list[str] = _staff["titles"]
 BUSINESS["team"] = [{"name": s["name"], "role": s["role"]} for s in STAFF]
 
 _calendar = _load("calendar.json")

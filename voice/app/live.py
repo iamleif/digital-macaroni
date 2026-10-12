@@ -79,7 +79,7 @@ Tools come before words. When the caller has finished speaking, first make every
 def full_instruction(session: DemoSession) -> str:
     from datetime import datetime, timezone
 
-    ctx = OpContext(now=datetime.now(timezone.utc), channel=session.channel)  # type: ignore[arg-type]
+    ctx = OpContext(now=datetime.now(timezone.utc), channel=session.channel, customer_email=(getattr(session, "setup", None) or {}).get("email") or None)  # type: ignore[arg-type]
     base = session.demo.instruction(session.state, ctx)
     if not session.demo.screen:
         return base

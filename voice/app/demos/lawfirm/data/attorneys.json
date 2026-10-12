@@ -39,5 +39,91 @@
     }
   ],
   "seniorPartner": "marcus",
-  "conflictsAttorney": "dana"
+  "conflictsAttorney": "dana",
+  "shifts": {
+    "dana": {
+      "1": "9:00-12:00,13:00-17:00",
+      "2": "9:00-12:00,13:00-17:00",
+      "3": "9:00-12:00,13:00-15:00",
+      "4": "10:00-12:00,13:00-17:00",
+      "5": "9:00-12:00,13:00-15:00"
+    },
+    "marcus": {
+      "1": "9:00-12:00,13:00-17:00",
+      "2": "13:00-17:00",
+      "3": "9:00-12:00,13:00-17:00",
+      "4": "9:00-12:00,13:00-16:00",
+      "5": "9:00-12:00,13:00-17:00"
+    },
+    "priya": {
+      "1": "13:00-17:00",
+      "2": "9:00-12:00,13:00-17:00",
+      "3": "9:00-12:00,13:00-17:00",
+      "4": "9:00-12:00,13:00-16:00",
+      "5": "9:00-12:00"
+    }
+  },
+  "deck": [
+    "dana",
+    "priya",
+    "marcus",
+    "dana",
+    "priya",
+    "dana",
+    "marcus",
+    "priya",
+    "dana",
+    "marcus",
+    "priya",
+    "dana",
+    "marcus"
+  ],
+  "forced": [
+    [
+      "priya",
+      2,
+      0
+    ],
+    [
+      "priya",
+      3,
+      1
+    ],
+    [
+      "dana",
+      3,
+      2
+    ]
+  ],
+  "titles": [
+    "Client consultation",
+    "Deposition prep",
+    "Mediation",
+    "Case review",
+    "Court hearing",
+    "Settlement call",
+    "Records review",
+    "Expert call",
+    "Client meeting",
+    "Intake review",
+    "Demand letter review",
+    "Medical records call",
+    "Insurance adjuster call",
+    "Trial prep",
+    "Witness interview"
+  ],
+  "openWeights": [
+    [
+      2,
+      0.5
+    ],
+    [
+      3,
+      0.38
+    ],
+    [
+      4,
+      0.12
+    ]
+  ]
 }

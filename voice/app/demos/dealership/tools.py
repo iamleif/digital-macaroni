@@ -7,7 +7,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary, email_target, weekday
 from . import store
 from .state import (
     Appointment,
@@ -98,6 +98,9 @@ class NoteLead(BaseModel):
 
 def note_lead(state: DealershipState, i: NoteLead, ctx: OpContext) -> OpResult:
     new = {k: (v.strip() if isinstance(v, str) else v) for k, v in i.model_dump().items() if v is not None}
+    if ctx.customer_email:
+        new.pop("email", None)
+        state.lead["email"] = ctx.customer_email
     first_only = "name" in new and not full_name(new["name"])
     if first_only:
         del new["name"]
@@ -244,20 +247,23 @@ def take_message(state: DealershipState, i: TakeMessage, ctx: OpContext) -> OpRe
 
 
 class EmailConfirmation(BaseModel):
-    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    email: Optional[str] = Field(None, max_length=120, description="Only when no signup email is on file: the caller's email address as they gave it. Leave out otherwise.")
     recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP + " You may include cars and listed prices you read out. Never a payment or a trade-in value.")
     callerConfirmed: bool = Confirmed()
 
 
 async def email_confirmation(state: DealershipState, i: EmailConfirmation, ctx: OpContext) -> OpResult:
+    to, refused = email_target(ctx, i.email)
+    if refused:
+        return refused
     booked = active(state)
     kind = "booking" if booked else "summary"
-    if already_sent(state.emailed, i.email, kind):
+    if already_sent(state.emailed, to, kind):
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
         rows = [(describe_search(car(s)), f"{money(car(s)['price'])} · {car(s)['miles']:,} miles · stock {s}") for s in state.read if car(s)]  # type: ignore[index]
-        r, sent = await send_summary("dealership", "Wes", i.email, i.recap, state.lead.get("name"), messages, rows, did="searched the lot for you and passed your details to the team")
+        r, sent = await send_summary("dealership", "Wes", to, i.recap, state.lead.get("name"), messages, rows, did="searched the lot for you and passed your details to the team")
         if sent:
             state.emailed = sent
         return r
@@ -271,7 +277,7 @@ async def email_confirmation(state: DealershipState, i: EmailConfirmation, ctx: 
         rows += [("Car", a.vehicle), ("Service", service(a.service_id)["name"] + f" · {service(a.service_id)['price']}"), ("Advisor", SERVICE_ADVISOR["name"])]  # type: ignore[arg-type]
     rows.append(("Where", BUSINESS["address"].split(",")[0] + ", Detroit"))
     v = {"brand": "dealership", "agent": "Wes", "service": "Test drive" if c else "Service visit", "day": s["day"], "time": s["time"], "zone": "Eastern", "name": a.name, "reference": a.id, "rows": rows, "did": "searched the lot, found the car and booked your test drive" if c else "booked your car into the service bay", "photo": None}
-    masked, why = await email.confirm(i.email, email.appointment_confirmation(v))
+    masked, why = await email.confirm(to, email.appointment_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

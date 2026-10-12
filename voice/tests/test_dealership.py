@@ -112,20 +112,23 @@ def test_calendar_is_bookable_for_fourteen_days_and_no_further():
 
 
 def test_diaries_differ_by_date_but_not_by_call():
-    from app.demos.dealership.state import create_state, nearly_full
+    from app.demos.dealership.state import create_state
 
     def pattern(state, day):
-        return sorted((b.who, b.hour) for b in state.busy if b.date == day)
+        return sorted((b.who, b.hour, b.title) for b in state.busy if b.date == day)
 
     a, b = create_state(NOW), create_state(datetime(2026, 10, 1, 17, 30, tzinfo=timezone.utc))
     days = dstate.bookable_days(a)
-    assert all(pattern(a, d) == pattern(b, d) for d in days)
+    # Each date comes from the date alone; only today's is reshaped around the time that is left.
+    assert all(pattern(a, d) == pattern(b, d) for d in days if d not in (a.today, b.today))
     assert len({tuple(pattern(a, d)) for d in days}) == len(days)
     assert len({tuple(sorted(x.title for x in a.busy if x.date == d)) for d in days}) > 8
-    assert sum(1 for d in days if nearly_full(d)) <= 1
-    for d in days:
-        assert len(dstate.open_slots(a, "test_drive", d)) >= 1 and len(dstate.open_slots(a, "service", d)) >= 1
-    assert len([d for d in days if len(dstate.open_slots(a, "test_drive", d)) <= 3]) <= 2
+    drive = [d for d in days if dstate.open_slots(a, "test_drive", d)]
+    service = [d for d in days if dstate.open_slots(a, "service", d)]
+    assert len(drive) >= 4 and len(service) >= 4
+    assert all(d in drive or d in service for d in days)
+    # A busy lot: no day has more than five open hours across test drives and service together.
+    assert all(len(dstate.open_slots(a, "test_drive", d)) + len(dstate.open_slots(a, "service", d)) <= 7 for d in days)
 
 
 def test_a_first_name_alone_is_not_saved_or_booked():

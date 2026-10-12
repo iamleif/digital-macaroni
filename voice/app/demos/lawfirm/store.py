@@ -39,6 +39,12 @@ _attorneys = _load("attorneys.json")
 ATTORNEYS: list[dict[str, Any]] = [{**a, "types": tuple(a["types"])} for a in _attorneys["attorneys"]]
 # Serious injuries and deaths go to the senior partner; a conflict goes to the conflicts attorney.
 SENIOR_PARTNER: str = _attorneys["seniorPartner"]
+# Who works when (weekday -> shift), the order openings come round in, and what the other appointments are called.
+SHIFTS: dict[str, Any] = _attorneys["shifts"]
+DECK: list[str] = _attorneys["deck"]
+FORCED: list[list[Any]] = _attorneys["forced"]
+TITLES: list[str] = _attorneys["titles"]
+OPEN_WEIGHTS: list[list[float]] = _attorneys["openWeights"]
 CONFLICTS_ATTORNEY: str = _attorneys["conflictsAttorney"]
 
 # The firm's wording for the intake form's choices.

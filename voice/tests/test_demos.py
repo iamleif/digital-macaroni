@@ -36,7 +36,15 @@ def res(r: OpResult) -> dict[str, Any]:
 
 
 def slots_for(run, service: str = "heating_repair", day: str = TOMORROW) -> list[str]:
-    return [s["slotId"] for s in res(run("check_availability", {"service": service, "date": day}))["available"]]
+    """Up to three times offered for the service, looking forward from `day` the way the agent does (a busy day offers
+    what it has, an empty one the next openings)."""
+    out: list[str] = []
+    d = day
+    while len(out) < 3 and d <= add_days(day, 12):
+        r = res(run("check_availability", {"service": service, "date": d}))
+        out += [s["slotId"] for s in r.get("available") or r.get("nextAvailable") or [] if s["slotId"] not in out]
+        d = add_days(d, 1)
+    return out
 
 
 class TestNorthline:

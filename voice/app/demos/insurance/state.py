@@ -6,14 +6,14 @@ Availability comes from a calendar generated relative to the session's own date.
 
 from __future__ import annotations
 
-import hashlib
 import re
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import datetime
 from typing import Any, Literal, Optional
 
+from .. import schedule as sched
 from ..types import add_days, date_in, date_label, weekday
-from .store import CALL_HOURS, CHANGE_LABEL, CLAIM_LABEL, CLOSED_WEEKDAYS, COVERAGE_LABEL, DAYS_AHEAD, LICENSED, LINE_LABEL, TIME_ZONE, person
+from .store import CALL_HOURS, DECK, SHIFTS, TITLES, CHANGE_LABEL, CLAIM_LABEL, CLOSED_WEEKDAYS, COVERAGE_LABEL, DAYS_AHEAD, LICENSED, LINE_LABEL, TIME_ZONE, person
 
 Line = Literal[tuple(LINE_LABEL)]  # type: ignore[valid-type]
 Coverage = Literal[tuple(COVERAGE_LABEL)]  # type: ignore[valid-type]
@@ -127,40 +127,36 @@ def describe_slot(state: InsuranceState, sid: str, staff_id: Optional[str] = Non
     return out
 
 
-_TITLES = ("Renewal review", "Quote call", "Claims follow-up", "Coverage review", "New customer call", "Policy change", "Bundle review", "Carrier call", "Client check-in")
-_DAY_FILL = {1: 0.55, 2: 0.35, 3: 0.25, 4: 0.5, 5: 0.40}  # how full each weekday tends to be (1 = Monday)
-_EPOCH = date(2026, 1, 5)
+def existing_blocks(day: str, min_hour: int = 0) -> list[tuple[str, int, str]]:
+    """(agent id, hour, title) already busy on a day, including time off shift ("Out", "Lunch", "Admin"). The two licensed
+    agents work different shifts; the day keeps two to four open call hours, for different agents at different times,
+    and every other hour they work is taken. Seeded by the date, agent and agency, never by the call time."""
+    lo, hi = min(CALL_HOURS) * 60, (max(CALL_HOURS) + 1) * 60
+    segs = {sid: sched.shift_of(SHIFTS, sid, day, lo, hi) for sid in LICENSED}
 
+    idx = sched.business_index(day, CLOSED_WEEKDAYS)
+    k = sched.cap_budget(sched.open_budget("bb", day, sched.OPEN_WEIGHTS_SMALL), sched.cells_working(segs, CALL_HOURS), 1)
 
-def _u(*parts: object) -> float:
-    """A repeatable number in [0, 1) from the parts: the same date and people always give the same value."""
-    return int.from_bytes(hashlib.sha256("|".join(map(str, parts)).encode()).digest()[:8], "big") / 2**64
+    def make(min_start: int) -> list[sched.Hole]:
+        def starts(who: str, minutes: int, holes: list[sched.Hole]) -> list[int]:
+            free = sched.subtract(segs[who], [h.span() for h in holes if h.who == who])
+            return sched.hole_starts(free, 60, 60, min_start, allowed=lambda s: s // 60 in CALL_HOURS)
 
+        return sched.choose_holes(sched.rng("bb", "holes", day), k=k, deck=[((w,), 60) for w in DECK], idx=idx, starts=starts, span=(lo, hi))
 
-def _business_index(day: str) -> int:
-    d = date.fromisoformat(day)
-    return sum(1 for i in range((d - _EPOCH).days) if weekday(add_days(_EPOCH.isoformat(), i)) not in CLOSED_WEEKDAYS)
-
-
-def packed_day(day: str) -> bool:
-    """One nearly-full day in every ten business days (a fortnight), fixed by the date alone."""
-    return _business_index(day) % 10 == 6
-
-
-def existing_blocks(day: str) -> list[tuple[str, int, str]]:
-    """(agent id, hour, title) already busy on a day. Seeded by the date, agent and agency, never by the call time."""
-    packed = packed_day(day)
-    week = date.fromisoformat(day).toordinal() // 7
-    day_fill = 0.9 if packed else min(0.8, max(0.1, _DAY_FILL.get(weekday(day), 0.4) + (_u("bb", "week", week) - 0.5) * 0.3 + (_u("bb", "day", day) - 0.5) * 0.3))
+    holes = sched.settle(make, min_hour * 60, min(k, 2), lambda hs: [h.start for h in hs])
+    taken = {(h.who, h.start // 60) for h in holes}
     out: list[tuple[str, int, str]] = []
-    for ai, sid in enumerate(LICENSED):
-        fill = day_fill if packed else min(0.85, max(0.05, day_fill + (_u("bb", day, sid, "load") - 0.5) * 0.4))
-        keep = (1 if ai == 0 else 0) if packed else 1
-        busy = [h for h in CALL_HOURS if _u("bb", day, sid, h) < fill]
-        free = [h for h in CALL_HOURS if h not in busy]
-        for h in sorted(busy, key=lambda h: _u("bb", day, sid, h, "keep"))[: max(0, keep - len(free))]:
-            busy.remove(h)
-        out += [(sid, h, _TITLES[int(_u("bb", day, sid, h, "title") * len(_TITLES))]) for h in sorted(busy)]
+    for sid in LICENSED:
+        r = sched.rng("bb", "fill", day, sid)
+        off = sched.off_blocks(segs[sid], lo, hi, seed=f"bb{day}{sid}")
+        for h in CALL_HOURS:
+            if (sid, h) in taken:
+                continue
+            if any(a <= h * 60 and h * 60 + 60 <= e for a, e in segs[sid]):
+                out.append((sid, h, r.choice(TITLES)))
+            else:
+                out.append((sid, h, next((x[2] for x in off if x[0] < (h + 1) * 60 and h * 60 < x[0] + x[1]), "Out")))
     return out
 
 
@@ -168,8 +164,9 @@ def create_state(now: datetime) -> InsuranceState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = InsuranceState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (2 if minute > 0 else 1))
     n = 0
+    hour_floor = state.earliest_today_hour
     for day in bookable_days(state):
-        for sid, h, title in existing_blocks(day):
+        for sid, h, title in existing_blocks(day, hour_floor if day == today else 0):
             state.calendar.append(Booked(sid, day, h, f"existing-{n}", True, title))
             n += 1
     return state

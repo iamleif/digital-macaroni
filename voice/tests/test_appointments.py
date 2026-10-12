@@ -5,7 +5,7 @@ from app import email
 import pytest
 
 from app.demos.booking import parse_slot
-from app.demos.types import weekday
+from app.demos.types import add_days, weekday
 from app.demos.lune.store import CAL as lune_cal
 from app.demos.tidewell.store import CAL as tidewell_cal
 from app.demos.lune import lune
@@ -167,7 +167,9 @@ class TestHorizonAndPatterns:
         a = demo.create_state(NOW)
         b = demo.create_state(datetime(2026, 10, 1, 23, 45, tzinfo=timezone.utc))
         open_days = cal.bookable_days(a)
-        assert all(busy_pattern(a, d) == busy_pattern(b, d) for d in open_days)
+        # Every date is generated from the date alone; only today's date is reshaped around the time that is left.
+        same = [d for d in open_days if d not in (a.today, b.today)]
+        assert same and all(busy_pattern(a, d) == busy_pattern(b, d) for d in same)
         patterns = {tuple(busy_pattern(a, d)) for d in open_days}
         assert len(patterns) == len(open_days)
         # Two Thursdays and two days in the same week are not copies of each other.
@@ -176,12 +178,46 @@ class TestHorizonAndPatterns:
         counts = [len(busy_pattern(a, d)) for d in open_days]
         assert max(counts) - min(counts) >= 3
 
-    def test_every_day_keeps_an_opening_for_every_service(self, demo):
+    def test_every_service_has_openings_on_at_least_four_of_the_fourteen_days(self, demo):
         cal = lune_cal if demo is lune else tidewell_cal
         state = demo.create_state(NOW)
-        for d in cal.bookable_days(state)[1:]:
-            for s in cal.services:
-                assert cal.open_slots(state, s["id"], d), (d, s["id"])
+        for s in cal.services:
+            days = [d for d in cal.bookable_days(state) if cal.open_slots(state, s["id"], d)]
+            assert len(days) >= 4, (s["id"], days)
+
+    def test_the_agent_can_always_offer_three_options_across_the_fortnight(self, demo):
+        cal = lune_cal if demo is lune else tidewell_cal
+        state = demo.create_state(NOW)
+        closed = next(d for d in (add_days(state.today, i) for i in range(1, 8)) if weekday(d) in cal.closed_weekdays)
+        for s in cal.services:
+            assert sum(len(cal.open_slots(state, s["id"], d)) for d in cal.bookable_days(state)) >= 3
+            # A day with nothing left returns the next openings, three of them.
+            r = cal.check(state, s["id"], closed, None, None)
+            assert r.ok and r.result["available"] == [], s["id"]
+            # The everyday visits always have three to offer; a three-hour colour may have fewer left after that day.
+            assert len(r.result["nextAvailable"]) == 3 if cal.length(s["id"]) <= 60 else len(r.result["nextAvailable"]) >= 1, s["id"]
+            # A day with a few openings returns them; the booking engine still accepts any of the offered times.
+            r = cal.check(state, s["id"], cal.bookable_days(state)[1], None, None)
+            assert r.ok and 1 <= len(r.result["available"] or r.result["nextAvailable"]) <= 3
+
+    def test_staff_work_different_shifts_and_the_view_shows_time_off_as_existing_blocks(self, demo):
+        cal = lune_cal if demo is lune else tidewell_cal
+        state = demo.create_state(NOW)
+        off = [b for b in state.busy if b.off]
+        assert off and all(b.existing and b.title in {"Out", "Lunch", "Admin"} for b in off)
+        days = cal.bookable_days(state)
+        # Someone is off on some weekday, someone works a half day, and lunch is not at one fixed time.
+        assert any(not [b for b in state.busy if b.date == d and b.staff_id == p["id"] and not b.off] for d in days for p in cal.staff)
+        lunches = {b.start for b in off if b.title == "Lunch"}
+        assert len(lunches) >= 4
+        d = days[2]
+        state.viewing = {"date": d, "slots": [], "service": cal.services[0]["id"]}
+        v = demo.view(state)
+        shown = [j for j in v["schedule"] if j.get("off")]
+        assert shown and all(j["kind"] == "existing" and j["title"] in {"Out", "Lunch", "Admin"} for j in shown)
+        # Different people have different shapes of day: not everyone starts or finishes at the same time.
+        firsts = {p["id"]: min(b.start for b in state.busy if b.date == d and b.staff_id == p["id"] and not b.off) for p in cal.staff if any(b.date == d and b.staff_id == p["id"] and not b.off for b in state.busy)}
+        assert len(set(firsts.values())) > 1 or len(firsts) < 2
 
 
 @pytest.mark.parametrize("demo,op,args", [

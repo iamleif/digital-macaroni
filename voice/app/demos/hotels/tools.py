@@ -8,7 +8,7 @@ from typing import Any, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary, email_target
 from . import store
 from .prompt import PAYMENT_LINE
 from .state import (
@@ -220,25 +220,28 @@ async def book_stay(state: HotelState, i: NoArgs, ctx: OpContext) -> OpResult:
 
 
 class EmailQuote(BaseModel):
-    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it, e.g. 'alex.taylor@example.com'.")
+    email: Optional[str] = Field(None, max_length=120, description="Only when no signup email is on file: the caller's email address as they gave it. Leave out otherwise.")
     recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP)
     callerConfirmed: bool = Confirmed()
 
 
 async def email_quote(state: HotelState, i: EmailQuote, ctx: OpContext) -> OpResult:
     """Emails the caller the reviewed stay, or a summary of the call when there is none."""
+    to, refused = email_target(ctx, i.email)
+    if refused:
+        return refused
     kind = "booking" if state.review and state.hotel else "summary"
-    if already_sent(state.emailed, i.email, kind):
+    if already_sent(state.emailed, to, kind):
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if state.review is None or state.hotel is None:
         messages = [message_view(m) for m in state.messages]
         name = (state.guest or {}).get("name") or (state.messages[-1]["name"] if state.messages else None)
-        r, sent = await send_summary("hotels", "Marisol", i.email, i.recap, name, messages, did="searched real hotels with live rates and looked after your request")
+        r, sent = await send_summary("hotels", "Marisol", to, i.recap, name, messages, did="searched real hotels with live rates and looked after your request")
         if sent:
             state.emailed = sent
         return r
     stay = {**state.review, "photo": (state.hotel["photos"] or [None])[0], "address": state.hotel["address"], "checkIn": state.hotel["checkIn"], "checkOut": state.hotel["checkOut"]}
-    masked, why = await email.confirm(i.email, email.hotel_quote(stay))
+    masked, why = await email.confirm(to, email.hotel_quote(stay))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "kind": "booking"}

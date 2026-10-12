@@ -1,9 +1,83 @@
 {
   "staff": [
-    {"id": "tasha", "name": "Tasha Greene", "role": "Licensed agent", "does": ["quotes", "coverage reviews"]},
-    {"id": "robert", "name": "Robert Hale", "role": "Licensed agent", "does": ["quotes", "coverage reviews"]},
-    {"id": "lily", "name": "Lily Chen", "role": "Account manager", "does": ["policy changes", "billing", "claims follow-up"]}
+    {
+      "id": "tasha",
+      "name": "Tasha Greene",
+      "role": "Licensed agent",
+      "does": [
+        "quotes",
+        "coverage reviews"
+      ]
+    },
+    {
+      "id": "robert",
+      "name": "Robert Hale",
+      "role": "Licensed agent",
+      "does": [
+        "quotes",
+        "coverage reviews"
+      ]
+    },
+    {
+      "id": "lily",
+      "name": "Lily Chen",
+      "role": "Account manager",
+      "does": [
+        "policy changes",
+        "billing",
+        "claims follow-up"
+      ]
+    }
   ],
-  "licensed": ["tasha", "robert"],
-  "service": "lily"
+  "licensed": [
+    "tasha",
+    "robert"
+  ],
+  "service": "lily",
+  "shifts": {
+    "tasha": {
+      "1": "9:00-12:00,13:00-16:00",
+      "2": "9:00-12:00,13:00-16:00",
+      "3": "9:00-12:00",
+      "4": "10:00-12:00,13:00-16:00",
+      "5": "9:00-12:00,13:00-15:00"
+    },
+    "robert": {
+      "1": "10:00-12:00,13:00-16:00",
+      "3": "9:00-12:00,13:00-16:00",
+      "4": "9:00-12:00,13:00-16:00",
+      "5": "11:00-12:00,13:00-16:00"
+    }
+  },
+  "deck": [
+    "tasha",
+    "robert",
+    "robert",
+    "tasha",
+    "tasha",
+    "robert",
+    "tasha",
+    "robert",
+    "robert",
+    "tasha",
+    "tasha"
+  ],
+  "titles": [
+    "Renewal review",
+    "Quote call",
+    "Claims follow-up",
+    "Coverage review",
+    "New customer call",
+    "Policy change",
+    "Bundle review",
+    "Carrier call",
+    "Client check-in",
+    "Auto quote",
+    "Home quote",
+    "Life review",
+    "Renters quote",
+    "Rate review",
+    "Add-a-driver call",
+    "Umbrella policy review"
+  ]
 }

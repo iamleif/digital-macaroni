@@ -38,6 +38,7 @@ CAL = Calendar(
     prefix="LN", time_zone=TIME_ZONE, open_hour=_hours["openHour"], close_hour=_hours["closeHour"],
     closed_weekdays=frozenset(_hours["closedWeekdays"]), days_ahead=_hours["daysAhead"],
     staff=_team["staff"], services=SERVICES, busy_titles=_team["busyTitles"],
+    shifts=_hours["shifts"], deck=_hours["deck"], forced=_hours["forced"], open_weights=_hours.get("openWeights"), extras=_team["extraBusy"],
 )
 
 BUSINESS["menu"] = [{"service": s["id"], "name": s["name"], "price": s["priceLabel"], "minutes": s["minutes"], "with": [CAL.person(p)["name"] for p in s["staff"]]} for s in SERVICES]

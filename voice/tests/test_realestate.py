@@ -232,22 +232,23 @@ class TestFortnight:
         assert "only goes out two weeks, through Wednesday, October 14" in r.message
 
     def test_diaries_differ_by_date_but_not_by_call(self):
-        from app.demos.realestate.state import bookable_days, create_state, nearly_full, open_slots
+        from app.demos.realestate.state import bookable_days, create_state, open_slots
 
         a, b = create_state(NOW), create_state(datetime(2026, 10, 1, 21, 15, tzinfo=timezone.utc))
 
         def pattern(s, d):
-            return sorted((x.agent_id, x.hour) for x in s.calendar if x.date == d)
+            return sorted((x.agent_id, x.hour, x.title) for x in s.calendar if x.date == d)
 
         days = bookable_days(a)
         assert len(days) == 14
-        assert all(pattern(a, d) == pattern(b, d) for d in days)
+        assert all(pattern(a, d) == pattern(b, d) for d in days if d not in (a.today, b.today))
         assert len({tuple(pattern(a, d)) for d in days}) == len(days)
-        assert sum(1 for d in days if nearly_full(d)) == 1
-        for d in days:
-            for aid in ("dana", "priya"):
-                assert open_slots(a, "showing", aid, d) and open_slots(a, "valuation", "dana", d)
-        assert len({len(pattern(a, d)) for d in days}) > 5
+        # Every agent, and the listing specialist's valuations, have openings on at least four of the fourteen days.
+        for aid in ("priya", "caleb", "jordan"):
+            assert len([d for d in days if open_slots(a, "showing", aid, d)]) >= 4, aid
+        assert len([d for d in days if open_slots(a, "valuation", "dana", d)]) >= 4
+        # Agents work different shifts, so the number of appointments in a day varies too.
+        assert len({len([x for x in a.calendar if x.date == d and x.title not in ("Out", "Lunch", "Admin")]) for d in days}) > 5
 
     async def test_a_first_name_alone_is_asked_for_a_last_name_and_cannot_book(self):
         state, run = runner()

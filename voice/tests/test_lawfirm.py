@@ -222,20 +222,22 @@ class TestCalendar:
         days = [d for d in dict.fromkeys(x.date for x in a.calendar)]
         assert len(days) >= 9
         assert len({tuple(pattern(a, d)) for d in days}) == len(days)
-        assert all(pattern(a, d) == pattern(b, d) for d in days if d in {x.date for x in b.calendar})
+        assert all(pattern(a, d) == pattern(b, d) for d in days if d in {x.date for x in b.calendar} and d not in (a.today, b.today))
         week1, week2 = [pattern(a, d) for d in days[:5]], [pattern(a, d) for d in days[5:10]]
         assert week1 != week2
         assert len({len(pattern(a, d)) for d in days}) > 2
         assert any(x.title for x in a.calendar) and len({x.title for x in a.calendar}) > 3
 
-    def test_every_day_keeps_senior_partner_time_and_one_day_is_nearly_full(self):
+    def test_every_day_keeps_senior_partner_time_and_most_of_the_day_is_taken(self):
         state = lawfirm.create_state(NOW)
         senior = {b.date: 0 for b in state.calendar}
         for d in senior:
             senior[d] = len([h for h in lawfirm_hours() if not any(b.attorney_id == "marcus" and b.date == d and b.hour == h for b in state.calendar)])
         assert min(senior.values()) >= 1
-        full = [d for d in senior if len([b for b in state.calendar if b.date == d]) >= 17]
-        assert len(full) <= 1
+        # Seven consultation hours for each of three attorneys: nobody's day is wide open.
+        for d in senior:
+            free = 21 - len([b for b in state.calendar if b.date == d])
+            assert 1 <= free <= 5, (d, free)
 
     def test_last_name_is_asked_for_and_booking_needs_it(self):
         state, run = runner()

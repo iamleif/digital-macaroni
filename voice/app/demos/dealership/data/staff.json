@@ -1,10 +1,74 @@
 {
   "sales": [
-    {"id": "tony", "name": "Tony Russo", "short": "Tony", "role": "Sales consultant"},
-    {"id": "keisha", "name": "Keisha Grant", "short": "Keisha", "role": "Sales consultant"},
-    {"id": "ben", "name": "Ben Kowalski", "short": "Ben", "role": "Sales consultant · trucks & EVs"}
+    {
+      "id": "tony",
+      "name": "Tony Russo",
+      "short": "Tony",
+      "role": "Sales consultant"
+    },
+    {
+      "id": "keisha",
+      "name": "Keisha Grant",
+      "short": "Keisha",
+      "role": "Sales consultant"
+    },
+    {
+      "id": "ben",
+      "name": "Ben Kowalski",
+      "short": "Ben",
+      "role": "Sales consultant \u00b7 trucks & EVs"
+    }
   ],
-  "finance": {"id": "rita", "name": "Rita Alvarez", "role": "Finance manager"},
-  "service": {"id": "dave", "name": "Dave Mitchell", "role": "Service advisor"},
-  "specialties": {"Truck": "ben", "Electric": "ben"}
+  "finance": {
+    "id": "rita",
+    "name": "Rita Alvarez",
+    "role": "Finance manager"
+  },
+  "service": {
+    "id": "dave",
+    "name": "Dave Mitchell",
+    "role": "Service advisor"
+  },
+  "specialties": {
+    "Truck": "ben",
+    "Electric": "ben"
+  },
+  "shifts": {
+    "tony": {
+      "1": "9:00-12:00,13:00-18:00",
+      "2": "9:00-12:00,13:00-17:00",
+      "3": "9:00-12:30,13:30-18:00",
+      "4": "9:00-14:00",
+      "5": "11:00-14:30,15:00-19:00",
+      "6": "10:00-13:00,14:00-18:00"
+    },
+    "keisha": {
+      "2": "11:00-14:00,15:00-19:00",
+      "3": "9:00-13:00,14:00-17:00",
+      "4": "11:00-15:00,15:30-19:00",
+      "5": "9:00-13:00,14:00-18:00",
+      "6": "9:00-14:00"
+    },
+    "ben": {
+      "1": "10:00-13:30,14:30-19:00",
+      "2": "9:00-13:00,14:00-18:00",
+      "4": "9:00-12:00,13:00-18:00",
+      "5": "9:00-13:30",
+      "6": "10:00-14:00,15:00-19:00"
+    }
+  },
+  "titles": [
+    "Test drive",
+    "Trade-in appraisal",
+    "Delivery handover",
+    "Finance meeting",
+    "Walk-around",
+    "Customer visit",
+    "Lease return walk-through",
+    "Service-to-sales visit",
+    "Second test drive",
+    "Spouse comes to see the car",
+    "Paperwork signing",
+    "Used-car appraisal"
+  ]
 }

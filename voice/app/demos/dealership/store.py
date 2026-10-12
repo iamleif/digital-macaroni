@@ -30,6 +30,8 @@ SALES: list[dict[str, Any]] = _staff["sales"]
 FINANCE: dict[str, str] = _staff["finance"]
 SERVICE_ADVISOR: dict[str, str] = _staff["service"]
 SPECIALTIES: dict[str, str] = _staff["specialties"]
+SHIFTS: dict[str, Any] = _staff["shifts"]
+DRIVE_TITLES: tuple[str, ...] = tuple(_staff["titles"])
 BUSINESS["team"] = [{"name": s["name"], "role": s["role"]} for s in SALES] + [{"name": FINANCE["name"], "role": FINANCE["role"]}, {"name": SERVICE_ADVISOR["name"], "role": SERVICE_ADVISOR["role"]}]
 
 _service = _load("service.json")
@@ -43,6 +45,11 @@ SERVICE_HOURS: tuple[int, ...] = tuple(_calendar["serviceHours"])
 BAYS: int = _calendar["bays"]
 DAYS_AHEAD: int = _calendar["daysAhead"]
 CLOSED_WEEKDAYS: frozenset[int] = frozenset(_calendar["closedWeekdays"])
+# Each bay's technician shift by weekday, the order openings come round in, and what the other jobs are called.
+BAY_SHIFTS: dict[str, list[str]] = _calendar["bayShifts"]
+SERVICE_TITLES: tuple[str, ...] = tuple(_calendar["serviceTitles"])
+DECK: list[str] = _calendar["deck"]
+BAY_DECK: list[str] = _calendar["bayDeck"]
 
 CUSTOMERS: list[dict[str, Any]] = _load("customers.json")["customers"]
 

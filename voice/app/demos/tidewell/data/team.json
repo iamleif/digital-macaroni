@@ -1,12 +1,73 @@
 {
   "staff": [
-    {"id": "lee", "name": "Dr. Hannah Lee", "short": "Dr. Lee", "role": "Chiropractor"},
-    {"id": "sam", "name": "Sam Patel", "short": "Sam", "role": "Physiotherapist"},
-    {"id": "nina", "name": "Nina Ruiz", "short": "Nina", "role": "Massage therapist, LMT"}
+    {
+      "id": "lee",
+      "name": "Dr. Hannah Lee",
+      "short": "Dr. Lee",
+      "role": "Chiropractor"
+    },
+    {
+      "id": "sam",
+      "name": "Sam Patel",
+      "short": "Sam",
+      "role": "Physiotherapist"
+    },
+    {
+      "id": "nina",
+      "name": "Nina Ruiz",
+      "short": "Nina",
+      "role": "Massage therapist, LMT"
+    }
   ],
   "busyTitles": {
-    "lee": ["Adjustment", "New patient", "Adjustment", "Follow-up"],
-    "sam": ["Follow-up", "Post-op rehab", "Assessment", "Follow-up"],
-    "nina": ["Massage · 60", "Massage · 90", "Massage · 60"]
+    "lee": [
+      "Adjustment",
+      "New patient",
+      "Adjustment",
+      "Follow-up"
+    ],
+    "sam": [
+      "Follow-up",
+      "Post-op rehab",
+      "Assessment",
+      "Follow-up"
+    ],
+    "nina": [
+      "Massage \u00b7 60",
+      "Massage \u00b7 90",
+      "Massage \u00b7 60"
+    ]
+  },
+  "extraBusy": {
+    "lee": [
+      [
+        "Re-exam",
+        30
+      ],
+      [
+        "X-ray review",
+        30
+      ]
+    ],
+    "sam": [
+      [
+        "Gait assessment",
+        60
+      ],
+      [
+        "Return-to-sport check",
+        45
+      ]
+    ],
+    "nina": [
+      [
+        "Prenatal massage",
+        60
+      ],
+      [
+        "Deep tissue \u00b7 60",
+        60
+      ]
+    ]
   }
 }

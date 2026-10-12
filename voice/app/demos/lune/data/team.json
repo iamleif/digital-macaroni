@@ -52,5 +52,35 @@
       "Consultation",
       "Botox"
     ]
+  },
+  "extraBusy": {
+    "maria": [
+      [
+        "Wedding trial",
+        90
+      ]
+    ],
+    "ava": [
+      [
+        "Gloss",
+        30
+      ],
+      [
+        "Colour correction",
+        120
+      ]
+    ],
+    "jules": [
+      [
+        "Gel removal + mani",
+        60
+      ]
+    ],
+    "noor": [
+      [
+        "Skin consultation",
+        30
+      ]
+    ]
   }
 }

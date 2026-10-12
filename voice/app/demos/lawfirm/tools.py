@@ -8,7 +8,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, add_days, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, add_days, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, email_target, weekday
 from .state import (
     AccidentType,
     Booked,
@@ -74,6 +74,10 @@ class NoteIntake(BaseModel):
 
 def note_intake(state: LawFirmState, i: NoteIntake, ctx: OpContext) -> OpResult:
     new = {k: v for k, v in i.model_dump().items() if v is not None}
+    if ctx.customer_email:
+        # The signup address is the caller's email: never asked, never replaced by a spoken one.
+        new.pop("email", None)
+        state.intake["email"] = ctx.customer_email
     if "accidentDate" in new:
         d = parse_day(new["accidentDate"])
         if d is None:
@@ -308,28 +312,31 @@ def take_message(state: LawFirmState, i: TakeMessage, ctx: OpContext) -> OpResul
 
 
 class EmailConfirmation(BaseModel):
-    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    email: Optional[str] = Field(None, max_length=120, description="Only when no signup email is on file: the caller's email address as they gave it. Leave out otherwise.")
     recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP + " Never mention case value, priority or odds.")
     callerConfirmed: bool = Confirmed()
 
 
 async def email_confirmation(state: LawFirmState, i: EmailConfirmation, ctx: OpContext) -> OpResult:
     """Emails the caller the booked consultation, or a summary of the call when nothing was booked."""
+    to, refused = email_target(ctx, i.email)
+    if refused:
+        return refused
     booked = active(state)
     kind = "booking" if booked else "summary"
-    if already_sent(state.emailed, i.email, kind):
+    if already_sent(state.emailed, to, kind):
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
         name = state.messages[-1].name if state.messages else state.intake.get("name")
-        r, sent = await send_summary("lawfirm", "Nora", i.email, i.recap, name, messages, did="took your call, listened to what happened and passed it to the right attorney")
+        r, sent = await send_summary("lawfirm", "Nora", to, i.recap, name, messages, did="took your call, listened to what happened and passed it to the right attorney")
         if sent:
             state.emailed = sent
         return r
     c = booked[-1]
     s = describe_slot(state, c.slot_id, [c.attorney_id], c.id)
     consult = {"day": s["day"], "time": s["time"], "attorney": attorney(c.attorney_id)["name"], "format": FORMAT_LABEL[c.fmt], "name": c.name, "reference": c.id}
-    masked, why = await email.confirm(i.email, email.consult_confirmation(consult))
+    masked, why = await email.confirm(to, email.consult_confirmation(consult))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": c.id, "kind": "booking"}

@@ -24,6 +24,9 @@ TIME_ZONE: str = BUSINESS.pop("timeZone")
 _p = _load("providers.json")
 PROVIDERS: list[dict[str, Any]] = _p["providers"]
 OPS: list[dict[str, Any]] = _p["operatories"]
+# Who works when (weekday -> shift), and the kinds of opening the days keep in turn.
+SHIFTS: dict[str, Any] = _p["shifts"]
+HOLES: dict[str, Any] = _p["holes"]
 
 _t = _load("appointment_types.json")
 TYPES: list[dict[str, Any]] = _t["types"]

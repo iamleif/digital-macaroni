@@ -18,7 +18,9 @@ def view(state: NorthlineState) -> dict[str, Any]:
 
     def schedule_entry(j: Job) -> dict[str, Any]:
         appt = None if j.existing else next((a for a in state.appointments if a.job_id == j.id and a.status == "booked"), None)
-        entry: dict[str, Any] = {"techId": j.tech_id, "hour": j.hour, "kind": "existing" if j.existing else "demo", "title": service(j.service_id)["name"]}
+        entry: dict[str, Any] = {"techId": j.tech_id, "hour": j.hour, "kind": "existing" if j.existing else "demo", "title": j.title or service(j.service_id)["name"]}
+        if j.existing and not j.service_id:
+            entry["off"] = True
         if appt:
             entry.update({"appointmentId": appt.id, "name": appt.name, "address": appt.address})
         return entry

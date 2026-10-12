@@ -28,6 +28,11 @@ TIME_ZONE: str = BUSINESS.pop("timeZone")
 _agents = _load("agents.json")
 AGENTS: list[dict[str, Any]] = _agents["agents"]
 SELLER_AGENT: str = _agents["sellerAgent"]
+# Who works when (weekday -> shift), the order openings come round in, and what the other appointments are called.
+SHIFTS: dict[str, Any] = _agents["shifts"]
+DECK: list[str] = _agents["deck"]
+FORCED: list[list[Any]] = _agents["forced"]
+TITLES: dict[str, list[str]] = _agents["titles"]
 BUSINESS["agents"] = [{"name": a["name"], "focus": a["focus"]} for a in AGENTS]
 
 AREAS: list[dict[str, Any]] = _load("areas.json")["areas"]

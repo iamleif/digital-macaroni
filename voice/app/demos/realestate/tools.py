@@ -7,7 +7,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary, email_target, weekday
 from . import store
 from .state import (
     Appointment,
@@ -63,6 +63,9 @@ class NoteLead(BaseModel):
 
 def note_lead(state: RealEstateState, i: NoteLead, ctx: OpContext) -> OpResult:
     new = {k: v for k, v in i.model_dump().items() if v is not None}
+    if ctx.customer_email:
+        new.pop("email", None)
+        state.lead["email"] = ctx.customer_email
     for k in ("name", "lender", "sellAddress"):
         if k in new:
             new[k] = new[k].strip()
@@ -303,16 +306,19 @@ def take_message(state: RealEstateState, i: TakeMessage, ctx: OpContext) -> OpRe
 
 
 class EmailConfirmation(BaseModel):
-    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    email: Optional[str] = Field(None, max_length=120, description="Only when no signup email is on file: the caller's email address as they gave it. Leave out otherwise.")
     recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP + " You may include homes and prices you read out. Never mention a lead rank.")
     callerConfirmed: bool = Confirmed()
 
 
 async def email_confirmation(state: RealEstateState, i: EmailConfirmation, ctx: OpContext) -> OpResult:
     """Emails the caller the booked showing or valuation, or a summary of the call when nothing was booked."""
+    to, refused = email_target(ctx, i.email)
+    if refused:
+        return refused
     booked = active(state)
     kind = "booking" if booked else "summary"
-    if already_sent(state.emailed, i.email, kind):
+    if already_sent(state.emailed, to, kind):
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
@@ -320,7 +326,7 @@ async def email_confirmation(state: RealEstateState, i: EmailConfirmation, ctx: 
         if state.estimate and state.estimate.get("status") == "ok":
             rows.append(("Automated estimate", f"{money(state.estimate['low'])} to {money(state.estimate['high'])}"))
         name = state.messages[-1].name if state.messages else state.lead.get("name")
-        r, sent = await send_summary("realestate", "Miles", i.email, i.recap, name, messages, rows, did="answered your questions about Austin homes and passed your details to the right agent")
+        r, sent = await send_summary("realestate", "Miles", to, i.recap, name, messages, rows, did="answered your questions about Austin homes and passed your details to the right agent")
         if sent:
             state.emailed = sent
         return r
@@ -328,7 +334,7 @@ async def email_confirmation(state: RealEstateState, i: EmailConfirmation, ctx: 
     s = describe_slot(a.slot_id, a.agent_id)
     x = listing(a.listing_id) if a.listing_id else None
     v = {"purpose": a.purpose, "day": s["day"], "time": s["time"], "agent": s["agent"], "address": a.address, "name": a.name, "reference": a.id, "price": money(x["price"]) if x else None, "home": f"{x['beds']} bd · {x['baths']} ba · {x['sqft']:,} sq ft" if x else None}
-    masked, why = await email.confirm(i.email, email.realestate_confirmation(v))
+    masked, why = await email.confirm(to, email.realestate_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": a.id, "kind": "booking"}

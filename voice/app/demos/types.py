@@ -21,6 +21,8 @@ S = TypeVar("S")
 class OpContext:
     now: datetime
     channel: Channel
+    # The work email the visitor typed on the website setup card: the only address any email may go to.
+    customer_email: Optional[str] = None
 
 
 @dataclass
@@ -133,7 +135,27 @@ RECAP_HELP = "Only when nothing was booked or reserved: two or three plain sente
 
 def email_offer(tool: str, booking: str) -> str:
     """The instruction every agent follows before a call ends: offer the email, whatever happened on the call."""
-    return f"""Email: before the call ends, whatever happened on it, offer once to email the caller a copy: the {booking} if there is one, otherwise a short summary of the call (what they asked, and any message taken for the team). If they want it, ask for their email address and read it back carefully: spell the part before the @ letter by letter, then say the rest ("j, a, m, i, e, at gmail dot com"). Only when they clearly confirm it is right, call {tool} with callerConfirmed true; when there is no {booking}, also pass recap. Say it is on its way only if the tool returns ok. If they decline, that's fine. If they ask for it again, for example to another address, send it again."""
+    return f"""Email: before the call ends, offer once to email a copy: the {booking}, or if none a short summary of the call. If they want it, call {tool} with callerConfirmed true; when there is no {booking}, also pass recap. If it returns need_email, follow it. Say it's on its way only if it returns ok. If they want it sent elsewhere, say that for security you can only send to the email they signed up with, and offer that."""
+
+
+NEED_EMAIL = "No signup email on file: ask for the address, read it back letter by letter (the part before the @ spelled out, then the rest), and once they clearly confirm it call again with email and callerConfirmed true."
+
+
+def email_target(ctx: OpContext, spoken: Optional[str]) -> tuple[Optional[str], Optional[OpResult]]:
+    """
+    Where an email goes. With a signup email on file it is the only address: an empty or matching argument is
+    fine, a different one is refused. Without one, the address the caller gave and confirmed (or need_email).
+    """
+    from .. import email
+
+    given = (spoken or "").strip()
+    if ctx.customer_email:
+        if given and email.normalise(given) != email.normalise(ctx.customer_email):
+            return None, fail("email_on_file_only", "For security I can only send to the email they signed up with. Say that, and offer to send it there.")
+        return ctx.customer_email, None
+    if not given:
+        return None, fail("need_email", NEED_EMAIL)
+    return given, None
 
 
 def already_sent(emailed: Optional[dict[str, Any]], spoken: str, kind: str) -> bool:

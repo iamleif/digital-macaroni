@@ -6,14 +6,14 @@ and messages. Availability is generated relative to the session's own date.
 
 from __future__ import annotations
 
-import hashlib
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal, Optional
 
+from .. import schedule as sched
 from ..types import add_days, date_in, date_label, weekday
-from .store import BAYS, CLOSED_WEEKDAYS, DAYS_AHEAD, DRIVE_HOURS, SALES, SERVICE_HOURS, TIME_ZONE, car, salesperson, specialist
+from .store import BAY_DECK, BAY_SHIFTS, BAYS, CLOSED_WEEKDAYS, DAYS_AHEAD, DECK, DRIVE_HOURS, DRIVE_TITLES, SALES, SERVICE_HOURS, SERVICE_TITLES, SHIFTS, TIME_ZONE, car, salesperson, specialist
 
 Purpose = Literal["test_drive", "service"]
 
@@ -136,57 +136,91 @@ def full_name(name: Optional[str]) -> bool:
     return len((name or "").split()) >= 2
 
 
-def roll(*parts: Any) -> float:
-    """A repeatable number in [0, 1) from the parts: the same date and staff always give the same answer."""
-    h = hashlib.sha256("|".join(str(p) for p in ("woodward", *parts)).encode()).digest()
-    return int.from_bytes(h[:6], "big") / 2**48
-
-
-# How busy each weekday is (0 is Sunday): weekends and Fridays are test-drive days, midweek is quiet.
-FULLNESS = {1: 0.14, 2: 0.2, 3: 0.12, 4: 0.26, 5: 0.42, 6: 0.58}
-DRIVE_TITLES = ("Test drive", "Trade-in appraisal", "Delivery handover", "Finance meeting", "Walk-around", "Customer visit")
-SERVICE_TITLES = ("Oil change", "Brake service", "Tire rotation", "Diagnostic", "Recall repair", "Inspection")
-
-
-def nearly_full(day: str) -> bool:
-    """One day in every fourteen is nearly booked solid, so any fortnight has exactly one."""
-    return datetime.fromisoformat(day).toordinal() % 14 == 0
-
-
 def create_state(now: datetime) -> DealershipState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = DealershipState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (2 if minute > 0 else 1))
-    state.busy = existing_busy(bookable_days(state))
+    state.busy = existing_busy(bookable_days(state), today, state.earliest_today_hour)
     return state
 
 
-def existing_busy(days: list[str]) -> list[Busy]:
+def _split(k: int, idx: int) -> tuple[int, int]:
+    """Of k openings, how many are test-drive hours and how many service hours: both kinds on most days, the odd
+    one alternating by date."""
+    if k == 1:
+        return (1, 0) if idx % 2 == 0 else (0, 1)
+    td = k // 2 + (k % 2 if idx % 2 == 0 else 0)
+    return td, k - td
+
+
+def existing_busy(days: list[str], today: Optional[str] = None, earliest_hour: int = 0) -> list[Busy]:
     """Appointments already in the diary. Each date is generated from the date alone (never the call's time), so a
-    given day looks the same on every call while different days and weeks differ."""
+    given day looks the same on every call while different days and weeks differ. The consultants and the service
+    bays each work their own shifts (a late start, a half day, a day off, lunch somewhere else); the day keeps two to
+    four open hours, some test drive and some service, at different times; everything else they work is taken."""
     out: list[Busy] = []
     n = 0
     for day in days:
-        full = nearly_full(day)
         wd = weekday(day)
-        level = 0.88 if full else min(0.8, FULLNESS.get(wd, 0.2) * (0.5 + 1.1 * roll(day, "level")))
-        spare = {h: roll(day, "spare", h) for h in DRIVE_HOURS}
-        keep = sorted(DRIVE_HOURS, key=lambda h: spare[h])[: 2 if full else 4]
-        for h in DRIVE_HOURS:
-            free_one = SALES[int(roll(day, "free", h) * len(SALES))]["id"]
-            for s in SALES:
-                if h in keep and s["id"] == free_one:
+        idx = sched.business_index(day, CLOSED_WEEKDAYS)
+        lo, hi = min(DRIVE_HOURS + SERVICE_HOURS) * 60, (max(DRIVE_HOURS) + 1) * 60
+        floor = earliest_hour * 60 if day == today else 0
+        # Sales: one resource per consultant.
+        segs = {s["id"]: sched.shift_of(SHIFTS, s["id"], day, lo, hi) for s in SALES}
+        # Service: one resource per bay, working the hours of its technician.
+        service_hours = [h for h in SERVICE_HOURS if wd != 6 or h < 14]
+        bays = {f"bay{i + 1}": sched.segments(spec, lo, hi) for i, spec in enumerate(BAY_SHIFTS[str(wd)][:BAYS])}
+        k = sched.open_budget("woodward", day, sched.OPEN_WEIGHTS_BIG)
+        td_n, svc_n = _split(k, idx)
+
+        def make(min_start: int, segs=segs, bays=bays, service_hours=service_hours, td_n=td_n, svc_n=svc_n) -> tuple[list[sched.Hole], list[sched.Hole]]:
+            def td_starts(who: str, minutes: int, holes: list[sched.Hole]) -> list[int]:
+                free = sched.subtract(segs[who], [h.span() for h in holes if h.who == who])
+                return sched.hole_starts(free, 60, 60, min_start, allowed=lambda s: s // 60 in DRIVE_HOURS)
+
+            def bay_starts(who: str, minutes: int, holes: list[sched.Hole]) -> list[int]:
+                free = sched.subtract(bays[who], [h.span() for h in holes if h.who == who])
+                return sched.hole_starts(free, 60, 60, min_start, allowed=lambda s: s // 60 in service_hours)
+
+            td = sched.choose_holes(sched.rng("woodward", "td", day), k=td_n, deck=[((w,), 60) for w in DECK], idx=idx, starts=td_starts, span=(lo, hi))
+            sv = sched.choose_holes(sched.rng("woodward", "svc", day), k=svc_n, deck=[((b,), 60) for b in BAY_DECK], idx=idx, starts=bay_starts, span=(lo, hi))
+            return td, sv
+
+        td, sv = sched.settle(make, floor, min(k, 2), lambda pair: [h.start for h in pair[0] + pair[1]])
+        # A service hour sometimes has two bays free.
+        r2 = sched.rng("woodward", "extra-bay", day)
+        for h in list(sv):
+            if r2.random() < 0.5:
+                other = [b for b in bays if b != h.who and any(a <= h.start and h.start + 60 <= e for a, e in bays[b]) and not any(x.who == b and x.start == h.start for x in sv)]
+                if other:
+                    sv.append(sched.Hole(r2.choice(other), h.start, 60))
+        # A test-drive hour sometimes has a second consultant free too.
+        for h in list(td):
+            if r2.random() < 0.4:
+                other = [s["id"] for s in SALES if s["id"] != h.who and any(a <= h.start and h.start + 60 <= e for a, e in segs[s["id"]]) and not any(x.who == s["id"] and x.start == h.start for x in td)]
+                if other:
+                    td.append(sched.Hole(r2.choice(other), h.start, 60))
+        td_taken = {(h.who, h.start // 60) for h in td}
+        sv_taken = {(h.who, h.start // 60) for h in sv}
+        for s in SALES:
+            r = sched.rng("woodward", "sales", day, s["id"])
+            off = sched.off_blocks(segs[s["id"]], lo, hi, seed=f"woodward{day}{s['id']}")
+            for h in DRIVE_HOURS:
+                if (s["id"], h) in td_taken:
                     continue
-                if roll(day, h, s["id"]) < min(0.95, level * (0.4 + 1.2 * roll(day, s["id"], "bias"))):
-                    out.append(Busy(s["id"], day, h, f"existing-{n}", True, DRIVE_TITLES[int(roll(day, h, s["id"], "t") * len(DRIVE_TITLES))]))
-                    n += 1
-        keep_s = sorted(SERVICE_HOURS, key=lambda h: roll(day, "sspare", h))[: 2 if full else 3]
-        for h in SERVICE_HOURS:
-            top = BAYS - 1
-            count = 1 if h in keep_s else min(top, int(roll(day, "bays", h) * (top + 1) * (0.5 + level * 1.4)))
-            if full and h not in keep_s:
-                count = BAYS
-            for b in range(count):
-                out.append(Busy("bay", day, h, f"existing-{n}", True, SERVICE_TITLES[int(roll(day, h, b, "t") * len(SERVICE_TITLES))]))
+                if any(a <= h * 60 and h * 60 + 60 <= e for a, e in segs[s["id"]]):
+                    out.append(Busy(s["id"], day, h, f"existing-{n}", True, r.choice(DRIVE_TITLES)))
+                else:
+                    out.append(Busy(s["id"], day, h, f"existing-{n}", True, next((x[2] for x in off if x[0] < (h + 1) * 60 and h * 60 < x[0] + x[1]), "Out")))
+                n += 1
+        for h in service_hours:
+            r = sched.rng("woodward", "bays", day, h)
+            for bay, bsegs in bays.items():
+                if (bay, h) in sv_taken:
+                    continue
+                if any(a <= h * 60 and h * 60 + 60 <= e for a, e in bsegs):
+                    out.append(Busy("bay", day, h, f"existing-{n}", True, r.choice(SERVICE_TITLES)))
+                else:
+                    out.append(Busy("bay", day, h, f"existing-{n}", True, "Tech out"))
                 n += 1
     return out
 

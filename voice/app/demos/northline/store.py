@@ -25,7 +25,12 @@ OPEN_HOURS: tuple[int, int] = tuple(_hours["openHours"])  # type: ignore[assignm
 # 0 is Sunday, as in JavaScript.
 CLOSED_WEEKDAYS: frozenset[int] = frozenset(_hours["closedWeekdays"])
 
-TECHNICIANS: list[dict[str, Any]] = [{**t, "skills": tuple(t["skills"])} for t in _load("team.json")["technicians"]]
+_team = _load("team.json")
+TECHNICIANS: list[dict[str, Any]] = [{**t, "skills": tuple(t["skills"])} for t in _team["technicians"]]
+# Who works when (weekday -> shift), the order openings come round in, and what the other jobs on the board are called.
+SHIFTS: dict[str, Any] = _team["shifts"]
+DECK: list[str] = _team["deck"]
+BUSY_TITLES: dict[str, list[str]] = _team["busyTitles"]
 
 _services = _load("services.json")
 SERVICES: list[dict[str, Any]] = _services["services"]

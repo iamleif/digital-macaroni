@@ -95,7 +95,7 @@ def board(state: DentalState) -> dict[str, Any]:
         "appts": [{
             "id": a.id, "op": a.op, "start": a.start, "minutes": a.minutes, "patient": a.patient, "procedures": a.procedures,
             "code": provider(op(a.op)["provider"])["code"], "tone": provider(op(a.op)["provider"])["tone"],
-            "kind": "existing" if a.existing else "demo", "confirmed": a.confirmed, "alert": a.alert, "exam": a.exam,
+            "kind": "existing" if a.existing else "demo", "confirmed": a.confirmed, "alert": a.alert, "exam": a.exam, **({"off": True} if a.off else {}),
             "phone": f"•••• {a.phone4}" if a.phone4 else None, "time": clock(a.start),
         } for a in appts],
         "openSlots": open_,

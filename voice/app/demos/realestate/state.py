@@ -6,15 +6,19 @@ from a calendar generated relative to the session's own date, so "Saturday" alwa
 
 from __future__ import annotations
 
-import hashlib
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal, Optional
 
+from .. import schedule as sched
 from ..types import add_days, date_in, date_label, weekday
 from .store import (
     AGENTS,
+    DECK,
+    FORCED,
+    SHIFTS,
+    TITLES,
     AREA_NAME,
     CLOSED_WEEKDAYS,
     DAYS_AHEAD,
@@ -152,49 +156,53 @@ def full_name(name: Optional[str]) -> bool:
     return len((name or "").split()) >= 2
 
 
-def roll(*parts: Any) -> float:
-    """A repeatable number in [0, 1) from the parts: the same date and agent always give the same answer."""
-    h = hashlib.sha256("|".join(str(p) for p in ("juniper", *parts)).encode()).digest()
-    return int.from_bytes(h[:6], "big") / 2**48
-
-
-# How busy each weekday is (0 is Sunday): weekends are showing days, midweek is quiet.
-FULLNESS = {0: 0.5, 1: 0.14, 2: 0.2, 3: 0.12, 4: 0.26, 5: 0.4, 6: 0.6}
-TITLES = ("Showing", "Buyer consultation", "Listing appointment", "Open house", "Inspection walk-through", "Closing", "Photographer visit")
-
-
-def nearly_full(day: str) -> bool:
-    """One day in every fourteen is nearly booked solid, so any fortnight has exactly one."""
-    return datetime.fromisoformat(day).toordinal() % 14 == 0
-
-
-def existing_calendar(days: list[str]) -> list[Booked]:
-    """Appointments already in the agents' diaries. Each date is generated from the date alone (never the call's
-    time), so a given day looks the same on every call while different days and weeks differ."""
+def existing_calendar(days: list[str], today: Optional[str] = None, earliest_hour: int = 0) -> list[Booked]:
+    """Appointments already in the agents' diaries. Each date is generated from the date alone (never the call's time),
+    so a given day looks the same on every call while different days and weeks differ. The agents work different
+    shifts (a late start, a half day, a day off, lunch at different times); the day keeps two to five open hours,
+    for different agents at different times; everything else they work is taken. Dana's openings are at valuation
+    times, the buyers' agents' at any showing hour."""
     out: list[Booked] = []
     n = 0
-    hours = sorted(set(SHOWING_HOURS) | set(VALUATION_HOURS))
+    lo, hi = min(SHOWING_HOURS) * 60, (max(SHOWING_HOURS) + 1) * 60
     for day in days:
-        full = nearly_full(day)
-        level = 0.88 if full else min(0.8, FULLNESS.get(weekday(day), 0.2) * (0.5 + 1.1 * roll(day, "level")))
-        # Hours every agent keeps open, so the day always has something to offer (valuation hours first).
-        val = sorted(VALUATION_HOURS, key=lambda h: roll(day, "spare", h))
-        rest = sorted((h for h in hours if h not in VALUATION_HOURS), key=lambda h: roll(day, "spare", h))
-        keep = set(val[: 1 if full else 2] + rest[: 1 if full else 2])
-        for h in hours:
-            if h in keep:
-                continue
-            for a in AGENTS:
-                if roll(day, h, a["id"]) < min(0.95, level * (0.4 + 1.2 * roll(day, a["id"], "bias"))):
-                    out.append(Booked(a["id"], day, h, f"existing-{n}", True, TITLES[int(roll(day, h, a["id"], "t") * len(TITLES))]))
-                    n += 1
+        segs = {a["id"]: sched.shift_of(SHIFTS, a["id"], day, lo, hi) for a in AGENTS}
+        floor = earliest_hour * 60 if day == today else 0
+        idx = sched.business_index(day, set())
+        k = sched.open_budget("juniper", day, sched.OPEN_WEIGHTS_MANY)
+
+        def make(min_start: int, segs=segs) -> list[sched.Hole]:
+            def starts(who: str, minutes: int, holes: list[sched.Hole]) -> list[int]:
+                free = sched.subtract(segs[who], [h.span() for h in holes if h.who == who])
+                ok_hours = VALUATION_HOURS if who == SELLER_AGENT else SHOWING_HOURS
+                return sched.hole_starts(free, 60, 60, min_start, allowed=lambda s: s // 60 in ok_hours)
+
+            return sched.choose_holes(
+                sched.rng("juniper", "holes", day), k=k, deck=[((w,), 60) for w in DECK], idx=idx, starts=starts, span=(lo, hi),
+                forced=[((w,), 60) for w, period, phase in FORCED if idx % int(period) == int(phase)],
+            )
+
+        holes = sched.settle(make, floor, min(k, 2), lambda hs: [h.start for h in hs])
+        taken = {(h.who, h.start // 60) for h in holes}
+        for a in AGENTS:
+            r = sched.rng("juniper", "fill", day, a["id"])
+            titles = TITLES["dana"] if a["id"] == SELLER_AGENT else TITLES["buyers"]
+            off = sched.off_blocks(segs[a["id"]], lo, hi, seed=f"juniper{day}{a['id']}")
+            for h in range(lo // 60, hi // 60):
+                if (a["id"], h) in taken:
+                    continue
+                if any(s <= h * 60 and h * 60 + 60 <= e for s, e in segs[a["id"]]):
+                    out.append(Booked(a["id"], day, h, f"existing-{n}", True, r.choice(titles)))
+                else:
+                    out.append(Booked(a["id"], day, h, f"existing-{n}", True, next((x[2] for x in off if x[0] < (h + 1) * 60 and h * 60 < x[0] + x[1]), "Out")))
+                n += 1
     return out
 
 
 def create_state(now: datetime) -> RealEstateState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = RealEstateState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (2 if minute > 0 else 1))
-    state.calendar = existing_calendar(bookable_days(state))
+    state.calendar = existing_calendar(bookable_days(state), today, state.earliest_today_hour)
     return state
 
 

@@ -8,7 +8,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, add_days, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, add_days, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, email_target, weekday
 from . import store
 from .state import (
     AgentCall,
@@ -74,6 +74,9 @@ class NoteAccount(BaseModel):
 
 def note_account(state: InsuranceState, i: NoteAccount, ctx: OpContext) -> OpResult:
     new = {k: v for k, v in i.model_dump().items() if v is not None}
+    if ctx.customer_email:
+        new.pop("email", None)
+        state.account["email"] = ctx.customer_email
     skip = new.pop("skip", None)
     if skip:
         new["skipped"] = sorted(set(state.account.get("skipped", [])) | set(skip))
@@ -228,18 +231,21 @@ def request_change(state: InsuranceState, i: RequestChange, ctx: OpContext) -> O
 
 class EmailIdCard(BaseModel):
     policyNumber: Optional[str] = Field(None, max_length=20)
-    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    email: Optional[str] = Field(None, max_length=120, description="Only when no signup email is on file: the caller's email address as they gave it. Leave out otherwise.")
     callerConfirmed: bool = Confirmed()
 
 
 async def email_id_card(state: InsuranceState, i: EmailIdCard, ctx: OpContext) -> OpResult:
+    to, refused = email_target(ctx, i.email)
+    if refused:
+        return refused
     if not state.customer:
         return fail("verify_first", "Find the customer first with find_customer.")
     p = owned(state, i.policyNumber, "auto" if not i.policyNumber else None)
     if not p or p["line"] != "auto":
         return fail("not_auto", "ID cards are for auto policies. Ask which auto policy.")
     card = {"name": state.customer["name"], "carrier": carrier(p["carrier"])["name"], "policyNumber": p["number"], "effective": p["effective"], "expires": p["renewal"], "vehicles": p.get("vehicles", []), "drivers": p.get("drivers", []), "claimsLine": carrier(p["carrier"])["claimsLine"]}
-    masked, why = await email.confirm(i.email, email.insurance_id_card(card))
+    masked, why = await email.confirm(to, email.insurance_id_card(card))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.id_cards.append(p["number"])
@@ -358,16 +364,19 @@ def take_message(state: InsuranceState, i: TakeMessage, ctx: OpContext) -> OpRes
 
 
 class EmailConfirmation(BaseModel):
-    email: str = Field(min_length=5, max_length=120, description="The caller's email address as they gave it.")
+    email: Optional[str] = Field(None, max_length=120, description="Only when no signup email is on file: the caller's email address as they gave it. Leave out otherwise.")
     recap: Optional[str] = Field(None, max_length=600, description=RECAP_HELP + " Never mention a price or say anything is covered.")
     callerConfirmed: bool = Confirmed()
 
 
 async def email_confirmation(state: InsuranceState, i: EmailConfirmation, ctx: OpContext) -> OpResult:
     """Emails the caller the booked agent call, or a summary of the call (claim notice, change request, message) when nothing was booked."""
+    to, refused = email_target(ctx, i.email)
+    if refused:
+        return refused
     booked = active(state)
     kind = "booking" if booked else "summary"
-    if already_sent(state.emailed, i.email, kind):
+    if already_sent(state.emailed, to, kind):
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
@@ -377,14 +386,14 @@ async def email_confirmation(state: InsuranceState, i: EmailConfirmation, ctx: O
             rows += [("Claim notice", state.claim["id"]), (f"{c['name']} claims", c["claimsLine"])]
         rows += [(CHANGE_LABEL[r.kind], f"{r.id} · {r.details}") for r in state.requests]
         name = (state.customer or {}).get("name") or state.account.get("name") or (state.messages[-1].name if state.messages else None)
-        r, sent = await send_summary("insurance", "Owen", i.email, i.recap, name, messages, rows, did="looked up your policy and logged everything for our team")
+        r, sent = await send_summary("insurance", "Owen", to, i.recap, name, messages, rows, did="looked up your policy and logged everything for our team")
         if sent:
             state.emailed = sent
         return r
     c = booked[-1]
     s = describe_slot(state, c.slot_id, c.staff_id)
     v = {"day": s["day"], "time": s["time"], "agent": s["agent"], "topic": c.topic, "name": c.name, "reference": c.id}
-    masked, why = await email.confirm(i.email, email.insurance_call_confirmation(v))
+    masked, why = await email.confirm(to, email.insurance_call_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
     state.emailed = {"to": masked, "reference": c.id, "kind": "booking"}

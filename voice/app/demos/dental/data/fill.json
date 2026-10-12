@@ -19,7 +19,37 @@
     "Lena Kowalski",
     "Marcus Lee",
     "Grace Kim",
-    "Owen Hart"
+    "Owen Hart",
+    "Carla Mendes",
+    "Ian Brooks",
+    "Tasha Greene",
+    "Wei Zhang",
+    "Hannah Pruitt",
+    "Omar Farouk",
+    "Lucia Ferrari",
+    "Dev Patel",
+    "Meg Sullivan",
+    "Ray Calloway",
+    "Nadia Petrov",
+    "Jonah Wiese",
+    "Kelly Tran",
+    "Bill Hastings",
+    "Ana Souza",
+    "Pete Morrow",
+    "Sofia Reyes",
+    "Glenn Archer",
+    "Maya Dunn",
+    "Troy Becker",
+    "Elise Marchand",
+    "Carl Jorgensen",
+    "Imani Cole",
+    "Dale Whitfield",
+    "Rina Okada",
+    "Seth Albright",
+    "Joy Abernathy",
+    "Luke Pagano",
+    "Bea Nakamura",
+    "Hugo Lindqvist"
   ],
   "dentist": [
     [
@@ -73,6 +103,54 @@
     [
       "Veneer consult",
       30
+    ],
+    [
+      "Crown seat #19",
+      40
+    ],
+    [
+      "Composite #14, #15",
+      60
+    ],
+    [
+      "Implant consult",
+      30
+    ],
+    [
+      "Post-op check",
+      20
+    ],
+    [
+      "Bridge prep",
+      90
+    ],
+    [
+      "Ext #32",
+      40
+    ],
+    [
+      "Night guard impression",
+      30
+    ],
+    [
+      "Core build-up #8",
+      60
+    ],
+    [
+      "Composite #8, #9",
+      60
+    ],
+    [
+      "RCT #30",
+      90
+    ],
+    [
+      "Crown prep #14",
+      90
+    ],
+    [
+      "Emergency exam, PA",
+      30
     ]
   ],
   "hygiene": [
@@ -111,6 +189,34 @@
     [
       "SRP LR, LL",
       90
+    ],
+    [
+      "PerEx, FMX, Prophy",
+      70
+    ],
+    [
+      "PerioMaint, Fl",
+      60
+    ],
+    [
+      "ProphyCh, Fl, Sealants",
+      40
+    ],
+    [
+      "PerEx, 4BWX, ProphyCh",
+      50
+    ],
+    [
+      "Prophy, Fl",
+      40
+    ],
+    [
+      "SRP UL, LL",
+      90
+    ],
+    [
+      "PerEx, Prophy, 4BWX",
+      60
     ]
   ]
 }

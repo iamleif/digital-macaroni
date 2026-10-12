@@ -10,9 +10,9 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal, Optional
 
-from ..booking import day_fullness, day_rng
+from .. import schedule as sched
 from ..types import add_days, date_in, date_label, weekday
-from .store import CLOSED_WEEKDAYS, DAYS_AHEAD, SERVICE_IDS, SERVICES, TECHNICIANS, TIME_ZONE, WINDOWS, service
+from .store import BUSY_TITLES, CLOSED_WEEKDAYS, DAYS_AHEAD, DECK, OPEN_HOURS, SERVICE_IDS, SERVICES, SHIFTS, TECHNICIANS, TIME_ZONE, WINDOWS, service
 
 ServiceId = Literal[SERVICE_IDS]  # type: ignore[valid-type]
 
@@ -26,6 +26,8 @@ class Job:
     service_id: str
     # Jobs already on the schedule belong to other (fictional) customers and show no details.
     existing: bool
+    # What the board calls an existing job; time off shift is "Out", "Lunch" or "Admin" with no service.
+    title: str = ""
 
 
 @dataclass
@@ -119,27 +121,41 @@ def describe_slot(sid: str) -> dict[str, str]:
 def create_state(now: datetime) -> NorthlineState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = NorthlineState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (3 if minute > 0 else 2))
-    # Other customers' jobs: deterministic per calendar date (not per call), busier on Fridays and Saturdays,
-    # lighter mid-week, with different technicians busy in different windows.
+    # Other customers' jobs: deterministic per calendar date (not per call). Each technician works their own shifts
+    # (half days, a day off); the day keeps two to four open windows, for different technicians at different times of
+    # day; every other window they work already has a job in it, and time off shift shows as Out, Lunch or Admin.
     n = 0
+    lo, hi = OPEN_HOURS[0] * 60, OPEN_HOURS[1] * 60
     for day in bookable_days(state):
-        fullness = day_fullness("NL", day)
+        segs = {t["id"]: sched.shift_of(SHIFTS, t["id"], day, lo, hi) for t in TECHNICIANS}
+        floor = state.earliest_today_hour * 60 if day == state.today else 0
+        k = sched.cap_budget(sched.open_budget("NL", day, sched.OPEN_WEIGHTS_SMALL), sched.cells_working(segs, WINDOWS, 120), 1)
+
+        def make(min_start: int, segs=segs) -> list[sched.Hole]:
+            def starts(who: str, minutes: int, holes: list[sched.Hole]) -> list[int]:
+                free = sched.subtract(segs[who], [h.span() for h in holes if h.who == who])
+                return sched.hole_starts(free, minutes, 60, min_start, allowed=lambda s: s // 60 in WINDOWS)
+
+            return sched.choose_holes(sched.rng("NL", "holes", day), k=k, deck=[((w,), 120) for w in DECK], idx=sched.business_index(day, CLOSED_WEEKDAYS), starts=starts, span=(lo, hi))
+
+        holes = sched.settle(make, floor, min(k, 2), lambda hs: [h.start for h in hs])
+        taken = {(h.who, h.start // 60) for h in holes}
         jobs: list[Job] = []
         for t in TECHNICIANS:
-            r = day_rng("NL", day, t["id"])
-            mine = min(0.9, max(0.1, fullness - 0.15 + r.uniform(-0.2, 0.2)))
-            kinds = [s["id"] for s in SERVICES if s["skill"] in t["skills"]]
+            r = sched.rng("NL", "fill", day, t["id"])
+            off = sched.off_blocks(segs[t["id"]], lo, hi, seed=f"NL{day}{t['id']}")
+            kinds = [s for s in SERVICES if s["skill"] in t["skills"]]
+            titles = [(s["name"], s["id"]) for s in kinds] + [(x, r.choice(kinds)["id"]) for sk in t["skills"] for x in BUSY_TITLES[sk]]
             for h in WINDOWS:
-                if r.random() < mine:
-                    jobs.append(Job(id="", tech_id=t["id"], date=day, hour=h, service_id=r.choice(kinds), existing=True))
-        # Every kind of work keeps at least one opening a day.
-        r = day_rng("NL", day, "room")
-        for skill in {s["skill"] for s in SERVICES}:
-            while not any(any(skill in t["skills"] and not any(j.tech_id == t["id"] and j.hour == h for j in jobs) for t in TECHNICIANS) for h in WINDOWS):
-                owners = [j for j in jobs if skill in next(t for t in TECHNICIANS if t["id"] == j.tech_id)["skills"]]
-                if not owners:
-                    break
-                jobs.remove(r.choice(owners))
+                if (t["id"], h) in taken:
+                    continue
+                inside = any(a <= h * 60 and h * 60 + 120 <= b for a, b in segs[t["id"]])
+                if inside:
+                    title, sid = r.choice(titles)
+                    jobs.append(Job(id="", tech_id=t["id"], date=day, hour=h, service_id=sid, existing=True, title=title))
+                else:
+                    label = next((x[2] for x in off if x[0] < h * 60 + 120 and h * 60 < x[0] + x[1]), "Out")
+                    jobs.append(Job(id="", tech_id=t["id"], date=day, hour=h, service_id="", existing=True, title=label))
         for j in jobs:
             j.id = f"existing-{n}"
             n += 1

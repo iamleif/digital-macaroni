@@ -6,15 +6,15 @@ The book is generated relative to the session's own date, so "tomorrow" always m
 
 from __future__ import annotations
 
-import hashlib
-import random
 import re
 from dataclasses import dataclass, field
-from datetime import date, datetime
+import random
+from datetime import datetime
 from typing import Any, Literal, Optional
 
+from .. import schedule as sched
 from ..types import add_days, date_in, date_label, weekday
-from .store import FILL, OPS, TIME_ZONE, op, ops_for, provider, visit_type
+from .store import FILL, HOLES, OPS, SHIFTS, TIME_ZONE, TYPES, op, ops_for, provider, visit_type
 
 STEP = 10
 LUNCH = (12 * 60, 13 * 60)
@@ -39,6 +39,8 @@ class Appt:
     confirmed: str = "unconfirmed"
     alert: bool = False
     exam: bool = False
+    # Time off shift (a day off, an early finish, admin), shown in the book as a block so each chair has its real shape.
+    off: bool = False
 
 
 @dataclass
@@ -164,56 +166,50 @@ def in_hold(oid: str, day: str, start: int, minutes: int) -> bool:
 
 def _rng(*parts: object) -> random.Random:
     """Deterministic per date and chair, never per call: a given day always looks the same."""
-    return random.Random(int(hashlib.sha256(":".join(map(str, parts)).encode()).hexdigest()[:12], 16))
+    return sched.rng("dental", *parts)
 
 
-# How full each weekday runs (Sunday=0): Mondays and Fridays are busy, Wednesday is light.
-FULLNESS = {1: 0.88, 2: 0.72, 3: 0.5, 4: 0.76, 5: 0.9}
-
-
-def nearly_full(day: str) -> bool:
-    """About one day in a fortnight, a Tuesday to Thursday, is nearly booked solid. Decided by the date alone."""
-    d = date.fromisoformat(day)
-    iso = d.isocalendar()
-    rng = _rng("full-week", iso.year, iso.week)
-    return rng.random() < 0.55 and weekday(day) == rng.choice((2, 3, 4))
+def _cards(rows: list[list[Any]]) -> list[sched.Card]:
+    return [(tuple(ops_for(r[0])), int(r[1])) for r in rows]
 
 
 def _fill_day(state: DentalState, day: str, n: int) -> int:
+    """The day's book. Each chair works its provider's shift (half days, days off, a late start); the day keeps two to
+    five openings in different chairs at different times; every other working minute already has a patient in it."""
     hrs = hours_of(day)
-    full = nearly_full(day)
-    base = 0.97 if full else FULLNESS[weekday(day)] + _rng("jitter", day).uniform(-0.08, 0.08)
+    lunch = [LUNCH] if has_lunch(day) else []
+    segs = {o["id"]: sched.shift_of(SHIFTS, o["provider"], day, hrs[0], hrs[1]) for o in OPS}  # type: ignore[index]
+    work = {oid: sched.subtract(s, lunch) for oid, s in segs.items()}
+    holds = {o["id"]: [(h, h + HOLD_MIN) for hop, h in HOLDS if hop == o["id"] and h + HOLD_MIN <= hrs[1]] for o in OPS}  # type: ignore[index]
+    floor = -(-state.earliest_today // 30) * 30 if day == state.today else 0
+    low = {o["id"]: min(t["minutes"] for t in TYPES if t["with"] == ("hygiene" if provider(o["provider"])["role"] == "Hygienist" else "dentist")) for o in OPS}
+
+    k = sched.open_budget("dental", day, sched.OPEN_WEIGHTS_MANY)
+    idx = sched.business_index(day, {0, 6})
+    forced = [c for c, f in zip(_cards(HOLES["forced"]), HOLES["forced"]) if idx % int(f[2]) == int(f[3])]
+
+    def make(min_start: int) -> list[sched.Hole]:
+        def starts(who: str, minutes: int, holes: list[sched.Hole]) -> list[int]:
+            free = sched.subtract(work[who], holds[who] + [h.span() for h in holes if h.who == who])
+            return sched.hole_starts(free, minutes, 30, min_start, min_side=20)
+
+        return sched.choose_holes(_rng("holes", day), k=k, deck=_cards(HOLES["deck"]), idx=idx, starts=starts, span=hrs, forced=forced)  # type: ignore[arg-type]
+
+    holes = sched.settle(make, floor, min(k, 2), lambda hs: [h.start for h in hs])
     for o in OPS:
-        rng = _rng("chair", day, o["id"])
+        oid = o["id"]
+        rng = _rng("chair", day, oid)
         hyg = provider(o["provider"])["role"] == "Hygienist"
+        for a, m, title in sched.off_blocks(segs[oid], hrs[0], hrs[1], cover=lunch, seed=f"dental{day}{oid}"):  # type: ignore[index]
+            state.book.append(Appt(f"existing-{n}", oid, day, a, m, title, "Not scheduled", True, confirmed="confirmed", off=True))
+            n += 1
+        free = sched.subtract(work[oid], holds[oid] + [h.span() for h in holes if h.who == oid])
         pool = [tuple(x) for x in (FILL["hygiene"] if hyg else FILL["dentist"])]
-        fullness = min(0.98, base + rng.uniform(-0.1, 0.06))
-        t = hrs[0] + rng.choice((0, 0, 10, 30))  # type: ignore[index]
-        while t < hrs[1]:  # type: ignore[index]
-            if has_lunch(day) and LUNCH[0] <= t < LUNCH[1]:
-                t = LUNCH[1]
-                continue
-            if rng.random() > fullness:  # an open stretch
-                t += rng.choice((30, 30, 60, 90))
-                continue
-            fits = [(p, m) for p, m in pool if t + m <= hrs[1] and not (has_lunch(day) and t < LUNCH[1] and LUNCH[0] < t + m) and not in_hold(o["id"], day, t, m)]  # type: ignore[index]
-            if not fits:
-                t += STEP
-                continue
-            procs, mins = rng.choice(fits)
-            state.book.append(Appt(f"existing-{n}", o["id"], day, t, mins, rng.choice(FILL["names"]), procs, True, phone4=f"{rng.randrange(1000, 10000)}",
+        for t, mins, procs in sched.fill(rng, free, pool, STEP, low[oid]):
+            state.book.append(Appt(f"existing-{n}", oid, day, t, mins, rng.choice(FILL["names"]), procs, True, phone4=f"{rng.randrange(1000, 10000)}",
                                    confirmed=rng.choices(["confirmed", "left_message", "unconfirmed"], (6, 1, 2))[0], alert=rng.random() < 0.11, exam=hyg and "Ex" in procs))
             n += 1
-            t += mins
     return n
-
-
-def _has_room(state: DentalState, day: str) -> bool:
-    keep, state.earliest_today = state.earliest_today, 0
-    try:
-        return bool(open_slots(state, "cleaning", day)) and bool(open_slots(state, "new_patient", day))
-    finally:
-        state.earliest_today = keep
 
 
 def create_state(now: datetime) -> DentalState:
@@ -222,16 +218,6 @@ def create_state(now: datetime) -> DentalState:
     n = 0
     for day in bookable_days(state):
         n = _fill_day(state, day, n)
-        if nearly_full(day):
-            continue
-        # Every ordinary day keeps open cleaning and new-patient time: thin out the hygiene chairs until it does.
-        hyg_ops = set(ops_for("hygiene"))
-        rng = _rng("thin", day)
-        while not _has_room(state, day):
-            mine = [a for a in state.book if a.date == day and a.op in hyg_ops]
-            if not mine:
-                break
-            state.book.remove(rng.choice(mine))
     return state
 
 
