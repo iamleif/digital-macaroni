@@ -102,6 +102,8 @@ const TOOL_LOGOS: Record<string, string> = {
   housecallpro: "housecallpro.png", jobber: "jobber.png",
   nexhealth: "nexhealth.png", opendental: "opendental.png", dentrix: "dentrix.svg", agencyzoom: "agencyzoom.png", appliedepic: "appliedepic.svg", liteapi: "liteapi.png",
 };
+/** The logo file for a tool, or null when we don't have one. */
+export const toolLogoSrc = (id: string) => (TOOL_LOGOS[id] ? `/studio/logos/tools/${TOOL_LOGOS[id]}` : null);
 export function ToolMark({ id, name }: { id: string; name: string }) {
   const file = TOOL_LOGOS[id];
   return <span className={f.toolMark}>{file ? <img src={`/studio/logos/tools/${file}`} alt="" /> : <b>{name.slice(0, 1)}</b>}</span>;
@@ -658,7 +660,9 @@ export function ToolsLane({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; s
 
   return <section className={f.lane} aria-label={custom ? "Your back office" : `Sent to ${tool.name}`}>
     <header>
-      <span className={f.laneIcon}>{custom ? <Code size={15} /> : tool.name.slice(0, 1)}</span>
+      {custom ? <span className={f.laneIcon}><Code size={15} /></span>
+        : toolLogoSrc(tool.id) ? <span className={f.laneLogo}><img src={toolLogoSrc(tool.id) ?? ""} alt="" /></span>
+        : <span className={f.laneIcon}>{tool.name.slice(0, 1)}</span>}
       <div><h3>{custom ? "Your back office" : `Sent to ${tool.name}`}</h3><small>{custom ? `What ${demo.agentName} wrote into the system we’d build for you` : `In a live install, this is what ${demo.agentName} writes to your ${tool.name}`}</small></div>
     </header>
     {rows.length ? <ol>
