@@ -15,7 +15,7 @@ import { type Cue, AppointmentOffice, DealershipOffice, DentalOffice, FormFieldO
 import { REPLAYS } from "./replay";
 import { CookieSettings, track } from "../consent";
 import { VoiceBars } from "./voice-bars";
-import { AfterCall, SKINS, SetupCard, ToolBadge, ToolsLane, type Setup } from "./funnel";
+import { AfterCall, SKINS, SetupCard, ToolsLane, type Setup } from "./funnel";
 import { luneSample, tidewellSample } from "../live/sample-views";
 import type { AppointmentView, BookingSkin } from "../live/types";
 import d from "./demo.module.css";
@@ -348,7 +348,7 @@ function BehindTheCall({ demo, feed, setup }: { demo: DemoInfo; feed: Feed; setu
   const usedCount = demo.design.tools.filter((t) => uses(t.name) > 0).length;
 
   return <aside className={d.right} aria-label="Behind the call">
-    <div className={d.sectionHead}><h2>Behind the call</h2>{setup ? <ToolBadge setup={setup} /> : null}</div>
+    <div className={d.sectionHead}><h2>Behind the call</h2></div>
 
     {setup ? <ToolsLane demo={demo} feed={feed} setup={setup} /> : null}
 
