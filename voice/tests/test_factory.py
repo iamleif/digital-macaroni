@@ -121,7 +121,7 @@ class TestAgent:
 
     def test_instant_prompt_greets_the_prospect(self):
         p = instruction(self.state(mode="instant", visitor_name="Jamie"), PHONE)
-        assert "Hi Jamie! I'm set up with the basic information from Acme Dental's website. Okay, here we go." in p and "play_ring" in p and '"Hi, thanks for calling Acme Dental, how can I help you?"' in p and "send_meeting_link" in p
+        assert "greet Jamie by name" in p and "not a customer calling" in p and "play_ring" in p and '"Hi, thanks for calling Acme Dental, how can I help you?"' in p and "send_meeting_link" in p
 
     def test_client_prompt_uses_owner_notes(self):
         p = instruction(self.state(mode="client", notes="We don't take Delta Dental.", never_say="Never quote crowns."), PHONE)

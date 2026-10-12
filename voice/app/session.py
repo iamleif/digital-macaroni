@@ -57,8 +57,9 @@ class DemoSession:
         self.play_ring: Optional[Callable[[], float]] = None
         # Phone calls only: the caller's number as Twilio reported it (E.164), or None. Held in memory, never logged.
         self.caller_number: Optional[str] = None
-        # We placed this call (the instant demo): the person answers with "hello", so the agent waits for it.
-        self.outbound = False
+        # A call we placed (the instant demo): the agent's live session, opened while the phone rings so
+        # she speaks the moment it's answered. The phone bridge takes it; if nobody answers, end() closes it.
+        self.prewarmed: Optional["asyncio.Task[Any]"] = None
         # The agent factory's calls (factory.py): a voice and time limit of their own, the client agent
         # this line belongs to, and the work to do when the call ends (the owner's summary).
         self.voice: Optional[str] = None
@@ -156,6 +157,9 @@ class DemoSession:
         self.ended_at = time.monotonic()
         self.emit({"type": "session.ended", "reason": reason})
         log.info("session.ended", {"session": self.id, "demo": self.demo_id, "channel": self.channel, "outcome": reason, "duration_ms": int((self.ended_at - self.created_at) * 1000), "version": self.version})
+        if self.prewarmed:
+            self.prewarmed.add_done_callback(_close_unused_live)
+            self.prewarmed = None
         try:
             loop = asyncio.get_running_loop()
             loop.create_task(calllog.save(self))
@@ -169,6 +173,15 @@ class DemoSession:
             await work(self)
         except Exception as err:  # noqa: BLE001
             log.error("session.after_call_failed", {"session": self.id, "demo": self.demo_id}, err)
+
+
+def _close_unused_live(task: "asyncio.Task[Any]") -> None:
+    if task.cancelled() or task.exception():
+        return
+    try:
+        asyncio.get_running_loop().create_task(task.result().close())
+    except RuntimeError:
+        pass
 
 
 def _utc_now():

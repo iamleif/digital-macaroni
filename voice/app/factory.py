@@ -163,7 +163,6 @@ async def _run_instant(j: Job) -> None:
         agent_name, voice = VOICES["female"]
         session.state = AgentState(now=session.state.now, mode="instant", profile=profile.model_dump(), agent_name=agent_name, visitor_name=lead["name"], visitor_email=lead["email"], caller_number=lead["phone"])
         session.caller_number = lead["phone"]
-        session.outbound = True
         session.voice = voice
         session.max_override = config.instant_max_seconds
         session.after_call = lambda s: _after_instant(j, s)
@@ -171,6 +170,10 @@ async def _run_instant(j: Job) -> None:
         j.step = "calling"
         sid = await twilio_api.place_call(lead["phone"], config.instant_from, f"{config.public_url}/twilio/instant-answer?job={j.id}", f"{config.public_url}/twilio/instant-status?job={j.id}", f"{config.public_url}/twilio/instant-amd?job={j.id}")
         j.call_sid = sid or ""
+        if sid:
+            from .live import open_live
+
+            session.prewarmed = asyncio.create_task(open_live(session))
         if not sid:
             session.end("error")
             j.step, j.error, j.message = "failed", "call_failed", "We couldn't place the call. Please check the number and try again."
