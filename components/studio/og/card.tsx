@@ -24,7 +24,7 @@ const BARS = [10, 18, 30, 22, 40, 28, 52, 34, 46, 26, 58, 38, 30, 48, 24, 36, 18
 
 export type OgAgent = { name: string; business: string; line: string; lineLabel: string; status: string };
 
-export async function ogCard({ kicker, title, sub, agent, chip, footer }: {
+export async function ogCard({ kicker, title, sub, agent, chip, footer, safe }: {
   kicker?: string;
   title: string;
   sub?: string;
@@ -33,9 +33,12 @@ export async function ogCard({ kicker, title, sub, agent, chip, footer }: {
   /** Put the yellow wave chip after the first line, like the homepage headline. */
   chip?: { before: string; after: string };
   footer?: string;
+  /** Keep everything in the centre square so Instagram's near-square link crop cuts nothing. */
+  safe?: boolean;
 }) {
   const [medium, semibold, mono, logo] = await assets;
   const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
+  if (safe) return safeCard({ title, chip, agent, logoSrc, fonts: [medium, semibold, mono] });
   const wide = !agent;
   const size = wide ? (title.length > 60 ? 62 : 70) : title.length > 44 ? 56 : 68;
 
@@ -131,4 +134,52 @@ function CallCard({ agent }: { agent: OgAgent }) {
       <span>{agent.status}</span>
     </div>
   </div>;
+}
+
+function safeCard({ title, chip, agent, logoSrc, fonts }: { title: string; chip?: { before: string; after: string }; agent?: OgAgent; logoSrc: string; fonts: Buffer[] }) {
+  const [medium, semibold, mono] = fonts;
+  return new ImageResponse(
+    <div style={{ display: "flex", width: "100%", height: "100%", background: "#e9e8e3", padding: 18, fontFamily: "Geist" }}>
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%",
+        borderRadius: 36, color: INK, backgroundColor: "#ffffff",
+        backgroundImage: "radial-gradient(60% 70% at 0% 0%, rgba(186, 214, 255, 0.55), rgba(255,255,255,0) 100%), radial-gradient(55% 70% at 100% 0%, rgba(255, 214, 170, 0.55), rgba(255,255,255,0) 100%)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <img src={logoSrc} width={52} height={52} style={{ transform: "rotate(-8deg)" }} />
+          <span style={{ fontSize: 34, fontWeight: 600, letterSpacing: "-0.02em" }}>Digital Macaroni</span>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", width: 600, marginTop: 30, fontSize: 70, fontWeight: 500, letterSpacing: "-0.05em", lineHeight: 1.04 }}>
+          {chip ? (
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ display: "flex" }}>AI voice</span>
+                <WaveChip size={58} />
+              </div>
+              <span style={{ display: "flex" }}>agents that get</span>
+              <span style={{ display: "flex" }}>to work and grow</span>
+              <span style={{ display: "flex" }}>your revenue.</span>
+            </div>
+          ) : <span>{title}</span>}
+        </div>
+        {agent ? (
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 40, padding: "14px 24px 14px 14px", borderRadius: 60, background: "#11110f", color: "#f4f2ec" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 44, height: 44, borderRadius: 44, backgroundImage: "linear-gradient(160deg, #ffd95e, #f2b71c)", color: "#3a2a00", fontSize: 22, fontWeight: 600 }}>{agent.name[0]}</div>
+            <span style={{ fontSize: 24, fontWeight: 600 }}>{agent.name}</span>
+            <span style={{ fontSize: 20, color: "#a8a59c" }}>{agent.business}</span>
+            <div style={{ display: "flex", width: 10, height: 10, borderRadius: 10, background: "#3ddc97" }} />
+            <span style={{ fontSize: 20, color: "#d7f5e6" }}>{agent.status}</span>
+          </div>
+        ) : null}
+      </div>
+    </div>,
+    {
+      ...OG_SIZE,
+      fonts: [
+        { name: "Geist", data: medium, weight: 500, style: "normal" },
+        { name: "Geist", data: semibold, weight: 600, style: "normal" },
+        { name: "Geist Mono", data: mono, weight: 500, style: "normal" },
+      ],
+    },
+  );
 }

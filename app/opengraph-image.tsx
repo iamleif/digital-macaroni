@@ -7,6 +7,7 @@ export const dynamic = "force-static";
 
 export default function Image() {
   return ogCard({
+    safe: true,
     title: "AI voice agents that get to work and grow your revenue",
     chip: { before: "AI voice agents", after: "that get to work and grow your revenue." },
     sub: "They answer every call, book the job, update your systems and hand off to your team.",
