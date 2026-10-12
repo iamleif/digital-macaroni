@@ -34,6 +34,14 @@ LINES = {
         "Yes, that's all correct.",
         "No, that's everything. Thanks, bye.",
     ],
+    "dental": ["Yeah, I need to get a cleaning.", "No, I haven't been there before.", "My name is John Wells.", "April seventh, nineteen eighty-eight.", "It's been about two years since I last went.", "I have Delta Dental.", "It's under my name. The member ID is A B 1 2 3 4 5 6 7.", "No group number, and nothing the dentist needs to know.", "The earliest one you have, please.", "Yes, book it.", "No, that's all. Thank you, bye."],
+    "dealership": ["Hi, do you have any Honda CR-Vs?", "Under thirty thousand dollars.", "Can I come in for a test drive of the first one?", "Tomorrow morning works.", "It's Sam Rivera.", "Yes, please book it.", "No, that's all. Thanks, bye."],
+    "hotels": ["Hi, I'd like a hotel in Miami Beach for two nights, December fourth to December sixth, two adults.", "Something near the beach, under four hundred a night.", "The first one sounds good.", "The cheapest room is fine.", "It's Jamie Fox.", "That's all for now, thanks. Goodbye."],
+    "lune": ["Hi, I'd like to book a women's haircut.", "This Saturday morning if possible.", "My name is Jamie Fox.", "Yes, book that please.", "No, that's all. Thank you."],
+    "lawfirm": ["Hi, I was in a car accident last week and I'm hurt.", "It happened in Denver, Colorado, on October third.", "My neck and back hurt, and I've missed work.", "The other driver ran a red light.", "My name is Alex Morgan.", "No, I don't have a lawyer.", "That's all I have for now. Thank you, goodbye."],
+    "realestate": ["Hi, I'm looking to buy a house in Austin.", "Under five hundred thousand dollars, in about three months.", "My name is Dana Ortiz.", "Can I see one this weekend?", "That's all for now, thanks. Bye."],
+    "insurance": ["Hi, I'd like a quote for car insurance.", "My name is Pat Lee.", "One car, a twenty nineteen Toyota Camry, and just me driving.", "That's everything. Thank you, goodbye."],
+    "tidewell": ["Hi, I'd like to book a first visit for lower back pain.", "With the chiropractor please.", "Next Tuesday morning.", "My name is Chris Doe.", "Yes, book it.", "No, that's all. Thank you."],
     "formfield": ["Hi! Do you have any planters?", "Is the large sage one in stock?", "Great, can you reserve one for Priya?", "Yes, please.", "That's everything, thank you. Bye."],
 }
 t0 = time.monotonic()
