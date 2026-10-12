@@ -23,7 +23,9 @@
         "Shipped",
         "Carrier delay reported"
       ],
-      "expected": 2
+      "expected": 2,
+      "carrier": "FedEx",
+      "tracking": "999000011042"
     },
     {
       "number": "1043",
@@ -43,7 +45,229 @@
         "Shipped",
         "Delivered"
       ],
+      "expected": -1,
+      "carrier": "FedEx",
+      "tracking": "999000011043"
+    },
+    {
+      "number": "1037",
+      "email": "marcus.bell@example.com",
+      "name": "Marcus Bell",
+      "items": [
+        {
+          "name": "Dome Desk Lamp",
+          "option": "Matte black",
+          "price": 72
+        },
+        {
+          "name": "Everyday Mugs, set of two",
+          "option": "Ink blue",
+          "price": 32
+        }
+      ],
+      "status": "Out for delivery",
+      "events": [
+        "Order placed",
+        "Packed",
+        "Shipped",
+        "Out for delivery"
+      ],
+      "expected": 0,
+      "carrier": "FedEx",
+      "tracking": "999000011037"
+    },
+    {
+      "number": "1046",
+      "email": "praman@example.com",
+      "name": "Priya Raman",
+      "items": [
+        {
+          "name": "Washed Linen Throw",
+          "option": "Natural",
+          "price": 78
+        },
+        {
+          "name": "Linen Cushion",
+          "option": "Olive",
+          "price": 42
+        },
+        {
+          "name": "Linen Cushion",
+          "option": "Natural",
+          "price": 42
+        }
+      ],
+      "status": "Shipped",
+      "events": [
+        "Order placed",
+        "Packed",
+        "Shipped"
+      ],
+      "expected": 3,
+      "carrier": "FedEx",
+      "tracking": "999000011046"
+    },
+    {
+      "number": "1051",
+      "email": "tomas.rivera@example.com",
+      "name": "Tomás Rivera",
+      "items": [
+        {
+          "name": "Arc Floor Lamp",
+          "option": "Matte black",
+          "price": 189
+        }
+      ],
+      "status": "Preparing to ship",
+      "events": [
+        "Order placed",
+        "Being packed"
+      ],
+      "expected": 5
+    },
+    {
+      "number": "1058",
+      "email": "hannah_s@example.com",
+      "name": "Hannah Schultz",
+      "items": [
+        {
+          "name": "Stoneware Dinner Plates, set of four",
+          "option": "Sand",
+          "price": 68
+        },
+        {
+          "name": "Ribbed Serving Bowl",
+          "option": "Oat",
+          "price": 38
+        },
+        {
+          "name": "Glass Carafe with Tumbler",
+          "option": "Clear",
+          "price": 34
+        }
+      ],
+      "status": "Delivered",
+      "events": [
+        "Order placed",
+        "Packed",
+        "Shipped",
+        "Delivered"
+      ],
+      "expected": -1,
+      "carrier": "FedEx",
+      "tracking": "999000011058"
+    },
+    {
+      "number": "1063",
+      "email": "dito@example.com",
+      "name": "Daniel Ito",
+      "items": [
+        {
+          "name": "Fold Side Table",
+          "option": "Oak",
+          "price": 145
+        },
+        {
+          "name": "Oak Wall Shelf",
+          "option": "Oak",
+          "price": 85
+        }
+      ],
+      "status": "Delayed in transit",
+      "events": [
+        "Order placed",
+        "Packed",
+        "Shipped",
+        "Carrier delay reported"
+      ],
+      "expected": 4,
+      "carrier": "FedEx",
+      "tracking": "999000011063"
+    },
+    {
+      "number": "1069",
+      "email": "grace.whitfield@example.com",
+      "name": "Grace Whitfield",
+      "items": [
+        {
+          "name": "Clay Hanging Planter",
+          "option": "Clay",
+          "price": 44
+        },
+        {
+          "name": "Field Planter",
+          "option": "Large, sage",
+          "price": 48
+        },
+        {
+          "name": "Bud Vase Trio",
+          "option": "Sage",
+          "price": 36
+        }
+      ],
+      "status": "Ready for pickup at 210 Market Street",
+      "events": [
+        "Order placed",
+        "Packed",
+        "Ready for pickup"
+      ],
       "expected": -1
+    },
+    {
+      "number": "1074",
+      "email": "samir@example.com",
+      "name": "Samir Haddad",
+      "items": [
+        {
+          "name": "Seagrass Stool",
+          "option": "Natural",
+          "price": 98
+        },
+        {
+          "name": "Waffle Cotton Bath Towel",
+          "option": "White",
+          "price": 36
+        },
+        {
+          "name": "Waffle Cotton Bath Towel",
+          "option": "Sand",
+          "price": 36
+        }
+      ],
+      "status": "Backordered, waiting on stock",
+      "events": [
+        "Order placed",
+        "Waiting on stock"
+      ],
+      "expected": 9
+    },
+    {
+      "number": "1081",
+      "email": "lena.fischer88@example.com",
+      "name": "Lena Fischer",
+      "items": [
+        {
+          "name": "Moss Glass Lamp",
+          "option": "Moss green",
+          "price": 129
+        },
+        {
+          "name": "Pleat Paper Pendant",
+          "option": "White",
+          "price": 64
+        }
+      ],
+      "status": "Return received, refund being processed",
+      "events": [
+        "Order placed",
+        "Packed",
+        "Shipped",
+        "Delivered",
+        "Return received"
+      ],
+      "expected": -1,
+      "carrier": "FedEx",
+      "tracking": "999000011081"
     }
   ]
 }

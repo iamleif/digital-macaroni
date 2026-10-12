@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { voiceDemos } from "../live/demo-info";
 import { ArrowUpRight, Check, LinkedIn } from "../icons";
-import { FOUNDER, FOUNDER_REF, JsonLd, ORG_REF, SITE } from "../site";
+import { FOUNDER, FOUNDER_REF, JsonLd, ORG_REF, SITE, WEBSITE_REF, breadcrumbs } from "../site";
 import { ANSWERS, CATEGORIES, UPDATED, UPDATED_ISO, type Answer } from "./content";
 import { SOURCES } from "./sources";
 import { CookieSettings } from "../consent";
@@ -80,9 +80,11 @@ export function AnswerPage({ answer }: { answer: Answer }) {
       datePublished: UPDATED_ISO,
       dateModified: UPDATED_ISO,
       image: `${url}opengraph-image`,
-      author: { ...FOUNDER_REF, "@type": "Person", name: FOUNDER.name, sameAs: [FOUNDER.linkedin] },
+      inLanguage: "en",
+      author: FOUNDER_REF,
       publisher: ORG_REF,
-      mainEntityOfPage: url,
+      isPartOf: WEBSITE_REF,
+      mainEntityOfPage: { "@type": "WebPage", "@id": `${url}#webpage`, url },
       citation: answer.sources.map((k) => SOURCES[k].url),
     },
     {
@@ -90,15 +92,7 @@ export function AnswerPage({ answer }: { answer: Answer }) {
       "@type": "FAQPage",
       mainEntity: [{ q: answer.title, a: answer.short }, ...answer.faqs].map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/` },
-        { "@type": "ListItem", position: 2, name: "Answers", item: `${SITE}/answers/` },
-        { "@type": "ListItem", position: 3, name: answer.label, item: url },
-      ],
-    },
+    breadcrumbs(["Answers", `${SITE}/answers/`], [answer.label, url]),
   ];
 
   return <AnswersShell>
@@ -150,15 +144,19 @@ export function AnswersHub() {
   const structured = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${SITE}/answers/#webpage`,
     name: "Answers about AI phone agents",
     url: `${SITE}/answers/`,
+    inLanguage: "en",
+    isPartOf: WEBSITE_REF,
+    publisher: ORG_REF,
     hasPart: [
       { "@type": "WebApplication", name: "Missed call calculator", url: `${SITE}/missed-call-calculator/` },
       ...ANSWERS.map((x) => ({ "@type": "Article", headline: x.title, url: `${SITE}/answers/${x.slug}/` })),
     ],
   };
   return <AnswersShell>
-    <JsonLd data={structured} />
+    <JsonLd data={[structured, breadcrumbs(["Answers", `${SITE}/answers/`])]} />
     <div className={a.hub}>
       <p className={a.hubKicker}>Answers</p>
       <h1>Straight answers about AI phone agents.</h1>

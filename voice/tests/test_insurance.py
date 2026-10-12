@@ -36,9 +36,9 @@ class TestQuote:
     async def test_collects_what_a_licensed_agent_needs_and_books_the_call(self):
         state, run = runner()
         r = await run("note_account", {"name": "Jamie Cole", "quoteLines": ["auto", "renters"]})
-        assert "each vehicle's year, make and model" in r.result["stillNeededForTheQuote"]
+        assert r.result["next"] == "Who will be driving? Please give me each driver's name."
         await run("note_account", {"dateOfBirth": "1994-02-11", "drivers": [{"name": "Jamie Cole", "dateOfBirth": "1994-02-11", "yearsLicensed": 12, "incidents": "none"}], "vehicles": [{"year": 2020, "make": "Honda", "model": "Accord"}], "address": "300 Walnut St, Macon, GA", "personalProperty": 25000, "currentCarrier": "GEICO", "renewalDate": "2026-10-28"})
-        assert (await run("note_account", {"coverageWanted": ["full_coverage"]})).result["stillNeededForTheQuote"].startswith("Nothing")
+        assert (await run("note_account", {"coverageWanted": ["full_coverage"]})).result["next"] is None
         found = await run("check_availability", {"date": TOMORROW})
         slot = found.result["available"][0]["slotId"]
         b = await run("book_agent_call", {"slotId": slot, "topic": "Auto and renters quote", "callerConfirmed": True})
@@ -47,6 +47,27 @@ class TestQuote:
         assert v["record"]["stage"] == "booked"
         assert "Bundle: auto + renters" in v["flags"] and "Renews within 45 days" in v["flags"]
         assert v["rows"]["vehicles"][0]["name"] == "2020 Honda Accord"
+
+    async def test_next_question_advances_and_never_repeats(self):
+        state, run = runner()
+        r = await run("note_account", {"name": "Jamie Cole"})
+        assert "quoted" in r.result["next"]
+        r = await run("note_account", {"quoteLines": ["auto", "home"]})
+        assert r.result["next"] == "Who will be driving? Please give me each driver's name."
+        r = await run("note_account", {"drivers": [{"name": "Jamie Cole"}]})
+        assert r.result["next"] == "What is Jamie Cole's date of birth?"
+        r = await run("note_account", {"drivers": [{"name": "Jamie Cole", "dateOfBirth": "1994-02-11"}]})
+        assert r.result["next"] == "How many years has Jamie Cole been licensed?"
+        r = await run("note_account", {"drivers": [{"name": "Jamie Cole", "dateOfBirth": "1994-02-11", "yearsLicensed": 12}]})
+        assert "tickets or accidents" in r.result["next"] and r.result["optional"]
+        r = await run("note_account", {"skip": ["incidents"]})
+        assert r.result["next"].startswith("What vehicles")
+        r = await run("note_account", {"vehicles": [{"year": 2020, "make": "Honda", "model": "Accord"}], "address": "300 Walnut St, Macon, GA"})
+        assert r.result["next"] == "What year was the home built?"  # the address is not asked twice
+        r = await run("note_account", {"yearBuilt": 1998, "squareFeet": 2100})
+        assert r.result["next"] == "Who insures you now?" and r.result["optional"]
+        r = await run("note_account", {"currentCarrier": "GEICO", "skip": ["renewalDate", "coverageWanted"]})
+        assert r.result["next"] is None and "licensed agent" in r.result["done"]
 
     async def test_weekends_offer_the_next_weekday(self):
         _, run = runner()
@@ -89,12 +110,24 @@ class TestClaim:
     async def test_logs_the_notice_and_gives_the_carrier_line(self):
         state, run = await verified()
         r = await run("report_claim", {"line": "auto", "kind": "hit_while_parked", "description": "Someone backed into me in the Kroger lot"})
-        assert r.ok and r.result["claimsLine"] == "1-800-776-4737" and "when" in r.result["stillNeeded"]
-        r = await run("report_claim", {"date": "2026-09-30", "location": "Kroger, Zebulon Road", "injuries": "no", "policeReport": "no", "photos": "yes"})
-        assert "stillNeeded" not in r.result
+        assert r.ok and r.result["claimsLine"] == "1-800-776-4737" and r.result["next"] == "When did it happen?"
+        r = await run("report_claim", {"date": "2026-09-30", "location": "Kroger, Zebulon Road", "injuries": "no", "policeReport": "no", "photos": "yes", "otherParty": "unknown"})
+        assert r.result["next"] is None and "claims line" in r.result["done"]
         v = insurance.view(state)
         assert v["claim"]["carrier"] == "Progressive" and v["record"]["stage"] == "logged"
         assert any("claim" in t["title"] for t in v["tasks"])
+
+    async def test_next_claim_question_advances_in_order(self):
+        _, run = await verified()
+        r = await run("report_claim", {"line": "auto"})
+        assert r.result["next"] == "What happened?"
+        asked = []
+        for field, value in (("kind", "hit_while_parked"), ("date", "2026-09-30"), ("location", "Kroger"), ("injuries", "no"), ("policeReport", "unknown"), ("otherParty", "unknown")):
+            r = await run("report_claim", {field: value})
+            asked.append(r.result["next"])
+        assert asked == ["When did it happen?", "Where did it happen?", "Was anyone hurt?", "Was a police report made?", "Was another driver or party involved, and do you know their insurer?", "Do you have any photos?"]
+        r = await run("report_claim", {"photos": "no"})
+        assert r.result["next"] is None and "done" in r.result
 
     async def test_refuses_a_future_date(self):
         _, run = await verified()

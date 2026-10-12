@@ -398,6 +398,27 @@ def pickup_reservation(r: dict[str, Any]) -> tuple[str, str, str]:
     return f"Held for you at Form & Field · {r['product']}", body, _text(b, heading, intro, lines, "Theo", did)
 
 
+def order_confirmation(o: dict[str, Any]) -> tuple[str, str, str]:
+    """Form & Field: the order as it stands, with the carrier and the (sample) tracking number. Returns (subject, html, text)."""
+    b = BRANDS["formfield"]
+    items = "".join(f'<tr><td style="padding:6px 0;font-family:{FONT};font-size:15px;color:{b.ink}">{e(i["name"])} &middot; {e(i["option"])}</td><td align="right" style="padding:6px 0;font-family:{FONT};font-size:15px;color:{b.ink}">{e(i["price"])}</td></tr>' for i in o["items"])
+    rows = [("Order", o["number"]), ("Status", o["status"]), ("Carrier", o.get("carrier") or ""), ("Tracking", o.get("tracking") or "Added once it ships"), ("Estimated", o.get("estimated") or "")]
+    link = f'<div style="padding:14px 0 0;font-family:{FONT};font-size:14px"><a href="https://www.fedex.com/fedextrack/?trknbr={e(o["tracking"])}" style="color:{b.accent}">Track with FedEx</a> <span style="color:#857d70">(sample number for this demo)</span></div>' if o.get("tracking") else ""
+    card = f"""{_pill("Order " + o["number"] + " · " + o["status"], b)}<div style="height:14px"></div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{b.soft};border-radius:14px"><tr><td style="padding:18px 20px;font-family:{FONT}"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{items}</table></td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px">{_detail_rows(rows, b)}</table>{link}"""
+    did = "found your order and sent you its details"
+    heading = f"Your order, {o['name'].split(' ')[0]}"
+    intro = "Here is your order confirmation again, with the tracking number if it has shipped."
+    body = layout(b, f"Order {o['number']} · {o['status']}", "Order confirmation", heading, intro, card, "Theo", did)
+    lines = [f"Order {o['number']}: {o['status']}", *(f"{i['name']}, {i['option']} ({i['price']})" for i in o["items"])]
+    if o.get("carrier"):
+        lines += [f"Carrier: {o['carrier']}", f"Tracking: {o['tracking']} (sample number for this demo)"]
+    if o.get("estimated"):
+        lines.append(f"Estimated: {o['estimated']}")
+    return f"Your Form & Field order {o['number']}", body, _text(b, heading, intro, lines, "Theo", did)
+
+
 def consult_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:
     """Alder & Finch: the booked free consultation. Returns (subject, html, text)."""
     b = BRANDS["lawfirm"]

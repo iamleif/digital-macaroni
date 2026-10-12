@@ -52,7 +52,8 @@ async def test_out_of_network_says_we_file_it():
 
 async def test_emergencies_only_use_the_held_slots():
     state, run = runner()
-    t = await run("triage_emergency", {"painLevel": 8, "swelling": False})
+    await run("note_patient", {"howLong": "two days"})
+    t = await run("triage_emergency", {"painLevel": 8, "swelling": False, "fever": False, "faceInjuryOrAccident": False})
     assert t.result["goTo"] == "same_day"
     r = await run("check_availability", {"type": "emergency", "date": MONDAY})
     starts = {(parse_slot(s["slotId"])[2], parse_slot(s["slotId"])[1]) for s in r.result["available"]}
@@ -133,3 +134,99 @@ async def test_never_looks_up_someone_who_is_new_or_has_not_said():
     await run("note_patient", {"name": "Kevin Sweeney", "newPatient": True})
     assert (await run("find_patient", {"name": "Kevin Sweeney", "dateOfBirth": "1942-02-07", "callerSaysTheyAreAPatient": True})).error == "new_patient"
     assert state.lookups == 0
+
+
+async def nxt(run, args):
+    return (await run("note_patient", args)).result
+
+
+async def test_next_asks_the_name_first_and_never_repeats_answered_questions():
+    state, run = runner()
+    r = await nxt(run, {"reason": "cleaning"})
+    assert r["next"] == "Can I get your name?" and r["nextField"] == "name"
+    r = await nxt(run, {"name": "Alex Taylor"})
+    assert r["nextField"] == "newPatient"
+    r = await nxt(run, {"newPatient": True})
+    assert r["nextField"] == "dateOfBirth"
+    r = await nxt(run, {"dateOfBirth": "1990-05-04"})
+    assert r["nextField"] == "lastVisit"  # reason was already given
+    r = await nxt(run, {"lastVisit": "two years ago"})
+    assert r["nextField"] == "insurance"
+    assert (await run("check_insurance", {"carrier": "Delta"})).ok
+    r = await nxt(run, {"reason": "cleaning"})
+    assert r["nextField"] == "relationship"
+    r = await nxt(run, {"relationship": "spouse"})
+    assert r["nextField"] == "subscriber"
+    r = await nxt(run, {"subscriber": "Pat Taylor"})
+    assert r["nextField"] == "memberId"
+    r = await nxt(run, {"memberId": "DD123"})
+    assert r["nextField"] == "groupNumber"
+    r = await nxt(run, {})  # optional: asked once only
+    assert r["nextField"] == "medicalAlert"
+    r = await nxt(run, {})
+    assert r["next"] is None and "Chart complete" in r["then"]
+
+
+async def test_skipped_questions_are_not_asked_again_and_no_insurance_skips_the_insurance_list():
+    _, run = runner()
+    await nxt(run, {"name": "Sam Lee", "newPatient": True, "dateOfBirth": "1985-01-02", "reason": "cleaning"})
+    r = await nxt(run, {"skipped": ["lastVisit", "insurance"]})
+    assert r["nextField"] == "medicalAlert"
+    r = await nxt(run, {"medicalAlert": "allergic to penicillin"})
+    assert r["next"] is None
+
+
+async def test_a_child_gets_the_child_questions():
+    _, run = runner()
+    r = await nxt(run, {"child": True})
+    assert r["next"] == "What's your child's name?"
+    r = await nxt(run, {"name": "Mia Lee", "newPatient": True})
+    assert r["nextField"] == "age"
+    r = await nxt(run, {"age": 6})
+    assert r["nextField"] == "dateOfBirth" and "their" in r["next"]
+
+
+async def test_a_found_patient_is_not_asked_the_new_patient_list():
+    _, run = runner()
+    assert (await run("find_patient", {"name": "Karen Davis", "dateOfBirth": "1979-06-22", "callerSaysTheyAreAPatient": True})).ok
+    r = await nxt(run, {})
+    assert r["nextField"] == "reason"
+    r = await nxt(run, {"reason": "cleaning"})
+    assert r["next"] is None and "Chart complete" in r["then"]
+
+
+async def test_a_current_patient_not_yet_found_is_sent_to_find_patient():
+    _, run = runner()
+    r = await nxt(run, {"name": "Karen Davis", "newPatient": False})
+    assert r["nextField"] == "dateOfBirth"
+    r = await nxt(run, {"dateOfBirth": "1979-06-22"})
+    assert r["next"] is None and "find_patient" in r["then"]
+
+
+async def test_triage_names_the_unanswered_red_flag_question_in_order_before_the_outcome():
+    state, run = runner()
+    r = await nxt(run, {"symptoms": ["pain"]})
+    assert r["nextField"] == "howLong"
+    t = await run("triage_emergency", {"painLevel": 6})
+    assert t.result["nextField"] == "howLong" and "goTo" not in t.result and not state.triage.get("outcome")
+    r = await nxt(run, {"howLong": "since Tuesday"})
+    assert r["nextField"] == "swelling"
+    t = await run("triage_emergency", {"swelling": True})
+    assert t.result["nextField"] == "swellingSpreading"
+    t = await run("triage_emergency", {"swellingSpreading": False})
+    assert t.result["nextField"] == "troubleBreathingOrSwallowing"
+    t = await run("triage_emergency", {"troubleBreathingOrSwallowing": False})
+    assert t.result["nextField"] == "fever"
+    t = await run("triage_emergency", {"fever": False})
+    assert t.result["nextField"] == "faceInjuryOrAccident"
+    t = await run("triage_emergency", {"faceInjuryOrAccident": False})
+    assert t.result["goTo"] == "same_day" and t.result.get("next") is None
+    assert (await nxt(run, {}))["nextField"] == "name"
+
+
+async def test_red_flags_return_the_outcome_even_with_questions_left():
+    state, run = runner()
+    t = await run("triage_emergency", {"troubleBreathingOrSwallowing": True})
+    assert t.result["goTo"] == "er" and "911" in t.result["say"]
+    r = await nxt(run, {})
+    assert r["next"] is None and "don't book" in r["then"]

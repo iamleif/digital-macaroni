@@ -101,6 +101,8 @@ class RealEstateState:
     messages: list[Message] = field(default_factory=list)
     seq: int = 0
     emailed: Optional[dict[str, Any]] = None
+    # How many times note_lead has put each lead question in front of the agent.
+    asked: dict[str, int] = field(default_factory=dict)
     opened: bool = False
 
 
@@ -185,6 +187,34 @@ def active(state: RealEstateState) -> list[Appointment]:
 
 def missing_fields(state: RealEstateState) -> list[str]:
     return [label for key, label in REQUIRED if state.lead.get(key) in (None, "", [])]
+
+
+# The brokerage's order for getting to know a lead: (key, how many times it may be put to the caller,
+# the question as it is said aloud). A question the caller dodges is not put a third time.
+def lead_questions(lead: dict[str, Any]) -> list[tuple[str, int, str]]:
+    intent = lead.get("intent")
+    buys, sells = intent in ("buy", "both"), intent in ("sell", "both")
+    qs: list[tuple[str, int, str]] = [("name", 2, "May I have your name?"), ("intent", 2, "Are you looking to buy, sell, or both?")]
+    if sells:
+        qs.append(("sellAddress", 2, "What's the address of the home you're thinking of selling?"))
+    if buys or sells:
+        qs.append(("timeline", 2, "When are you hoping to sell?" if intent == "sell" else "When are you hoping to move?"))
+    if buys:
+        qs.append(("financing", 2, "Are you pre-approved, paying cash, or still working on financing?"))
+        if lead.get("financing") in ("pre_approved", "talking_to_lender"):
+            qs.append(("lender", 2, "Who's your lender?"))
+        qs += [("firstTimeBuyer", 2, "Is this your first home?"), ("hasAgent", 2, "Are you already working with an agent?")]
+    if intent == "sell":
+        qs.append(("alsoBuying", 1, "Are you also looking to buy?"))
+    return qs
+
+
+def next_question(state: RealEstateState) -> Optional[tuple[str, str]]:
+    """The first question still unanswered (and not already asked as often as it may be), as (key, spoken)."""
+    for key, limit, text in lead_questions(state.lead):
+        if state.lead.get(key) in (None, "", []) and state.asked.get(key, 0) < limit:
+            return key, text
+    return None
 
 
 def score(state: RealEstateState) -> int:

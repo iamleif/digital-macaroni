@@ -80,9 +80,10 @@ def full_instruction(session: DemoSession) -> str:
     from datetime import datetime, timezone
 
     ctx = OpContext(now=datetime.now(timezone.utc), channel=session.channel)  # type: ignore[arg-type]
+    base = session.demo.instruction(session.state, ctx)
     if not session.demo.screen:
-        return session.demo.instruction(session.state, ctx)
-    return session.demo.instruction(session.state, ctx) + (PHONE_NOTE if session.channel == "phone" else BROWSER_NOTE)
+        return base
+    return base + (PHONE_NOTE if session.channel == "phone" else BROWSER_NOTE)
 
 
 def _instruction_for(demo_id: str):

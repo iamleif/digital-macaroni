@@ -94,6 +94,8 @@ class LawFirmState:
     emailed: Optional[dict[str, Any]] = None
     # The matter record opens on the first thing the caller says that is worth keeping.
     opened: bool = False
+    # Optional questions the caller declined or can't answer; they are not asked again.
+    declined: set[str] = field(default_factory=set)
 
 
 # ---- Time ----
@@ -191,6 +193,52 @@ def years_between(start: date, end: date) -> float:
 
 def missing_fields(state: LawFirmState) -> list[str]:
     return [label for key, label in REQUIRED if state.intake.get(key) in (None, "")]
+
+
+# The firm's intake order: (intake key, question as spoken, required). A question counts as answered once its key
+# is on the record (or the caller declined it, optional ones only). Death and serious injury are routed by
+# assess_case and the urgent flag on take_message, so they are not asked here.
+QUESTIONS: list[tuple[str, str, bool]] = [
+    ("accidentType", "What happened? What kind of accident was it?", True),
+    ("accidentDate", "When did it happen?", True),
+    ("accidentState", "Where did it happen, what city and state?", True),
+    ("injuryAreas", "What part of your body was hurt, and what hurts now?", False),
+    ("missedWork", "Has it kept you from working?", False),
+    ("symptoms", "Any passing out, tingling, numbness, dizziness or headaches?", False),
+    ("treatment", "What treatment have you had so far?", True),
+    ("treatingProvider", "Who is treating you, a hospital, clinic or doctor?", False),
+    ("atFault", "In your view, who was at fault?", True),
+    ("policeReport", "Was a police report filed?", False),
+    ("otherPartyInsurer", "Do you know the other side's insurance company?", False),
+    ("opposingParty", "Do you know the other party's name?", False),
+    ("witnesses", "Did anyone else see it happen?", False),
+    ("vehicleDamage", "Was there damage to your vehicle or property?", False),
+    ("hasLawyer", "Do you already have a lawyer for this?", True),
+    ("heardFrom", "How did you hear about us?", False),
+    ("name", "May I have your name?", True),
+    ("phone", "What's the best number to reach you? On a phone call use get_caller_number and confirm the last four digits.", False),
+    ("email", "Would you like to give an email address?", False),
+]
+_ALSO_ANSWERED_BY = {"otherPartyInsurer": ("otherPartyInsured",), "injuryAreas": ("injuries",)}
+
+
+def next_question(state: LawFirmState) -> dict[str, Any]:
+    """What to ask next and what is still missing, from what is on the record. The source of truth for intake order."""
+
+    def answered(key: str, required: bool) -> bool:
+        if any(state.intake.get(k) not in (None, "", []) for k in (key, *_ALSO_ANSWERED_BY.get(key, ()))):
+            return True
+        return not required and key in state.declined
+
+    left = [(k, q, r) for k, q, r in QUESTIONS if not answered(k, r)]
+    need = missing_fields(state)
+    out: dict[str, Any] = {"next": left[0][1] if left else None, "stillNeeded": need}
+    if left:
+        out["nextIsRequired"] = left[0][2]
+        out["questionsLeft"] = len(left)
+    else:
+        out["message"] = "Intake complete: move on to the conflict check." if not need else "Required details are still missing: " + ", ".join(need)
+    return out
 
 
 def score(state: LawFirmState) -> int:

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CookieSettings } from "@/components/studio/consent";
 import { InfoPage } from "@/components/studio/info-page";
-import { pageMeta } from "@/components/studio/site";
+import { JsonLd, pageLd, pageMeta } from "@/components/studio/site";
 
 export const metadata: Metadata = pageMeta({
   title: "Cookie policy — Digital Macaroni",
@@ -11,6 +11,7 @@ export const metadata: Metadata = pageMeta({
 
 export default function CookiesPage() {
   return <InfoPage title="Cookie policy." intro="Which cookies and browser storage this site uses, and how to change your choice." updated="October 10, 2026">
+    <JsonLd data={pageLd("/cookies/", "Cookie policy", metadata.description as string)} />
     <section>
       <h2>Your choice</h2>
       <p>On your first visit we ask whether we can use analytics cookies. If you say no, or don’t answer, no analytics tools load and nothing is stored for analytics. If you say yes, Google Analytics, Grain and PostHog load on the pages you visit.</p>

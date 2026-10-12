@@ -6,7 +6,7 @@ import { Airplane, Armchair, ArrowsClockwise, Barbell, Bed, Buildings, Calculato
 import type { Icon } from "@phosphor-icons/react";
 import { ArrowDown, ArrowUpRight, Check, Phone } from "../icons";
 import { voiceDemos } from "../live/demo-info";
-import { JsonLd, ORG_REF, SITE } from "../site";
+import { JsonLd, ORG_REF, SITE, WEBSITE_REF, breadcrumbs } from "../site";
 import { ARCHITECTURES, LOGOS, STORIES, stackOf, type ArchitectureStory, type LogoId } from "./content";
 import s from "./agent-page.module.css";
 
@@ -102,9 +102,14 @@ export function ArchitecturePage({ story }: { story: ArchitectureStory }) {
       headline: story.seoTitle,
       description: story.description,
       url,
+      inLanguage: "en",
       publisher: ORG_REF,
       author: ORG_REF,
+      isPartOf: WEBSITE_REF,
+      about: arch.name,
+      mainEntityOfPage: { "@type": "WebPage", "@id": `${url}#webpage`, url },
     }} />
+    <JsonLd data={breadcrumbs(["Voice agent architecture", `${SITE}/architecture/`], [arch.name, url])} />
     <article className={s.page}>
       <nav className={a.crumbs} aria-label="Breadcrumb"><a href="/architecture/">Voice agent architecture</a><span>/</span><span>{arch.name}</span></nav>
 

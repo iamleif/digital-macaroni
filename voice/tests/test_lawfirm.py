@@ -165,3 +165,40 @@ def test_the_record_opens_on_the_first_detail_and_injury_areas_become_chips():
     v = lawfirm.view(state)
     fields = {f["key"]: f for sec in v["record"]["sections"] for f in sec["fields"]}
     assert v["record"]["opened"] and fields["areas"]["value"] == ["Neck", "Back"] and fields["work"]["value"] == "Yes" and fields["insurer"]["value"] == "State Farm"
+
+
+def test_note_intake_says_what_to_ask_next_and_never_repeats_an_answered_question():
+    state, run = runner()
+    r = run("note_intake", {"accidentType": "car"}).result
+    assert "When did it happen" in r["next"] and r["nextIsRequired"] and "the date it happened" in r["stillNeeded"]
+    asked = [r["next"]]
+    for patch in ({"accidentDate": "2026-09-20"}, {"accidentState": "CO"}, {"injuryAreas": ["neck"]}, {"missedWork": "no"}):
+        r = run("note_intake", patch).result
+        assert r["next"] not in asked
+        asked.append(r["next"])
+    assert "tingling" in r["next"]  # symptoms follow missed work, in the firm's order
+    # Answering ahead of the tool skips those questions.
+    r = run("note_intake", {"symptoms": "headaches", "treatment": "emergency_room", "treatingProvider": "Denver Health", "atFault": "other_party"}).result
+    assert "police report" in r["next"]
+    assert run("note_intake", {"policeReport": "yes"}).result["next"] not in asked
+
+
+def test_declined_optional_questions_are_not_asked_again_but_required_ones_are():
+    state, run = runner()
+    run("note_intake", {k: v for k, v in CRASH.items() if k not in ("policeReport", "otherPartyInsured")})
+    r = run("note_intake", {"declined": ["policeReport", "accidentDate"]}).result
+    assert "police report" not in r["next"]
+    assert state.declined == {"policeReport"}
+
+
+def test_intake_reports_complete_when_everything_is_collected():
+    state, run = runner()
+    full = {**CRASH, "injuryAreas": ["neck", "back"], "missedWork": "yes", "symptoms": "dizziness", "treatingProvider": "Denver Health",
+            "otherPartyInsurer": "State Farm", "opposingParty": "Sam Lee", "witnesses": "none", "vehicleDamage": "rear bumper",
+            "heardFrom": "a friend", "phone": "3035550142", "email": "alex@example.com"}
+    r = run("note_intake", full).result
+    assert r["next"] is None and r["stillNeeded"] == [] and "conflict check" in r["message"]
+    # Required-only is not complete: optional questions are still surfaced, flagged as optional.
+    state, run = runner()
+    r = run("note_intake", {k: CRASH[k] for k in ("name", "accidentType", "accidentDate", "accidentState", "treatment", "atFault", "hasLawyer")}).result
+    assert r["stillNeeded"] == [] and r["next"] and r["nextIsRequired"] is False

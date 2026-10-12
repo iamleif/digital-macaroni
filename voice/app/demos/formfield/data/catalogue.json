@@ -233,6 +233,283 @@
           "stock": 3
         }
       ]
+    },
+    {
+      "id": "dome-desk-lamp",
+      "name": "Dome Desk Lamp",
+      "category": "lighting",
+      "price": 72,
+      "description": "A slim adjustable desk lamp with a rounded metal dome head. Swivels and tilts to point the light where you work.",
+      "materials": "Powder-coated steel, weighted base, fabric cord",
+      "size": "20 inches tall, arm reaches 14 inches",
+      "colors": [
+        "black",
+        "matte black",
+        "white"
+      ],
+      "variants": [
+        {
+          "id": "dome-black",
+          "option": "Matte black",
+          "stock": 6
+        },
+        {
+          "id": "dome-white",
+          "option": "White",
+          "stock": 0
+        }
+      ]
+    },
+    {
+      "id": "dinner-plates",
+      "name": "Stoneware Dinner Plates, set of four",
+      "category": "tableware",
+      "price": 68,
+      "description": "Wide, flat-rimmed dinner plates with a satin glaze. They stack neatly and are dishwasher and microwave safe.",
+      "materials": "Stoneware with a satin glaze",
+      "size": "10.5 inches across each",
+      "colors": [
+        "sand",
+        "beige",
+        "ink",
+        "blue"
+      ],
+      "variants": [
+        {
+          "id": "plates-sand",
+          "option": "Sand",
+          "stock": 5
+        },
+        {
+          "id": "plates-ink",
+          "option": "Ink blue",
+          "stock": 2
+        }
+      ]
+    },
+    {
+      "id": "ribbed-bowl",
+      "name": "Ribbed Serving Bowl",
+      "category": "tableware",
+      "price": 38,
+      "description": "A wide, shallow serving bowl with vertical ribbing outside and a smooth matte inside. Good for salads, pasta and fruit.",
+      "materials": "Glazed stoneware",
+      "size": "11 inches across, 4 inches deep",
+      "colors": [
+        "oat",
+        "beige",
+        "sage",
+        "green"
+      ],
+      "variants": [
+        {
+          "id": "bowl-oat",
+          "option": "Oat",
+          "stock": 9
+        },
+        {
+          "id": "bowl-sage",
+          "option": "Sage",
+          "stock": 0
+        }
+      ]
+    },
+    {
+      "id": "water-carafe",
+      "name": "Glass Carafe with Tumbler",
+      "category": "tableware",
+      "price": 34,
+      "description": "A one-litre clear glass carafe with a matching tumbler that doubles as the lid. Made for a bedside table or a dinner table.",
+      "materials": "Heat-resistant borosilicate glass",
+      "size": "1 litre, 9 inches tall with the tumbler on",
+      "colors": [
+        "clear",
+        "glass",
+        "smoke",
+        "grey"
+      ],
+      "variants": [
+        {
+          "id": "carafe-clear",
+          "option": "Clear",
+          "stock": 11
+        },
+        {
+          "id": "carafe-smoke",
+          "option": "Smoke",
+          "stock": 3
+        }
+      ]
+    },
+    {
+      "id": "waffle-towel",
+      "name": "Waffle Cotton Bath Towel",
+      "category": "textiles",
+      "price": 36,
+      "description": "A lightweight waffle-weave bath towel that dries quickly and gets softer with every wash.",
+      "materials": "100% combed cotton",
+      "size": "30 by 56 inches",
+      "colors": [
+        "sand",
+        "beige",
+        "white",
+        "slate",
+        "grey"
+      ],
+      "variants": [
+        {
+          "id": "towel-sand",
+          "option": "Sand",
+          "stock": 10
+        },
+        {
+          "id": "towel-white",
+          "option": "White",
+          "stock": 14
+        },
+        {
+          "id": "towel-slate",
+          "option": "Slate",
+          "stock": 0
+        }
+      ]
+    },
+    {
+      "id": "linen-cushion",
+      "name": "Linen Cushion",
+      "category": "textiles",
+      "price": 42,
+      "description": "A plump 20 inch square cushion in washed linen with a hidden zip. Insert included.",
+      "materials": "100% European linen cover, feather-free insert",
+      "size": "20 by 20 inches",
+      "colors": [
+        "olive",
+        "green",
+        "natural",
+        "beige",
+        "rust",
+        "orange"
+      ],
+      "variants": [
+        {
+          "id": "cushion-olive",
+          "option": "Olive",
+          "stock": 7
+        },
+        {
+          "id": "cushion-natural",
+          "option": "Natural",
+          "stock": 5
+        },
+        {
+          "id": "cushion-rust",
+          "option": "Rust",
+          "stock": 0
+        }
+      ]
+    },
+    {
+      "id": "oak-wall-shelf",
+      "name": "Oak Wall Shelf",
+      "category": "furniture",
+      "price": 85,
+      "description": "A single solid-oak plank on hidden brackets for books, plants and small frames. Holds up to 25 pounds.",
+      "materials": "Solid oak, oil finish, steel brackets",
+      "size": "24 inches wide, 7 inches deep",
+      "colors": [
+        "oak",
+        "light wood",
+        "walnut",
+        "dark wood"
+      ],
+      "variants": [
+        {
+          "id": "shelf-oak",
+          "option": "Oak",
+          "stock": 4
+        },
+        {
+          "id": "shelf-walnut",
+          "option": "Walnut",
+          "stock": 0
+        }
+      ]
+    },
+    {
+      "id": "seagrass-stool",
+      "name": "Seagrass Stool",
+      "category": "furniture",
+      "price": 98,
+      "description": "A hand-woven seagrass stool that works as a seat, a side table or a footrest. Light enough to carry.",
+      "materials": "Seagrass woven over a wooden frame",
+      "size": "16 inches tall, 14 inch top",
+      "colors": [
+        "natural",
+        "straw",
+        "beige"
+      ],
+      "variants": [
+        {
+          "id": "stool-natural",
+          "option": "Natural",
+          "stock": 3
+        }
+      ]
+    },
+    {
+      "id": "hanging-planter",
+      "name": "Clay Hanging Planter",
+      "category": "planters",
+      "price": 44,
+      "description": "A clay planter with a drainage saucer, hung from three knotted cotton cords. Fits a 5 inch plant pot.",
+      "materials": "Terracotta, cotton cord, steel hook",
+      "size": "6 inches across, 20 inches hanging length",
+      "colors": [
+        "clay",
+        "terracotta",
+        "orange",
+        "sage",
+        "green"
+      ],
+      "variants": [
+        {
+          "id": "hanging-clay",
+          "option": "Clay",
+          "stock": 6
+        },
+        {
+          "id": "hanging-sage",
+          "option": "Sage",
+          "stock": 2
+        }
+      ]
+    },
+    {
+      "id": "bud-vase-trio",
+      "name": "Bud Vase Trio",
+      "category": "planters",
+      "price": 36,
+      "description": "Three small stoneware vases in different heights for single stems and dried flowers.",
+      "materials": "Stoneware with a satin glaze",
+      "size": "3, 5 and 7 inches tall",
+      "colors": [
+        "sage",
+        "green",
+        "oat",
+        "beige"
+      ],
+      "variants": [
+        {
+          "id": "vases-sage",
+          "option": "Sage",
+          "stock": 8
+        },
+        {
+          "id": "vases-oat",
+          "option": "Oat",
+          "stock": 3
+        }
+      ]
     }
   ]
 }

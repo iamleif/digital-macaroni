@@ -62,6 +62,9 @@ class DentalState:
     lookups: int = 0
     insurance: Optional[dict[str, Any]] = None
     triage: Optional[dict[str, Any]] = None
+    # Questions the caller declined or couldn't answer, and optional ones already asked once: never asked again.
+    skipped: list[str] = field(default_factory=list)
+    asked: list[str] = field(default_factory=list)
     offered: list[str] = field(default_factory=list)
     viewing: Optional[dict[str, Any]] = None
     messages: list[Message] = field(default_factory=list)

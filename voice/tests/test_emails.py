@@ -60,11 +60,18 @@ async def test_theo_emails_the_reservation_with_the_items_picture(outbox):
     assert "/email-assets/products/ridge-lamp.jpg" in msg["html"] and "Sage green" in msg["text"] and "210 Market Street" in msg["text"]
 
 
-async def test_theo_uses_a_drawing_for_items_without_a_photograph(outbox):
+async def test_every_catalogue_item_has_a_photograph_for_the_email(outbox):
+    from pathlib import Path
+
+    from app.demos.formfield import CATALOGUE, PHOTOS
+
+    assets = Path(__file__).parent.parent / "app" / "email_assets" / "products"
+    assert len(CATALOGUE) == 18 and {p["id"] for p in CATALOGUE} == PHOTOS
+    assert all((assets / f"{p['id']}.jpg").exists() for p in CATALOGUE)
     state, run = runner(formfield)
     run("reserve_item", {"variantId": "moss-green", "quantity": 1, "name": "Sam Rivera", "callerConfirmed": True})
     await call(formfield, state, "email_reservation", {"email": "sam@example.com", "callerConfirmed": True})
-    assert "/email-assets/products/moss-lamp.png" in outbox[0]["html"]
+    assert "/email-assets/products/moss-lamp.jpg" in outbox[0]["html"]
 
 
 async def test_a_bad_address_is_refused_with_a_plain_instruction(outbox):
@@ -95,3 +102,21 @@ async def test_a_misheard_domain_is_caught_before_anything_is_sent(outbox, monke
     assert r.error == "unknown_domain" and "spell the part after the @" in r.message and not outbox
     ok = await call(formfield, state, "email_reservation", {"email": "delivered@resend.dev", "callerConfirmed": True})
     assert ok.ok and len(outbox) == 1
+
+
+async def test_theo_never_gets_the_tracking_number_but_can_email_it(outbox):
+    state, run = runner(formfield)
+    r = run("lookup_order", {"orderNumber": "1042", "email": "emilia@example.com"})
+    assert r.ok and r.result["carrier"] == "FedEx" and "999000011042" not in str(r.result)
+    sent = await call(formfield, state, "email_reservation", {"email": "sam@example.com", "callerConfirmed": True})
+    assert sent.ok and "999000011042" in outbox[0]["text"] and "FedEx" in outbox[0]["text"] and "Order 1042" in outbox[0]["subject"] + outbox[0]["text"]
+    again = await call(formfield, state, "email_reservation", {"email": "sam@example.com", "callerConfirmed": True})
+    assert again.ok and len(outbox) == 1
+
+
+async def test_an_order_that_has_not_shipped_has_no_tracking_to_send(outbox):
+    state, run = runner(formfield)
+    r = run("lookup_order", {"orderNumber": "1051", "email": "tomas.rivera@example.com"})
+    assert r.ok and "carrier" not in r.result
+    await call(formfield, state, "email_reservation", {"email": "sam@example.com", "callerConfirmed": True})
+    assert "Added once it ships" in outbox[0]["text"] or "Added once it ships" in outbox[0]["html"]

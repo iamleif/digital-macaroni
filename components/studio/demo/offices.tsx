@@ -1,5 +1,6 @@
 import { Fragment, createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ProductArt, swatch } from "../live/product-art";
+import shopCatalogue from "../../../voice/app/demos/formfield/data/catalogue.json";
 import { formfieldEmpty } from "../live/sample-views";
 import type { AppointmentView, BrandId, DealershipView, DentalView, FormFieldView, HotelsStage, HotelsView, InsuranceView, LawFirmView, RealEstateView, NorthlineView, RecordField, TravelJourney, TravelSeatCell, TravelSeatMap, TravelStage, TravelView } from "../live/types";
 import { BrandMark } from "../brand-marks";
@@ -302,12 +303,8 @@ const APPOINTMENT_SCREENS: Record<string, string> = { note_booking: "booking", n
 
 /* ---------------- Form & Field ---------------- */
 
-const PHOTOS: Record<string, string> = {
-  "ridge-lamp": "/studio/products/ridge-lamp.jpg",
-  "everyday-mugs": "/studio/products/everyday-mugs.jpg",
-  "field-planter": "/studio/products/field-planter.jpg",
-  "linen-throw": "/studio/products/linen-throw.jpg",
-};
+// Every catalogue item has a studio photograph; the drawings only cover an id the catalogue doesn't know.
+const PHOTOS: Record<string, string> = Object.fromEntries(shopCatalogue.products.map((p) => [p.id, `/studio/products/${p.id}.jpg`]));
 
 function Photo({ id, name, option }: { id: string | undefined; name: string; option: string }) {
   const src = id ? PHOTOS[id] : undefined;

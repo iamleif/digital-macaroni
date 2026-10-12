@@ -132,6 +132,10 @@ def lookup_order(state: FormFieldState, i: LookupOrder, ctx: OpContext) -> OpRes
     result: dict[str, Any] = {"orderNumber": order["number"], "customer": order["name"].split(" ")[0], "items": [f"{x['name']}, {x['option']}" for x in order["items"]], "status": order["status"]}
     if order["expected"] >= 0:
         result["carrierEstimate"] = date_label(add_days(state.today, order["expected"]))
+    if order.get("tracking"):
+        # The number itself is never handed to the agent: it can only be emailed, never spoken.
+        result["carrier"] = order["carrier"]
+        result["trackingNumber"] = "on the order confirmation email; never read it out. To get it to them, resend the confirmation with email_reservation."
     return ok(f"Order {order['number']} matched", result, True)
 
 
@@ -178,11 +182,19 @@ class EmailReservation(BaseModel):
 
 
 async def email_reservation(state: FormFieldState, i: EmailReservation, ctx: OpContext) -> OpResult:
-    """Emails the caller the pickup reservation with the item's picture, or a summary of the call when nothing was reserved."""
+    """Emails the caller the pickup reservation with the item's picture; the order confirmation (with carrier and tracking number) when an order was matched and nothing reserved; otherwise a summary of the call."""
     held = [r for r in state.reservations if r.status == "reserved"]
-    kind = "booking" if held else "summary"
+    order = next((o for o in ORDERS if o["number"] == state.matched_order), None) if not held else None
+    kind = "booking" if held else "order" if order else "summary"
     if already_sent(state.emailed, i.email, kind):
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
+    if order:
+        estimated = date_label(add_days(state.today, order["expected"])) if order["expected"] >= 0 else None
+        masked, why = await email.confirm(i.email, email.order_confirmation({**order, "estimated": estimated}))
+        if why:
+            return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))
+        state.emailed = {"to": masked, "reference": order["number"], "kind": "order"}
+        return ok(f"Order {order['number']} emailed · {masked}", {"sent": True, "to": masked}, True)
     if not held:
         messages = [{"id": m["id"], "summary": m["summary"], "callback": mask_number(m["callbackNumber"])} for m in state.messages]
         rows = [("Support request", f"{s['id']} · {s['issue']} · we reply by email within one business day") for s in state.support_requests]

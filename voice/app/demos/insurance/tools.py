@@ -27,7 +27,9 @@ from .state import (
     free_agent,
     open_slots,
     parse_slot,
-    quote_missing,
+    QUOTE_DONE,
+    claim_next,
+    quote_next,
 )
 from .store import BUSINESS, CHANGE_LABEL, CLAIM_LABEL, CLOSED_WEEKDAYS, LINE_LABEL, SERVICE, carrier, first_name, person
 
@@ -66,10 +68,14 @@ class NoteAccount(BaseModel):
     yearBuilt: Optional[int] = Field(None, ge=1800, le=2027, description="Home quotes: year the home was built.")
     squareFeet: Optional[int] = Field(None, ge=200, le=20000, description="Home quotes: square footage.")
     personalProperty: Optional[int] = Field(None, ge=1000, le=500000, description="Renters quotes: roughly what their belongings are worth, in dollars.")
+    skip: Optional[list[Literal["incidents", "currentCarrier", "renewalDate", "coverageWanted"]]] = Field(None, description="Optional questions the caller declined or cannot answer; they are not asked again.")
 
 
 def note_account(state: InsuranceState, i: NoteAccount, ctx: OpContext) -> OpResult:
     new = {k: v for k, v in i.model_dump().items() if v is not None}
+    skip = new.pop("skip", None)
+    if skip:
+        new["skipped"] = sorted(set(state.account.get("skipped", [])) | set(skip))
     if "dateOfBirth" in new and new["dateOfBirth"] >= state.today:
         return fail("bad_date", "That date of birth is not right. Check it with the caller.")
     for k in ("name", "address", "currentCarrier"):
@@ -79,9 +85,14 @@ def note_account(state: InsuranceState, i: NoteAccount, ctx: OpContext) -> OpRes
     state.account.update(new)
     state.opened = True
     out: dict[str, Any] = {}
-    if state.account.get("quoteLines"):
-        miss = quote_missing(state)
-        out["stillNeededForTheQuote"] = miss or "Nothing: offer a call with a licensed agent to go through the options."
+    if not state.customer:
+        question, optional = quote_next(state)
+        out["next"] = question
+        if question is None:
+            out["done"] = QUOTE_DONE
+        elif optional:
+            out["optional"] = True
+            out["ifDeclined"] = "If they can't or won't say, send it in skip and move on."
     return ok(f"Noted {len(changed)} detail{'s' if len(changed) != 1 else ''}" if changed else "Nothing new", out, bool(changed))
 
 
@@ -179,12 +190,14 @@ def report_claim(state: InsuranceState, i: ReportClaim, ctx: OpContext) -> OpRes
     state.claim["policy"] = p["number"]
     state.policy = p["number"]
     c = carrier(p["carrier"])
-    missing = [label for key, label in (("kind", "what happened"), ("date", "when"), ("location", "where"), ("injuries", "whether anyone was hurt")) if key not in state.claim]
+    question, optional = claim_next(state.claim)
     out: dict[str, Any] = {"noticeId": state.claim["id"], "carrier": c["name"], "claimsLine": c["claimsLine"], "claimsOnline": c["claimsOnline"]}
-    if missing:
-        out["stillNeeded"] = missing
-    else:
-        out["say"] = f"Say the details are logged for our team and {first_name(SERVICE)} will follow up. Give the {c['name']} claims line slowly, digit by digit, and say the carrier's adjuster decides coverage. If anyone was hurt, say to get medical help first."
+    out["next"] = question
+    if question is None:
+        out["done"] = f"Say the details are logged for our team and {first_name(SERVICE)} will follow up. Give the {c['name']} claims line slowly, digit by digit, and say the carrier's adjuster decides coverage. If anyone was hurt, say to get medical help first. Then ask if there is anything else."
+    elif optional:
+        out["optional"] = True
+        out["ifDeclined"] = "If they can't or won't say, note it as unknown and move on."
     return ok(f"Claim notice {state.claim['id']} · {c['name']}", out, True)
 
 

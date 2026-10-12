@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ArrowUpRight, Check } from "@/components/studio/icons";
 import c from "@/components/studio/contact.module.css";
 import { CookieSettings } from "@/components/studio/consent";
-import { JsonLd, ORG_REF, SITE, pageMeta } from "@/components/studio/site";
+import { JsonLd, ORG_REF, SITE, pageMeta, webPage } from "@/components/studio/site";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = pageMeta({
@@ -17,7 +17,7 @@ export default function ContactPage() {
   return (
     <div className={c.page}>
       <JsonLd data={[
-        { "@context": "https://schema.org", "@type": "ContactPage", url: `${SITE}/contact/`, name: "Contact Digital Macaroni", description: metadata.description, isPartOf: { "@id": `${SITE}/#website` }, about: ORG_REF, mainEntity: ORG_REF },
+        webPage({ url: `${SITE}/contact/`, name: "Contact Digital Macaroni", description: metadata.description as string, type: "ContactPage", extra: { about: ORG_REF, mainEntity: ORG_REF } }),
         { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/` }, { "@type": "ListItem", position: 2, name: "Contact", item: `${SITE}/contact/` }] },
       ]} />
       <header className={c.top}>

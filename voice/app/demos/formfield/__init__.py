@@ -61,6 +61,6 @@ formfield: DemoDefinition[FormFieldState] = DemoDefinition(
             CreateSupportRequest,
         ),
         "take_message": Operation("Leaving a message for the team", "Leave a callback request for the shop team.", take_message, TakeMessage),
-        "email_reservation": Operation("Emailing the caller", "Email the caller the pickup reservation, or a summary of the call (with recap) when nothing was reserved, after they confirm the address read back to them.", email_reservation, EmailReservation),
+        "email_reservation": Operation("Emailing the caller", "Email the caller the pickup reservation; or, when they asked about an order and nothing was reserved, the order confirmation with its tracking number (the only way tracking numbers are shared); otherwise a summary of the call (with recap). Only after they confirm the address read back to them.", email_reservation, EmailReservation),
     },
 )

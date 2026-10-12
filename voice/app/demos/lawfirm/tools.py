@@ -26,7 +26,9 @@ from .state import (
     describe_slot,
     eligible_attorneys,
     free_attorney,
+    QUESTIONS,
     missing_fields,
+    next_question,
     name_matches,
     open_slots,
     parse_day,
@@ -66,6 +68,7 @@ class NoteIntake(BaseModel):
     symptoms: Optional[str] = Field(None, min_length=2, max_length=160, description="Symptoms worth flagging the caller mentions: lost consciousness, tingling or numbness, dizziness, nausea, headaches.")
     vehicleDamage: Optional[str] = Field(None, min_length=2, max_length=120, description="Damage to the caller's vehicle or property, in the caller's words, if any.")
     heardFrom: Optional[str] = Field(None, min_length=2, max_length=80, description="How the caller found the firm (search, ad, referral, a friend, social media...), in their words.")
+    declined: Optional[list[str]] = Field(None, description="Optional intake fields the caller won't or can't answer, e.g. [\"policeReport\"]; they won't be asked again.")
 
 
 def note_intake(state: LawFirmState, i: NoteIntake, ctx: OpContext) -> OpResult:
@@ -81,6 +84,8 @@ def note_intake(state: LawFirmState, i: NoteIntake, ctx: OpContext) -> OpResult:
     for k in ("name", "accidentCity", "injuries", "opposingParty", "otherPartyInsurer", "witnesses", "treatingProvider", "symptoms", "vehicleDamage", "heardFrom"):
         if k in new:
             new[k] = new[k].strip()
+    declined = new.pop("declined", None) or []
+    state.declined.update(k for k in declined if k in {q[0] for q in QUESTIONS if not q[2]})
     changed = [k for k, v in new.items() if state.intake.get(k) != v]
     # New facts invalidate what was already decided from the old ones.
     if changed and state.assessment and not state.consults:
@@ -90,7 +95,7 @@ def note_intake(state: LawFirmState, i: NoteIntake, ctx: OpContext) -> OpResult:
         state.conflict = None
     state.intake.update(new)
     state.opened = True
-    return ok(f"Noted {len(changed)} detail{'s' if len(changed) != 1 else ''}" if changed else "Nothing new", {}, bool(changed))
+    return ok(f"Noted {len(changed)} detail{'s' if len(changed) != 1 else ''}" if changed else "Nothing new", next_question(state), bool(changed or declined))
 
 
 class CheckConflicts(BaseModel):

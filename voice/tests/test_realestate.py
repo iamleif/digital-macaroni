@@ -167,3 +167,50 @@ def test_the_prompt_carries_the_fair_housing_rules():
     state = realestate.create_state(NOW)
     p = realestate.instruction(state, CTX)
     assert "Fair housing" in p and "crime maps" in p and "Please tell me the number on your screen." in p
+
+
+class TestNextQuestion:
+    async def test_buyer_questions_come_one_at_a_time_in_order_and_skip_answered(self):
+        _, run = runner()
+        r = await run("note_lead", {"intent": "buy"})
+        assert "name" in r.result["next"] and r.result["nextIsRequired"] is True
+        r = await run("note_lead", {"name": "Jamie Cole"})
+        assert "move" in r.result["next"] and r.result["nextIsRequired"] is True
+        r = await run("note_lead", {"timeline": "three_months", "firstTimeBuyer": True})
+        assert "pre-approved" in r.result["next"] and r.result["nextIsRequired"] is False
+        r = await run("note_lead", {"financing": "pre_approved"})
+        assert "lender" in r.result["next"]
+        r = await run("note_lead", {"lender": "Amplify"})
+        assert "agent" in r.result["next"]
+        r = await run("note_lead", {"hasAgent": False})
+        assert r.result["next"] is None and "collected" in r.result
+
+    async def test_cash_buyer_is_not_asked_for_a_lender(self):
+        _, run = runner()
+        r = await run("note_lead", {"name": "A B", "intent": "buy", "timeline": "now", "financing": "cash"})
+        assert "first home" in r.result["next"]
+
+    async def test_seller_path_asks_address_timeline_then_also_buying(self):
+        _, run = runner()
+        r = await run("note_lead", {"name": "Sam Lee", "intent": "sell"})
+        assert "address" in r.result["next"]
+        r = await run("note_lead", {"sellAddress": "12 Oak St, Austin"})
+        assert "sell" in r.result["next"] and "move" not in r.result["next"]
+        r = await run("note_lead", {"timeline": "six_months"})
+        assert "also looking to buy" in r.result["next"]
+        r = await run("note_lead", {"alsoBuying": False})
+        assert r.result["next"] is None
+
+    async def test_also_buying_turns_a_seller_into_both_and_opens_the_buyer_questions(self):
+        state, run = runner()
+        r = await run("note_lead", {"name": "Sam Lee", "intent": "sell", "sellAddress": "12 Oak St, Austin", "timeline": "now", "alsoBuying": True})
+        assert state.lead["intent"] == "both" and "pre-approved" in r.result["next"]
+
+    async def test_an_unanswered_question_is_not_asked_a_third_time(self):
+        _, run = runner()
+        await run("note_lead", {"intent": "buy", "name": "Ana Ruiz", "timeline": "now"})  # puts financing
+        r = await run("note_lead", {"phone": "+15125550142"})  # financing again
+        assert "pre-approved" in r.result["next"]
+        r = await run("note_lead", {"email": "a@b.com"})
+        assert "first home" in r.result["next"]
+        assert "tier" not in str(r.result).lower()

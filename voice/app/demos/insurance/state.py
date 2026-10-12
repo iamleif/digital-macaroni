@@ -165,3 +165,75 @@ def quote_missing(state: InsuranceState) -> list[str]:
             if not a.get(key) and label not in need:
                 need.append(label)
     return need
+
+
+QUOTE_DONE = "Collected: say a licensed agent will go through the numbers, check there are no other drivers or vehicles, then offer a call with one (check_availability for their day)."
+
+# (field, question, mandatory). Order is the agency's order, one question at a time.
+CLAIM_QUESTIONS: list[tuple[str, str, bool]] = [
+    ("kind", "What happened?", True),
+    ("date", "When did it happen?", True),
+    ("location", "Where did it happen?", True),
+    ("injuries", "Was anyone hurt?", True),
+    ("policeReport", "Was a police report made?", False),
+    ("otherParty", "Was another driver or party involved, and do you know their insurer?", False),
+    ("photos", "Do you have any photos?", False),
+]
+
+
+def claim_next(claim: dict[str, Any]) -> tuple[Optional[str], bool]:
+    """The next unanswered claim question and whether it is optional; (None, False) when all are answered."""
+    for key, question, mandatory in CLAIM_QUESTIONS:
+        if key not in claim:
+            return question, not mandatory
+    return None, False
+
+
+def _missing_driver_detail(a: dict[str, Any]) -> Optional[str]:
+    for d in a.get("drivers") or []:
+        who = d.get("name") or "the driver"
+        if not d.get("dateOfBirth"):
+            return f"What is {who}'s date of birth?"
+        if d.get("yearsLicensed") is None:
+            return f"How many years has {who} been licensed?"
+    return None
+
+
+def _quote_steps(a: dict[str, Any]) -> list[tuple[bool, str, bool]]:
+    """(already answered, question, mandatory), in the agency's order, for what the caller wants quoted."""
+    lines = a.get("quoteLines", [])
+    skipped = set(a.get("skipped", []))
+    steps: list[tuple[bool, str, bool]] = [(bool(a.get("name")), "May I have your name?", True)]
+    if "auto" not in lines:
+        steps.append((bool(a.get("dateOfBirth")), "What is your date of birth?", True))
+    for line in lines:
+        if line == "auto":
+            steps.append((bool(a.get("drivers")), "Who will be driving? Please give me each driver's name.", True))
+            steps.append((_missing_driver_detail(a) is None, _missing_driver_detail(a) or "", True))
+            steps.append((all(d.get("incidents") for d in a.get("drivers") or []) and bool(a.get("drivers")) or "incidents" in skipped, "Any tickets or accidents in the last five years, for any driver?", False))
+            steps.append((bool(a.get("vehicles")), "What vehicles are we insuring? Year, make and model of each.", True))
+            steps.append((bool(a.get("address")), "What address are the vehicles kept at?", True))
+        elif line == "home":
+            steps.append((bool(a.get("address")), "What is the home's address?", True))
+            steps.append((bool(a.get("yearBuilt")), "What year was the home built?", True))
+            steps.append((bool(a.get("squareFeet")), "Roughly how many square feet is it?", True))
+        elif line == "renters":
+            steps.append((bool(a.get("address")), "What is the rental address?", True))
+            steps.append((bool(a.get("personalProperty")), "Roughly what are your belongings worth?", True))
+    steps += [
+        (bool(a.get("currentCarrier")) or "currentCarrier" in skipped, "Who insures you now?", False),
+        (bool(a.get("renewalDate")) or "renewalDate" in skipped, "When does that policy renew?", False),
+        (bool(a.get("coverageWanted")) or "coverageWanted" in skipped, "Are there any extras you want on it?", False),
+    ]
+    return steps
+
+
+def quote_next(state: InsuranceState) -> tuple[Optional[str], bool]:
+    """The next unanswered quote question and whether it is optional; (None, False) when everything is collected."""
+    a = state.account
+    if not a.get("quoteLines"):
+        return "What would you like quoted: auto, home, renters, or a mix?", False
+    for done, question, mandatory in _quote_steps(a):
+        if not done:
+            return question, not mandatory
+    return None, False

@@ -27,12 +27,13 @@ from .state import (
     describe_slot,
     is_free,
     money,
+    next_question,
     open_slots,
     parse_slot,
     spoken,
     who_handles,
 )
-from .store import AREA_NAME, BUSINESS, CLOSED_WEEKDAYS, agent, first_name, listing
+from .store import AREA_NAME, BUSINESS, CLOSED_WEEKDAYS, REQUIRED, agent, first_name, listing
 
 
 def get_brokerage_info(state: RealEstateState, _: Any, ctx: OpContext) -> OpResult:
@@ -54,6 +55,7 @@ class NoteLead(BaseModel):
     lender: Optional[str] = Field(None, min_length=2, max_length=80, description="Their lender, if they named one.")
     firstTimeBuyer: Optional[bool] = Field(None, description="True if this is their first home.")
     hasAgent: Optional[bool] = Field(None, description="True if they already have a signed agreement with another agent.")
+    alsoBuying: Optional[bool] = Field(None, description="Sellers: true if they are also buying, false if not.")
     sellAddress: Optional[str] = Field(None, min_length=5, max_length=140, description="Sellers: the address of the home they want to sell.")
     sellerReason: Optional[SellerReason] = Field(None, description="Sellers: why they are selling, if they said.")
 
@@ -65,6 +67,8 @@ def note_lead(state: RealEstateState, i: NoteLead, ctx: OpContext) -> OpResult:
             new[k] = new[k].strip()
     if "minPrice" in new and "maxPrice" in new and new["minPrice"] > new["maxPrice"]:
         new["minPrice"], new["maxPrice"] = new["maxPrice"], new["minPrice"]
+    if new.get("alsoBuying") and (new.get("intent") or state.lead.get("intent")) == "sell":
+        new["intent"] = "both"
     changed = [k for k, v in new.items() if state.lead.get(k) != v]
     state.lead.update(new)
     state.opened = True
@@ -74,6 +78,14 @@ def note_lead(state: RealEstateState, i: NoteLead, ctx: OpContext) -> OpResult:
         state.contact = c
         if c:
             out["knownContact"] = {"spokeWith": agent(c["agent"])["name"], "note": c["lastContact"], "say": "Say warmly that you see they spoke with that agent, in one short sentence. Ask them to confirm the last four digits of their phone before you mention any detail of the note."}
+    nxt = next_question(state)
+    if nxt:
+        state.asked[nxt[0]] = state.asked.get(nxt[0], 0) + 1
+        out["next"] = nxt[1]
+        out["nextIsRequired"] = nxt[0] in {k for k, _ in REQUIRED}
+    else:
+        out["next"] = None
+        out["collected"] = "Everything we ask is collected: move on to listings, a showing, a valuation or a message. Don't ask the lead questions again."
     return ok(f"Noted {len(changed)} detail{'s' if len(changed) != 1 else ''}" if changed else "Nothing new", out, bool(changed))
 
 

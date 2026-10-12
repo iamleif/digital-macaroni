@@ -3,12 +3,13 @@ import { AnswersShell } from "../answers/answer-page";
 import a from "../answers/answers.module.css";
 import { ArrowRight, ArrowUpRight, Phone } from "../icons";
 import { voiceDemos } from "../live/demo-info";
-import { FOUNDER, JsonLd, ORG_REF, SITE } from "../site";
+import { FOUNDER, FOUNDER_REF, JsonLd, ORG_REF, SITE, WEBSITE_REF, breadcrumbs } from "../site";
 import { Engine, Logo, builtWith } from "./agent-page";
 import { ARCHITECTURES, ARCHITECTURE_FAQS, CHOOSE, COMPARISON, LOGOS, PARTS, STORIES } from "./content";
 import s from "./agent-page.module.css";
 
 const UPDATED = "5 October 2026";
+const UPDATED_ISO = "2026-10-05";
 
 /** /architecture/: a reference guide to how voice agents are built. Each architecture with a live demo gets a section; grows with STORIES and ARCHITECTURE_FAQS. */
 export function ArchitectureHub() {
@@ -26,10 +27,16 @@ export function ArchitectureHub() {
       headline: "How AI voice agents are built",
       description: "A guide to voice agent architecture: speech-to-speech models, managed voice platforms and speech-to-text, LLM and text-to-speech cascades.",
       url: `${SITE}/architecture/`,
-      author: { "@type": "Person", name: FOUNDER.name, sameAs: [FOUNDER.linkedin] },
+      inLanguage: "en",
+      dateModified: UPDATED_ISO,
+      author: FOUNDER_REF,
       publisher: ORG_REF,
+      isPartOf: WEBSITE_REF,
+      about: "AI voice agent architecture",
+      mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/architecture/#webpage`, url: `${SITE}/architecture/` },
       hasPart: STORIES.map((x) => ({ "@type": "TechArticle", headline: x.seoTitle, url: `${SITE}/architecture/${x.slug}/` })),
     }} />
+    <JsonLd data={breadcrumbs(["Voice agent architecture", `${SITE}/architecture/`])} />
     <JsonLd data={{
       "@context": "https://schema.org",
       "@type": "FAQPage",

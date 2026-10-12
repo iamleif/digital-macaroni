@@ -8,7 +8,7 @@ import { StudioAskBand, StudioFooter, StudioNav } from "@/components/studio/chro
 import { ConsultingCard, PlanCards } from "@/components/studio/pricing";
 import { Intro, Reveal } from "@/components/studio/reveal";
 import { answerBySlug } from "@/components/studio/answers/content";
-import { pageMeta } from "@/components/studio/site";
+import { DESCRIPTION, JsonLd, ORG_REF, SITE, pageMeta, webPage } from "@/components/studio/site";
 import { DEFAULT_MISSED, DEFAULT_RATE, TRADES, lostRevenue } from "@/components/studio/calculator/math";
 import h from "@/components/studio/home.module.css";
 import c from "@/components/studio/contact.module.css";
@@ -27,6 +27,7 @@ export const metadata: Metadata = pageMeta({
 const heroVideoSchema = {
   "@context": "https://schema.org",
   "@type": "VideoObject",
+  "@id": `${SITE}/#video`,
   name: "How Digital Macaroni voice agents work",
   description: "Businesses miss calls when everyone is busy. Digital Macaroni builds custom AI voice agents that answer every call and do the work: book appointments, send quotes, run intakes, take payments and hand off to a person, inside the software the business already runs.",
   thumbnailUrl: ["https://digitalmacaroni.io/studio/video/explainer-poster.jpg", "https://i.ytimg.com/vi/W9VptB0y4uE/maxresdefault.jpg"],
@@ -34,7 +35,7 @@ const heroVideoSchema = {
   duration: "PT1M24S",
   embedUrl: "https://www.youtube.com/embed/W9VptB0y4uE",
   url: "https://www.youtube.com/watch?v=W9VptB0y4uE",
-  publisher: { "@type": "Organization", name: "Digital Macaroni", url: "https://digitalmacaroni.io" },
+  publisher: ORG_REF,
   transcript: "A front desk with every line ringing. A crew between jobs. A meeting with a client. An agent showing a house. The phone rings. Nobody can get to it. And that caller is already dialing someone else. Digital Macaroni builds voice agents that answer every call, and do the work. Every agent we build is shaped around your business: how you work, what you ask, and who gets the call. It speaks your callers' language, more than thirty of them. And it sounds the way you want: choose from hundreds of voices from the leading voice providers, or create a custom voice that fits your brand. It works inside the software you already run. If it has an API, we connect to it. Or we build you something new. Or a bit of both. So when someone calls, your agent picks up on the first ring. It answers their questions, checks your calendar and your records, takes the notes, and gets them booked. It can send a quote, run an intake, take a payment, or hand the call to a real person. Whatever the job needs. Then it tells you or your team exactly what happened. Day or night. Keeping you in total control. Every call answered. Every call worked. Call one of our demos below today, and see how it could work for your business.",
 };
 
@@ -277,8 +278,16 @@ export default function HomePage() {
 
     {/* Questions */}
     <section id="questions" className={h.sheet} aria-labelledby="questions-heading">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(heroVideoSchema).replace(/</g, "\\u003c") }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: homeFaqs.map((f) => ({ "@type": "Question", name: f.title, acceptedAnswer: { "@type": "Answer", text: f.short } })) }).replace(/</g, "\\u003c") }} />
+      <JsonLd data={[
+        webPage({
+          url: `${SITE}/`,
+          name: "Digital Macaroni: AI voice agents that get to work and grow your revenue",
+          description: DESCRIPTION,
+          extra: { about: ORG_REF, primaryImageOfPage: { "@type": "ImageObject", url: `${SITE}/opengraph-image` }, video: { "@id": `${SITE}/#video` }, mainEntity: { "@id": `${SITE}/#faq` } },
+        }),
+        heroVideoSchema,
+        { "@context": "https://schema.org", "@type": "FAQPage", "@id": `${SITE}/#faq`, mainEntity: homeFaqs.map((f) => ({ "@type": "Question", name: f.title, acceptedAnswer: { "@type": "Answer", text: f.short } })) },
+      ]} />
       <div className={`${h.sheetInner} ${h.faqWrap}`}>
         <Reveal className={h.faqHead}>
           <h2 id="questions-heading" className={h.h2}>Questions,<br /><span>answered straight.</span></h2>

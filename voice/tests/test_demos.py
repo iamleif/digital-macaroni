@@ -208,3 +208,27 @@ class TestCallRecord:
         assert [e["text"] for e in said] == ["my furnace died", "Oh no."]
         args = next(e for e in r.entries if e["kind"] == "tool")["args"]
         assert args["callbackNumber"] == "•••0142" and args["email"] == "j•••@gmail.com"
+
+
+class TestFormFieldOrders:
+    def test_every_order_matches_its_number_and_email_and_names_real_products(self):
+        from app.demos.formfield.store import CATALOGUE, ORDERS
+
+        names = {p["name"]: {v["option"] for v in p["variants"]} for p in CATALOGUE}
+        assert len(ORDERS) == 10 and len({o["number"] for o in ORDERS}) == 10
+        assert all(o["email"].endswith("@example.com") for o in ORDERS)
+        assert all(i["option"] in names[i["name"]] for o in ORDERS for i in o["items"])
+        for o in ORDERS:
+            _, run = runner(formfield)
+            assert run("lookup_order", {"orderNumber": o["number"], "email": o["email"]}).ok
+
+
+class TestEveryAgentIsSelfContained:
+    def test_each_prompt_carries_its_own_hearing_pushback_and_errors(self):
+        from app.demos import demos
+        from app.demos.types import OpContext
+
+        for demo_id, demo in demos.items():
+            text = demo.instruction(demo.create_state(NOW), OpContext(now=NOW, channel="phone"))  # type: ignore[arg-type]
+            for section in ("# Personality", "# Tone", "# Hearing", "# Pushback", "# Errors", "# Ending"):
+                assert section in text, f"{demo_id} is missing {section}"

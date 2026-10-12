@@ -57,7 +57,7 @@ export default function MissedCallCalculatorPage() {
       isAccessibleForFree: true,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       dateModified: CALC_UPDATED_ISO,
-      author: { ...FOUNDER_REF, "@type": "Person", name: FOUNDER.name, sameAs: [FOUNDER.linkedin] },
+      author: FOUNDER_REF,
       publisher: ORG_REF,
       citation: SOURCE_KEYS.map((k) => SOURCES[k].url),
     },

@@ -21,6 +21,7 @@ const ORG_ID = `${SITE}/#organization`;
 const FOUNDER_ID = `${SITE}/#founder`;
 export const ORG_REF = { "@id": ORG_ID };
 export const FOUNDER_REF = { "@id": FOUNDER_ID };
+export const WEBSITE_REF = { "@id": `${SITE}/#website` };
 
 /** Title, description, canonical URL and link previews for one page. Previews use the page's own title and URL. */
 export function pageMeta({ title, description, path, shareTitle, type = "website", published, ownImage = false }: {
@@ -113,6 +114,45 @@ export const siteGraph = {
     },
   ],
 };
+
+/** BreadcrumbList from [name, absolute URL] pairs, Home first. */
+export function breadcrumbs(...trail: [name: string, url: string][]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [["Home", `${SITE}/`], ...trail].map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })),
+  };
+}
+
+/** A plain WebPage (or a subtype such as AboutPage) tied to the site and organisation by @id. */
+export function webPage({ url, name, description, type = "WebPage", dateModified, extra }: {
+  url: string;
+  name: string;
+  description: string;
+  type?: string;
+  dateModified?: string;
+  extra?: Record<string, unknown>;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": type,
+    "@id": `${url}#webpage`,
+    url,
+    name,
+    description,
+    inLanguage: "en",
+    isPartOf: WEBSITE_REF,
+    publisher: ORG_REF,
+    ...(dateModified ? { dateModified } : {}),
+    ...extra,
+  };
+}
+
+/** The standard JSON-LD for a reading page that has nothing special to mark up: WebPage plus breadcrumbs. */
+export function pageLd(path: string, name: string, description: string, type = "WebPage") {
+  const url = `${SITE}${path}`;
+  return [webPage({ url, name, description, type }), breadcrumbs([name, url])];
+}
 
 export function JsonLd({ data }: { data: object }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />;

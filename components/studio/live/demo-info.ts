@@ -1,4 +1,5 @@
 import type { DemoId } from "./types";
+import shopOrders from "../../../voice/app/demos/formfield/data/orders.json";
 
 /** How the agent is built, as the live demo page explains it. Keep in step with the agent's real configuration. */
 export interface AgentDesign {
@@ -40,7 +41,21 @@ export interface DemoInfo {
   sampleDetails: string;
   /** Sample details to use on the call, shown in their own box so they are easy to find. */
   sampleCard?: { title: string; items: { label: string; value: string }[] };
+  /** Orders the agent can look up; the page shows one at random each time it opens. */
+  sampleOrders?: { number: string; email: string; name: string }[];
   design: AgentDesign;
+}
+
+/** The demo as it reads with one of its sample orders in front of the visitor. */
+export function withSampleOrder(demo: DemoInfo, i: number): DemoInfo {
+  const o = demo.sampleOrders?.[i];
+  if (!o) return demo;
+  return {
+    ...demo,
+    prompts: demo.prompts.map((p) => (/order/i.test(p) ? `Where’s my order? It’s ${o.number}, ${o.email}.` : p)),
+    sampleDetails: `Form & Field is a fictional shop. Nothing is charged, sold or shipped. For order help, use order ${o.number} with ${o.email}.`,
+    sampleCard: { title: "Checking on an order? Use these", items: [{ label: "Order number", value: o.number }, { label: "Email", value: o.email }] },
+  };
 }
 
 /** The demos as the website presents them. Shared by the homepage cards and the live demo pages. */
@@ -289,6 +304,7 @@ export const voiceDemos: Record<DemoId, DemoInfo> = {
     prompts: ["I’m looking for a green table lamp under a hundred dollars.", "What’s it made of?", "Can you hold one for me to pick up?", "Where’s my order? It’s 1042, emilia@example.com."],
     sampleDetails: "Form & Field is a fictional shop. Nothing is charged, sold or shipped. For order help, use order 1042 with emilia@example.com.",
     sampleCard: { title: "Checking on an order? Use these", items: [{ label: "Order number", value: "1042" }, { label: "Email", value: "emilia@example.com" }] },
+    sampleOrders: shopOrders.orders.map(({ number, email, name }) => ({ number, email, name })),
     design: {
       platform: "ElevenLabs Agents",
       stack: [

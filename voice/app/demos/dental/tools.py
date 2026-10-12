@@ -10,10 +10,12 @@ from pydantic import BaseModel, Field
 from ... import email
 from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
 from . import store
+from .intake import SKIPPABLE, next_fields, triage_next
 from .state import Appt, DentalState, Message, active, bookable_days, describe_slot, free, op, open_slots, parse_slot
 from .store import BUSINESS, IN_NETWORK, OUT_OF_NETWORK, TYPE_IDS, provider, visit_type
 
 TypeId = Literal[TYPE_IDS]  # type: ignore[valid-type]
+Skippable = Literal[SKIPPABLE]  # type: ignore[valid-type]
 Symptom = Literal["pain", "swelling", "broken_tooth", "lost_filling", "bleeding_gums", "sensitivity", "knocked_out_tooth", "jaw_pain"]
 TYPE_HELP = "One of: " + ", ".join(f"{t['id']} ({t['name']}, {t['minutes']} min)" for t in store.TYPES) + "."
 
@@ -40,16 +42,19 @@ class NotePatient(BaseModel):
     child: Optional[bool] = Field(None, description="True when the patient is a child (the caller is the parent).")
     medicalAlert: Optional[str] = Field(None, max_length=120, description="Anything the dentist should know before treatment that they chose to mention (e.g. blood thinners, needs antibiotics first, an allergy). Their words.")
     referral: Optional[str] = Field(None, max_length=60, description="How they heard about us.")
+    age: Optional[int] = Field(None, ge=0, le=120, description="The child's age, for a child.")
+    skipped: Optional[list[Skippable]] = Field(None, description="Questions the caller can't or won't answer (no insurance, nothing to mention, doesn't remember): send the field name so it isn't asked again.")
 
 
 def note_patient(state: DentalState, i: NotePatient, ctx: OpContext) -> OpResult:
     new = {k: (v.strip() if isinstance(v, str) else v) for k, v in i.model_dump().items() if v is not None}
+    state.skipped += [k for k in new.pop("skipped", []) if k not in state.skipped]
     if new.get("dateOfBirth") and new["dateOfBirth"] >= state.today:
         return fail("bad_date", "That date of birth is not right. Check it with the caller.")
     changed = [k for k, v in new.items() if state.patient.get(k) != v]
     state.patient.update(new)
     state.opened = True
-    return ok(f"Noted {len(changed)} detail{'s' if len(changed) != 1 else ''}" if changed else "Nothing new", {}, bool(changed))
+    return ok(f"Noted {len(changed)} detail{'s' if len(changed) != 1 else ''}" if changed else "Nothing new", next_fields(state), bool(changed))
 
 
 class FindPatient(BaseModel):
@@ -110,6 +115,10 @@ def triage_emergency(state: DentalState, i: TriageEmergency, ctx: OpContext) -> 
     tr = state.triage
     state.patient["reason"] = "emergency"
     state.opened = True
+    flag = bool(tr.get("troubleBreathingOrSwallowing") or tr.get("swellingSpreading") or (tr.get("swelling") and tr.get("fever")) or tr.get("faceInjuryOrAccident") or tr.get("bleedingWontStop") or tr.get("brokenJaw"))
+    pending = None if flag or tr.get("knockedOutTooth") else triage_next(state)
+    if pending:
+        return ok("Triage · more to ask", {"next": pending[1], "nextField": pending[0], "outcome": None}, bool(t))
     if tr.get("troubleBreathingOrSwallowing") or tr.get("swellingSpreading") or (tr.get("swelling") and tr.get("fever")) or tr.get("faceInjuryOrAccident") or tr.get("bleedingWontStop") or tr.get("brokenJaw"):
         tr["outcome"] = "er"
         return ok("Emergency room first", {"goTo": "er", "say": "Calmly tell them to call 911 or go to the nearest emergency room now, and that we'll see them after. Don't book."}, True)

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CallWatcher, type SetupChoices, type WatchStatus } from "../live/client";
-import type { DemoInfo } from "../live/demo-info";
+import { withSampleOrder, type DemoInfo } from "../live/demo-info";
 import { dealershipEmpty, dentalEmpty, formfieldEmpty, hotelsEmpty, insuranceEmpty, lawfirmEmpty, luneEmpty, northlineEmpty, realestateEmpty, tidewellEmpty, travelEmpty } from "../live/sample-views";
 import type { DealershipView, DentalView, DemoEvent, DemoId, DemoView, FormFieldView, HotelsView, InsuranceView, LawFirmView, NorthlineView, RealEstateView, TravelView } from "../live/types";
 import { useDemoFeed, type Entry, type Feed } from "../live/use-demo-feed";
@@ -55,7 +55,12 @@ export function DemoPage({ demo }: { demo: DemoInfo }) {
   // Which business Ellie answers for. Salon and clinic are front-end previews until the voice side is wired.
   const skin = demo.id === "northline" && funnel && setup ? (setup.trade as BookingSkin) : "home";
   const look = SKINS[skin];
-  const shown: DemoInfo = skin === "home" ? demo : {
+  // Form & Field shows one of its sample orders at random each time the page opens (the first paint is the static one).
+  const [orderIdx, setOrderIdx] = useState(0);
+  useEffect(() => {
+    if (demo.sampleOrders?.length) setOrderIdx(Math.floor(Math.random() * demo.sampleOrders.length));
+  }, [demo.sampleOrders]);
+  const shown: DemoInfo = skin === "home" ? withSampleOrder(demo, orderIdx) : {
     ...demo, name: look.name, role: look.role, intro: look.intro, prompts: look.prompts, sampleDetails: look.sampleDetails, sampleCard: undefined,
     design: { ...demo.design, tools: demo.design.tools.map((t) => ({ ...t, label: t.label.replace("Fill in the service request", "Fill in the booking").replace(" a visit", " an appointment").replace("services and fees", "services and prices") })), rules: demo.design.rules.map((r) => r.replace("visit", "appointment")) },
   };

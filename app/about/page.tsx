@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { InfoPage } from "@/components/studio/info-page";
-import { JsonLd, ORG_REF, SITE, pageMeta } from "@/components/studio/site";
+import { FOUNDER_REF, JsonLd, ORG_REF, SITE, breadcrumbs, pageMeta, webPage } from "@/components/studio/site";
 
 export const metadata: Metadata = pageMeta({
   title: "About — Digital Macaroni",
@@ -12,7 +12,10 @@ export const metadata: Metadata = pageMeta({
 
 export default function AboutPage() {
   return <InfoPage title="About Digital Macaroni." intro="We build AI voice agents that get to work and grow your revenue.">
-    <JsonLd data={{ "@context": "https://schema.org", "@type": "AboutPage", url: `${SITE}/about/`, name: "About Digital Macaroni", about: ORG_REF, mainEntity: ORG_REF }} />
+    <JsonLd data={[
+      webPage({ url: `${SITE}/about/`, name: "About Digital Macaroni", description: metadata.description as string, type: "AboutPage", extra: { about: [ORG_REF, FOUNDER_REF], mainEntity: ORG_REF } }),
+      breadcrumbs(["About", `${SITE}/about/`]),
+    ]} />
     <section>
       <h2>What we do</h2>
       <p>AI voice agents that answer every call and complete the work behind it.</p>

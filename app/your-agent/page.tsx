@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ArrowUpRight, Check } from "@/components/studio/icons";
 import c from "@/components/studio/contact.module.css";
 import { CookieSettings } from "@/components/studio/consent";
-import { pageMeta } from "@/components/studio/site";
+import { JsonLd, pageLd, pageMeta } from "@/components/studio/site";
 import { InstantForm } from "@/components/studio/factory/InstantForm";
 
 export const metadata: Metadata = pageMeta({
@@ -16,6 +16,7 @@ export const metadata: Metadata = pageMeta({
 export default function YourAgentPage() {
   return (
     <div className={c.page}>
+      <JsonLd data={pageLd("/your-agent/", "Hear your own AI voice agent", metadata.description as string)} />
       <header className={c.top}>
         <a href="/" className={c.brand} aria-label="Digital Macaroni home"><Image unoptimized src="/studio/macaroni.png" alt="" width={26} height={26} />Digital Macaroni</a>
         <a href="/pricing/" className={c.back}>Pricing<ArrowUpRight size={14} /></a>
