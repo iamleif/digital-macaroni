@@ -273,3 +273,12 @@ class TestEveryAgentIsSelfContained:
             text = demo.instruction(demo.create_state(NOW), OpContext(now=NOW, channel="phone"))  # type: ignore[arg-type]
             for section in ("# Personality", "# Tone", "# Hearing", "# Pushback", "# Errors", "# Ending"):
                 assert section in text, f"{demo_id} is missing {section}"
+
+
+class TestEricaDoesNotInventProducts:
+    def test_prompt_forces_a_search_before_naming_anything(self):
+        from app.demos.types import OpContext
+
+        text = formfield.instruction(formfield.create_state(NOW), OpContext(now=NOW, channel="phone"))  # type: ignore[arg-type]
+        assert "never name a product, price, colour, size or stock from memory" in text
+        assert "only products that search_products or get_product_details returned exist" in text
