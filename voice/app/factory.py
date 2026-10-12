@@ -36,7 +36,7 @@ from .session import DemoSession, admit
 from .twilio import stream_twiml
 from .verify import EMAIL_MESSAGES, email_problem, human  # noqa: F401  (human: the routes check it before a job starts)
 
-VOICES = {"female": ("Ava", "Sulafat"), "male": ("Leo", "Iapetus")}
+VOICES = {"female": ("Ava", "Fola"), "male": ("Leo", "Iapetus")}
 _EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[a-z]{2,}$", re.I)
 
 
