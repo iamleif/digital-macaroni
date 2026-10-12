@@ -97,7 +97,7 @@ const SHORT_LINKS = {
   "/li": "linkedin",
 };
 
-// Demo-type links: digitalmacaroni.io/appointments etc. open /try/ scrolled to that demo type.
+// Demo-type links: digitalmacaroni.io/appointments etc. open the homepage scrolled to that demo type.
 const DEMO_LINKS = {
   "/appointments": "appointments",
   "/stock": "stock-and-orders",
@@ -136,7 +136,7 @@ export default {
       const q = new URLSearchParams({ utm_source: tag(url.searchParams.get("s")) || "direct", utm_medium: "demo", utm_campaign: demo });
       const person = tag(url.searchParams.get("p"));
       if (person) q.set("utm_content", person);
-      return Response.redirect(`${url.origin}/try/?${q}#${demo}`, 302);
+      return Response.redirect(`${url.origin}/?${q}#${demo}`, 302);
     }
     // Per-episode YouTube links: /yt1, /yt2… tag the long-form episode that sent the visitor.
     const episode = path.match(/^\/yt(\d{1,3})$/);
