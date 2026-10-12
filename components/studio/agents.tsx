@@ -75,7 +75,7 @@ function Example({ id, index }: { id: HomeDemo; index: number }) {
   const p = PERSONAS[id];
   const panel = `${h.ex} ${h[`exTone_${p.tone}`] ?? ""}`;
   return <Reveal as="article" id={SECTION_ANCHOR[id]} className={index % 2 ? `${panel} ${h.exFlip}` : panel}>
-    <a className={h.exStageLink} href={`/demo/${id}/`} target="_blank" rel="noopener" aria-label={`${p.title}. Try the live example (opens in a new tab)`}>
+    <a className={h.exStageLink} href={`/demo/${id}/`} aria-label={`${p.title}. Try the live example`}>
       <div className={`${h.agentStage} ${h.exStage}`} data-tone={p.tone}>
         <div className={h.fragWrap} aria-hidden="true"><LivePreview id={id} /></div>
       </div>
@@ -86,7 +86,7 @@ function Example({ id, index }: { id: HomeDemo; index: number }) {
       <p className={h.exPitch}>{p.pitch}</p>
       <ul className={h.exList}>{p.bullets.map((b) => <li key={b}><Check size={14} />{b}</li>)}</ul>
       <p className={h.exIn}>Try it as</p>
-      <ul className={h.exKinds}>{p.kinds.map((k) => <li key={k.demo}><a href={`/demo/${k.demo}/`} target="_blank" rel="noopener">
+      <ul className={h.exKinds}>{p.kinds.map((k) => <li key={k.demo}><a href={`/demo/${k.demo}/`}>
         <BrandMark id={k.demo} size={30} />
         <span><b>{k.label}</b><small>{k.line}</small></span>
         <ArrowRight size={14} />

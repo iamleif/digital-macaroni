@@ -148,19 +148,6 @@ export function CookieBanner() {
   useEffect(() => {
     // Remember where this visit started before anything else, so later events can say.
     firstTouch();
-    // Demo links open in a new tab, which starts with no memory of where the visit began. Hand it over in the link.
-    const carry = (e: MouseEvent) => {
-      const a = (e.target as Element | null)?.closest?.("a[href^='/demo/']") as HTMLAnchorElement | null;
-      if (!a) return;
-      const t = firstTouch();
-      const url = new URL(a.href);
-      if (t.first_source) url.searchParams.set("utm_source", t.first_source);
-      if (t.first_medium) url.searchParams.set("utm_medium", t.first_medium);
-      if (t.first_campaign) url.searchParams.set("utm_campaign", t.first_campaign);
-      if (t.first_content) url.searchParams.set("utm_content", t.first_content);
-      a.href = url.pathname + url.search + url.hash;
-    };
-    document.addEventListener("click", carry, true);
     const choice = readChoice();
     if (choice === "granted") loadAnalytics();
     else {
@@ -170,7 +157,7 @@ export function CookieBanner() {
     }
     const reopen = () => setOpen(true);
     window.addEventListener(OPEN_EVENT, reopen);
-    return () => { window.removeEventListener(OPEN_EVENT, reopen); document.removeEventListener("click", carry, true); };
+    return () => window.removeEventListener(OPEN_EVENT, reopen);
   }, []);
 
   function choose(choice: Choice) {
