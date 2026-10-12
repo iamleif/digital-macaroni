@@ -57,6 +57,8 @@ class DemoSession:
         self.play_ring: Optional[Callable[[], float]] = None
         # Phone calls only: the caller's number as Twilio reported it (E.164), or None. Held in memory, never logged.
         self.caller_number: Optional[str] = None
+        # We placed this call (the instant demo): the person answers with "hello", so the agent waits for it.
+        self.outbound = False
         # The agent factory's calls (factory.py): a voice and time limit of their own, the client agent
         # this line belongs to, and the work to do when the call ends (the owner's summary).
         self.voice: Optional[str] = None

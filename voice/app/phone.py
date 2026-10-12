@@ -35,6 +35,13 @@ HANGUP_MARK = "demo-hangup"
 SPEECH_RMS = 700
 # Caller audio held while the live session connects: about five seconds of 20 ms frames.
 PENDING_CAP = 250
+# A call we placed: the person picks up and says "hello?". The agent opens once they have finished
+# (this much quiet after their hello), or after a silent pickup, and never later than the cap.
+HELLO_QUIET_S = 0.5
+SILENT_PICKUP_S = 1.2
+HELLO_CAP_S = 4.0
+# Their audio stays away from the agent while the opening line plays, so an echoing "hello?" can't cut it off.
+OPENING_GUARD_CAP_S = 8.0
 _CLOSE = object()
 
 
@@ -72,6 +79,8 @@ class PhoneBridge:
         self.linked = False
         self.outq: asyncio.Queue[Any] = asyncio.Queue()
         self.open = True
+        self.greeted_at = 0.0
+        self.guard_opening = False
 
     # ---- Twilio socket ----
 
@@ -294,13 +303,37 @@ class PhoneBridge:
         self.live = live
         s.live_started = True
         log.info("phone.live_ready", {"session": s.id, "latency_ms": int((_now() - self.started_at) * 1000)})
+        self.tasks.append(asyncio.create_task(self.run_live(live)))
+        if s.outbound and not live.greets_itself:
+            await self.wait_for_hello()
+            if self.finished:
+                return
+            # Their "hello?" is how they picked up, not something to answer.
+            self.pending.clear()
         if not live.greets_itself:
             live.send_text(GREET_NOTE)
         for p in self.pending:
             live.send_audio(p)
         self.pending.clear()
+        self.greeted_at = _now()
+        if s.outbound:
+            # Their pickup "hello?" isn't a turn the agent is replying to.
+            self.last_speech_at = 0.0
         self.tasks.append(asyncio.create_task(self.tick()))
-        self.tasks.append(asyncio.create_task(self.run_live(live)))
+
+    async def wait_for_hello(self) -> None:
+        """A call we placed: wait for the person's "hello?" to end (or a silent pickup) before the agent opens."""
+        while not self.finished:
+            now = _now()
+            waited = now - self.started_at
+            if waited >= HELLO_CAP_S:
+                break
+            if self.last_speech_at and now - self.last_speech_at >= HELLO_QUIET_S:
+                break
+            if not self.last_speech_at and waited >= SILENT_PICKUP_S:
+                break
+            await asyncio.sleep(0.05)
+        log.info("phone.hello_heard", {"session": self.session.id if self.session else None, "latency_ms": int((_now() - self.started_at) * 1000), "outcome": "spoke" if self.last_speech_at else "silent"})
 
     # ---- the caller's side ----
 
@@ -314,6 +347,7 @@ class PhoneBridge:
             return
         self.session = s
         s.connected = True
+        self.guard_opening = s.outbound
         # Hard backstop for the demo's time limit, whatever the model does.
         self.handles.append(self.loop.call_later(s.max_seconds + 10, self.close_twilio))
         s.request_end = lambda reason: self.request_hangup(reason)
@@ -326,11 +360,23 @@ class PhoneBridge:
         s.publish_state()
         self.tasks.append(asyncio.create_task(self.connect_live(s)))
 
+    def opening_done(self) -> bool:
+        """A call we placed: the agent's opening line has finished playing (or the guard ran out)."""
+        now = _now()
+        if not self.greeted_at:
+            return False
+        if now - self.greeted_at >= OPENING_GUARD_CAP_S or (self.first_audio and now >= self.playback_ends_at + 0.25):
+            self.guard_opening = False
+            return True
+        return False
+
     def on_media(self, payload: str) -> None:
         pcm = twilio_to_gemini(base64.b64decode(payload))
         if rms(pcm) > SPEECH_RMS:
             self.last_speech_at = _now()
             self.nudged = False
+        if self.guard_opening and not self.opening_done():
+            return
         if self.live:
             self.live.send_audio(pcm)
         elif len(self.pending) < PENDING_CAP:

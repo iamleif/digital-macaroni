@@ -163,6 +163,7 @@ async def _run_instant(j: Job) -> None:
         agent_name, voice = VOICES["female"]
         session.state = AgentState(now=session.state.now, mode="instant", profile=profile.model_dump(), agent_name=agent_name, visitor_name=lead["name"], visitor_email=lead["email"], caller_number=lead["phone"])
         session.caller_number = lead["phone"]
+        session.outbound = True
         session.voice = voice
         session.max_override = config.instant_max_seconds
         session.after_call = lambda s: _after_instant(j, s)
