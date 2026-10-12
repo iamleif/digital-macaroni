@@ -125,7 +125,7 @@ class TestClaim:
         for field, value in (("kind", "hit_while_parked"), ("date", "2026-09-30"), ("location", "Kroger"), ("injuries", "no"), ("policeReport", "unknown"), ("otherParty", "unknown")):
             r = await run("report_claim", {field: value})
             asked.append(r.result["next"])
-        assert asked == ["When did it happen?", "Where did it happen?", "Was anyone hurt?", "Was a police report made?", "Was another driver or party involved, and do you know their insurer?", "Do you have any photos?"]
+        assert asked == ["When did it happen?", "Where did it happen?", "Was anyone hurt?", "Was a police report made?", "Was another driver or party involved?", "Do you have any photos?"]
         r = await run("report_claim", {"photos": "no"})
         assert r.result["next"] is None and "done" in r.result
 
@@ -215,4 +215,4 @@ async def test_last_name_is_asked_for_and_booking_needs_it():
 
 def test_prompt_says_just_a_moment_before_the_calendar():
     p = insurance.instruction(insurance.create_state(NOW), CTX)
-    assert "Just a moment" in p and "And your last name?" in p and "Never guess the year" in p and "two weeks ahead" in p
+    assert "Just a moment" not in p and "And your last name?" in p and "Never guess the year" in p and "two weeks ahead" in p

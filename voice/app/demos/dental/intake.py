@@ -20,11 +20,11 @@ def triage_next(state: DentalState) -> Optional[tuple[str, str]]:
     """The first red-flag question still unanswered, in the practice's order."""
     tr = state.triage or {}
     if _open(state, "howLong", state.patient.get("howLong")):
-        return "howLong", "Where does it hurt, and how long has it been going on?"
+        return "howLong", "How long has it been hurting?"
     if tr.get("swelling") is None:
         return "swelling", "Is there any swelling in your face or gums?"
     if tr["swelling"] and tr.get("swellingSpreading") is None:
-        return "swellingSpreading", "Is the swelling spreading toward your eye or down your neck, or making it hard to speak?"
+        return "swellingSpreading", "Is the swelling spreading toward your eye or your neck?"
     if tr["swelling"] and tr.get("troubleBreathingOrSwallowing") is None:
         return "troubleBreathingOrSwallowing", "Is it hard to breathe or swallow?"
     if tr.get("fever") is None:
@@ -32,7 +32,7 @@ def triage_next(state: DentalState) -> Optional[tuple[str, str]]:
     if tr.get("painLevel") is None:
         return "painLevel", "On a scale of one to ten, how bad is the pain?"
     if tr.get("faceInjuryOrAccident") is None:
-        return "faceInjuryOrAccident", "Has there been any injury to your face or mouth, or bleeding that won't stop?"
+        return "faceInjuryOrAccident", "Has there been any injury to your face or mouth?"
     return None
 
 
@@ -79,7 +79,9 @@ def intake_next(state: DentalState) -> tuple[Optional[str], Optional[str]]:
         return "lastVisit", f"When did {they} last see a dentist?"
     ins = state.insurance
     if ins is None and "insurance" not in state.skipped:
-        return "insurance", "Do you have dental insurance? Which plan is it?"
+        if p.get("hasInsurance") is True:
+            return "carrier", "Which plan is it?"
+        return "hasInsurance", "Do you have dental insurance?"
     if ins and not ins.get("medicaid"):
         rel = p.get("relationship")
         if _open(state, "relationship", rel):

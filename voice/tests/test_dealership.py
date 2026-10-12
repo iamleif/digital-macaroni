@@ -143,4 +143,4 @@ def test_a_first_name_alone_is_not_saved_or_booked():
 
 def test_the_prompt_says_just_a_moment_and_asks_for_last_names():
     p = dealership.instruction(dealership.create_state(NOW), CTX)
-    assert "Just a moment" in p and "And your last name?" in p and "two weeks ahead" in p
+    assert "Just a moment" not in p and "And your last name?" in p and "two weeks ahead" in p

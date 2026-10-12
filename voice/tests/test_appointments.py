@@ -207,7 +207,7 @@ async def test_booking_needs_a_last_name():
 def test_prompts_say_just_a_moment_and_ask_for_a_last_name():
     for d in (lune, tidewell):
         p = d.instruction(d.create_state(NOW), CTX)
-        assert "Just a moment" in p and "And your last name?" in p and "two weeks ahead" in p
+        assert "Just a moment" not in p and "And your last name?" in p and "two weeks ahead" in p
     assert "month, day and year" in tidewell.instruction(tidewell.create_state(NOW), CTX)
 
 

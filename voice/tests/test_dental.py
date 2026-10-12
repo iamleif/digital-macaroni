@@ -151,7 +151,9 @@ async def test_next_asks_the_name_first_and_never_repeats_answered_questions():
     r = await nxt(run, {"dateOfBirth": "1990-05-04"})
     assert r["nextField"] == "lastVisit"  # reason was already given
     r = await nxt(run, {"lastVisit": "two years ago"})
-    assert r["nextField"] == "insurance"
+    assert r["nextField"] == "hasInsurance" and r["next"] == "Do you have dental insurance?"
+    r = await nxt(run, {"hasInsurance": True})
+    assert r["nextField"] == "carrier" and r["next"] == "Which plan is it?"
     assert (await run("check_insurance", {"carrier": "Delta"})).ok
     r = await nxt(run, {"reason": "cleaning"})
     assert r["nextField"] == "relationship"
@@ -238,7 +240,7 @@ def test_the_agent_is_called_josh_in_the_opening_and_the_prompt_has_the_pause():
     state = dental.create_state(NOW)
     text = dental.instruction(state, CTX)
     assert "You are Josh" in text and "You are June" not in text
-    assert "Just a moment" in text and "And your last name?" in text and "Never guess the year" in text and "past the calendar" in text
+    assert "Just a moment" not in text and "And your last name?" in text and "Never guess the year" in text and "past the calendar" in text
 
 
 async def test_a_first_name_alone_asks_for_the_last_name_before_intake_moves_on():
@@ -289,3 +291,21 @@ def open_slots_for(state, d):
         return open_slots(state, "cleaning", d)
     finally:
         state.earliest_today = keep
+
+
+async def test_insurance_is_asked_as_yes_or_no_then_the_plan_only_after_a_yes():
+    _, run = runner()
+    await nxt(run, {"name": "Sam Lee", "newPatient": True, "dateOfBirth": "1985-01-02", "reason": "cleaning", "lastVisit": "last year"})
+    r = await nxt(run, {})
+    assert r["next"] == "Do you have dental insurance?" and r["nextField"] == "hasInsurance"
+    r = await nxt(run, {"hasInsurance": True})
+    assert r["next"] == "Which plan is it?" and r["nextField"] == "carrier"
+    assert (await run("check_insurance", {"carrier": "Delta"})).ok
+    assert (await nxt(run, {}))["nextField"] == "relationship"
+
+
+async def test_no_insurance_skips_the_plan_and_the_insurance_list():
+    state, run = runner()
+    await nxt(run, {"name": "Sam Lee", "newPatient": True, "dateOfBirth": "1985-01-02", "reason": "cleaning", "lastVisit": "last year"})
+    r = await nxt(run, {"hasInsurance": False})
+    assert "insurance" in state.skipped and r["nextField"] == "medicalAlert"

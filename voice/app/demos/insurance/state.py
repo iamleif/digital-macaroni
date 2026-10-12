@@ -209,6 +209,8 @@ def quote_missing(state: InsuranceState) -> list[str]:
 
 QUOTE_DONE = "Collected: say a licensed agent will go through the numbers, check there are no other drivers or vehicles, then offer a call with one (check_availability for their day)."
 
+NO_OTHER_PARTY = {"no", "none", "unknown", "nobody", "no one", "n/a"}
+
 # (field, question, mandatory). Order is the agency's order, one question at a time.
 CLAIM_QUESTIONS: list[tuple[str, str, bool]] = [
     ("kind", "What happened?", True),
@@ -216,7 +218,8 @@ CLAIM_QUESTIONS: list[tuple[str, str, bool]] = [
     ("location", "Where did it happen?", True),
     ("injuries", "Was anyone hurt?", True),
     ("policeReport", "Was a police report made?", False),
-    ("otherParty", "Was another driver or party involved, and do you know their insurer?", False),
+    ("otherParty", "Was another driver or party involved?", False),
+    ("otherInsurer", "Do you know their insurer?", False),
     ("photos", "Do you have any photos?", False),
 ]
 
@@ -224,6 +227,8 @@ CLAIM_QUESTIONS: list[tuple[str, str, bool]] = [
 def claim_next(claim: dict[str, Any]) -> tuple[Optional[str], bool]:
     """The next unanswered claim question and whether it is optional; (None, False) when all are answered."""
     for key, question, mandatory in CLAIM_QUESTIONS:
+        if key == "otherInsurer" and str(claim.get("otherParty", "")).strip().lower() in NO_OTHER_PARTY:
+            continue  # no other party: nobody's insurer to ask about
         if key not in claim:
             return question, not mandatory
     return None, False

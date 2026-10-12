@@ -240,14 +240,14 @@ def missing_fields(state: LawFirmState) -> list[str]:
 # is on the record (or the caller declined it, optional ones only). Death and serious injury are routed by
 # assess_case and the urgent flag on take_message, so they are not asked here.
 QUESTIONS: list[tuple[str, str, bool]] = [
-    ("accidentType", "What happened? What kind of accident was it?", True),
+    ("accidentType", "What kind of accident was it?", True),
     ("accidentDate", "When did it happen?", True),
-    ("accidentState", "Where did it happen, what city and state?", True),
-    ("injuryAreas", "What part of your body was hurt, and what hurts now?", False),
+    ("accidentState", "What city and state did it happen in?", True),
+    ("injuryAreas", "What part of your body was hurt?", False),
     ("missedWork", "Has it kept you from working?", False),
     ("symptoms", "Any passing out, tingling, numbness, dizziness or headaches?", False),
     ("treatment", "What treatment have you had so far?", True),
-    ("treatingProvider", "Who is treating you, a hospital, clinic or doctor?", False),
+    ("treatingProvider", "Who is treating you?", False),
     ("atFault", "In your view, who was at fault?", True),
     ("policeReport", "Was a police report filed?", False),
     ("otherPartyInsurer", "Do you know the other side's insurance company?", False),

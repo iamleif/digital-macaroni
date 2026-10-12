@@ -176,7 +176,7 @@ def book_appointment(state: DealershipState, i: BookAppointment, ctx: OpContext)
     if i.purpose == "test_drive" and not (stock and car(stock)):
         return fail("which_car", "Which car is the test drive for? Open it with get_vehicle.")
     if i.purpose == "service" and not (i.service and i.ownVehicle):
-        return fail("missing_details", "Ask what the service is for and which car (year, make, model).")
+        return fail("missing_details", "Ask what the service is for first, then which car in the next turn.")
     vehicle = describe_search(car(stock)) if stock else i.ownVehicle  # type: ignore[arg-type]
     same = next((a for a in active(state) if a.slot_id == i.slotId and a.purpose == i.purpose), None)
     if same:

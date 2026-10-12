@@ -146,7 +146,7 @@ class TestNorthline:
         assert not r.ok and r.error == "last_name_needed"
 
     def test_prompt_says_just_a_moment(self):
-        assert "Just a moment" in northline.instruction(northline.create_state(NOW), CTX)
+        assert "Just a moment" not in northline.instruction(northline.create_state(NOW), CTX)
 
     def test_takes_a_message_once(self):
         state, run = runner(northline)

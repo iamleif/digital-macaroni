@@ -33,6 +33,7 @@ class NotePatient(BaseModel):
     reason: Optional[TypeId] = Field(None, description=TYPE_HELP)
     symptoms: Optional[list[Symptom]] = Field(None, description="What they told you. Send the full list.")
     painLevel: Optional[int] = Field(None, ge=0, le=10)
+    hasInsurance: Optional[bool] = Field(None, description="Whether they have dental insurance: their yes or no. A no is recorded as skipped.")
     howLong: Optional[str] = Field(None, max_length=60, description="How long, in their words.")
     lastVisit: Optional[str] = Field(None, max_length=60, description="When they last saw a dentist, in their words.")
     subscriber: Optional[str] = Field(None, max_length=80, description="The insurance subscriber's name, if not the patient.")
@@ -52,6 +53,8 @@ def note_patient(state: DentalState, i: NotePatient, ctx: OpContext) -> OpResult
     if new.get("name") and len(new["name"].split()) < 2 and have.lower().startswith(new["name"].lower()):
         new.pop("name")  # the first name again: keep what we have
     state.skipped += [k for k in new.pop("skipped", []) if k not in state.skipped]
+    if new.get("hasInsurance") is False and "insurance" not in state.skipped:
+        state.skipped.append("insurance")
     if new.get("dateOfBirth") and not ("1900" < new["dateOfBirth"] < state.today):
         return fail("bad_date", "That date of birth is not right. Check it with the caller; it needs month, day and a four-digit year.")
     changed = [k for k, v in new.items() if state.patient.get(k) != v]
@@ -285,7 +288,7 @@ class AddToAsap(BaseModel):
 
 def add_to_asap_list(state: DentalState, i: AddToAsap, ctx: OpContext) -> OpResult:
     if not state.patient.get("name"):
-        return fail("missing_details", "Ask for the patient's name and best number first.")
+        return fail("missing_details", "Ask for the patient's name first, then their best number in the next turn.")
     entry = {"name": state.patient["name"], "type": visit_type(i.type)["name"], "preferred": i.preferred.strip()}
     if entry not in state.asap:
         state.asap.append(entry)

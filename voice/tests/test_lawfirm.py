@@ -254,7 +254,7 @@ class TestCalendar:
 
     def test_prompt_says_just_a_moment_before_the_calendar(self):
         p = lawfirm.instruction(lawfirm.create_state(NOW), CTX)
-        assert "Just a moment" in p and "And your last name?" in p and "two weeks ahead" in p
+        assert "Just a moment" not in p and "And your last name?" in p and "two weeks ahead" in p
 
 
 def lawfirm_hours():

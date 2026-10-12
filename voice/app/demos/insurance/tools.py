@@ -111,7 +111,7 @@ def find_customer(state: InsuranceState, i: FindCustomer, ctx: OpContext) -> OpR
     c, why = store.find_customer(i.name, i.dateOfBirth, i.policyNumber)
     state.opened = True
     if why in ("need_name", "need_dob"):
-        return fail(why, "Ask for their full name and date of birth, or a policy number.")
+        return fail(why, "Ask for their full name first, then their date of birth in the next turn (or just a policy number).")
     state.lookups += 1
     if not c:
         return fail("not_found", "No match. Ask them to check the spelling or the date once; if it still does not match, treat them as a new customer or take a message. Never say which detail was wrong.")
@@ -171,7 +171,8 @@ class ReportClaim(BaseModel):
     description: Optional[str] = Field(None, max_length=400, description="What happened, in the caller's words.")
     injuries: Optional[Tri] = Field(None, description="Was anyone hurt.")
     policeReport: Optional[Tri] = None
-    otherParty: Optional[str] = Field(None, max_length=140, description="The other driver or party, and their insurer if known.")
+    otherParty: Optional[str] = Field(None, max_length=140, description="The other driver or party; \"no\" or \"unknown\" if none.")
+    otherInsurer: Optional[str] = Field(None, max_length=80, description="The other party's insurer, if known.")
     photos: Optional[Tri] = Field(None, description="Whether they have photos.")
 
 

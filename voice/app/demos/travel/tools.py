@@ -176,7 +176,7 @@ async def choose_flight(state: TravelState, i: OptionRef, ctx: OpContext) -> OpR
     others = [lv for lv in state.fare_levels if not lv["current"]]
     return ok(
         f"{chosen['airline']} · {state.details['fareBrand']} · {state.details['price']}",  # type: ignore[index]
-        {"fare": {k: state.details[k] for k in ("fareBrand", "price", "priceChanged", "refund", "changes", "baggage")}, "fareLevels": _levels_for_agent(state), "extraCheckedBag": state.bags["extraBagPrice"], "next": "Say what this fare includes" + (" and offer the next fare level up with its price difference." if others else ".") + " Then ask about seats."},  # type: ignore[index]
+        {"fare": {k: state.details[k] for k in ("fareBrand", "price", "priceChanged", "refund", "changes", "baggage")}, "fareLevels": _levels_for_agent(state), "extraCheckedBag": state.bags["extraBagPrice"], "next": "Say what this fare includes" + (" and offer the next fare level up with its price difference." if others else ".") + " Then, once they answer, ask about seats."},  # type: ignore[index]
         True,
     )
 

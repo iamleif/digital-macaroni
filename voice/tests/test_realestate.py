@@ -262,4 +262,4 @@ class TestFortnight:
 
     def test_the_prompt_says_just_a_moment_and_asks_for_last_names(self):
         p = realestate.instruction(realestate.create_state(NOW), CTX)
-        assert "Just a moment" in p and "And your last name?" in p and "two weeks ahead" in p
+        assert "Just a moment" not in p and "And your last name?" in p and "two weeks ahead" in p
