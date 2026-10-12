@@ -7,7 +7,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..booking import BookingState
+from ..booking import BookingState, last_name_missing
 from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, fail, mask_number, ok, send_summary
 from . import store
 from .store import BUSINESS, CAL, SERVICE_IDS, STAFF_IDS
@@ -42,6 +42,8 @@ class NoteVisit(BaseModel):
 def note_visit(state: BookingState, i: NoteVisit, ctx: OpContext) -> OpResult:
     if i.proposedSlotId and i.proposedSlotId not in state.offered:
         return fail("slot_not_offered", "That time was not offered. Check availability first.")
+    if (bad := last_name_missing(i.name)):
+        return bad
     new = {k: v for k, v in i.model_dump().items() if v is not None}
     if "service" in new:
         new["serviceId"] = new.pop("service")
@@ -69,6 +71,8 @@ class FindPatient(BaseModel):
 
 
 def find_patient(state: BookingState, i: FindPatient, ctx: OpContext) -> OpResult:
+    if (bad := last_name_missing(i.name)):
+        return bad
     tries = state.request.get("lookups", 0)
     if tries >= 3:
         return fail("too_many_tries", "Stop looking them up. Book them as a new patient, or take a message for the front desk.")
@@ -113,6 +117,8 @@ class BookAppointment(BaseModel):
 
 
 def book_appointment(state: BookingState, i: BookAppointment, ctx: OpContext) -> OpResult:
+    if (bad := last_name_missing(i.name)):
+        return bad
     if (bad := _fits(state, i.service)):
         return bad
     s = CAL.service(i.service)

@@ -6,9 +6,11 @@ The book is generated relative to the session's own date, so "tomorrow" always m
 
 from __future__ import annotations
 
+import hashlib
+import random
 import re
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Literal, Optional
 
 from ..types import add_days, date_in, date_label, weekday
@@ -87,8 +89,16 @@ def has_lunch(day: str) -> bool:
     return weekday(day) != 5
 
 
+HORIZON_DAYS = 14  # today + 0..13
+
+
+def horizon_end(today: str) -> str:
+    return add_days(today, HORIZON_DAYS - 1)
+
+
 def bookable_days(state: DentalState) -> list[str]:
-    return [d for d in (add_days(state.today, i) for i in range(14)) if hours_of(d)][:8]
+    """Every open day in the next 14 calendar days, today included."""
+    return [d for d in (add_days(state.today, i) for i in range(HORIZON_DAYS)) if hours_of(d)]
 
 
 def clock(m: int) -> str:
@@ -152,36 +162,76 @@ def in_hold(oid: str, day: str, start: int, minutes: int) -> bool:
     return any(o == oid and h + HOLD_MIN <= hrs[1] and start < h + HOLD_MIN and h < start + minutes for o, h in HOLDS) if hrs else False
 
 
+def _rng(*parts: object) -> random.Random:
+    """Deterministic per date and chair, never per call: a given day always looks the same."""
+    return random.Random(int(hashlib.sha256(":".join(map(str, parts)).encode()).hexdigest()[:12], 16))
+
+
+# How full each weekday runs (Sunday=0): Mondays and Fridays are busy, Wednesday is light.
+FULLNESS = {1: 0.88, 2: 0.72, 3: 0.5, 4: 0.76, 5: 0.9}
+
+
+def nearly_full(day: str) -> bool:
+    """About one day in a fortnight, a Tuesday to Thursday, is nearly booked solid. Decided by the date alone."""
+    d = date.fromisoformat(day)
+    iso = d.isocalendar()
+    rng = _rng("full-week", iso.year, iso.week)
+    return rng.random() < 0.55 and weekday(day) == rng.choice((2, 3, 4))
+
+
+def _fill_day(state: DentalState, day: str, n: int) -> int:
+    hrs = hours_of(day)
+    full = nearly_full(day)
+    base = 0.97 if full else FULLNESS[weekday(day)] + _rng("jitter", day).uniform(-0.08, 0.08)
+    for o in OPS:
+        rng = _rng("chair", day, o["id"])
+        hyg = provider(o["provider"])["role"] == "Hygienist"
+        pool = [tuple(x) for x in (FILL["hygiene"] if hyg else FILL["dentist"])]
+        fullness = min(0.98, base + rng.uniform(-0.1, 0.06))
+        t = hrs[0] + rng.choice((0, 0, 10, 30))  # type: ignore[index]
+        while t < hrs[1]:  # type: ignore[index]
+            if has_lunch(day) and LUNCH[0] <= t < LUNCH[1]:
+                t = LUNCH[1]
+                continue
+            if rng.random() > fullness:  # an open stretch
+                t += rng.choice((30, 30, 60, 90))
+                continue
+            fits = [(p, m) for p, m in pool if t + m <= hrs[1] and not (has_lunch(day) and t < LUNCH[1] and LUNCH[0] < t + m) and not in_hold(o["id"], day, t, m)]  # type: ignore[index]
+            if not fits:
+                t += STEP
+                continue
+            procs, mins = rng.choice(fits)
+            state.book.append(Appt(f"existing-{n}", o["id"], day, t, mins, rng.choice(FILL["names"]), procs, True, phone4=f"{rng.randrange(1000, 10000)}",
+                                   confirmed=rng.choices(["confirmed", "left_message", "unconfirmed"], (6, 1, 2))[0], alert=rng.random() < 0.11, exam=hyg and "Ex" in procs))
+            n += 1
+            t += mins
+    return n
+
+
+def _has_room(state: DentalState, day: str) -> bool:
+    keep, state.earliest_today = state.earliest_today, 0
+    try:
+        return bool(open_slots(state, "cleaning", day)) and bool(open_slots(state, "new_patient", day))
+    finally:
+        state.earliest_today = keep
+
+
 def create_state(now: datetime) -> DentalState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = DentalState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today=hour * 60 + minute + 60)
-    names = FILL["names"]
     n = 0
-    today_ord = datetime.fromisoformat(today).toordinal()
     for day in bookable_days(state):
-        hrs = hours_of(day)
-        di = datetime.fromisoformat(day).toordinal() - today_ord
-        for oi, o in enumerate(OPS):
-            pool = FILL["hygiene"] if provider(o["provider"])["role"] == "Hygienist" else FILL["dentist"]
-            t = hrs[0]  # type: ignore[index]
-            k = di * 7 + oi * 3
-            while t < hrs[1]:  # type: ignore[index]
-                k += 1
-                if has_lunch(day) and LUNCH[0] <= t < LUNCH[1]:
-                    t = LUNCH[1]
-                    continue
-                if k % 7 in (0, 4):  # an open stretch: a real book runs about 80% full
-                    t += 90 if k % 7 == 0 else 30
-                    continue
-                procs, mins = pool[k % len(pool)]
-                if (has_lunch(day) and t < LUNCH[1] and LUNCH[0] < t + mins) or t + mins > hrs[1] or in_hold(o["id"], day, t, mins):  # type: ignore[index]
-                    t += STEP
-                    continue
-                hyg = provider(o["provider"])["role"] == "Hygienist"
-                state.book.append(Appt(f"existing-{n}", o["id"], day, t, mins, names[(k + oi) % len(names)], procs, True, phone4=f"{(k * 37 + oi * 101) % 9000 + 1000}",
-                                       confirmed="confirmed" if k % 4 else ("left_message" if k % 8 == 0 else "unconfirmed"), alert=(k * 7 + oi) % 9 == 0, exam=hyg and "Ex" in procs))
-                n += 1
-                t += mins
+        n = _fill_day(state, day, n)
+        if nearly_full(day):
+            continue
+        # Every ordinary day keeps open cleaning and new-patient time: thin out the hygiene chairs until it does.
+        hyg_ops = set(ops_for("hygiene"))
+        rng = _rng("thin", day)
+        while not _has_room(state, day):
+            mine = [a for a in state.book if a.date == day and a.op in hyg_ops]
+            if not mine:
+                break
+            state.book.remove(rng.choice(mine))
     return state
 
 

@@ -7,7 +7,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
 from . import store
 from .state import (
     Appointment,
@@ -19,13 +19,14 @@ from .state import (
     bookable_days,
     confirm_text,
     describe_slot,
+    full_name,
     is_free,
     money,
     open_slots,
     parse_slot,
     spoken,
 )
-from .store import BODIES, BUSINESS, CLOSED_WEEKDAYS, FINANCE, SERVICE_ADVISOR, SERVICE_IDS, car, describe_search, salesperson, service
+from .store import BODIES, BUSINESS, CLOSED_WEEKDAYS, DAYS_AHEAD, FINANCE, SERVICE_ADVISOR, SERVICE_IDS, car, describe_search, salesperson, service
 
 Body = Literal[BODIES]  # type: ignore[valid-type]
 ServiceId = Literal[SERVICE_IDS]  # type: ignore[valid-type]
@@ -97,6 +98,9 @@ class NoteLead(BaseModel):
 
 def note_lead(state: DealershipState, i: NoteLead, ctx: OpContext) -> OpResult:
     new = {k: (v.strip() if isinstance(v, str) else v) for k, v in i.model_dump().items() if v is not None}
+    first_only = "name" in new and not full_name(new["name"])
+    if first_only:
+        del new["name"]
     changed = [k for k, v in new.items() if state.lead.get(k) != v]
     state.lead.update(new)
     state.opened = True
@@ -108,6 +112,9 @@ def note_lead(state: DealershipState, i: NoteLead, ctx: OpContext) -> OpResult:
             out["knownCustomer"] = {"car": c["car"], "salesperson": salesperson(c["salesperson"])["name"], "say": "Welcome them back. Confirm the last four digits of their phone before mentioning their car or history."}
     if any(k.startswith("trade") for k in changed):
         out["tradeIn"] = "Noted for an in-person appraisal (about 20 minutes). Never give a value or a range."
+    if first_only:
+        out["next"] = "And your last name?"
+        out["say"] = "The name was not saved: it needs a first and last name. Ask \"And your last name?\" before you save or book."
     return ok(f"Noted {len(changed)} detail{'s' if len(changed) != 1 else ''}" if changed else "Nothing new", out, bool(changed))
 
 
@@ -123,8 +130,10 @@ def check_availability(state: DealershipState, i: CheckAvailability, ctx: OpCont
     if i.purpose == "test_drive" and not (stock and car(stock)):
         return fail("which_car", "Ask which car; open it with get_vehicle first.")
     days = bookable_days(state)
-    if i.date < state.today or i.date > days[-1]:
-        return fail("outside_calendar", f"Bookings open from today to {date_label(days[-1])}.")
+    if i.date < state.today:
+        return fail("outside_calendar", f"That day has passed. Bookings open from today through {date_label(days[-1])}.")
+    if i.date > add_days(state.today, DAYS_AHEAD - 1):
+        return fail("outside_calendar", f"This demo's calendar only goes out two weeks, through {date_label(days[-1])}. Offer the caller a day within that.")
 
     def in_part(sid: str) -> bool:
         h = parse_slot(sid)[1]  # type: ignore[index]
@@ -161,8 +170,8 @@ class BookAppointment(BaseModel):
 
 def book_appointment(state: DealershipState, i: BookAppointment, ctx: OpContext) -> OpResult:
     name = state.lead.get("name")
-    if not name:
-        return fail("missing_details", "Ask for the caller's name first.")
+    if not full_name(name):
+        return fail("missing_details", "Ask for the caller's first and last name first (\"And your last name?\"), and save it with note_lead.")
     stock = (i.stockNumber or (state.viewing or {}).get("stock") or state.focus) if i.purpose == "test_drive" else None
     if i.purpose == "test_drive" and not (stock and car(stock)):
         return fail("which_car", "Which car is the test drive for? Open it with get_vehicle.")
@@ -221,6 +230,8 @@ class TakeMessage(BaseModel):
 
 
 def take_message(state: DealershipState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    if not full_name(i.name):
+        return fail("missing_details", "Ask for the caller's first and last name (\"And your last name?\") before taking the message.")
     dup = next((m for m in state.messages if m.summary == i.summary.strip() and m.name == i.name.strip()), None)
     if dup:
         return ok(f"Message already left · {dup.id}", {"messageId": dup.id, "duplicate": True})

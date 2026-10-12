@@ -214,3 +214,52 @@ class TestNextQuestion:
         r = await run("note_lead", {"email": "a@b.com"})
         assert "first home" in r.result["next"]
         assert "tier" not in str(r.result).lower()
+
+
+# ---- horizon, varied diaries, full names ----
+
+DAY13, DAY14 = "2026-10-14", "2026-10-15"  # today is 2026-10-01
+
+
+class TestFortnight:
+    async def test_bookable_for_fourteen_days_and_no_further(self):
+        state, run = runner()
+        assert store.DAYS_AHEAD == 14
+        await run("get_listing", {"listingId": "JR-1"})
+        assert (await run("check_availability", {"purpose": "showing", "date": DAY13})).ok
+        r = await run("check_availability", {"purpose": "showing", "date": DAY14})
+        assert not r.ok
+        assert "only goes out two weeks, through Wednesday, October 14" in r.message
+
+    def test_diaries_differ_by_date_but_not_by_call(self):
+        from app.demos.realestate.state import bookable_days, create_state, nearly_full, open_slots
+
+        a, b = create_state(NOW), create_state(datetime(2026, 10, 1, 21, 15, tzinfo=timezone.utc))
+
+        def pattern(s, d):
+            return sorted((x.agent_id, x.hour) for x in s.calendar if x.date == d)
+
+        days = bookable_days(a)
+        assert len(days) == 14
+        assert all(pattern(a, d) == pattern(b, d) for d in days)
+        assert len({tuple(pattern(a, d)) for d in days}) == len(days)
+        assert sum(1 for d in days if nearly_full(d)) == 1
+        for d in days:
+            for aid in ("dana", "priya"):
+                assert open_slots(a, "showing", aid, d) and open_slots(a, "valuation", "dana", d)
+        assert len({len(pattern(a, d)) for d in days}) > 5
+
+    async def test_a_first_name_alone_is_asked_for_a_last_name_and_cannot_book(self):
+        state, run = runner()
+        r = await run("note_lead", {"name": "Jamie", "intent": "buy"})
+        assert r.result["next"] == "And your last name?" and r.result["nextIsRequired"] is True
+        await run("get_listing", {"listingId": "JR-1"})
+        slot = (await run("check_availability", {"purpose": "showing", "date": SATURDAY})).result["available"][0]["slotId"]
+        assert not (await run("book_appointment", {"purpose": "showing", "slotId": slot, "callerConfirmed": True})).ok
+        assert not (await run("take_message", {"name": "Jamie", "callbackNumber": "+15125550142", "summary": "Wants a call back"})).ok
+        r = await run("note_lead", {"name": "Jamie Cole"})
+        assert r.result["next"] != "And your last name?"
+
+    def test_the_prompt_says_just_a_moment_and_asks_for_last_names(self):
+        p = realestate.instruction(realestate.create_state(NOW), CTX)
+        assert "Just a moment" in p and "And your last name?" in p and "two weeks ahead" in p

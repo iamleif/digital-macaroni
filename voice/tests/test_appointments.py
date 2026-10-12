@@ -2,7 +2,12 @@ from datetime import datetime, timezone
 from typing import Any
 
 from app import email
+import pytest
+
 from app.demos.booking import parse_slot
+from app.demos.types import weekday
+from app.demos.lune.store import CAL as lune_cal
+from app.demos.tidewell.store import CAL as tidewell_cal
 from app.demos.lune import lune
 from app.demos.tidewell import tidewell
 from app.demos.types import OpContext, OpResult
@@ -131,6 +136,79 @@ class TestTidewell:
         await run("book_appointment", {"slotId": slot, "service": "physio_new", "name": "Alex Taylor", "callerConfirmed": True})
         assert (await run("email_confirmation", {"email": "alex@example.com", "callerConfirmed": True})).ok
         assert "sciatica" not in sent["text"] and "Physio assessment" in sent["text"]
+
+
+ALL_DAYS = [f"2026-10-{d:02d}" for d in range(1, 15)]
+
+
+def busy_pattern(state, day):
+    return sorted((b.staff_id, b.start, b.minutes, b.title) for b in state.busy if b.date == day and b.existing)
+
+
+@pytest.mark.parametrize("demo", [lune, tidewell])
+class TestHorizonAndPatterns:
+    def test_fourteen_days_bookable_day_fourteen_not(self, demo):
+        state = demo.create_state(NOW)
+        days = demo.view  # noqa: F841
+        cal = lune_cal if demo is lune else tidewell_cal
+        bookable = cal.bookable_days(state)
+        assert bookable[-1] == "2026-10-14" or bookable[-1] == "2026-10-13"
+        assert cal.days_ahead == 14
+        last = bookable[-1]
+        svc = "cut" if demo is lune else "massage_60"
+        r = cal.check(state, svc, last, None, None)
+        assert r.ok
+        far = cal.check(state, svc, "2026-10-15", None, None)
+        assert not far.ok and "two weeks" in far.message and "Offer the caller a day within that" in far.message and "through" in far.message
+        assert cal.check(state, svc, "2026-10-14", None, None).ok or weekday("2026-10-14") in cal.closed_weekdays
+
+    def test_days_look_different_and_the_same_date_repeats(self, demo):
+        cal = lune_cal if demo is lune else tidewell_cal
+        a = demo.create_state(NOW)
+        b = demo.create_state(datetime(2026, 10, 1, 23, 45, tzinfo=timezone.utc))
+        open_days = cal.bookable_days(a)
+        assert all(busy_pattern(a, d) == busy_pattern(b, d) for d in open_days)
+        patterns = {tuple(busy_pattern(a, d)) for d in open_days}
+        assert len(patterns) == len(open_days)
+        # Two Thursdays and two days in the same week are not copies of each other.
+        assert busy_pattern(a, "2026-10-01") != busy_pattern(a, "2026-10-08")
+        assert busy_pattern(a, "2026-10-06") != busy_pattern(a, "2026-10-07")
+        counts = [len(busy_pattern(a, d)) for d in open_days]
+        assert max(counts) - min(counts) >= 3
+
+    def test_every_day_keeps_an_opening_for_every_service(self, demo):
+        cal = lune_cal if demo is lune else tidewell_cal
+        state = demo.create_state(NOW)
+        for d in cal.bookable_days(state)[1:]:
+            for s in cal.services:
+                assert cal.open_slots(state, s["id"], d), (d, s["id"])
+
+
+@pytest.mark.parametrize("demo,op,args", [
+    (lune, "note_booking", {"name": "Priya"}),
+    (tidewell, "note_visit", {"name": "Alex"}),
+    (tidewell, "find_patient", {"name": "Jordan", "dateOfBirth": "1988-03-14"}),
+])
+async def test_a_first_name_alone_is_refused(demo, op, args):
+    _, run = runner(demo)
+    r = await run(op, args)
+    assert not r.ok and r.error == "last_name_needed" and "last name" in r.message
+
+
+async def test_booking_needs_a_last_name():
+    for demo, svc in ((lune, "cut"), (tidewell, "massage_60")):
+        _, run = runner(demo)
+        slot = await offer(run, svc)
+        r = await run("book_appointment", {"slotId": slot, "service": svc, "name": "Priya", "callerConfirmed": True})
+        assert not r.ok and r.error == "last_name_needed"
+        assert (await run("book_appointment", {"slotId": slot, "service": svc, "name": "Priya Shah", "callerConfirmed": True})).ok
+
+
+def test_prompts_say_just_a_moment_and_ask_for_a_last_name():
+    for d in (lune, tidewell):
+        p = d.instruction(d.create_state(NOW), CTX)
+        assert "Just a moment" in p and "And your last name?" in p and "two weeks ahead" in p
+    assert "month, day and year" in tidewell.instruction(tidewell.create_state(NOW), CTX)
 
 
 def test_both_prompts_open_with_the_screen_code():

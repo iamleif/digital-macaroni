@@ -7,7 +7,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, add_days, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
 from . import store
 from .state import (
     Appointment,
@@ -25,6 +25,7 @@ from .state import (
     bookable_days,
     confirm_text,
     describe_slot,
+    full_name,
     is_free,
     money,
     next_question,
@@ -33,7 +34,7 @@ from .state import (
     spoken,
     who_handles,
 )
-from .store import AREA_NAME, BUSINESS, CLOSED_WEEKDAYS, REQUIRED, agent, first_name, listing
+from .store import AREA_NAME, BUSINESS, CLOSED_WEEKDAYS, DAYS_AHEAD, REQUIRED, agent, first_name, listing
 
 
 def get_brokerage_info(state: RealEstateState, _: Any, ctx: OpContext) -> OpResult:
@@ -73,7 +74,7 @@ def note_lead(state: RealEstateState, i: NoteLead, ctx: OpContext) -> OpResult:
     state.lead.update(new)
     state.opened = True
     out: dict[str, Any] = {}
-    if "name" in changed:
+    if "name" in changed and full_name(state.lead["name"]):
         c = store.known_contact(state.lead["name"])
         state.contact = c
         if c:
@@ -82,7 +83,7 @@ def note_lead(state: RealEstateState, i: NoteLead, ctx: OpContext) -> OpResult:
     if nxt:
         state.asked[nxt[0]] = state.asked.get(nxt[0], 0) + 1
         out["next"] = nxt[1]
-        out["nextIsRequired"] = nxt[0] in {k for k, _ in REQUIRED}
+        out["nextIsRequired"] = nxt[0] in {k for k, _ in REQUIRED} | {"lastName"}
     else:
         out["next"] = None
         out["collected"] = "Everything we ask is collected: move on to listings, a showing, a valuation or a message. Don't ask the lead questions again."
@@ -190,8 +191,10 @@ def check_availability(state: RealEstateState, i: CheckAvailability, ctx: OpCont
         return fail("which_home", "Ask which home they want to see; find it with get_listing first.")
     aid = who_handles(state, i.purpose, lid)
     days = bookable_days(state)
-    if i.date < state.today or i.date > days[-1]:
-        return fail("outside_calendar", f"Times can be booked from today to {date_label(days[-1])}.")
+    if i.date < state.today:
+        return fail("outside_calendar", f"That day has passed. Times can be booked from today through {date_label(days[-1])}.")
+    if i.date > add_days(state.today, DAYS_AHEAD - 1):
+        return fail("outside_calendar", f"This demo's calendar only goes out two weeks, through {date_label(days[-1])}. Offer the caller a day within that.")
 
     def in_part(sid: str) -> bool:
         h = parse_slot(sid)[1]  # type: ignore[index]
@@ -225,8 +228,8 @@ class BookAppointment(BaseModel):
 
 
 def book_appointment(state: RealEstateState, i: BookAppointment, ctx: OpContext) -> OpResult:
-    if not state.lead.get("name"):
-        return fail("missing_details", "Ask for the caller's name first.")
+    if not full_name(state.lead.get("name")):
+        return fail("missing_details", "Ask for the caller's first and last name first (\"And your last name?\"), and save it with note_lead.")
     lid = i.listingId or (state.viewing or {}).get("listingId") or state.focus
     if i.purpose == "showing" and not (lid and listing(lid)):
         return fail("which_home", "Which home is the showing for? Find it with get_listing.")
@@ -286,6 +289,8 @@ class TakeMessage(BaseModel):
 
 
 def take_message(state: RealEstateState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    if not full_name(i.name):
+        return fail("missing_details", "Ask for the caller's first and last name (\"And your last name?\") before taking the message.")
     dup = next((m for m in state.messages if m.summary == i.summary.strip() and m.name == i.name.strip()), None)
     if dup:
         return ok(f"Message already left · {dup.id}", {"messageId": dup.id, "duplicate": True})

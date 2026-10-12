@@ -97,9 +97,10 @@ class TestLawFirm:
         _, run = runner()
         assert run("check_conflicts", {"callerName": "marcus webb"}).result["conflict"] is True
 
-    def test_first_name_only_is_not_a_conflict(self):
+    def test_first_name_only_is_asked_for_a_last_name(self):
         _, run = runner()
-        assert run("check_conflicts", {"callerName": "Priya"}).result["conflict"] is False
+        assert run("check_conflicts", {"callerName": "Priya"}).error == "need_last_name"
+        assert run("check_conflicts", {"callerName": "Priya Singh"}).result["conflict"] is False
 
     def test_rejects_a_future_accident_date(self):
         _, run = runner()
@@ -152,7 +153,7 @@ class TestLawFirm:
 
     def test_takes_a_message_once(self):
         state, run = runner()
-        m = {"name": "Alex", "callbackNumber": "2065550142", "summary": "Wants to speak to a person"}
+        m = {"name": "Alex Reed", "callbackNumber": "2065550142", "summary": "Wants to speak to a person"}
         assert run("take_message", m).ok
         assert run("take_message", m).result["duplicate"] is True
         assert len(state.messages) == 1
@@ -202,3 +203,61 @@ def test_intake_reports_complete_when_everything_is_collected():
     state, run = runner()
     r = run("note_intake", {k: CRASH[k] for k in ("name", "accidentType", "accidentDate", "accidentState", "treatment", "atFault", "hasLawyer")}).result
     assert r["stillNeeded"] == [] and r["next"] and r["nextIsRequired"] is False
+
+
+class TestCalendar:
+    def test_bookable_for_exactly_fourteen_days(self):
+        state, run = qualified()
+        assert run("assess_case").ok
+        assert slots(run, "2026-10-14")  # day 13, a Wednesday
+        r = run("check_availability", {"date": "2026-10-15"})  # day 14
+        assert r.error == "outside_calendar"
+        assert r.message.startswith("This demo's calendar only goes out two weeks, through Wednesday")
+
+    def test_busy_blocks_differ_by_date_and_not_by_call(self):
+        def pattern(state, day):
+            return sorted((b.attorney_id, b.hour) for b in state.calendar if b.date == day)
+
+        a, b = lawfirm.create_state(NOW), lawfirm.create_state(datetime(2026, 10, 1, 20, 30, tzinfo=timezone.utc))
+        days = [d for d in dict.fromkeys(x.date for x in a.calendar)]
+        assert len(days) >= 9
+        assert len({tuple(pattern(a, d)) for d in days}) == len(days)
+        assert all(pattern(a, d) == pattern(b, d) for d in days if d in {x.date for x in b.calendar})
+        week1, week2 = [pattern(a, d) for d in days[:5]], [pattern(a, d) for d in days[5:10]]
+        assert week1 != week2
+        assert len({len(pattern(a, d)) for d in days}) > 2
+        assert any(x.title for x in a.calendar) and len({x.title for x in a.calendar}) > 3
+
+    def test_every_day_keeps_senior_partner_time_and_one_day_is_nearly_full(self):
+        state = lawfirm.create_state(NOW)
+        senior = {b.date: 0 for b in state.calendar}
+        for d in senior:
+            senior[d] = len([h for h in lawfirm_hours() if not any(b.attorney_id == "marcus" and b.date == d and b.hour == h for b in state.calendar)])
+        assert min(senior.values()) >= 1
+        full = [d for d in senior if len([b for b in state.calendar if b.date == d]) >= 17]
+        assert len(full) <= 1
+
+    def test_last_name_is_asked_for_and_booking_needs_it(self):
+        state, run = runner()
+        skip = ["missedWork", "symptoms", "treatingProvider", "opposingParty", "witnesses", "vehicleDamage", "heardFrom"]
+        r = run("note_intake", {**CRASH, "name": "Alex", "declined": skip})
+        assert r.result["next"] == "And your last name?"
+        assert run("check_conflicts", {"callerName": "Alex"}).error == "need_last_name"
+        run("check_conflicts", {"callerName": "Alex Taylor"})
+        assert run("assess_case").ok
+        assert state.intake["name"] == "Alex Taylor"
+        sid = slots(run)[0]
+        state.intake["name"] = "Alex"
+        assert run("book_consultation", {"slotId": sid, "format": "phone", "callerConfirmed": True}).error == "missing_details"
+        run("note_intake", {"name": "Alex Taylor"})
+        assert run("book_consultation", {"slotId": sid, "format": "phone", "callerConfirmed": True}).ok
+
+    def test_prompt_says_just_a_moment_before_the_calendar(self):
+        p = lawfirm.instruction(lawfirm.create_state(NOW), CTX)
+        assert "Just a moment" in p and "And your last name?" in p and "two weeks ahead" in p
+
+
+def lawfirm_hours():
+    from app.demos.lawfirm.store import HOURS
+
+    return HOURS

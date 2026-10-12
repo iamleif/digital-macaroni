@@ -308,10 +308,21 @@ def test_email_limits_per_address(monkeypatch):
 def test_take_message_records_a_callback_for_an_agent():
     state = travel.create_state(NOW)
     op = travel.operations["take_message"]
-    args = {"name": "Leif", "callbackNumber": "+15555555382", "summary": "A group of nine, New York to Lisbon in June."}
+    args = {"name": "Leif Marshall", "callbackNumber": "+15555555382", "summary": "A group of nine, New York to Lisbon in June."}
     r = op.run(state, op.params.model_validate(args), CTX)  # type: ignore[union-attr]
     assert r.ok and r.changed and r.result["messageId"].startswith("MSG-")  # type: ignore[union-attr]
     again = op.run(state, op.params.model_validate(args), CTX)  # type: ignore[union-attr]
     assert again.result["duplicate"] is True  # type: ignore[union-attr]
     assert travel.view(state)["messages"][0]["callback"] == "•••• 5382"
     assert "Never say you have noted" in travel.instruction(state, CTX)
+
+
+def test_single_word_names_are_rejected_until_the_last_name_is_given():
+    state = travel.create_state(NOW)
+    op = travel.operations["take_message"]
+    r = op.run(state, op.params.model_validate({"name": "Leif", "callbackNumber": "+15555555382", "summary": "A group of nine."}), CTX)  # type: ignore[union-attr]
+    assert r.error == "need_last_name" and "last name" in r.message and not state.messages
+    st = travel.operations["set_traveller"]
+    state.offer = {}
+    r2 = __import__("asyncio").run(st.run(state, st.params.model_validate({"fullName": "Jamie"}), CTX))  # type: ignore[union-attr]
+    assert r2.error == "need_last_name" and state.traveller is None

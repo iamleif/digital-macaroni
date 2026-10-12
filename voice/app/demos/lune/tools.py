@@ -7,7 +7,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..booking import BookingState
+from ..booking import BookingState, last_name_missing
 from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, fail, mask_number, ok, send_summary
 from .store import ADD_ON_IDS, BUSINESS, CAL, DEPOSIT, DEPOSIT_FROM, SERVICE_IDS, STAFF_IDS, add_on, known_client
 
@@ -35,6 +35,8 @@ class NoteBooking(BaseModel):
 def note_booking(state: BookingState, i: NoteBooking, ctx: OpContext) -> OpResult:
     if i.proposedSlotId and i.proposedSlotId not in state.offered:
         return fail("slot_not_offered", "That time was not offered. Check availability first.")
+    if (bad := last_name_missing(i.name)):
+        return bad
     new = {k: v for k, v in i.model_dump().items() if v is not None}
     if "service" in new:
         new["serviceId"] = new.pop("service")
@@ -78,6 +80,8 @@ class BookAppointment(BaseModel):
 
 
 def book_appointment(state: BookingState, i: BookAppointment, ctx: OpContext) -> OpResult:
+    if (bad := last_name_missing(i.name)):
+        return bad
     s = CAL.service(i.service)
     if s.get("returningOnly") and not ((state.request.get("client") or {}).get("medSpa")):
         return fail("consult_first", "Book the free injectables consultation first.")

@@ -1,5 +1,116 @@
 {
-  "names": ["Mary Brown", "Anna Edwards", "Paul Olsen", "Brent Crosby", "Joshua Reeves", "Sally Hayes", "Henry Myers", "Arthur Blank", "Gary Gleason", "William O'Connell", "Billy O'Connell", "Kimberly Edwards", "Rosa Delgado", "Tom Nguyen", "Priya Nair", "Dennis Walsh", "Lena Kowalski", "Marcus Lee", "Grace Kim", "Owen Hart"],
-  "dentist": [["CompEx, Pano, Consult", 30], ["Crown prep #30", 90], ["Composite #19", 60], ["LimEx, PA", 30], ["Crown seat #14", 40], ["Composite #3, #4", 60], ["RCT #19", 90]],
-  "hygiene": [["PerEx, 4BWX, Prophy", 60], ["PerioMaint", 60], ["PerEx, ProphyCh, Fl", 40], ["SRP UR, UL", 90], ["PerEx, Prophy", 60]]
+  "names": [
+    "Mary Brown",
+    "Anna Edwards",
+    "Paul Olsen",
+    "Brent Crosby",
+    "Joshua Reeves",
+    "Sally Hayes",
+    "Henry Myers",
+    "Arthur Blank",
+    "Gary Gleason",
+    "William O'Connell",
+    "Billy O'Connell",
+    "Kimberly Edwards",
+    "Rosa Delgado",
+    "Tom Nguyen",
+    "Priya Nair",
+    "Dennis Walsh",
+    "Lena Kowalski",
+    "Marcus Lee",
+    "Grace Kim",
+    "Owen Hart"
+  ],
+  "dentist": [
+    [
+      "CompEx, Pano, Consult",
+      30
+    ],
+    [
+      "Crown prep #30",
+      90
+    ],
+    [
+      "Composite #19",
+      60
+    ],
+    [
+      "LimEx, PA",
+      30
+    ],
+    [
+      "Crown seat #14",
+      40
+    ],
+    [
+      "Composite #3, #4",
+      60
+    ],
+    [
+      "RCT #19",
+      90
+    ],
+    [
+      "Ext #17",
+      40
+    ],
+    [
+      "Composite #30",
+      60
+    ],
+    [
+      "Crown prep #3",
+      90
+    ],
+    [
+      "PA, LimEx",
+      30
+    ],
+    [
+      "Night guard seat",
+      30
+    ],
+    [
+      "Veneer consult",
+      30
+    ]
+  ],
+  "hygiene": [
+    [
+      "PerEx, 4BWX, Prophy",
+      60
+    ],
+    [
+      "PerioMaint",
+      60
+    ],
+    [
+      "PerEx, ProphyCh, Fl",
+      40
+    ],
+    [
+      "SRP UR, UL",
+      90
+    ],
+    [
+      "PerEx, Prophy",
+      60
+    ],
+    [
+      "PerEx, Prophy, Fl",
+      60
+    ],
+    [
+      "PerioMaint",
+      60
+    ],
+    [
+      "ProphyCh, Fl",
+      30
+    ],
+    [
+      "SRP LR, LL",
+      90
+    ]
+  ]
 }

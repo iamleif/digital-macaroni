@@ -206,12 +206,12 @@ async def test_take_message_records_a_callback_for_an_agent(lite: dict[str, Any]
     s = hotels.create_state(NOW)
     r = await run(s, "search_hotels", {"area": "miami_beach", "checkin": "2026-12-11", "checkout": "2026-12-31", "adults": 4})
     assert r.error == "too_long" and "take_message" in r.message
-    m = await run(s, "take_message", {"name": "Leif", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults."})
+    m = await run(s, "take_message", {"name": "Leif Marshall", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults."})
     assert m.ok and m.changed and m.result["messageId"].startswith("MSG-")
-    again = await run(s, "take_message", {"name": "Leif", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults."})
+    again = await run(s, "take_message", {"name": "Leif Marshall", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults."})
     assert again.result["duplicate"] is True
     v = hotels.view(s)
-    assert v["messages"] == [{"id": m.result["messageId"], "name": "Leif", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults.", "preferredTime": None, "callback": "•••• 5382"}]
+    assert v["messages"] == [{"id": m.result["messageId"], "name": "Leif Marshall", "summary": "Two rooms in Miami Beach, Dec 11 to 31, five adults.", "preferredTime": None, "callback": "•••• 5382"}]
     assert "Never say you have noted" in hotels.instruction(s, CTX)
 
 
@@ -234,3 +234,9 @@ async def test_summary_email_after_a_message_with_the_digital_macaroni_card(lite
     assert r.ok and sent[0]["to"] == "leif@example.com" and sent[0]["subject"] == "Demo · Your call with Palmetto Stays"
     assert "Thanks for calling, Leif" in sent[0]["text"] and "Two rooms in Miami Beach" in sent[0]["text"] and "•••• 5382" in sent[0]["text"]
     assert "This is just the tip of the iceberg." in sent[0]["html"] and "Book a call with Leif" in sent[0]["html"]
+
+
+async def test_single_word_names_are_rejected_until_the_last_name_is_given() -> None:
+    s = hotels.create_state(NOW)
+    m = await run(s, "take_message", {"name": "Leif", "callbackNumber": "+15555555382", "summary": "Two rooms in Miami Beach, Dec 11 to 31."})
+    assert m.error == "need_last_name" and "last name" in m.message and not s.messages

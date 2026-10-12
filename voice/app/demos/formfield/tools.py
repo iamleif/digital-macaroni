@@ -59,6 +59,8 @@ class ReserveItem(BaseModel):
 
 
 def reserve_item(state: FormFieldState, i: ReserveItem, ctx: OpContext) -> OpResult:
+    if len(i.name.split()) < 2:
+        return fail("need_last_name", "That is only a first name. Ask \"And your last name?\" and call reserve_item again with the full name.")
     pv = variant_of(i.variantId)
     if not pv:
         return fail("not_found", "That option is not in the catalogue.")
@@ -162,6 +164,8 @@ class TakeMessage(BaseModel):
 
 
 def take_message(state: FormFieldState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    if len(i.name.split()) < 2:
+        return fail("need_last_name", "That is only a first name. Ask \"And your last name?\" and call take_message again with the full name.")
     dup = next((m for m in state.messages if m["summary"] == i.summary.strip()), None)
     if dup:
         return ok(f"Message already left · {dup['id']}", {"messageId": dup["id"], "duplicate": True})

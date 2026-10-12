@@ -170,6 +170,8 @@ def set_guest(state: HotelState, i: SetGuest, ctx: OpContext) -> OpResult:
     if state.room is None:
         return fail("no_room", "Choose a room first with choose_room.")
     name = " ".join(i.fullName.split())
+    if len(name.split()) < 2:
+        return fail("need_last_name", "That is only a first name. Ask \"And your last name?\" and call set_guest again with the full name.")
     state.guest = {"name": name, **SAMPLE_GUEST}
     state.review, state.booking = None, None
     state.stage = "review"
@@ -251,6 +253,8 @@ class TakeMessage(BaseModel):
 
 
 def take_message(state: HotelState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    if len(i.name.split()) < 2:
+        return fail("need_last_name", "That is only a first name. Ask \"And your last name?\" and call take_message again with the full name.")
     dup = next((m for m in state.messages if m["summary"] == i.summary.strip() and m["name"] == i.name.strip()), None)
     if dup:
         return ok(f"Message already left · {dup['id']}", {"messageId": dup["id"], "duplicate": True})

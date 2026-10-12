@@ -8,7 +8,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, add_days, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
 from . import store
 from .state import (
     AgentCall,
@@ -23,6 +23,7 @@ from .state import (
     Tri,
     active,
     bookable_days,
+    has_full_name,
     describe_slot,
     free_agent,
     open_slots,
@@ -31,7 +32,7 @@ from .state import (
     claim_next,
     quote_next,
 )
-from .store import BUSINESS, CHANGE_LABEL, CLAIM_LABEL, CLOSED_WEEKDAYS, LINE_LABEL, SERVICE, carrier, first_name, person
+from .store import BUSINESS, DAYS_AHEAD, CHANGE_LABEL, CLAIM_LABEL, CLOSED_WEEKDAYS, LINE_LABEL, SERVICE, carrier, first_name, person
 
 MAX_LOOKUPS = 3
 
@@ -253,7 +254,9 @@ class CheckAvailability(BaseModel):
 
 def check_availability(state: InsuranceState, i: CheckAvailability, ctx: OpContext) -> OpResult:
     days = bookable_days(state)
-    if i.date < state.today or i.date > days[-1]:
+    if i.date > add_days(state.today, DAYS_AHEAD - 1):
+        return fail("outside_calendar", f"This demo's calendar only goes out two weeks, through {date_label(days[-1])}. Offer the caller a day within that.")
+    if i.date < state.today:
         return fail("outside_calendar", f"Calls can be booked from today to {date_label(days[-1])}.")
 
     def in_part(sid: str) -> bool:
@@ -288,8 +291,8 @@ class BookAgentCall(BaseModel):
 
 def book_agent_call(state: InsuranceState, i: BookAgentCall, ctx: OpContext) -> OpResult:
     name = state.account.get("name") or (state.customer or {}).get("name")
-    if not name:
-        return fail("missing_details", "Ask for the caller's name first.")
+    if not has_full_name(name):
+        return fail("missing_details", "Ask for the caller's first and last name first (\"And your last name?\"), then save it with note_account.")
     same = next((c for c in active(state) if c.slot_id == i.slotId), None)
     if same:
         return ok(f"Already booked · {same.id}", {"callId": same.id, "duplicate": True})
@@ -341,6 +344,8 @@ class TakeMessage(BaseModel):
 
 
 def take_message(state: InsuranceState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    if not has_full_name(i.name):
+        return fail("need_last_name", "Ask the caller \"And your last name?\" before you take the message.")
     dup = next((m for m in state.messages if m.summary == i.summary.strip() and m.name == i.name.strip()), None)
     if dup:
         return ok(f"Message already left · {dup.id}", {"messageId": dup.id, "duplicate": True})

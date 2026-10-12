@@ -28,6 +28,7 @@ HEARING = """# Hearing
 The line is a phone and the transcript can be wrong, most of all on names, numbers and emails.
 - Never guess one. If what you heard doesn't answer what you asked (a service when you asked for a name), you misheard: "Sorry, I missed that. What was the name?"
 - Before you use a name, phone number or email, read it back once and wait for a yes. On a phone call use get_caller_number and confirm only the last four digits.
+- Always get a first and last name. If they give only a first name, ask "And your last name?" before you save or book.
 - After two tries, ask them to spell it or say it slowly, or offer a message."""
 
 PUSHBACK = """# Pushback

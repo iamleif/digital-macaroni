@@ -1,4 +1,4 @@
-"""What June asks next: the practice's intake and triage questions, in order, derived from what the chart already holds."""
+"""What Josh asks next: the practice's intake and triage questions, in order, derived from what the chart already holds."""
 
 from __future__ import annotations
 
@@ -56,6 +56,8 @@ def intake_next(state: DentalState) -> tuple[Optional[str], Optional[str]]:
             return t
     if not p.get("name"):
         return "name", "What's your child's name?" if child else "Can I get your name?"
+    if len(p["name"].split()) < 2:  # a first name alone is not a name yet
+        return "name", "And their last name?" if child else "And your last name?"
     if state.found:
         if p.get("reason") is None and not state.triage:
             return "reason", "What can we do for you today?"
@@ -84,6 +86,8 @@ def intake_next(state: DentalState) -> tuple[Optional[str], Optional[str]]:
             return "relationship", "Whose name is the plan under?" if child else "Is the plan in your own name, or someone else's?"
         if rel in ("spouse", "child", "other") and _open(state, "subscriber", p.get("subscriber")):
             return "subscriber", "What's the plan holder's name?"
+        if rel in ("spouse", "child", "other") and len((p.get("subscriber") or "").split()) == 1 and "subscriber" not in state.skipped:
+            return "subscriber", "And the plan holder's last name?"
         if _open(state, "memberId", p.get("memberId")):
             return "memberId", "What's the member ID on the card?"
         if p.get("groupNumber") is None and "groupNumber" not in state.skipped and "groupNumber" not in state.asked:

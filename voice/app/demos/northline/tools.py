@@ -7,7 +7,8 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..booking import last_name_missing
+from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday, add_days
 from .state import (
     DATE_HELP,
     ISSUE_HELP,
@@ -26,7 +27,7 @@ from .state import (
     open_slots,
     parse_slot,
 )
-from .store import BUSINESS, NO_SYMPTOM_NEEDED, first_name, service
+from .store import BUSINESS, DAYS_AHEAD, NO_SYMPTOM_NEEDED, first_name, service
 
 
 def get_business_info(state: NorthlineState, _: Any, ctx: OpContext) -> OpResult:
@@ -44,6 +45,8 @@ class NoteRequestDetails(BaseModel):
 def note_request_details(state: NorthlineState, i: NoteRequestDetails, ctx: OpContext) -> OpResult:
     if i.proposedSlotId and i.proposedSlotId not in state.offered:
         return fail("slot_not_offered", "That time was not offered. Check availability first.")
+    if (bad := last_name_missing(i.name)):
+        return bad
     r = state.request
     # A category is not worth showing on the card as the problem; the agent still needs to ask.
     issue = i.issue.strip() if i.issue and not issue_is_vague(i.issue) else None
@@ -78,8 +81,10 @@ def check_availability(state: NorthlineState, i: CheckAvailability, ctx: OpConte
         return h < 12 if i.partOfDay == "morning" else h >= 12 if i.partOfDay == "afternoon" else True
 
     days = bookable_days(state)
-    if i.date < state.today or i.date > days[-1]:
-        return fail("outside_schedule", f"Bookings open from today to {date_label(days[-1])}.", {"bookableFrom": state.today, "bookableTo": days[-1]})
+    if i.date < state.today:
+        return fail("outside_schedule", f"That date has already passed. Bookings open from today through {date_label(days[-1])}.", {"bookableFrom": state.today, "bookableTo": days[-1]})
+    if i.date > add_days(state.today, DAYS_AHEAD - 1):
+        return fail("outside_schedule", f"This demo's calendar only goes out two weeks, through {date_label(days[-1])}. Offer the caller a day within that.", {"bookableFrom": state.today, "bookableTo": days[-1]})
     exact = [s for s in open_slots(state, i.date, skill) if in_part(s)]
     state.viewing = {"date": i.date, "slots": exact, "skill": skill}
     if exact:
@@ -114,6 +119,8 @@ class BookAppointment(BaseModel):
 
 
 def book_appointment(state: NorthlineState, i: BookAppointment, ctx: OpContext) -> OpResult:
+    if (bad := last_name_missing(i.name)):
+        return bad
     existing = active(state)
     same = next((a for a in existing if a.slot_id == i.slotId and a.service_id == i.service), None)
     if same:

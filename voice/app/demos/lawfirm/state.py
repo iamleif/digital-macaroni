@@ -6,6 +6,7 @@ session's own date, so "tomorrow" always means something.
 
 from __future__ import annotations
 
+import hashlib
 import re
 from dataclasses import dataclass, field
 from datetime import date, datetime
@@ -62,6 +63,7 @@ class Booked:
     hour: int
     ref: str
     existing: bool
+    title: str = ""
 
 
 @dataclass
@@ -149,22 +151,61 @@ def describe_slot(state: LawFirmState, sid: str, pool: Optional[list[str]] = Non
     return out
 
 
+_TITLES = ("Client consultation", "Deposition prep", "Mediation", "Case review", "Court hearing", "Settlement call", "Records review", "Expert call", "Client meeting", "Intake review")
+_DAY_FILL = {1: 0.50, 2: 0.30, 3: 0.42, 4: 0.58, 5: 0.22}  # how full each weekday tends to be (1 = Monday)
+_EPOCH = date(2026, 1, 5)
+
+
+def _u(*parts: object) -> float:
+    """A repeatable number in [0, 1) from the parts: the same date and people always give the same value."""
+    return int.from_bytes(hashlib.sha256("|".join(map(str, parts)).encode()).digest()[:8], "big") / 2**64
+
+
+def _business_index(day: str) -> int:
+    d = date.fromisoformat(day)
+    return sum(1 for i in range((d - _EPOCH).days) if weekday(add_days(_EPOCH.isoformat(), i)) not in CLOSED_WEEKDAYS)
+
+
+def packed_day(day: str) -> bool:
+    """One nearly-full day in every ten business days (a fortnight), fixed by the date alone."""
+    return _business_index(day) % 10 == 3
+
+
+def existing_blocks(day: str) -> list[tuple[str, int, str]]:
+    """(attorney id, hour, title) already busy on a day. Seeded by the date, attorney and firm, never by the call time."""
+    packed = packed_day(day)
+    week = date.fromisoformat(day).toordinal() // 7
+    day_fill = 0.9 if packed else min(0.8, max(0.1, _DAY_FILL.get(weekday(day), 0.4) + (_u("af", "week", week) - 0.5) * 0.3 + (_u("af", "day", day) - 0.5) * 0.3))
+    out: list[tuple[str, int, str]] = []
+    for t in ATTORNEYS:
+        aid = t["id"]
+        fill = day_fill if packed else min(0.85, max(0.05, day_fill + (_u("af", day, aid, "load") - 0.5) * 0.4))
+        keep = (1 if packed else 2) if aid == SENIOR_PARTNER else (0 if packed else 1)
+        busy = [h for h in HOURS if _u("af", day, aid, h) < fill]
+        free = [h for h in HOURS if h not in busy]
+        for h in sorted(busy, key=lambda h: _u("af", day, aid, h, "keep"))[: max(0, keep - len(free))]:
+            busy.remove(h)
+        out += [(aid, h, _TITLES[int(_u("af", day, aid, h, "title") * len(_TITLES))]) for h in sorted(busy)]
+    return out
+
+
 def create_state(now: datetime) -> LawFirmState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = LawFirmState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (3 if minute > 0 else 2))
     n = 0
-    today_ord = datetime.fromisoformat(today).toordinal()
     for day in bookable_days(state):
-        day_index = datetime.fromisoformat(day).toordinal() - today_ord
-        for hi, h in enumerate(HOURS):
-            for ai, a in enumerate(ATTORNEYS):
-                if (day_index * 5 + hi * 3 + ai * 4) % 3 == 0 or (day_index == 1 and h in (10, 14) and a["id"] == "marcus"):
-                    state.calendar.append(Booked(a["id"], day, h, f"existing-{n}", True))
-                    n += 1
+        for aid, h, title in existing_blocks(day):
+            state.calendar.append(Booked(aid, day, h, f"existing-{n}", True, title))
+            n += 1
     return state
 
 
 # ---- Intake helpers ----
+
+
+def has_full_name(name: Optional[str]) -> bool:
+    """A first and a last name: at least two words."""
+    return len((name or "").split()) >= 2
 
 
 def norm(s: str) -> str:
@@ -226,13 +267,18 @@ def next_question(state: LawFirmState) -> dict[str, Any]:
     """What to ask next and what is still missing, from what is on the record. The source of truth for intake order."""
 
     def answered(key: str, required: bool) -> bool:
+        if key == "name":
+            return has_full_name(state.intake.get("name"))
         if any(state.intake.get(k) not in (None, "", []) for k in (key, *_ALSO_ANSWERED_BY.get(key, ()))):
             return True
         return not required and key in state.declined
 
     left = [(k, q, r) for k, q, r in QUESTIONS if not answered(k, r)]
     need = missing_fields(state)
-    out: dict[str, Any] = {"next": left[0][1] if left else None, "stillNeeded": need}
+    first = left[0][1] if left else None
+    if left and left[0][0] == "name" and state.intake.get("name"):
+        first = "And your last name?"
+    out: dict[str, Any] = {"next": first, "stillNeeded": need}
     if left:
         out["nextIsRequired"] = left[0][2]
         out["questionsLeft"] = len(left)

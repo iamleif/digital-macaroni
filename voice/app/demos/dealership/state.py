@@ -6,6 +6,7 @@ and messages. Availability is generated relative to the session's own date.
 
 from __future__ import annotations
 
+import hashlib
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -24,6 +25,7 @@ class Busy:
     hour: int
     ref: str
     existing: bool
+    title: str = ""
 
 
 @dataclass
@@ -129,23 +131,64 @@ def describe_slot(sid: str) -> dict[str, str]:
     return {"slotId": sid, "date": day, "day": date_label(day), "time": hour_label(hour), **({"with": salesperson(who)["name"]} if who != "bay" else {})}
 
 
+def full_name(name: Optional[str]) -> bool:
+    """A name worth saving for a booking or lead: a first and a last name."""
+    return len((name or "").split()) >= 2
+
+
+def roll(*parts: Any) -> float:
+    """A repeatable number in [0, 1) from the parts: the same date and staff always give the same answer."""
+    h = hashlib.sha256("|".join(str(p) for p in ("woodward", *parts)).encode()).digest()
+    return int.from_bytes(h[:6], "big") / 2**48
+
+
+# How busy each weekday is (0 is Sunday): weekends and Fridays are test-drive days, midweek is quiet.
+FULLNESS = {1: 0.14, 2: 0.2, 3: 0.12, 4: 0.26, 5: 0.42, 6: 0.58}
+DRIVE_TITLES = ("Test drive", "Trade-in appraisal", "Delivery handover", "Finance meeting", "Walk-around", "Customer visit")
+SERVICE_TITLES = ("Oil change", "Brake service", "Tire rotation", "Diagnostic", "Recall repair", "Inspection")
+
+
+def nearly_full(day: str) -> bool:
+    """One day in every fourteen is nearly booked solid, so any fortnight has exactly one."""
+    return datetime.fromisoformat(day).toordinal() % 14 == 0
+
+
 def create_state(now: datetime) -> DealershipState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = DealershipState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (2 if minute > 0 else 1))
-    n = 0
-    today_ord = datetime.fromisoformat(today).toordinal()
-    for day in bookable_days(state):
-        di = datetime.fromisoformat(day).toordinal() - today_ord
-        for hi, h in enumerate(DRIVE_HOURS):
-            for si, s in enumerate(SALES):
-                if (di * 5 + hi * 3 + si * 7) % 3 == 0:
-                    state.busy.append(Busy(s["id"], day, h, f"existing-{n}", True))
-                    n += 1
-        for hi, h in enumerate(SERVICE_HOURS):
-            for b in range((di + hi) % 4 + 1 if hi % 3 else 4):
-                state.busy.append(Busy("bay", day, h, f"existing-{n}", True))
-                n += 1
+    state.busy = existing_busy(bookable_days(state))
     return state
+
+
+def existing_busy(days: list[str]) -> list[Busy]:
+    """Appointments already in the diary. Each date is generated from the date alone (never the call's time), so a
+    given day looks the same on every call while different days and weeks differ."""
+    out: list[Busy] = []
+    n = 0
+    for day in days:
+        full = nearly_full(day)
+        wd = weekday(day)
+        level = 0.88 if full else min(0.8, FULLNESS.get(wd, 0.2) * (0.5 + 1.1 * roll(day, "level")))
+        spare = {h: roll(day, "spare", h) for h in DRIVE_HOURS}
+        keep = sorted(DRIVE_HOURS, key=lambda h: spare[h])[: 2 if full else 4]
+        for h in DRIVE_HOURS:
+            free_one = SALES[int(roll(day, "free", h) * len(SALES))]["id"]
+            for s in SALES:
+                if h in keep and s["id"] == free_one:
+                    continue
+                if roll(day, h, s["id"]) < min(0.95, level * (0.4 + 1.2 * roll(day, s["id"], "bias"))):
+                    out.append(Busy(s["id"], day, h, f"existing-{n}", True, DRIVE_TITLES[int(roll(day, h, s["id"], "t") * len(DRIVE_TITLES))]))
+                    n += 1
+        keep_s = sorted(SERVICE_HOURS, key=lambda h: roll(day, "sspare", h))[: 2 if full else 3]
+        for h in SERVICE_HOURS:
+            top = BAYS - 1
+            count = 1 if h in keep_s else min(top, int(roll(day, "bays", h) * (top + 1) * (0.5 + level * 1.4)))
+            if full and h not in keep_s:
+                count = BAYS
+            for b in range(count):
+                out.append(Busy("bay", day, h, f"existing-{n}", True, SERVICE_TITLES[int(roll(day, h, b, "t") * len(SERVICE_TITLES))]))
+                n += 1
+    return out
 
 
 def active(state: DealershipState) -> list[Appointment]:

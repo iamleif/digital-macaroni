@@ -6,9 +6,10 @@ Availability comes from a calendar generated relative to the session's own date.
 
 from __future__ import annotations
 
+import hashlib
 import re
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Literal, Optional
 
 from ..types import add_days, date_in, date_label, weekday
@@ -28,6 +29,7 @@ class Booked:
     hour: int
     ref: str
     existing: bool
+    title: str = ""
 
 
 @dataclass
@@ -125,19 +127,57 @@ def describe_slot(state: InsuranceState, sid: str, staff_id: Optional[str] = Non
     return out
 
 
+_TITLES = ("Renewal review", "Quote call", "Claims follow-up", "Coverage review", "New customer call", "Policy change", "Bundle review", "Carrier call", "Client check-in")
+_DAY_FILL = {1: 0.55, 2: 0.35, 3: 0.25, 4: 0.5, 5: 0.40}  # how full each weekday tends to be (1 = Monday)
+_EPOCH = date(2026, 1, 5)
+
+
+def _u(*parts: object) -> float:
+    """A repeatable number in [0, 1) from the parts: the same date and people always give the same value."""
+    return int.from_bytes(hashlib.sha256("|".join(map(str, parts)).encode()).digest()[:8], "big") / 2**64
+
+
+def _business_index(day: str) -> int:
+    d = date.fromisoformat(day)
+    return sum(1 for i in range((d - _EPOCH).days) if weekday(add_days(_EPOCH.isoformat(), i)) not in CLOSED_WEEKDAYS)
+
+
+def packed_day(day: str) -> bool:
+    """One nearly-full day in every ten business days (a fortnight), fixed by the date alone."""
+    return _business_index(day) % 10 == 6
+
+
+def existing_blocks(day: str) -> list[tuple[str, int, str]]:
+    """(agent id, hour, title) already busy on a day. Seeded by the date, agent and agency, never by the call time."""
+    packed = packed_day(day)
+    week = date.fromisoformat(day).toordinal() // 7
+    day_fill = 0.9 if packed else min(0.8, max(0.1, _DAY_FILL.get(weekday(day), 0.4) + (_u("bb", "week", week) - 0.5) * 0.3 + (_u("bb", "day", day) - 0.5) * 0.3))
+    out: list[tuple[str, int, str]] = []
+    for ai, sid in enumerate(LICENSED):
+        fill = day_fill if packed else min(0.85, max(0.05, day_fill + (_u("bb", day, sid, "load") - 0.5) * 0.4))
+        keep = (1 if ai == 0 else 0) if packed else 1
+        busy = [h for h in CALL_HOURS if _u("bb", day, sid, h) < fill]
+        free = [h for h in CALL_HOURS if h not in busy]
+        for h in sorted(busy, key=lambda h: _u("bb", day, sid, h, "keep"))[: max(0, keep - len(free))]:
+            busy.remove(h)
+        out += [(sid, h, _TITLES[int(_u("bb", day, sid, h, "title") * len(_TITLES))]) for h in sorted(busy)]
+    return out
+
+
 def create_state(now: datetime) -> InsuranceState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = InsuranceState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (2 if minute > 0 else 1))
     n = 0
-    today_ord = datetime.fromisoformat(today).toordinal()
     for day in bookable_days(state):
-        di = datetime.fromisoformat(day).toordinal() - today_ord
-        for hi, h in enumerate(CALL_HOURS):
-            for ai, sid in enumerate(LICENSED):
-                if (di * 5 + hi * 3 + ai * 2) % 3 == 0:
-                    state.calendar.append(Booked(sid, day, h, f"existing-{n}", True))
-                    n += 1
+        for sid, h, title in existing_blocks(day):
+            state.calendar.append(Booked(sid, day, h, f"existing-{n}", True, title))
+            n += 1
     return state
+
+
+def has_full_name(name: Optional[str]) -> bool:
+    """A first and a last name: at least two words."""
+    return len((name or "").split()) >= 2
 
 
 def active(state: InsuranceState) -> list[AgentCall]:
@@ -157,7 +197,7 @@ QUOTE_NEEDS: dict[str, list[tuple[str, str]]] = {
 
 def quote_missing(state: InsuranceState) -> list[str]:
     a = state.account
-    need: list[str] = [] if a.get("name") else ["the caller's name"]
+    need: list[str] = [] if has_full_name(a.get("name")) else ["the caller's first and last name"]
     if not a.get("dateOfBirth") and not a.get("drivers"):
         need.append("the caller's date of birth")
     for line in a.get("quoteLines", []):
@@ -192,6 +232,8 @@ def claim_next(claim: dict[str, Any]) -> tuple[Optional[str], bool]:
 def _missing_driver_detail(a: dict[str, Any]) -> Optional[str]:
     for d in a.get("drivers") or []:
         who = d.get("name") or "the driver"
+        if d.get("name") and not has_full_name(d["name"]):
+            return f"And {who}'s last name?"
         if not d.get("dateOfBirth"):
             return f"What is {who}'s date of birth?"
         if d.get("yearsLicensed") is None:
@@ -203,7 +245,7 @@ def _quote_steps(a: dict[str, Any]) -> list[tuple[bool, str, bool]]:
     """(already answered, question, mandatory), in the agency's order, for what the caller wants quoted."""
     lines = a.get("quoteLines", [])
     skipped = set(a.get("skipped", []))
-    steps: list[tuple[bool, str, bool]] = [(bool(a.get("name")), "May I have your name?", True)]
+    steps: list[tuple[bool, str, bool]] = [(has_full_name(a.get("name")), "And your last name?" if a.get("name") else "May I have your name?", True)]
     if "auto" not in lines:
         steps.append((bool(a.get("dateOfBirth")), "What is your date of birth?", True))
     for line in lines:

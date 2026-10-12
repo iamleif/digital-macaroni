@@ -26,6 +26,11 @@ def runner(demo):
     return state, run
 
 
+def runner_run(state, op, args):
+    o = northline.operations[op]
+    return o.run(state, o.params.model_validate(args), CTX)
+
+
 def res(r: OpResult) -> dict[str, Any]:
     return r.result
 
@@ -42,14 +47,12 @@ class TestNorthline:
         assert r.ok
         slots = [s["slotId"] for s in res(r)["available"]]
         assert slots
-        # Tomorrow's 12–2 window is fully booked in the fixture.
-        assert f"{TOMORROW}T12" not in slots
         assert set(slots) <= set(state.offered)
 
     def test_refuses_to_propose_or_book_a_time_it_never_offered(self):
         _, run = runner(northline)
         assert not run("note_request_details", {"proposedSlotId": f"{TOMORROW}T14"}).ok
-        r = run("book_appointment", {"slotId": f"{TOMORROW}T14", "service": "heating_repair", "name": "Alex", "address": "48 Birch Lane", "issue": "No heat", "callerConfirmed": True})
+        r = run("book_appointment", {"slotId": f"{TOMORROW}T14", "service": "heating_repair", "name": "Alex Taylor", "address": "48 Birch Lane", "issue": "No heat", "callerConfirmed": True})
         assert not r.ok and r.error == "slot_not_offered"
 
     def test_books_once_retries_return_the_same_booking_and_moves_the_same_record(self):
@@ -83,7 +86,7 @@ class TestNorthline:
 
     def test_will_not_book_a_repair_until_it_knows_what_the_caller_noticed(self):
         state, run = runner(northline)
-        booking = {"slotId": slots_for(run)[0], "service": "heating_repair", "name": "Alex", "address": "48 Birch Lane", "issue": "Heating and cooling", "callerConfirmed": True}
+        booking = {"slotId": slots_for(run)[0], "service": "heating_repair", "name": "Alex Taylor", "address": "48 Birch Lane", "issue": "Heating and cooling", "callerConfirmed": True}
         r = run("book_appointment", booking)
         assert not r.ok and r.error == "issue_too_vague"
         assert not state.appointments
@@ -92,7 +95,7 @@ class TestNorthline:
     def test_books_a_tune_up_or_estimate_on_request_alone(self):
         _, run = runner(northline)
         slots = slots_for(run, "cooling_tune_up")
-        assert run("book_appointment", {"slotId": slots[0], "service": "cooling_tune_up", "name": "Alex", "address": "48 Birch Lane", "issue": "AC tune-up", "callerConfirmed": True}).ok
+        assert run("book_appointment", {"slotId": slots[0], "service": "cooling_tune_up", "name": "Alex Taylor", "address": "48 Birch Lane", "issue": "AC tune-up", "callerConfirmed": True}).ok
         info = res(run("get_business_info"))
         assert next(s for s in info["services"] if s["service"] == "replacement_estimate")["price"] == "Free"
 
@@ -105,7 +108,7 @@ class TestNorthline:
 
     def test_gives_only_what_is_new_after_booking(self):
         _, run = runner(northline)
-        r = res(run("book_appointment", {"slotId": slots_for(run)[0], "service": "heating_repair", "name": "Alex", "address": "48 Birch Lane", "issue": "No heat", "callerConfirmed": True}))
+        r = res(run("book_appointment", {"slotId": slots_for(run)[0], "service": "heating_repair", "name": "Alex Taylor", "address": "48 Birch Lane", "issue": "No heat", "callerConfirmed": True}))
         assert sorted(r) == ["appointmentId", "callsAhead", "technician"]
 
     def test_offers_next_openings_when_a_day_has_none_and_says_sunday_is_closed(self):
@@ -114,9 +117,40 @@ class TestNorthline:
         r = run("check_availability", {"service": "cooling_repair", "date": sunday})
         assert r.ok and res(r)["available"] == [] and res(r)["reason"] == "closed_sunday" and res(r)["nextAvailable"]
 
+    def test_horizon_is_fourteen_days(self):
+        state, run = runner(northline)
+        last = add_days(state.today, 13)
+        assert len({j.date for j in state.jobs}) >= 10
+        ok_day = last if weekday(last) != 0 else add_days(last, -1)
+        assert run("check_availability", {"service": "heating_repair", "date": ok_day}).ok
+        r = run("check_availability", {"service": "heating_repair", "date": add_days(state.today, 14)})
+        assert not r.ok and "two weeks" in r.message and "Offer the caller a day within that" in r.message
+
+    def test_existing_jobs_differ_by_date_and_repeat_for_the_same_date(self):
+        a = northline.create_state(NOW)
+        b = northline.create_state(datetime(2026, 10, 1, 20, 30, tzinfo=timezone.utc))
+        def pattern(st, day):
+            return sorted((j.tech_id, j.hour, j.service_id) for j in st.jobs if j.date == day)
+        assert pattern(a, "2026-10-08") == pattern(b, "2026-10-08")
+        days = ["2026-10-02", "2026-10-03", "2026-10-06", "2026-10-07", "2026-10-08", "2026-10-09", "2026-10-10"]
+        assert len({tuple(pattern(a, d)) for d in days}) >= 5
+        assert pattern(a, "2026-10-02") != pattern(a, "2026-10-09")
+        assert all(slots_for(lambda op, args: runner_run(a, op, args), "heating_repair", d) for d in days)
+
+    def test_a_first_name_alone_is_not_enough(self):
+        _, run = runner(northline)
+        r = run("note_request_details", {"name": "Alex"})
+        assert not r.ok and r.error == "last_name_needed" and "last name" in r.message
+        slot = slots_for(run)[0]
+        r = run("book_appointment", {"slotId": slot, "service": "heating_repair", "name": "Alex", "address": "48 Birch Lane", "issue": "No heat", "callerConfirmed": True})
+        assert not r.ok and r.error == "last_name_needed"
+
+    def test_prompt_says_just_a_moment(self):
+        assert "Just a moment" in northline.instruction(northline.create_state(NOW), CTX)
+
     def test_takes_a_message_once(self):
         state, run = runner(northline)
-        msg = {"name": "Alex", "callbackNumber": "555-0142", "summary": "Wants a quote for a new boiler"}
+        msg = {"name": "Alex Taylor", "callbackNumber": "555-0142", "summary": "Wants a quote for a new boiler"}
         assert run("take_message", msg).ok
         assert res(run("take_message", msg))["duplicate"]
         assert len(state.messages) == 1
@@ -164,19 +198,26 @@ class TestFormField:
 
     def test_refuses_an_out_of_stock_option_and_suggests_what_is_available(self):
         _, run = runner(formfield)
-        r = run("reserve_item", {"variantId": "ridge-oat", "quantity": 1, "name": "Sam", "callerConfirmed": True})
+        r = run("reserve_item", {"variantId": "ridge-oat", "quantity": 1, "name": "Sam Rivera", "callerConfirmed": True})
         assert not r.ok and [o["variantId"] for o in res(r)["otherOptions"]] == ["ridge-sage", "ridge-charcoal"]
+
+    def test_single_word_names_are_rejected_until_the_last_name_is_given(self):
+        state, run = runner(formfield)
+        r = run("reserve_item", {"variantId": "ridge-sage", "quantity": 1, "name": "Sam", "callerConfirmed": True})
+        assert r.error == "need_last_name" and "last name" in r.message
+        m = run("take_message", {"name": "Sam", "callbackNumber": "555-0142", "summary": "Wants to ask about a lamp"})
+        assert m.error == "need_last_name" and not state.messages
 
     def test_reserves_holds_stock_changes_quantity_and_releases_on_cancel(self):
         state, run = runner(formfield)
-        first = run("reserve_item", {"variantId": "ridge-sage", "quantity": 2, "name": "Sam", "callerConfirmed": True})
+        first = run("reserve_item", {"variantId": "ridge-sage", "quantity": 2, "name": "Sam Rivera", "callerConfirmed": True})
         assert first.ok
 
         def in_stock(vid: str) -> int:
             return next(o for o in res(run("get_product_details", {"productId": "ridge-lamp"}))["options"] if o["variantId"] == vid)["inStock"]
 
         assert in_stock("ridge-sage") == 1
-        assert res(run("reserve_item", {"variantId": "ridge-sage", "quantity": 2, "name": "Sam", "callerConfirmed": True}))["duplicate"]
+        assert res(run("reserve_item", {"variantId": "ridge-sage", "quantity": 2, "name": "Sam Rivera", "callerConfirmed": True}))["duplicate"]
         rid = res(first)["reservationId"]
         too_many = run("update_reservation", {"reservationId": rid, "quantity": 4, "callerConfirmed": True})
         assert not too_many.ok and too_many.error == "insufficient_stock"

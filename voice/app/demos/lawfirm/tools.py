@@ -8,7 +8,7 @@ from typing import Any, Literal, Optional
 from pydantic import BaseModel, Field
 
 from ... import email
-from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
+from ..types import RECAP_HELP, add_days, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
 from .state import (
     AccidentType,
     Booked,
@@ -26,6 +26,7 @@ from .state import (
     describe_slot,
     eligible_attorneys,
     free_attorney,
+    has_full_name,
     QUESTIONS,
     missing_fields,
     next_question,
@@ -37,7 +38,7 @@ from .state import (
     tier_of,
     years_between,
 )
-from .store import ADVERSE, BUSINESS, CLIENTS, CLOSED_WEEKDAYS, DECLINES, FAULT_LABEL, FORMAT_LABEL, LICENSED_STATE, OUTSIDE_PRACTICE, TREATMENT_LABEL, attorney, first_name, limit_years
+from .store import ADVERSE, BUSINESS, CLIENTS, CLOSED_WEEKDAYS, DECLINES, FAULT_LABEL, FORMAT_LABEL, LICENSED_STATE, OUTSIDE_PRACTICE, DAYS_AHEAD, TREATMENT_LABEL, attorney, first_name, limit_years
 
 
 def get_firm_info(state: LawFirmState, _: Any, ctx: OpContext) -> OpResult:
@@ -104,6 +105,8 @@ class CheckConflicts(BaseModel):
 
 
 def check_conflicts(state: LawFirmState, i: CheckConflicts, ctx: OpContext) -> OpResult:
+    if not has_full_name(i.callerName):
+        return fail("need_last_name", "Ask the caller \"And your last name?\" and save it with note_intake before the check.")
     names = [i.callerName.strip()] + ([i.opposingParty.strip()] if i.opposingParty else [])
     hits: list[str] = []
     # The firm cannot act against its own clients, nor for someone it is already suing.
@@ -111,7 +114,7 @@ def check_conflicts(state: LawFirmState, i: CheckConflicts, ctx: OpContext) -> O
         hits.append("The other party is a current client")
     if any(name_matches(i.callerName, a) for a in ADVERSE):
         hits.append("The caller is an adverse party on an open matter")
-    state.intake["name"] = state.intake.get("name") or i.callerName.strip()
+    state.intake["name"] = state.intake["name"] if has_full_name(state.intake.get("name")) else i.callerName.strip()
     if i.opposingParty:
         state.intake.setdefault("opposingParty", i.opposingParty.strip())
     state.opened = True
@@ -192,7 +195,10 @@ def check_availability(state: LawFirmState, i: CheckAvailability, ctx: OpContext
         return h < 12 if i.partOfDay == "morning" else h >= 12 if i.partOfDay == "afternoon" else True
 
     days = bookable_days(state)
-    if i.date < state.today or i.date > days[-1]:
+    if i.date > add_days(state.today, DAYS_AHEAD - 1):
+        last = date_label(days[-1])
+        return fail("outside_calendar", f"This demo's calendar only goes out two weeks, through {last}. Offer the caller a day within that.", {"bookableFrom": state.today, "bookableTo": days[-1]})
+    if i.date < state.today:
         return fail("outside_calendar", f"Consultations can be booked from today to {date_label(days[-1])}.", {"bookableFrom": state.today, "bookableTo": days[-1]})
     exact = [s for s in open_slots(state, i.date, pool) if in_part(s)]
     state.viewing = {"date": i.date, "slots": exact, "pool": pool}
@@ -227,8 +233,8 @@ class BookConsultation(BaseModel):
 def book_consultation(state: LawFirmState, i: BookConsultation, ctx: OpContext) -> OpResult:
     if not state.assessment or state.assessment["outcome"] != "qualified":
         return fail("not_qualified", "A consultation can only be booked after assess_case says the firm can take the case.")
-    if not state.intake.get("name"):
-        return fail("missing_details", "Ask for the caller's name first.")
+    if not has_full_name(state.intake.get("name")):
+        return fail("missing_details", "Ask for the caller's first and last name first (\"And your last name?\"), then save it with note_intake.")
     existing = active(state)
     same = next((c for c in existing if c.slot_id == i.slotId), None)
     if same:
@@ -288,6 +294,8 @@ class TakeMessage(BaseModel):
 
 
 def take_message(state: LawFirmState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    if not has_full_name(i.name):
+        return fail("need_last_name", "Ask the caller \"And your last name?\" before you take the message.")
     dup = next((m for m in state.messages if m.summary == i.summary.strip() and m.name == i.name.strip()), None)
     if dup:
         return ok(f"Message already left · {dup.id}", {"messageId": dup.id, "duplicate": True})

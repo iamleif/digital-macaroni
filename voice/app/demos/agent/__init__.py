@@ -91,6 +91,8 @@ class TakeMessage(BaseModel):
 
 
 def take_message(state: AgentState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    if len(i.name.split()) < 2:
+        return fail("need_last_name", "That is only a first name. Ask \"And your last name?\" and call take_message again with the full name.")
     dup = next((m for m in state.messages if m.name == i.name.strip() and m.reason == i.reason.strip()), None)
     if dup:
         return ok(f"Message already taken · {dup.id}", {"messageId": dup.id, "duplicate": True})

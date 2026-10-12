@@ -108,7 +108,7 @@ def tasks(state: DentalState) -> list[dict[str, Any]]:
     for a in active(state):
         t = visit_type(a.type_id)  # type: ignore[arg-type]
         if a.type_id == "new_patient":
-            out.append({"title": "Email new-patient forms", "who": "June", "due": "Now"})
+            out.append({"title": "Email new-patient forms", "who": "Josh", "due": "Now"})
         if state.insurance and not state.insurance.get("medicaid"):
             out.append({"title": f"Verify {state.insurance['carrier']} benefits", "who": "Front office", "due": "Before the visit"})
         out.append({"title": f"Reminder text · {t['name']}", "who": "Practice system", "due": "2 days before"})

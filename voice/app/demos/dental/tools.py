@@ -1,4 +1,4 @@
-"""June's operations at Aspen Grove Dental: plain functions over one call's state, tested without a model."""
+"""Josh's operations at Aspen Grove Dental: plain functions over one call's state, tested without a model."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from ... import email
 from ..types import RECAP_HELP, Confirmed, OpContext, OpResult, already_sent, date_label, fail, mask_number, ok, reference, send_summary, weekday
 from . import store
 from .intake import SKIPPABLE, next_fields, triage_next
-from .state import Appt, DentalState, Message, active, bookable_days, describe_slot, free, op, open_slots, parse_slot
+from .state import Appt, DentalState, Message, active, bookable_days, describe_slot, free, horizon_end, op, open_slots, parse_slot
 from .store import BUSINESS, IN_NETWORK, OUT_OF_NETWORK, TYPE_IDS, provider, visit_type
 
 TypeId = Literal[TYPE_IDS]  # type: ignore[valid-type]
@@ -48,9 +48,12 @@ class NotePatient(BaseModel):
 
 def note_patient(state: DentalState, i: NotePatient, ctx: OpContext) -> OpResult:
     new = {k: (v.strip() if isinstance(v, str) else v) for k, v in i.model_dump().items() if v is not None}
+    have = state.patient.get("name") or ""
+    if new.get("name") and len(new["name"].split()) < 2 and have.lower().startswith(new["name"].lower()):
+        new.pop("name")  # the first name again: keep what we have
     state.skipped += [k for k in new.pop("skipped", []) if k not in state.skipped]
-    if new.get("dateOfBirth") and new["dateOfBirth"] >= state.today:
-        return fail("bad_date", "That date of birth is not right. Check it with the caller.")
+    if new.get("dateOfBirth") and not ("1900" < new["dateOfBirth"] < state.today):
+        return fail("bad_date", "That date of birth is not right. Check it with the caller; it needs month, day and a four-digit year.")
     changed = [k for k, v in new.items() if state.patient.get(k) != v]
     state.patient.update(new)
     state.opened = True
@@ -69,6 +72,8 @@ def find_patient(state: DentalState, i: FindPatient, ctx: OpContext) -> OpResult
         return fail("new_patient", "Don't look them up: they haven't said they've been here before. Ask whether they've been to see us before; if not, carry on as a new patient.")
     if state.lookups >= 3:
         return fail("too_many_tries", "Stop looking them up. Book as a new patient or take a message for the front office.")
+    if len(i.name.split()) < 2:
+        return fail("incomplete_name", "A first and last name are needed. Ask \"And your last name?\" before looking them up.")
     state.lookups += 1
     state.opened = True
     p = store.find_patient(i.name, i.dateOfBirth)
@@ -152,8 +157,10 @@ def check_availability(state: DentalState, i: CheckAvailability, ctx: OpContext)
     if visit_type(i.type).get("existingOnly") and not state.found:
         return fail("existing_only", "Periodontal maintenance is for current patients the dentist has set it up for. New patients start with the new patient exam.")
     days = bookable_days(state)
-    if i.date < state.today or i.date > days[-1]:
-        return fail("outside_calendar", f"The book is open from today to {date_label(days[-1])}.")
+    if i.date < state.today:
+        return fail("outside_calendar", "That date has passed. Offer a day from today on.")
+    if i.date > horizon_end(state.today):
+        return fail("outside_calendar", f"This demo's calendar only goes out two weeks, through {date_label(days[-1])}. Offer the caller a day within that.")
     state.patient.setdefault("reason", i.type)
     prefer = (state.found or {}).get("hygienist")
     prefer_op = next((o["id"] for o in store.OPS if o["provider"] == prefer), None) if prefer else None
@@ -200,6 +207,8 @@ def book_appointment(state: DentalState, i: BookAppointment, ctx: OpContext) -> 
     name = state.patient.get("name")
     if not name:
         return fail("missing_details", "Ask for the patient's name first.")
+    if len(name.split()) < 2:
+        return fail("missing_details", "Ask \"And your last name?\" first: a visit needs a first and last name.")
     if visit_type(i.type).get("existingOnly") and not state.found:
         return fail("existing_only", "New patients start with the new patient exam.")
     if i.type in ("new_patient",) and not state.patient.get("dateOfBirth"):
@@ -315,7 +324,7 @@ async def email_confirmation(state: DentalState, i: EmailConfirmation, ctx: OpCo
         return ok(f"Already emailed · {state.emailed['to']}", {"sent": True, "to": state.emailed["to"], "duplicate": True})  # type: ignore[index]
     if not booked:
         messages = [{"id": m.id, "summary": m.summary, "callback": mask_number(m.callback_number)} for m in state.messages]
-        r, sent = await send_summary("dental", "June", i.email, i.recap, state.patient.get("name"), messages, did="answered your questions and passed your message to the front office")
+        r, sent = await send_summary("dental", "Josh", i.email, i.recap, state.patient.get("name"), messages, did="answered your questions and passed your message to the front office")
         if sent:
             state.emailed = sent
         return r
@@ -326,7 +335,7 @@ async def email_confirmation(state: DentalState, i: EmailConfirmation, ctx: OpCo
     if a.type_id == "new_patient":
         rows.append(("Bring", "Photo ID and your insurance card; arrive 15 minutes early"))
     rows.append(("Changes", "24 hours' notice, please"))
-    v = {"brand": "dental", "agent": "June", "service": t["name"], "day": s["day"], "time": s["time"], "zone": "Central", "name": a.patient, "reference": a.id, "rows": rows, "did": "checked the book and saved you the right chair"}
+    v = {"brand": "dental", "agent": "Josh", "service": t["name"], "day": s["day"], "time": s["time"], "zone": "Central", "name": a.patient, "reference": a.id, "rows": rows, "did": "checked the book and saved you the right chair"}
     masked, why = await email.confirm(i.email, email.appointment_confirmation(v))
     if why:
         return fail(why if why in email.REFUSALS else "email_failed", email.REFUSALS.get(why, "The email could not be sent right now. Apologise briefly."))

@@ -286,6 +286,8 @@ async def set_traveller(state: TravelState, i: SetTraveller, ctx: OpContext) -> 
     if state.offer is None:
         return fail("no_flight", "Choose a flight first with choose_flight.")
     name = re.sub(r"\s+", " ", i.fullName.strip())
+    if len(name.split()) < 2:
+        return fail("need_last_name", "That is only a first name. Ask \"And your last name?\" and call set_traveller again with the full name.")
     state.traveller = {"name": name, **SAMPLE_TRAVELLER, "sample": ["bornOn", "email", "phone"]}
     state.review, state.read_back = None, None
     state.stage = "traveller"
@@ -385,6 +387,8 @@ class TakeMessage(BaseModel):
 
 
 def take_message(state: TravelState, i: TakeMessage, ctx: OpContext) -> OpResult:
+    if len(i.name.split()) < 2:
+        return fail("need_last_name", "That is only a first name. Ask \"And your last name?\" and call take_message again with the full name.")
     dup = next((m for m in state.messages if m["summary"] == i.summary.strip() and m["name"] == i.name.strip()), None)
     if dup:
         return ok(f"Message already left · {dup['id']}", {"messageId": dup["id"], "duplicate": True})

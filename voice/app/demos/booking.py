@@ -11,9 +11,10 @@ member ("2026-10-03T1430@maria"), so the agent offers a person and a time togeth
 
 from __future__ import annotations
 
+import random
 import re
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import date as _date, datetime
 from typing import Any, Literal, Optional
 
 from .types import OpContext, OpResult, add_days, date_in, date_label, fail, mask_number, ok, reference, weekday
@@ -74,6 +75,40 @@ class BookingState:
     emailed: Optional[dict[str, Any]] = None
 
 
+# Busier toward the weekend, lighter mid-week (0 is Sunday).
+WEEKDAY_FULLNESS = {0: 0.5, 1: 0.5, 2: 0.42, 3: 0.4, 4: 0.55, 5: 0.78, 6: 0.86}
+
+
+def day_rng(*parts: str) -> random.Random:
+    """A generator seeded by the calendar date (and business, staff): the same date looks the same on every call."""
+    return random.Random(":".join(parts))
+
+
+def day_fullness(prefix: str, day: str) -> float:
+    """How booked a given date is, 0.15 to 0.92: the weekday's habit, plus that week's mood, plus that day's own luck.
+    A few dates are quiet, a few nearly full."""
+    d = _date.fromisoformat(day)
+    year, week, _ = d.isocalendar()
+    base = WEEKDAY_FULLNESS[(d.weekday() + 1) % 7]
+    week_mood = day_rng(prefix, "week", str(year), str(week)).uniform(-0.12, 0.12)
+    r = day_rng(prefix, "day", day)
+    luck = r.uniform(-0.15, 0.15)
+    roll = r.random()
+    x = base + week_mood + luck
+    if roll < 0.12:
+        x -= 0.3  # a quiet day
+    elif roll > 0.9:
+        x += 0.3  # a nearly full day
+    return min(0.92, max(0.15, x))
+
+
+def last_name_missing(name: Optional[str]) -> Optional[OpResult]:
+    """A booking needs a first and last name: one word is refused with an instruction to ask."""
+    if name is not None and len(name.split()) < 2:
+        return fail("last_name_needed", "Ask the caller 'And your last name?' and use their first and last name. Don't save or book on a first name alone.")
+    return None
+
+
 UNIT = 15
 
 
@@ -132,27 +167,47 @@ class Calendar:
         today, hour, minute = date_in(self.time_zone, now)
         state = BookingState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today=hour * 60 + minute + 60)
         n = 0
-        today_ord = datetime.fromisoformat(today).toordinal()
         for day in self.bookable_days(state):
-            di = datetime.fromisoformat(day).toordinal() - today_ord
-            for pi, p in enumerate(self.staff):
+            fullness = day_fullness(self.prefix, day)
+            blocks: list[Busy] = []
+            for p in self.staff:
+                r = day_rng(self.prefix, day, p["id"])
                 theirs = [x for x in self.services if p["id"] in x["staff"] and not x.get("hidden")]
-                t = self.open
-                k = di * 11 + pi * 5
+                mine = min(0.94, max(0.1, fullness + r.uniform(-0.18, 0.18)))
+                t = self.open + r.choice((0, 0, 30, 60, 90))
                 while t < self.close:
-                    k += 1
-                    if k % 5 in (0, 3):  # an open stretch; now and then a long one, so a three-hour colour still fits
-                        t += (180 if k % 10 == 0 else 60) if k % 5 == 0 else 30
+                    if r.random() > mine:  # an open stretch; sometimes a long one, so a three-hour colour can still fit
+                        t += r.choice((30, 30, 60, 60, 90, 180))
                         continue
-                    svc = theirs[k % len(theirs)]
+                    svc = r.choice(theirs)
                     mins = self.length(svc["id"])
                     if t + mins > self.close:
-                        t += 30
-                        continue
-                    state.busy.append(Busy(p["id"], day, t, mins, svc["name"], f"existing-{n}", True))
-                    n += 1
-                    t += mins
+                        break
+                    blocks.append(Busy(p["id"], day, t, mins, svc["name"], "", True))
+                    t += mins + r.choice((0, 0, 0, 15, 30))
+            # Every service keeps at least one opening, even on the fullest day.
+            r = day_rng(self.prefix, day, "room")
+            for svc in self.services:
+                while not self._has_room(blocks, svc):
+                    owners = [b for b in blocks if b.staff_id in svc["staff"]]
+                    if not owners:
+                        break
+                    blocks.remove(r.choice(owners))
+            for b in blocks:
+                b.ref = f"existing-{n}"
+                n += 1
+            state.busy += blocks
         return state
+
+    def _has_room(self, blocks: list[Busy], svc: dict[str, Any]) -> bool:
+        mins = self.length(svc["id"])
+        for start in range(self.open, self.close, 30):
+            if start + mins > self.close:
+                continue
+            for pid in svc["staff"]:
+                if not any(b.staff_id == pid and b.start < start + mins and start < b.start + b.minutes for b in blocks):
+                    return True
+        return False
 
     def free(self, state: BookingState, pid: str, day: str, start: int, minutes: int, ignore_ref: Optional[str] = None) -> bool:
         if start < self.open or start + minutes > self.close:
@@ -180,8 +235,11 @@ class Calendar:
         if staff_id and staff_id not in s["staff"]:
             return fail("wrong_person", f"{self.person(staff_id)['name']} doesn't do {s['name']}. It's done by " + " or ".join(self.person(p)["name"] for p in s["staff"]) + ".")
         days = self.bookable_days(state)
-        if date < state.today or date > days[-1]:
-            return fail("outside_calendar", f"Bookings open from today to {date_label(days[-1])}.")
+        last = days[-1]
+        if date < state.today:
+            return fail("outside_calendar", f"That date has already passed. Bookings open from today through {date_label(last)}.", {"bookableFrom": state.today, "bookableTo": last})
+        if date > add_days(state.today, self.days_ahead - 1):
+            return fail("outside_calendar", f"This demo's calendar only goes out two weeks, through {date_label(last)}. Offer the caller a day within that.", {"bookableFrom": state.today, "bookableTo": last})
 
         def in_part(sid: str) -> bool:
             m = parse_slot(sid)[1]  # type: ignore[index]

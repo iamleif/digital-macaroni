@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal, Optional
 
+from ..booking import day_fullness, day_rng
 from ..types import add_days, date_in, date_label, weekday
 from .store import CLOSED_WEEKDAYS, DAYS_AHEAD, SERVICE_IDS, SERVICES, TECHNICIANS, TIME_ZONE, WINDOWS, service
 
@@ -118,18 +119,31 @@ def describe_slot(sid: str) -> dict[str, str]:
 def create_state(now: datetime) -> NorthlineState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = NorthlineState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (3 if minute > 0 else 2))
-    # Other customers' jobs: deterministic per day, roughly a third of each technician's windows.
+    # Other customers' jobs: deterministic per calendar date (not per call), busier on Fridays and Saturdays,
+    # lighter mid-week, with different technicians busy in different windows.
     n = 0
-    today_ord = datetime.fromisoformat(today).toordinal()
     for day in bookable_days(state):
-        day_index = datetime.fromisoformat(day).toordinal() - today_ord
-        for wi, h in enumerate(WINDOWS):
-            for ti, t in enumerate(TECHNICIANS):
-                busy = (day_index * 7 + wi * 2 + ti * 5) % 3 == 0 or (day_index == 1 and h == 12)
-                if busy:
-                    svc = "cooling_repair" if ti == 1 else "heating_repair"
-                    state.jobs.append(Job(id=f"existing-{n}", tech_id=t["id"], date=day, hour=h, service_id=svc, existing=True))
-                    n += 1
+        fullness = day_fullness("NL", day)
+        jobs: list[Job] = []
+        for t in TECHNICIANS:
+            r = day_rng("NL", day, t["id"])
+            mine = min(0.9, max(0.1, fullness - 0.15 + r.uniform(-0.2, 0.2)))
+            kinds = [s["id"] for s in SERVICES if s["skill"] in t["skills"]]
+            for h in WINDOWS:
+                if r.random() < mine:
+                    jobs.append(Job(id="", tech_id=t["id"], date=day, hour=h, service_id=r.choice(kinds), existing=True))
+        # Every kind of work keeps at least one opening a day.
+        r = day_rng("NL", day, "room")
+        for skill in {s["skill"] for s in SERVICES}:
+            while not any(any(skill in t["skills"] and not any(j.tech_id == t["id"] and j.hour == h for j in jobs) for t in TECHNICIANS) for h in WINDOWS):
+                owners = [j for j in jobs if skill in next(t for t in TECHNICIANS if t["id"] == j.tech_id)["skills"]]
+                if not owners:
+                    break
+                jobs.remove(r.choice(owners))
+        for j in jobs:
+            j.id = f"existing-{n}"
+            n += 1
+        state.jobs += jobs
     return state
 
 

@@ -165,3 +165,54 @@ async def test_message_goes_to_the_account_manager():
 def test_the_prompt_never_lets_owen_quote_or_promise_coverage():
     p = insurance.instruction(insurance.create_state(NOW), CTX)
     assert "never quote a price" in p and "never say whether a particular loss" in p and "Social Security" in p
+
+
+def _pattern(state, day):
+    return sorted((b.staff_id, b.hour) for b in state.calendar if b.date == day)
+
+
+def test_bookable_for_exactly_fourteen_days():
+    state, run = runner()
+    import asyncio
+
+    ok = asyncio.run(run("check_availability", {"date": "2026-10-14"}))
+    assert ok.ok and ok.result["available"]
+    r = asyncio.run(run("check_availability", {"date": "2026-10-15"}))
+    assert r.error == "outside_calendar" and r.message.startswith("This demo's calendar only goes out two weeks, through Wednesday")
+
+
+def test_busy_blocks_differ_by_date_and_not_by_call():
+    a, b = insurance.create_state(NOW), insurance.create_state(datetime(2026, 10, 1, 20, 30, tzinfo=timezone.utc))
+    days = list(dict.fromkeys(x.date for x in a.calendar))
+    assert len(days) >= 9
+    assert len({tuple(_pattern(a, d)) for d in days}) == len(days)
+    assert all(_pattern(a, d) == _pattern(b, d) for d in days if d in {x.date for x in b.calendar})
+    assert [_pattern(a, d) for d in days[:5]] != [_pattern(a, d) for d in days[5:10]]
+    assert len({len(_pattern(a, d)) for d in days}) > 2
+    assert len({x.title for x in a.calendar}) > 3
+    assert all(insurance_open(a, d) for d in days if d != a.today)
+
+
+def insurance_open(state, day):
+    from app.demos.insurance.state import open_slots
+
+    return open_slots(state, day)
+
+
+async def test_last_name_is_asked_for_and_booking_needs_it():
+    state, run = runner()
+    r = await run("note_account", {"name": "Jamie", "quoteLines": ["renters"]})
+    assert r.result["next"] == "And your last name?"
+    r = await run("note_account", {"name": "Jamie Cole", "quoteLines": ["auto"], "drivers": [{"name": "Sam"}]})
+    assert r.result["next"] == "And Sam's last name?"
+    state.account["name"] = "Jamie"
+    sid = (await run("check_availability", {"date": TOMORROW})).result["available"][0]["slotId"]
+    assert (await run("book_agent_call", {"slotId": sid, "topic": "Renters quote", "callerConfirmed": True})).error == "missing_details"
+    await run("note_account", {"name": "Jamie Cole"})
+    assert (await run("book_agent_call", {"slotId": sid, "topic": "Renters quote", "callerConfirmed": True})).ok
+    assert (await run("take_message", {"name": "Henry", "callbackNumber": "+14785550142", "summary": "Billing question"})).error == "need_last_name"
+
+
+def test_prompt_says_just_a_moment_before_the_calendar():
+    p = insurance.instruction(insurance.create_state(NOW), CTX)
+    assert "Just a moment" in p and "And your last name?" in p and "Never guess the year" in p and "two weeks ahead" in p

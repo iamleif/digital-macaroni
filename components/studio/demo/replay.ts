@@ -637,14 +637,14 @@ const dnBooked: DentalView = {
   board: { ...dentalBoard, openSlots: [], appts: [...dentalBoard.appts, { id: "AG-614", op: "op3", start: 480, minutes: 90, patient: "Alex Taylor", procedures: "CompEx, FMX, Prophy", code: "HYG1", tone: "hyg1", kind: "demo", confirmed: "confirmed", alert: false, exam: true, phone: "•••• 0142", time: "8 AM" }] },
   booked: [{ id: "AG-614", visit: "New patient exam & cleaning", day: "Monday, October 5", time: "8 AM", with: "Jenna Morris", op: "OP-3", changes: 0 }],
   note: "Alex Taylor called (new patient). Wants: new patient exam & cleaning. Insurance: Delta Dental (in network). Booked new patient exam & cleaning Monday, October 5 at 8 AM with Jenna Morris.",
-  tasks: [{ title: "Email new-patient forms", who: "June", due: "Now" }, { title: "Verify Delta Dental benefits", who: "Front office", due: "Before the visit" }, { title: "Reminder text · New patient exam & cleaning", who: "Practice system", due: "2 days before" }],
+  tasks: [{ title: "Email new-patient forms", who: "Josh", due: "Now" }, { title: "Verify Delta Dental benefits", who: "Front office", due: "Before the visit" }, { title: "Reminder text · New patient exam & cleaning", who: "Practice system", due: "2 days before" }],
 };
 
 const dental = timeline([
   { type: "session.ready", sessionId: "replay", demo: "dental", channel: "phone" },
   { type: "pairing.linked" },
   speaking(true),
-  say("agent", "Thanks for calling Aspen Grove Dental, this is June. How can I help?"),
+  say("agent", "Thanks for calling Aspen Grove Dental, this is Josh. How can I help?"),
   speaking(false),
   1500,
   say("visitor", "Hi, I’m new and I need a cleaning. It’s been a couple of years. I’m Alex Taylor."),

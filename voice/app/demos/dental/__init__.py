@@ -1,5 +1,5 @@
 """
-Aspen Grove Dental: a fictional family dental practice in Lincoln Park, Chicago. June answers the phone
+Aspen Grove Dental: a fictional family dental practice in Lincoln Park, Chicago. Josh answers the phone
 the way a good front office does: new patients (intake, insurance in or out of network, medical alerts),
 current patients found by name and date of birth (recall, with the six-months-and-a-day insurance
 timing), toothaches triaged to the emergency room or a held same-day slot, kids, changes, the
@@ -8,7 +8,7 @@ short-notice list. The book is the practice's: four operatories, two doctor and 
 
 Folder: data/*.json (the practice, providers and operatories, visit types, insurance, patients, the
 day's other appointments), store.py (the only reader of the data), state.py (one call and the book),
-prompt.py (June's instructions), tools.py (her operations), view.py (the front office).
+prompt.py (Josh's instructions), tools.py (its operations), view.py (the front office).
 """
 
 from __future__ import annotations
@@ -49,13 +49,13 @@ __all__ = ["dental"]
 dental: DemoDefinition[DentalState] = DemoDefinition(
     id="dental",
     business_name="Aspen Grove Dental",
-    agent_name="June",
+    agent_name="Josh",
     create_state=create_state,
     instruction=instruction,
     view=view,
     voice_style="warm, calm and organised, a trusted dental front office",
     fixed_lines=[OPENING_PHONE, OPENING_WEB],
-    vocabulary=["Aspen Grove", "June", "Lincoln Park", "Dr. Patel", "Dr. Okafor", "Jenna", "Luis", "hygienist", "cleaning", "checkup", "X-rays", "Delta Dental", "Cigna", "MetLife", "Aetna", "Guardian", "United Concordia", "periodontal", "crown", "filling", "toothache", "CareCredit", "Sunbit"],
+    vocabulary=["Aspen Grove", "Josh", "Lincoln Park", "Dr. Patel", "Dr. Okafor", "Jenna", "Luis", "hygienist", "cleaning", "checkup", "X-rays", "Delta Dental", "Cigna", "MetLife", "Aetna", "Guardian", "United Concordia", "periodontal", "crown", "filling", "toothache", "CareCredit", "Sunbit"],
     operations={
         "get_practice_info": Operation("Looking up the practice", "Hours, visit types and prices, the new-patient special, insurance we're in network with, kids, emergencies, payment plans and policies. Use before answering any question about the practice.", get_practice_info),
         "note_patient": Operation("Updating the patient chart", "Record what the caller has told you so the chart fills in. Send only what is new or changed.", note_patient, NotePatient),

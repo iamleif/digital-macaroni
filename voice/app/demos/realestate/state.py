@@ -6,6 +6,7 @@ from a calendar generated relative to the session's own date, so "Saturday" alwa
 
 from __future__ import annotations
 
+import hashlib
 import re
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -51,6 +52,7 @@ class Booked:
     hour: int
     ref: str
     existing: bool
+    title: str = ""
 
 
 @dataclass
@@ -145,18 +147,54 @@ def describe_slot(sid: str, aid: str) -> dict[str, str]:
     return {"slotId": sid, "date": day, "day": date_label(day), "time": hour_label(hour), "agent": agent(aid)["name"]}
 
 
+def full_name(name: Optional[str]) -> bool:
+    """A name worth saving for a booking or lead: a first and a last name."""
+    return len((name or "").split()) >= 2
+
+
+def roll(*parts: Any) -> float:
+    """A repeatable number in [0, 1) from the parts: the same date and agent always give the same answer."""
+    h = hashlib.sha256("|".join(str(p) for p in ("juniper", *parts)).encode()).digest()
+    return int.from_bytes(h[:6], "big") / 2**48
+
+
+# How busy each weekday is (0 is Sunday): weekends are showing days, midweek is quiet.
+FULLNESS = {0: 0.5, 1: 0.14, 2: 0.2, 3: 0.12, 4: 0.26, 5: 0.4, 6: 0.6}
+TITLES = ("Showing", "Buyer consultation", "Listing appointment", "Open house", "Inspection walk-through", "Closing", "Photographer visit")
+
+
+def nearly_full(day: str) -> bool:
+    """One day in every fourteen is nearly booked solid, so any fortnight has exactly one."""
+    return datetime.fromisoformat(day).toordinal() % 14 == 0
+
+
+def existing_calendar(days: list[str]) -> list[Booked]:
+    """Appointments already in the agents' diaries. Each date is generated from the date alone (never the call's
+    time), so a given day looks the same on every call while different days and weeks differ."""
+    out: list[Booked] = []
+    n = 0
+    hours = sorted(set(SHOWING_HOURS) | set(VALUATION_HOURS))
+    for day in days:
+        full = nearly_full(day)
+        level = 0.88 if full else min(0.8, FULLNESS.get(weekday(day), 0.2) * (0.5 + 1.1 * roll(day, "level")))
+        # Hours every agent keeps open, so the day always has something to offer (valuation hours first).
+        val = sorted(VALUATION_HOURS, key=lambda h: roll(day, "spare", h))
+        rest = sorted((h for h in hours if h not in VALUATION_HOURS), key=lambda h: roll(day, "spare", h))
+        keep = set(val[: 1 if full else 2] + rest[: 1 if full else 2])
+        for h in hours:
+            if h in keep:
+                continue
+            for a in AGENTS:
+                if roll(day, h, a["id"]) < min(0.95, level * (0.4 + 1.2 * roll(day, a["id"], "bias"))):
+                    out.append(Booked(a["id"], day, h, f"existing-{n}", True, TITLES[int(roll(day, h, a["id"], "t") * len(TITLES))]))
+                    n += 1
+    return out
+
+
 def create_state(now: datetime) -> RealEstateState:
     today, hour, minute = date_in(TIME_ZONE, now)
     state = RealEstateState(seed=f"{today}:{int(now.timestamp() * 1000)}", today=today, earliest_today_hour=hour + (2 if minute > 0 else 1))
-    n = 0
-    today_ord = datetime.fromisoformat(today).toordinal()
-    for day in bookable_days(state):
-        di = datetime.fromisoformat(day).toordinal() - today_ord
-        for hi, h in enumerate(sorted(set(SHOWING_HOURS) | set(VALUATION_HOURS))):
-            for ai, a in enumerate(AGENTS):
-                if (di * 7 + hi * 3 + ai * 5) % 3 == 0:
-                    state.calendar.append(Booked(a["id"], day, h, f"existing-{n}", True))
-                    n += 1
+    state.calendar = existing_calendar(bookable_days(state))
     return state
 
 
@@ -186,7 +224,7 @@ def active(state: RealEstateState) -> list[Appointment]:
 
 
 def missing_fields(state: RealEstateState) -> list[str]:
-    return [label for key, label in REQUIRED if state.lead.get(key) in (None, "", [])]
+    return [label for key, label in REQUIRED if state.lead.get(key) in (None, "", []) or (key == "name" and not full_name(state.lead.get(key)))]
 
 
 # The brokerage's order for getting to know a lead: (key, how many times it may be put to the caller,
@@ -194,7 +232,8 @@ def missing_fields(state: RealEstateState) -> list[str]:
 def lead_questions(lead: dict[str, Any]) -> list[tuple[str, int, str]]:
     intent = lead.get("intent")
     buys, sells = intent in ("buy", "both"), intent in ("sell", "both")
-    qs: list[tuple[str, int, str]] = [("name", 2, "May I have your name?"), ("intent", 2, "Are you looking to buy, sell, or both?")]
+    first_only = bool(lead.get("name")) and not full_name(lead["name"])
+    qs: list[tuple[str, int, str]] = [("lastName" if first_only else "name", 2, "And your last name?" if first_only else "May I have your name?"), ("intent", 2, "Are you looking to buy, sell, or both?")]
     if sells:
         qs.append(("sellAddress", 2, "What's the address of the home you're thinking of selling?"))
     if buys or sells:
@@ -212,7 +251,7 @@ def lead_questions(lead: dict[str, Any]) -> list[tuple[str, int, str]]:
 def next_question(state: RealEstateState) -> Optional[tuple[str, str]]:
     """The first question still unanswered (and not already asked as often as it may be), as (key, spoken)."""
     for key, limit, text in lead_questions(state.lead):
-        if state.lead.get(key) in (None, "", []) and state.asked.get(key, 0) < limit:
+        if (state.lead.get(key) in (None, "", []) or key == "lastName") and state.asked.get(key, 0) < limit:
             return key, text
     return None
 

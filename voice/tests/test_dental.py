@@ -122,7 +122,7 @@ async def test_the_email_never_carries_symptoms(monkeypatch):
     assert "swelling" not in sent["text"].lower() and "Emergency visit" in sent["text"]
 
 
-def test_the_prompt_never_lets_june_diagnose_or_promise_coverage():
+def test_the_prompt_never_lets_josh_diagnose_or_promise_coverage():
     p = dental.instruction(dental.create_state(NOW), CTX)
     assert "Never diagnose" in p and "Never say a visit is covered" in p and "receptionist" not in p.lower()
 
@@ -230,3 +230,62 @@ async def test_red_flags_return_the_outcome_even_with_questions_left():
     assert t.result["goTo"] == "er" and "911" in t.result["say"]
     r = await nxt(run, {})
     assert r["next"] is None and "don't book" in r["then"]
+
+
+def test_the_agent_is_called_josh_in_the_opening_and_the_prompt_has_the_pause():
+    from app.demos.dental.prompt import OPENING_PHONE, OPENING_WEB
+    assert "this is Josh" in OPENING_PHONE and "this is Josh" in OPENING_WEB and dental.agent_name == "Josh"
+    state = dental.create_state(NOW)
+    text = dental.instruction(state, CTX)
+    assert "You are Josh" in text and "You are June" not in text
+    assert "Just a moment" in text and "And your last name?" in text and "Never guess the year" in text and "past the calendar" in text
+
+
+async def test_a_first_name_alone_asks_for_the_last_name_before_intake_moves_on():
+    _, run = runner()
+    r = await nxt(run, {"name": "Alex"})
+    assert r["next"] == "And your last name?" and r["nextField"] == "name"
+    r = await nxt(run, {"newPatient": True})
+    assert r["next"] == "And your last name?"
+    r = await nxt(run, {"name": "Alex Taylor"})
+    assert r["nextField"] == "dateOfBirth"
+    _, run = runner()
+    f = await run("find_patient", {"name": "Karen", "dateOfBirth": "1979-06-22", "callerSaysTheyAreAPatient": True})
+    assert f.error == "incomplete_name"
+
+
+async def test_the_calendar_runs_fourteen_days_and_refuses_beyond():
+    from app.demos.dental.state import bookable_days, horizon_end
+    from app.demos.types import add_days
+    state, run = runner()
+    assert horizon_end(state.today) == add_days(state.today, 13)
+    assert add_days(state.today, 13) in bookable_days(state) and add_days(state.today, 14) not in bookable_days(state)
+    r = await run("check_availability", {"type": "cleaning", "date": add_days(state.today, 13)})
+    assert r.ok and r.result["available"]
+    r = await run("check_availability", {"type": "cleaning", "date": add_days(state.today, 14)})
+    assert not r.ok and r.error == "outside_calendar" and "only goes out two weeks, through" in r.message
+
+
+def test_days_differ_but_the_same_date_is_identical_across_states():
+    from app.demos.dental.state import bookable_days
+    a, b = dental.create_state(NOW), dental.create_state(NOW.replace(minute=30))
+
+    def day(s, d):
+        return sorted((x.op, x.start, x.minutes, x.procedures) for x in s.book if x.date == d)
+
+    days = bookable_days(a)
+    assert all(day(a, d) == day(b, d) for d in days)
+    wk = days[:5]
+    assert len({tuple(day(a, d)) for d in wk}) == len(wk)
+    assert len({len(day(a, d)) for d in days}) > 2  # fullness varies
+    assert len({x.procedures for x in a.book}) > 8
+    assert all(open_slots_for(a, d) for d in days if sum(1 for x in a.book if x.date == d) < 30)
+
+
+def open_slots_for(state, d):
+    from app.demos.dental.state import open_slots
+    keep, state.earliest_today = state.earliest_today, 0
+    try:
+        return open_slots(state, "cleaning", d)
+    finally:
+        state.earliest_today = keep

@@ -1,1 +1,1 @@
-{"testDriveHours": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "serviceHours": [8, 9, 10, 11, 13, 14, 15, 16], "bays": 4, "daysAhead": 10, "closedWeekdays": [0]}
+{"testDriveHours": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "serviceHours": [8, 9, 10, 11, 13, 14, 15, 16], "bays": 4, "daysAhead": 14, "closedWeekdays": [0]}

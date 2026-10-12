@@ -110,7 +110,7 @@ class TestAgent:
 
     def test_message_is_kept_once(self):
         s = self.state()
-        i = TakeMessage(name="Sam", callbackNumber="+12065550142", reason="Wants a cleaning next week")
+        i = TakeMessage(name="Sam Rivera", callbackNumber="+12065550142", reason="Wants a cleaning next week")
         assert take_message(s, i, PHONE).ok
         assert take_message(s, i, PHONE).result["duplicate"]
         assert len(s.messages) == 1
