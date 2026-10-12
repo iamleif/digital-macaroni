@@ -97,6 +97,14 @@ const SHORT_LINKS = {
   "/li": "linkedin",
 };
 
+// Demo-type links: digitalmacaroni.io/appointments etc. open /try/ scrolled to that demo type.
+const DEMO_LINKS = {
+  "/appointments": "appointments",
+  "/stock": "stock-and-orders",
+  "/clients": "new-clients",
+  "/bookings": "longer-bookings",
+};
+
 // The demo voice service, reached as digitalmacaroni.io/voice/… so the browser only ever talks to this site.
 const VOICE_ORIGIN = "https://studio-demo-voice-361680400699.us-central1.run.app";
 
@@ -120,6 +128,10 @@ export default {
     const source = SHORT_LINKS[path];
     if (source) {
       return Response.redirect(`${url.origin}/try/?utm_source=${source}&utm_medium=social`, 302);
+    }
+    const demo = DEMO_LINKS[path];
+    if (demo) {
+      return Response.redirect(`${url.origin}/try/?utm_source=link&utm_medium=demo&utm_campaign=${demo}#${demo}`, 302);
     }
     // Per-episode YouTube links: /yt1, /yt2… tag the long-form episode that sent the visitor.
     const episode = path.match(/^\/yt(\d{1,3})$/);

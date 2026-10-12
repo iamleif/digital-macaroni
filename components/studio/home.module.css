@@ -829,3 +829,6 @@
 @media (max-width: 520px) {
   .exKinds { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Demo anchors (/#appointments…) land with the card clear of the top edge. */
+.ex { scroll-margin-top: 96px; }

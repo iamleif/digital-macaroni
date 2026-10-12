@@ -65,13 +65,16 @@ const PERSONAS: Record<HomeDemo, { tone: string; label: string; bullets: string[
   },
 };
 
+/** Link targets named for the demo type: /#appointments, /#stock-and-orders, /#new-clients, /#longer-bookings. */
+const SECTION_ANCHOR: Record<HomeDemo, string> = { northline: "appointments", formfield: "stock-and-orders", lawfirm: "new-clients", travel: "longer-bookings" };
+
 /** The examples shown on the homepage, in order. */
 const LINEUP: HomeDemo[] = ["northline", "formfield", "lawfirm", "travel"];
 
 function Example({ id, index }: { id: HomeDemo; index: number }) {
   const p = PERSONAS[id];
   const panel = `${h.ex} ${h[`exTone_${p.tone}`] ?? ""}`;
-  return <Reveal as="article" className={index % 2 ? `${panel} ${h.exFlip}` : panel}>
+  return <Reveal as="article" id={SECTION_ANCHOR[id]} className={index % 2 ? `${panel} ${h.exFlip}` : panel}>
     <a className={h.exStageLink} href={`/demo/${id}/`} target="_blank" rel="noopener" aria-label={`${p.title}. Try the live example (opens in a new tab)`}>
       <div className={`${h.agentStage} ${h.exStage}`} data-tone={p.tone}>
         <div className={h.fragWrap} aria-hidden="true"><LivePreview id={id} /></div>
