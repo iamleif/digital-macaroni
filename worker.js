@@ -131,7 +131,12 @@ export default {
     }
     const demo = DEMO_LINKS[path];
     if (demo) {
-      return Response.redirect(`${url.origin}/try/?utm_source=link&utm_medium=demo&utm_campaign=${demo}#${demo}`, 302);
+      // ?s= is where the link was posted (linkedin, email, dm…); ?p= tags the person it was sent to.
+      const tag = (v) => (v || "").toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 40);
+      const q = new URLSearchParams({ utm_source: tag(url.searchParams.get("s")) || "direct", utm_medium: "demo", utm_campaign: demo });
+      const person = tag(url.searchParams.get("p"));
+      if (person) q.set("utm_content", person);
+      return Response.redirect(`${url.origin}/try/?${q}#${demo}`, 302);
     }
     // Per-episode YouTube links: /yt1, /yt2… tag the long-form episode that sent the visitor.
     const episode = path.match(/^\/yt(\d{1,3})$/);
