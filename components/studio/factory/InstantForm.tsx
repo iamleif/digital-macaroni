@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { track } from "@/components/studio/consent";
+import { firstTouch, track } from "@/components/studio/consent";
 import { Check, Globe, Phone } from "@/components/studio/icons";
 import { VOICE_URL } from "@/components/studio/live/client";
 import f from "./factory.module.css";
@@ -70,6 +70,8 @@ export function InstantForm() {
           company: data.get("company"),
           elapsedMs: Date.now() - shownAt.current,
           turnstileToken: token,
+          // Where this visit began (the short link's ?s= and ?p= tags), for the lead email.
+          from: firstTouch(),
         }),
       });
       const out = (await r.json()) as Job & { message?: string };

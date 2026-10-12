@@ -129,13 +129,15 @@ export default {
     if (source) {
       return Response.redirect(`${url.origin}/try/?utm_source=${source}&utm_medium=social`, 302);
     }
-    const demo = DEMO_LINKS[path];
+    // /yours: the "hear your own agent" page, for people who would rather enter their own details.
+    const demo = DEMO_LINKS[path] || (path === "/yours" ? "your-agent" : "");
     if (demo) {
       // ?s= is where the link was posted (linkedin, email, dm…); ?p= tags the person it was sent to.
       const tag = (v) => (v || "").toLowerCase().replace(/[^a-z0-9._-]+/g, "-").slice(0, 40);
       const q = new URLSearchParams({ utm_source: tag(url.searchParams.get("s")) || "direct", utm_medium: "demo", utm_campaign: demo });
       const person = tag(url.searchParams.get("p"));
       if (person) q.set("utm_content", person);
+      if (demo === "your-agent") return Response.redirect(`${url.origin}/your-agent/?${q}`, 302);
       return Response.redirect(`${url.origin}/?${q}#${demo}`, 302);
     }
     // Per-episode YouTube links: /yt1, /yt2… tag the long-form episode that sent the visitor.

@@ -144,6 +144,8 @@ def start_instant(body: dict[str, Any], ip: str) -> tuple[Optional[Job], Optiona
         return None, (429, "busy", "Lots of people are trying this right now. Please try again in a few minutes.")
     j = _new_job("instant")
     j.lead = {"name": name, "phone": number, "website": website, "email": email}
+    src = body.get("from") if isinstance(body.get("from"), dict) else {}
+    j.lead["came_from"] = " · ".join(_clean(src.get(k), 60) for k in ("first_source", "first_medium", "first_campaign", "first_content") if src.get(k))
     asyncio.get_running_loop().create_task(_run_instant(j))
     log.info("factory.instant_started", {"outcome": j.id[:6]})
     return j, None
@@ -567,7 +569,7 @@ async def _send_lead(j: Job, summary: Optional[dict[str, Any]]) -> None:
     e = html.escape
     lead, p = j.lead, j.profile
     outcome = {"done": "Had the call", "summary": "Had the call", "no_answer": "Didn't answer", "failed": "Call failed"}.get(j.step, j.step)
-    rows = [("Name", lead.get("name", "")), ("Mobile", twilio_api.pretty(lead.get("phone", ""))), ("Email", lead.get("email", "")), ("Website", lead.get("website", "")), ("Business", p.business_name if p else ""), ("What they do", p.summary if p else ""), ("Outcome", outcome)]
+    rows = [("Name", lead.get("name", "")), ("Mobile", twilio_api.pretty(lead.get("phone", ""))), ("Email", lead.get("email", "")), ("Website", lead.get("website", "")), ("Came from", lead.get("came_from", "")), ("Business", p.business_name if p else ""), ("What they do", p.summary if p else ""), ("Outcome", outcome)]
     table = "".join(f"<tr><td style='padding:4px 12px 4px 0;color:#857d70'>{e(k)}</td><td>{e(v)}</td></tr>" for k, v in rows if v)
     call = f"<p><b>Call summary:</b> {e(summary['summary'])}</p>" if summary else ""
     await _resend(config.leads_email, f"Instant demo lead · {p.business_name if p else lead.get('website', '')} · {outcome}", f"<table>{table}</table>{call}", "\n".join(f"{k}: {v}" for k, v in rows if v) + (f"\nCall: {summary['summary']}" if summary else ""), "Digital Macaroni")
