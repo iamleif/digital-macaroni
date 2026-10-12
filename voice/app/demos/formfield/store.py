@@ -24,7 +24,7 @@ HOLD_DAYS: int = _hours["holdDays"]
 # The shop's hours as the reservation email prints them.
 EMAIL_HOURS: str = _hours["emailHours"]
 
-# Everything Theo may tell a caller about the shop, in one place. His instructions carry only what he
+# Everything Erica may tell a caller about the shop, in one place. His instructions carry only what he
 # needs to run a call; get_shop_info returns this, and he answers from it.
 SHOP: dict[str, Any] = {k: v.format(holdDays=HOLD_DAYS) if k == "pickup" else v for k, v in _load("shop.json").items()}
 

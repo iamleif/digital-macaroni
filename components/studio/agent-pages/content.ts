@@ -138,7 +138,7 @@ export const STORIES: ArchitectureStory[] = [
     architecture: "platform",
     carrier: "twilio",
     headline: "A voice platform in front, our tools behind.",
-    lede: "Form & Field is our retail example. We built it to show how a voice agent can answer product questions, check live stock, reserve items for pickup, look up orders and open support requests. The agent answers as Theo and runs on a managed voice platform, ElevenLabs Agents, which handles the real-time conversation while the catalogue, stock and orders stay on our own server.",
+    lede: "Form & Field is our retail example. We built it to show how a voice agent can answer product questions, check live stock, reserve items for pickup, look up orders and open support requests. The agent answers as Erica and runs on a managed voice platform, ElevenLabs Agents, which handles the real-time conversation while the catalogue, stock and orders stay on our own server.",
     engine: { label: "ElevenLabs Agents", logo: "elevenlabs", parts: [{ role: "Hears", name: "Scribe Realtime", logo: "elevenlabs" }, { role: "Thinks", name: "Gemini 3.7 Flash", logo: "gemini" }, { role: "Speaks", name: "Eleven v4 Turbo", logo: "elevenlabs" }] },
     stack: [
       { role: "Hears", name: "ElevenLabs Scribe Realtime", logo: "elevenlabs", note: "Streaming speech recognition, run by the platform." },
@@ -149,7 +149,7 @@ export const STORIES: ArchitectureStory[] = [
     strengths: [
       { title: "The real-time loop is handled", copy: "Listening, turn-taking, interruptions and the voice are the platform’s job. That’s the hardest part to get right, and it’s proven at scale." },
       { title: "Pick the brain", copy: "The platform runs the reasoning model you choose. Here that’s Gemini 3.7 Flash, and it can be swapped without rebuilding the agent." },
-      { title: "Tools run on our side", copy: "When Theo needs stock or an order, the platform sends the tool call back to our service over the same connection. The business’s data never has to live on the platform, and the records and dashboard stay ours." },
+      { title: "Tools run on our side", copy: "When Erica needs stock or an order, the platform sends the tool call back to our service over the same connection. The business’s data never has to live on the platform, and the records and dashboard stay ours." },
       { title: "Easy to own and hand over", copy: "The agent can sit in the business’s own platform account, and the setup is familiar to other developers. Nobody is locked in." },
     ],
     steps: [

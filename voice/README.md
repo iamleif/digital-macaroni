@@ -1,18 +1,18 @@
 # Demo voice service
 
-The live voice agents behind the website demos, each on its own engine:
+The live voice agents behind the website demos. Current engines, voices, prompt sizes and per-minute costs for
+every agent are in `Docs/studio-preview/AGENT_STACK_AND_COST.md` in the Macaroni repo; in short:
 
-- Ellie (Northline Home Services): Gemini Live (`gemini-3.8-live`) through Google ADK.
-- Theo (Form & Field): ElevenLabs Agents when `ELEVENLABS_FORMFIELD_AGENT_ID` is set (it is in production).
-- Nora (Alder & Finch Injury Law, a fictional personal-injury firm in Denver, Colorado): Gemini Live like Ellie (`app/demos/lawfirm.py`). Intake, conflict check,
-  qualify or decline, free consultation on an attorney's calendar. On (206) 887-9619, the account's text-verified number.
-- Linda (Waypoint Travel): the cascade in `app/cascade.py`. AssemblyAI Universal-3.6 Pro hears (`app/stt.py`; `DEMO_STT_PROVIDER=gemini` for `gemini-3.5-transcribe-live`), `gemini-3.5-flash-lite`
-  answers through ADK and runs the tools, and `gemini-3.8-flash-lite-tts` speaks in the designed voice "Linda 2". Flights
-  come from Duffel in test mode (`app/duffel.py`, read-only); booking stops before any order is created.
-  `DEMO_CASCADE` lists the demos on the cascade (default `travel`).
-- Marisol (Palmetto Stays, a fictional hotel-booking agency in Miami): Gemini Live like Ellie (`app/demos/hotels/`). Real Miami and
-  Miami Beach hotels with live rates from LiteAPI's sandbox (`app/liteapi.py`): search, rooms, a live price check and hold
-  (prebook), then it stops at payment; nothing is ever booked.
+- All twelve agents run on the cascade (`app/cascade.py`): AssemblyAI Universal-3.6 Pro hears (`app/stt.py`), a Gemini text model
+  (`gemini-3.5-flash-lite`, minimal thinking) thinks through ADK and runs the tools, and `gemini-3.8-flash-lite-tts` speaks in
+  the agent's voice (`<NAME>_VOICE` settings; Linda uses a designed voice). `DEMO_CASCADE` lists them: travel, dental, northline,
+  dealership, hotels, lune, lawfirm, realestate, insurance, tidewell, agent, formfield.
+- Erica (Form & Field, voice Hali) moved from ElevenLabs onto the cascade on October 12; the ElevenLabs adapter (`app/elevenlabs.py`) is still in the code but unused.
+- Gemini 3.8 Live (`gemini-3.8-live`, through ADK) is still in the code but no agent uses it.
+- Flights come from Duffel in test mode (`app/duffel.py`, read-only); hotels from LiteAPI's sandbox (`app/liteapi.py`). Booking stops
+  before payment; nothing is ever booked or charged.
+- Every agent's prompt is its own document in `app/demos/<name>/prompt.py` (Personality, Tone, Opening, Facts, Hearing, What you do,
+  Pushback, Errors, Email, Guardrails, Ending). Nothing is shared between prompts.
 
 - Phone: Twilio media streams on the demo numbers (`/twilio/voice`, `/twilio/media`): Northline (720) 599-6395,
   Form & Field (830) 239-2110, Alder & Finch (206) 887-9619, Waypoint (929) 333-3608, Palmetto Stays (786) 305-3013.

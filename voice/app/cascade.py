@@ -30,6 +30,8 @@ from google import genai
 from google.adk.agents import LlmAgent, RunConfig
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.agents.run_config import StreamingMode
+from google.adk.models import FallbackModel
+from google.adk.models._fallback_model import _status_code
 from google.adk.runners import InMemoryRunner
 from google.genai import types
 
@@ -133,11 +135,30 @@ async def warm_phrases() -> int:
     return count
 
 
+class CascadeFallbackModel(FallbackModel):
+    """Primary text model with a backup: a 429, 5xx or timeout moves on within the same turn."""
+
+    def _should_fall_back(self, error: BaseException) -> bool:
+        timed_out = isinstance(error, (TimeoutError, asyncio.TimeoutError)) or type(error).__name__ in {"ReadTimeout", "ConnectTimeout", "TimeoutException", "DeadlineExceeded"}
+        fall = timed_out or super()._should_fall_back(error)
+        if fall:
+            log.warn("cascade.model_fallback", {"outcome": str(_status_code(error) or type(error).__name__)})
+        return fall
+
+
+def text_model() -> Any:
+    """The agent's model: the primary alone, or with the backup when DEMO_TEXT_FALLBACK_MODEL is set."""
+    backup = config.text_fallback_model
+    if backup and backup != config.text_model:
+        return CascadeFallbackModel(models=[config.text_model, backup])
+    return config.text_model
+
+
 def runner(demo_id: str) -> InMemoryRunner:
     if demo_id not in _runners:
         agent = LlmAgent(
             name=f"{demo_id}_cascade",
-            model=config.text_model,
+            model=text_model(),
             instruction=_instruction,
             tools=demo_tools(demos[demo_id], live=False),
             generate_content_config=types.GenerateContentConfig(thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.MINIMAL)),
@@ -212,6 +233,9 @@ class Turn:
     speculative: bool = False
     discarded: bool = False
     invocation_id: str = ""
+    # Speculative turns only: resolves True when the final transcript matched the guess, False when it
+    # did not (or the turn was cut off). Tools with side effects wait on it.
+    confirmed: Optional["asyncio.Future[bool]"] = None
     # Transcript pieces scheduled to appear as their audio starts playing.
     shows: list[asyncio.TimerHandle] = field(default_factory=list)
     # Timings (monotonic) for the turn log.
@@ -230,6 +254,7 @@ class Cascade:
         self.session = session
         self.demo_id = session.demo_id
         self.runner = runner(session.demo_id)
+        session.write_gate = self._write_gate
         self.app_name = f"{session.demo_id}_cascade"
         self.voice = config.voices.get(session.demo_id, "Achird")
         self.style = session.demo.voice_style
@@ -266,12 +291,27 @@ class Cascade:
 
     async def start(self) -> None:
         await self.runner.session_service.create_session(app_name=self.app_name, user_id=self.session.id, session_id=self.session.id)
-        self.stt = await open_transcriber(self.session.demo.vocabulary, client())
+        self.stt = await open_transcriber(self.session.demo.vocabulary, client(), self._opening() if config.agent_context else "")
         self.tasks = [asyncio.create_task(self._send_audio()), asyncio.create_task(self._transcripts()), asyncio.create_task(self._turns())]
         # end_call runs as soon as the model asks, usually before its goodbye has been synthesised; the
         # transport is told only once everything said so far has played.
         end = self.session.request_end
         self.session.request_end = lambda reason: self.tasks.append(asyncio.create_task(self._end_after_speech(end, reason)))
+
+    def _opening(self) -> str:
+        """The agent's fixed opening for this channel (phone first, website second), which the caller answers first."""
+        lines = self.session.demo.fixed_lines
+        if not lines:
+            return ""
+        return lines[0] if self.session.channel == "phone" or len(lines) < 2 else lines[1]
+
+    async def _tell_context(self, text: str) -> None:
+        if self.stt is None or not config.agent_context or not text.strip():
+            return
+        try:
+            await self.stt.set_agent_context(text)
+        except Exception as err:  # noqa: BLE001
+            log.warn("cascade.agent_context_failed", {"session": self.session.id}, err)
 
     async def _end_after_speech(self, end: Any, reason: str) -> None:
         while not self.closed and (self.turn is not None or self.tail is not None or time.monotonic() < self.play_until):
@@ -301,6 +341,7 @@ class Cascade:
         if self.hold_timer:
             self.hold_timer.cancel()
         if self.turn:
+            self._settle(self.turn, False)
             self.turn.abort.set()
             self._stop_speech(self.turn)
         for t in [*self.tasks, *([self.tail_task] if self.tail_task else [])]:
@@ -347,7 +388,7 @@ class Cascade:
                     await self.stt.end_of_speech()
                     if self.held is not None:
                         self._arm_hold()
-                    elif self.interim and not self.stt.decides_turns and not self._busy() and finished(self.interim) and not self._may_be_code(self.interim):
+                    elif self.interim and self._may_speculate() and not self._busy() and finished(self.interim, lenient=self.stt.decides_turns) and not self._may_be_code(self.interim):
                         self.speculated, self.speculation_dropped = self.interim, False
                         self.inputs.put_nowait((self.interim, self.voice_at, now, True))
                 elif not self.in_speech and not self.forced and self.interim and now - self.voice_at >= FORCE_END_S:
@@ -357,6 +398,10 @@ class Cascade:
             pass
         except Exception as err:  # noqa: BLE001
             self._fail("stt_send", err)
+
+    def _may_speculate(self) -> bool:
+        # A transcriber that decides turns itself (AssemblyAI) speculates too unless DEMO_SPECULATIVE=0.
+        return not self.stt.decides_turns or config.speculative
 
     async def _transcripts(self) -> None:
         try:
@@ -403,6 +448,7 @@ class Cascade:
             if words:
                 self._push(LiveEvent("transcript_set", speaker="visitor", text=text, finished=True))
             if not self.speculation_dropped and _squash(guess) == _squash(text):
+                self._settle(self.turn, True)
                 return
             self._drop_speculation()
             if words:
@@ -464,10 +510,23 @@ class Cascade:
         self.held, self.hold_timer = None, None
         self.inputs.put_nowait((text, self.voice_at, time.monotonic(), False))
 
+    async def _write_gate(self) -> bool:
+        """A tool with side effects is about to run: on a speculative turn, only once the final transcript has matched."""
+        turn = self.turn
+        if turn is None or turn.confirmed is None:
+            return True
+        return await asyncio.shield(turn.confirmed)
+
+    @staticmethod
+    def _settle(turn: Optional[Turn], ok: bool) -> None:
+        if turn is not None and turn.confirmed is not None and not turn.confirmed.done():
+            turn.confirmed.set_result(ok)
+
     def _drop_speculation(self) -> None:
         """The speculative reply answered the wrong words: stop it; _run rewinds it from the history."""
         self.speculation_dropped = True
         turn = self.turn
+        self._settle(turn, False)
         if turn and turn.speculative and not turn.discarded:
             turn.discarded = True
             turn.abort.set()
@@ -492,6 +551,7 @@ class Cascade:
             return
         turn.interrupted = True
         turn.abort.set()
+        self._settle(turn, False)
         if turn is self.tail:
             if self.tail_task:
                 self.tail_task.cancel()
@@ -541,16 +601,26 @@ class Cascade:
             return
         turn = Turn(speech_end=speech_end, final_at=final_at, started=time.monotonic(), speculative=speculative)
         self.turn = turn
+        if speculative:
+            turn.confirmed = asyncio.get_running_loop().create_future()
+            if self.speculated is None:
+                # The final transcript already matched while this turn was waiting to start.
+                self._settle(turn, True)
         chunker = Chunker()
         queue: asyncio.Queue[Optional[Piece]] = asyncio.Queue()
         player = asyncio.create_task(self._play(turn, queue))
         spoken = False
         streamed = False
         stream: Any = None
+        # What the model itself wrote since its last tool call (not holding or goodbye lines), for the transcriber.
+        written = ""
+        before_tools = ""
 
-        def say(pieces: list[str]) -> None:
-            nonlocal spoken
+        def say(pieces: list[str], model_text: bool = True) -> None:
+            nonlocal spoken, written
             for t in pieces:
+                if model_text:
+                    written = f"{written} {t}".strip()
                 if not turn.first_text:
                     turn.first_text = time.monotonic()
                 p = Piece(t)
@@ -590,29 +660,34 @@ class Cascade:
                 if calls:
                     turn.tools += len(calls)
                     say(chunker.flush())
+                    before_tools, written = written or before_tools, ""
                     if not spoken and any(c.name == "end_call" for c in calls):
-                        say([GOODBYE_LINE])
+                        say([GOODBYE_LINE], False)
                     elif not spoken and any(self._waits(c.name) for c in calls):
-                        say([HOLD_LINES[self.hold % len(HOLD_LINES)]])
+                        say([HOLD_LINES[self.hold % len(HOLD_LINES)]], False)
                         self.hold += 1
             if not turn.abort.is_set():
                 say(chunker.flush())
+                if not turn.discarded:
+                    # While it is still being spoken, so the transcriber expects the answer to this.
+                    await self._tell_context(written or before_tools)
         except asyncio.CancelledError:
             turn.abort.set()
             raise
         except Exception as err:  # noqa: BLE001
             log.warn("cascade.model_error", {"session": self.session.id}, err)
             if not spoken:
-                say(["Sorry, I lost my train of thought there. Could you say that again?"])
+                say(["Sorry, I lost my train of thought there. Could you say that again?"], False)
         finally:
+            self._settle(turn, False)
             queue.put_nowait(None)
             if stream is not None:
                 # Lets ADK seal an aborted run (answer any pending tool call) before the next one starts.
                 await stream.aclose()
         await player
         self.turn = None
-        if turn.discarded and turn.invocation_id and not turn.tools:
-            # Nothing was heard and nothing was done: forget the guess so the model sees only the final words.
+        if turn.discarded and turn.invocation_id:
+            # Nothing was heard and no tool with side effects ran (they wait for the final transcript): forget the guess so the model sees only the final words.
             try:
                 await self.runner.rewind_async(user_id=self.session.id, session_id=self.session.id, rewind_before_invocation_id=turn.invocation_id)
             except Exception as err:  # noqa: BLE001
@@ -724,12 +799,19 @@ class Cascade:
         )
 
 
-def finished(text: str) -> bool:
+def finished(text: str, lenient: bool = False) -> bool:
     """Whether a transcript reads as a finished turn: it ends a sentence or a number (a code, a date),
-    and not on a word that expects more ("…and", "my name is")."""
+    and not on a word that expects more ("…and", "my name is"). Lenient (interims from a transcriber that
+    sends no punctuation): three or more words with no punctuation anywhere, not ending on such a word."""
     t = text.strip()
     words = _words(t)
-    return bool(words) and (t[-1] in ".?!" or t[-1].isdigit()) and words[-1] not in TRAILING
+    if not words:
+        return False
+    if words[-1] in TRAILING:
+        return False
+    if t[-1] in ".?!" or t[-1].isdigit():
+        return True
+    return lenient and len(words) >= 3 and not re.search(r"[.?!,;:]", t)
 
 
 def spoken_code(text: str) -> Optional[str]:

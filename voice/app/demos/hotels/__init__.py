@@ -51,8 +51,8 @@ hotels: DemoDefinition[HotelState] = DemoDefinition(
     fixed_lines=[OPENING_PHONE, OPENING_WEB, PAYMENT_LINE],
     vocabulary=["Palmetto", "Marisol", "Miami Beach", "South Beach", "Brickell", "Ocean Drive", "Collins Avenue", "Biscayne", "check-in", "check-out", "king bed", "queen bed", "suite", "ocean view", "breakfast", "free cancellation", "resort fee"],
     operations={
-        "get_agency_info": Operation("Looking up Palmetto Stays", "The agency's hours, the areas we book and our policies. Use before answering any question about the agency itself.", get_agency_info),
-        "search_hotels": Operation("Searching hotels", "Search real hotels with live prices for the caller's area, dates and guests. Returns a labelled short list of up to three.", search_hotels, SearchHotels, slow=True),
+        "get_agency_info": Operation("Looking up Palmetto Stays", "The agency's hours, the areas we book and our policies. Use before answering any question about the agency itself.", get_agency_info, writes=False),
+        "search_hotels": Operation("Searching hotels", "Search real hotels with live prices for the caller's area, dates and guests. Returns a labelled short list of up to three.", search_hotels, SearchHotels, slow=True, writes=False),
         "choose_hotel": Operation("Opening the hotel", "Choose a hotel from the short list: what it offers, what guests say, and its best room choices with live prices.", choose_hotel, OptionRef, slow=True),
         "choose_room": Operation("Choosing the room", "Choose one of the room choices choose_hotel returned.", choose_room, RoomRef),
         "set_guest": Operation("Adding the guest", "The lead guest's full name; the rest is filled with marked samples.", set_guest, SetGuest),

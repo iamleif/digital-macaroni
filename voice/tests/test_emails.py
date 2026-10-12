@@ -50,7 +50,7 @@ async def test_ellie_emails_a_summary_or_the_booked_visit(outbox):
     assert other.ok and len(outbox) == 2
 
 
-async def test_theo_emails_the_reservation_with_the_items_picture(outbox):
+async def test_erica_emails_the_reservation_with_the_items_picture(outbox):
     state, run = runner(formfield)
     run("reserve_item", {"variantId": "ridge-sage", "quantity": 1, "name": "Sam Rivera", "callerConfirmed": True})
     r = await call(formfield, state, "email_reservation", {"email": "sam@example.com", "callerConfirmed": True})
@@ -104,7 +104,7 @@ async def test_a_misheard_domain_is_caught_before_anything_is_sent(outbox, monke
     assert ok.ok and len(outbox) == 1
 
 
-async def test_theo_never_gets_the_tracking_number_but_can_email_it(outbox):
+async def test_erica_never_gets_the_tracking_number_but_can_email_it(outbox):
     state, run = runner(formfield)
     r = run("lookup_order", {"orderNumber": "1042", "email": "emilia@example.com"})
     assert r.ok and r.result["carrier"] == "FedEx" and "999000011042" not in str(r.result)

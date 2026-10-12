@@ -393,9 +393,9 @@ def pickup_reservation(r: dict[str, Any]) -> tuple[str, str, str]:
     did = "searched the catalogue, checked live stock and held it for you"
     heading = f"It's held for you, {r['name'].split(' ')[0]}"
     intro = "Your item is set aside and waiting at the shop. Bring your reference, and pay when you collect."
-    body = layout(b, f"{r['product']} · held until {r['pickupBy']}", "Pickup reservation", heading, intro, card, "Theo", did)
+    body = layout(b, f"{r['product']} · held until {r['pickupBy']}", "Pickup reservation", heading, intro, card, "Erica", did)
     lines = [f"Item: {r['quantity']} x {r['product']}, {r['option']} ({r['price']})", f"Pick up by: {r['pickupBy']}", f"Shop: {r['shop']} ({r['hours']})", f"Reference: {r['reference']}"]
-    return f"Held for you at Form & Field · {r['product']}", body, _text(b, heading, intro, lines, "Theo", did)
+    return f"Held for you at Form & Field · {r['product']}", body, _text(b, heading, intro, lines, "Erica", did)
 
 
 def order_confirmation(o: dict[str, Any]) -> tuple[str, str, str]:
@@ -410,13 +410,13 @@ def order_confirmation(o: dict[str, Any]) -> tuple[str, str, str]:
     did = "found your order and sent you its details"
     heading = f"Your order, {o['name'].split(' ')[0]}"
     intro = "Here is your order confirmation again, with the tracking number if it has shipped."
-    body = layout(b, f"Order {o['number']} · {o['status']}", "Order confirmation", heading, intro, card, "Theo", did)
+    body = layout(b, f"Order {o['number']} · {o['status']}", "Order confirmation", heading, intro, card, "Erica", did)
     lines = [f"Order {o['number']}: {o['status']}", *(f"{i['name']}, {i['option']} ({i['price']})" for i in o["items"])]
     if o.get("carrier"):
         lines += [f"Carrier: {o['carrier']}", f"Tracking: {o['tracking']} (sample number for this demo)"]
     if o.get("estimated"):
         lines.append(f"Estimated: {o['estimated']}")
-    return f"Your Form & Field order {o['number']}", body, _text(b, heading, intro, lines, "Theo", did)
+    return f"Your Form & Field order {o['number']}", body, _text(b, heading, intro, lines, "Erica", did)
 
 
 def consult_confirmation(v: dict[str, Any]) -> tuple[str, str, str]:

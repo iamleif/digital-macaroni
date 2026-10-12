@@ -51,14 +51,22 @@ class Config:
     # Prebuilt Gemini voice names, or designed voice ids ("voice_…", from AI Studio; the travel default is
     # "Linda 2", designed on gemini-3.8-flash-tts and valid until 2027-10-04).
     voices: dict[str, str] = field(
-        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Iapetus"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede"), "hotels": env.get("HOTELS_VOICE", "Despina"), "realestate": env.get("REALESTATE_VOICE", "Achird"), "insurance": env.get("INSURANCE_VOICE", "Charon"), "lune": env.get("LUNE_VOICE", "Sulafat"), "tidewell": env.get("TIDEWELL_VOICE", "Sulafat"), "dealership": env.get("DEALERSHIP_VOICE", "Fenrir"), "dental": env.get("DENTAL_VOICE", "Kore"), "agent": env.get("AGENT_VOICE", "Sulafat")}
+        default_factory=lambda: {"northline": env.get("NORTHLINE_VOICE", "Sulafat"), "formfield": env.get("FORMFIELD_VOICE", "Hali"), "travel": env.get("TRAVEL_VOICE", "voice_6lu9yg7544iu"), "lawfirm": env.get("LAWFIRM_VOICE", "Aoede"), "hotels": env.get("HOTELS_VOICE", "Despina"), "realestate": env.get("REALESTATE_VOICE", "Achird"), "insurance": env.get("INSURANCE_VOICE", "Charon"), "lune": env.get("LUNE_VOICE", "Sulafat"), "tidewell": env.get("TIDEWELL_VOICE", "Sulafat"), "dealership": env.get("DEALERSHIP_VOICE", "Fenrir"), "dental": env.get("DENTAL_VOICE", "Kore"), "agent": env.get("AGENT_VOICE", "Sulafat")}
     )
     # Demos on the cascade (speech-to-text, a Gemini text model through ADK, then Gemini TTS) instead of Gemini Live.
-    cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel").split(",") if d.strip())
+    cascade_demos: frozenset[str] = frozenset(d.strip() for d in env.get("DEMO_CASCADE", "travel,dental,northline,dealership,hotels,lune,lawfirm,realestate,insurance,tidewell,agent,formfield").split(",") if d.strip())
     # Speech-to-text for the cascade: "assemblyai" (Universal-3.6 Pro, the default) or "gemini".
     stt_provider: str = env.get("DEMO_STT_PROVIDER", "assemblyai")
     assemblyai_api_key: str = env.get("ASSEMBLYAI_API_KEY", "")
     assemblyai_model: str = env.get("DEMO_ASSEMBLYAI_MODEL", "universal-3-6-pro")
+    # AssemblyAI agent context (Universal-3.6 Pro): the agent's opening goes in at connect time and each reply
+    # after it, so the model knows what the caller is answering. DEMO_AGENT_CONTEXT=0 turns it off.
+    agent_context: bool = env.get("DEMO_AGENT_CONTEXT", "1") != "0"
+    # Start a reply from a finished-looking interim transcript for AssemblyAI too (it decides turns itself).
+    # DEMO_SPECULATIVE=0 restores waiting for its final transcript.
+    speculative: bool = env.get("DEMO_SPECULATIVE", "1") != "0"
+    # Backup text model when the primary answers 429/5xx or times out; empty turns the fallback off.
+    text_fallback_model: str = env.get("DEMO_TEXT_FALLBACK_MODEL", "gemini-3.6-flash")
     stt_model: str = env.get("DEMO_STT_MODEL", "gemini-3.5-transcribe-live")
     text_model: str = env.get("DEMO_TEXT_MODEL", "gemini-3.5-flash-lite")
     tts_model: str = env.get("DEMO_TTS_MODEL", "gemini-3.8-flash-lite-tts")

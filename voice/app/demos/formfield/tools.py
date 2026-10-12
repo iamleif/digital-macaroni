@@ -1,4 +1,4 @@
-"""Theo's operations at Form & Field: plain functions over one call's state, tested without a model."""
+"""Erica's operations at Form & Field: plain functions over one call's state, tested without a model."""
 
 from __future__ import annotations
 
@@ -203,7 +203,7 @@ async def email_reservation(state: FormFieldState, i: EmailReservation, ctx: OpC
         messages = [{"id": m["id"], "summary": m["summary"], "callback": mask_number(m["callbackNumber"])} for m in state.messages]
         rows = [("Support request", f"{s['id']} · {s['issue']} · we reply by email within one business day") for s in state.support_requests]
         name = state.messages[-1]["name"] if state.messages else None
-        r, sent = await send_summary("formfield", "Theo", i.email, i.recap or ("You asked us to look into an order; the team will reply by email." if rows else None), name, messages, rows, did="searched the shop, checked live stock and looked after your request")
+        r, sent = await send_summary("formfield", "Erica", i.email, i.recap or ("You asked us to look into an order; the team will reply by email." if rows else None), name, messages, rows, did="searched the shop, checked live stock and looked after your request")
         if sent:
             state.emailed = sent
         return r

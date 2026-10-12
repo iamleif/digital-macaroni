@@ -56,6 +56,9 @@ class Operation(Generic[S]):
     background: bool = False
     # Slow enough (an outside search taking seconds) that the caller hears a holding line while it runs.
     slow: bool = False
+    # Changes state or has an outside effect (books, cancels, notes, emails, chooses). Only operations that are
+    # clearly read-only set this False; the default is safe. Writes wait for the final transcript on a speculative turn.
+    writes: bool = True
 
 
 @dataclass

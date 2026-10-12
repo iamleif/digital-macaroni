@@ -52,7 +52,7 @@ apply. Reply STOP at any time to opt out."
 | Law & professional (Nora) | Alder & Finch, personal injury | `lawfirm/` | Yes |
 | | Bluebird Insurance Agency, Macon GA | `insurance/` | Yes |
 | | Juniper Row Realty, Austin (real RentCast listings) | `realestate/` | Yes |
-| Retail (Theo) | Form & Field, home goods | `formfield/` | Yes |
+| Retail (Erica) | Form & Field, home goods | `formfield/` | Yes |
 | | Woodward Motor Co., Detroit (real auto.dev cars and photos) | `dealership/` | Yes |
 | Travel (Linda) | Waypoint, flights | `travel/` | Yes |
 | | Palmetto Stays, hotels (live LiteAPI hotels and rates) | `hotels/` | Yes |

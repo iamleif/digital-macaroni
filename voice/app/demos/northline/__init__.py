@@ -41,7 +41,7 @@ northline: DemoDefinition[NorthlineState] = DemoDefinition(
     instruction=instruction,
     view=view,
     operations={
-        "get_business_info": Operation("Looking up Northline's services", "Everything about Northline: services and prices, service area, hours, emergencies and the after-hours fee, the Comfort Club, financing, warranty, payment and policies. Use before answering any question about the business.", get_business_info),
+        "get_business_info": Operation("Looking up Northline's services", "Everything about Northline: services and prices, service area, hours, emergencies and the after-hours fee, the Comfort Club, financing, warranty, payment and policies. Use before answering any question about the business.", get_business_info, writes=False),
         "note_request_details": Operation(
             "Updating the service request",
             "Record details the caller has given or confirmed so the request card fills in. Send only the fields that are new or changed. proposedSlotId must be a slot check_availability returned.",
@@ -53,6 +53,7 @@ northline: DemoDefinition[NorthlineState] = DemoDefinition(
             "Open arrival windows for a service on a date (YYYY-MM-DD, Pacific Time). If that date has none, returns the next available windows instead. Only offer what this returns.",
             check_availability,
             CheckAvailability,
+            writes=False,
         ),
         "book_appointment": Operation("Booking the visit", "Book the visit after the caller clearly said yes to the read-back. slotId must come from check_availability.", book_appointment, BookAppointment),
         "reschedule_appointment": Operation("Moving the visit", "Move the existing booking to a new slot from check_availability, after the caller confirmed the new time.", reschedule_appointment, RescheduleAppointment),

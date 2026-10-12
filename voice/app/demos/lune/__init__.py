@@ -47,9 +47,9 @@ lune: DemoDefinition[BookingState] = DemoDefinition(
     fixed_lines=[OPENING_PHONE, OPENING_WEB],
     vocabulary=["Lune", "Ellie", "Melrose", "balayage", "blowout", "gloss", "Hydrafacial", "Botox", "filler", "gel manicure", "pedicure", "Maria", "Ava", "Jules", "Noor"],
     operations={
-        "get_business_info": Operation("Looking up Lune", "The menu and prices, add-ons, the team, hours, deposits, cancellation, med-spa rules and parking. Use before answering any question about the salon.", get_business_info),
+        "get_business_info": Operation("Looking up Lune", "The menu and prices, add-ons, the team, hours, deposits, cancellation, med-spa rules and parking. Use before answering any question about the salon.", get_business_info, writes=False),
         "note_booking": Operation("Updating the booking card", "Record what the caller has told you so the booking card fills in. Send only what is new or changed.", note_booking, NoteBooking),
-        "check_availability": Operation("Checking the book", "Open times for a service on a date (YYYY-MM-DD, Pacific Time), with who they're with. If that day has none, returns the next openings.", check_availability, CheckAvailability),
+        "check_availability": Operation("Checking the book", "Open times for a service on a date (YYYY-MM-DD, Pacific Time), with who they're with. If that day has none, returns the next openings.", check_availability, CheckAvailability, writes=False),
         "book_appointment": Operation("Booking it", "Book the service after the caller clearly said yes to the read-back. slotId must come from check_availability.", book_appointment, BookAppointment),
         "reschedule_appointment": Operation("Moving the appointment", "Move the booking to a new time from check_availability, after the caller confirmed.", reschedule_appointment, RescheduleAppointment),
         "cancel_appointment": Operation("Cancelling the appointment", "Cancel a booking made in this call, after the caller confirmed.", cancel_appointment, CancelAppointment),

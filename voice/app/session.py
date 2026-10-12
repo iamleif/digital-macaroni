@@ -53,6 +53,9 @@ class DemoSession:
         self.request_end: Callable[[str], None] = self.end
         # Set by the phone bridge: links this call to a waiting page by its code.
         self.link_screen: Optional[Callable[[str], str]] = None
+        # Set by the cascade: a tool with side effects awaits this first and runs only if it returns True
+        # (False: the reply was a speculative guess that was thrown away).
+        self.write_gate: Optional[Callable[[], Awaitable[bool]]] = None
         # Set by the phone bridge: plays one ring down the line after the agent's queued audio; returns seconds until it ends.
         self.play_ring: Optional[Callable[[], float]] = None
         # Phone calls only: the caller's number as Twilio reported it (E.164), or None. Held in memory, never logged.

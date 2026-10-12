@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 from typing import Any, AsyncIterator, Optional, Protocol
 from urllib.parse import urlencode
 
@@ -27,6 +28,24 @@ Event = tuple[str, str]
 ASSEMBLY_BATCH_BYTES = 3200  # 100 ms of 16 kHz PCM16
 ASSEMBLY_MIN_BYTES = 1600  # 50 ms
 ASSEMBLY_MAX_TERMS = 100
+# AssemblyAI accepts at most this many characters of agent context.
+AGENT_CONTEXT_MAX = 1750
+_MARKDOWN = re.compile(r"!?\[([^\]]*)\]\([^)]*\)|[*_#>`~|]+")
+_IDS = re.compile(r"\b(?:[a-z]{2,5}_[A-Za-z0-9]{6,}|[0-9a-f]{8}-[0-9a-f-]{27})\b")
+
+
+def _letters(text: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def clean_context(text: str) -> str:
+    """Agent text as AssemblyAI should see it: no markdown or ids, at most the last 1750 characters, cut at a word."""
+    t = _MARKDOWN.sub(lambda m: m.group(1) or " ", text or "")
+    t = re.sub(r"\s+", " ", _IDS.sub(" ", t)).strip()
+    if len(t) > AGENT_CONTEXT_MAX:
+        t = t[-AGENT_CONTEXT_MAX:]
+        t = t.split(" ", 1)[1] if " " in t[:40] else t
+    return t
 
 
 class Transcriber(Protocol):
@@ -43,6 +62,9 @@ class Transcriber(Protocol):
         """A long silence and still no final: end the turn regardless."""
 
     def events(self) -> AsyncIterator[Event]: ...
+
+    async def set_agent_context(self, text: str) -> None:
+        """Tells the transcriber what the agent just said, so it hears the answer better. Optional."""
 
     async def close(self) -> None: ...
 
@@ -93,12 +115,26 @@ class AssemblyTranscriber:
                         self.finished_turns.add(order)
                         yield ("final", text)
                 elif order not in self.finished_turns:
+                    # The turn's own transcript is punctuated, which is what tells a finished sentence from a
+                    # trailing one; the bare words (which can run ahead of it) are used when they say more.
                     words = e.get("words") or []
-                    text = " ".join(w.get("text", "") for w in words).strip() or (e.get("transcript") or "").strip()
+                    bare = " ".join(w.get("text", "") for w in words).strip()
+                    formatted = (e.get("transcript") or "").strip()
+                    text = formatted if len(_letters(formatted)) >= len(_letters(bare)) else bare
                     if text:
                         yield ("interim", text)
             elif kind == "Error" or "error" in e:
                 raise RuntimeError(f"assemblyai {e.get('error_code', '')}: {str(e.get('error', ''))[:120]}")
+
+    async def set_agent_context(self, text: str) -> None:
+        # Sent while the reply is still being spoken; a failure here must never end the call.
+        context = clean_context(text)
+        if not context or not config.agent_context:
+            return
+        try:
+            await self.ws.send(json.dumps({"type": "UpdateConfiguration", "agent_context": context}))
+        except Exception as err:  # noqa: BLE001
+            log.warn("stt.agent_context_failed", {"outcome": "ignored"}, err)
 
     async def close(self) -> None:
         try:
@@ -117,6 +153,9 @@ class GeminiTranscriber:
 
     async def send(self, pcm16k: bytes) -> None:
         await self.session.send_realtime_input(audio=types.Blob(data=pcm16k, mime_type="audio/pcm;rate=16000"))
+
+    async def set_agent_context(self, text: str) -> None:
+        return None
 
     async def end_of_speech(self) -> None:
         # Makes the model finalise at once instead of waiting on its own detector.
@@ -144,12 +183,15 @@ class GeminiTranscriber:
             pass
 
 
-async def open_transcriber(vocabulary: list[str], gemini: Optional[genai.Client] = None) -> Transcriber:
+async def open_transcriber(vocabulary: list[str], gemini: Optional[genai.Client] = None, agent_context: str = "") -> Transcriber:
     """The configured transcriber; Gemini when AssemblyAI is chosen but has no key."""
     if config.stt_provider == "assemblyai" and config.assemblyai_api_key:
         params = {"speech_model": config.assemblyai_model, "encoding": "pcm_s16le", "sample_rate": 16000}
         if vocabulary:
             params["keyterms_prompt"] = json.dumps(vocabulary[:ASSEMBLY_MAX_TERMS])
+        context = clean_context(agent_context) if config.agent_context and config.assemblyai_model == "universal-3-6-pro" else ""
+        if context:
+            params["agent_context"] = context
         url = "wss://streaming.assemblyai.com/v3/ws?" + urlencode(params)
         ws = await asyncio.wait_for(websockets.connect(url, additional_headers={"Authorization": config.assemblyai_api_key}, max_size=None), timeout=8)
         return AssemblyTranscriber(ws)

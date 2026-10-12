@@ -42,6 +42,8 @@ class ToolSpec:
     run: Callable[[DemoSession, dict[str, Any]], Awaitable[Result]]
     params: Optional[type[BaseModel]] = None
     background: bool = False
+    # Changes state or has an outside effect; waits for a speculative turn to be confirmed. Safe by default.
+    writes: bool = True
 
 
 def _call_id() -> str:
@@ -89,7 +91,7 @@ def _operation_spec(name: str, op: Any) -> ToolSpec:
         session.emit({"type": "tool.failed", "callId": call_id, "tool": name, "label": op.label, "summary": r.summary or r.message})
         return {"ok": False, "error": r.error, "message": r.message, **r.result}
 
-    return ToolSpec(name=name, description=op.description, run=run, params=op.params, background=op.background)
+    return ToolSpec(name=name, description=op.description, run=run, params=op.params, background=op.background, writes=getattr(op, "writes", True))
 
 
 class LinkScreen(BaseModel):
@@ -138,6 +140,7 @@ def tool_specs(demo: DemoDefinition[Any]) -> list[ToolSpec]:
             "get_caller_number",
             'The phone number this caller is calling from, when the network provides it. Use it instead of asking them to recite a number: confirm it by its last four digits ("the number ending 0142"), and use the full number for take_message if they agree. Not available in website conversations.',
             _get_caller_number,
+            writes=False,
         ),
         *(
             [
@@ -222,6 +225,8 @@ class DemoTool(BaseTool):
         if self.spec.background and not self.live:
             tool_context.actions.skip_summarization = True
         said = re.sub(r"\s+", " ", session.said_this_turn).strip() if self.live and not self.spec.background else ""
+        if self.spec.writes and session.write_gate is not None and not await session.write_gate():
+            return {"ok": False, "error": "speculation_discarded", "message": "That reply was based on a guess at what the caller said and was dropped; nothing was done."}
         result = await self.spec.run(session, args or {})
         if said and isinstance(result, dict):
             # Called part-way through a reply: this result will make the agent speak again.
