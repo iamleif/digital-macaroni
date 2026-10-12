@@ -56,6 +56,16 @@ SCRIPTS = {
         "Yes, please book it.",
         "No, that's everything. Thanks, bye.",
     ],
+    # A Spanish-speaking caller (run with SAY_VOICE=Flo): Nora should switch, and still record in English.
+    "lawfirm_es": [
+        "Hola. Tuve un accidente de carro la semana pasada y me duele mucho el cuello y la espalda.",
+        "Fue en Denver, Colorado, hace seis días. Otro carro me chocó por detrás.",
+        "Fui a la sala de emergencias y ahora voy a terapia.",
+        "No, no tengo abogado. El otro conductor tenía seguro, y sí hubo reporte de la policía.",
+        "Me llamo Carlos Ramírez.",
+        "Sí, quiero hablar con un abogado.",
+        "No, eso es todo. Gracias, adiós.",
+    ],
     "lawfirm": [
         "Hi. I was rear-ended on the freeway last week and my neck and back really hurt.",
         "I went to the emergency room that night. The other driver admitted it was his fault, and there's a police report.",
@@ -90,7 +100,7 @@ def stamp() -> str:
 
 def speak(text: str, d: str, i: int) -> bytes:
     aiff, wav = f"{d}/{i}.aiff", f"{d}/{i}.wav"
-    subprocess.run(["say", "-v", "Samantha", "-o", aiff, text], check=True)
+    subprocess.run(["say", "-v", os.environ.get("SAY_VOICE", "Samantha"), "-o", aiff, text], check=True)
     subprocess.run(["afconvert", "-f", "WAVE", "-d", "ulaw@8000", "-c", "1", aiff, wav], check=True)
     data = open(wav, "rb").read()
     at = data.index(b"data")

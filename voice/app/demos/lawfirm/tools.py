@@ -61,6 +61,11 @@ class NoteIntake(BaseModel):
     otherPartyInsurer: Optional[str] = Field(None, min_length=2, max_length=80, description="The other side's insurance company, if the caller knows it.")
     opposingParty: Optional[str] = Field(None, min_length=2, max_length=100, description="The other driver, company or property owner, if the caller knows.")
     hasLawyer: Optional[bool] = Field(None, description="True if the caller already has a lawyer for this accident.")
+    witnesses: Optional[str] = Field(None, min_length=2, max_length=160, description="Anyone else who saw it, in the caller's words; \"none\" if nobody.")
+    treatingProvider: Optional[str] = Field(None, min_length=2, max_length=100, description="The hospital, clinic or doctor treating the caller, if they gave one.")
+    symptoms: Optional[str] = Field(None, min_length=2, max_length=160, description="Symptoms worth flagging the caller mentions: lost consciousness, tingling or numbness, dizziness, nausea, headaches.")
+    vehicleDamage: Optional[str] = Field(None, min_length=2, max_length=120, description="Damage to the caller's vehicle or property, in the caller's words, if any.")
+    heardFrom: Optional[str] = Field(None, min_length=2, max_length=80, description="How the caller found the firm (search, ad, referral, a friend, social media...), in their words.")
 
 
 def note_intake(state: LawFirmState, i: NoteIntake, ctx: OpContext) -> OpResult:
@@ -73,7 +78,7 @@ def note_intake(state: LawFirmState, i: NoteIntake, ctx: OpContext) -> OpResult:
             return fail("future_date", "That date is in the future. Check it with the caller.")
     if "accidentState" in new:
         new["accidentState"] = new["accidentState"].upper()
-    for k in ("name", "accidentCity", "injuries", "opposingParty", "otherPartyInsurer"):
+    for k in ("name", "accidentCity", "injuries", "opposingParty", "otherPartyInsurer", "witnesses", "treatingProvider", "symptoms", "vehicleDamage", "heardFrom"):
         if k in new:
             new[k] = new[k].strip()
     changed = [k for k, v in new.items() if state.intake.get(k) != v]
