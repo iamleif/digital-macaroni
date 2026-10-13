@@ -99,3 +99,27 @@ def test_a_tool_called_mid_reply_is_told_what_the_caller_already_heard():
         assert "alreadySaid" not in run("end_call", {})
     finally:
         sessions.pop(s.id, None)
+
+
+def test_cascade_notes_carry_an_acknowledgement_the_tool_never_sees():
+    import asyncio
+    from types import SimpleNamespace
+
+    from app.session import DemoSession, sessions
+
+    cascade = {t.name: t for t in (DemoTool(spec, live=False) for spec in tool_specs(demos["dealership"]))}
+    live = {t.name: t for t in (DemoTool(spec) for spec in tool_specs(demos["dealership"]))}
+    decl = cascade["note_lead"]._get_declaration()
+    assert decl and decl.parameters and "sayNow" in decl.parameters.properties and decl.parameters.required[0] == "sayNow"
+    # Only notes, and only on the cascade.
+    assert "sayNow" not in (cascade["search_inventory"]._get_declaration().parameters.properties or {})
+    assert "sayNow" not in (live["note_lead"]._get_declaration().parameters.properties or {})
+    s = DemoSession("dealership", "phone")
+    sessions[s.id] = s
+    try:
+        ctx = SimpleNamespace(session=SimpleNamespace(id=s.id))
+        r = asyncio.run(cascade["note_lead"].run_async(args={"sayNow": "Thanks, Sam Lee.", "name": "Sam Lee"}, tool_context=ctx))  # type: ignore[arg-type]
+        assert r["ok"] and s.state.lead.get("name") == "Sam Lee" and "sayNow" not in s.state.lead
+        assert all("sayNow" not in (t.get("args") or {}) for t in s.record.entries if isinstance(t, dict))
+    finally:
+        sessions.pop(s.id, None)

@@ -58,6 +58,10 @@ class Operation(Generic[S]):
     background: bool = False
     # Slow enough (an outside search taking seconds) that the caller hears a holding line while it runs.
     slow: bool = False
+    # A note taken while the caller is answered (note_patient, note_lead…). On the cascade it carries a
+    # required sayNow, the agent's few words of acknowledgement, which are spoken the moment the call
+    # arrives, while the note saves and the model writes what comes next.
+    aside: bool = False
     # Changes state or has an outside effect (books, cancels, notes, emails, chooses). Only operations that are
     # clearly read-only set this False; the default is safe. Writes wait for the final transcript on a speculative turn.
     writes: bool = True

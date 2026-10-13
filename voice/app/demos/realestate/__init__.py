@@ -52,7 +52,7 @@ realestate: DemoDefinition[RealEstateState] = DemoDefinition(
     vocabulary=["Juniper Row", "Miles", "Austin", "South Congress", "Travis Heights", "Bouldin Creek", "Zilker", "Hyde Park", "Clarksville", "Tarrytown", "Mueller", "Cherrywood", "Crestview", "Allandale", "Westlake", "pre-approved", "showing", "valuation", "townhouse", "condo", "HOA"],
     operations={
         "get_brokerage_info": Operation("Looking up Juniper Row", "The brokerage's areas, hours, office, agents, how showings and valuations work, and its policies. Use before answering any question about the brokerage.", get_brokerage_info, writes=False),
-        "note_lead": Operation("Updating the lead record", "Record what the caller has told you about themselves and what they want, so the lead record fills in. Send only what is new or changed.", note_lead, NoteLead),
+        "note_lead": Operation("Updating the lead record", "Record what the caller has told you about themselves and what they want, so the lead record fills in. Send only what is new or changed.", note_lead, NoteLead, aside=True),
         "search_listings": Operation("Searching listings", "Search our active Austin listings by area, price, bedrooms, bathrooms and type. Returns the total and the best few to read out.", search_listings, SearchListings, writes=False),
         "get_listing": Operation("Opening the listing", "One home's details, by listingId or by the street the caller named.", get_listing, GetListing, writes=False),
         "estimate_value": Operation("Running a value estimate", "A rough value range for the caller's home from comparable homes for sale nearby. Needs the address with the neighbourhood or zip code; bedrooms and square feet make it better.", estimate_value, EstimateValue),

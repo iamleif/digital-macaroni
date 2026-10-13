@@ -44,6 +44,16 @@ class ToolSpec:
     background: bool = False
     # Changes state or has an outside effect; waits for a speculative turn to be confirmed. Safe by default.
     writes: bool = True
+    # A note taken while the caller is answered: on the cascade it carries SAY_NOW (Operation.aside).
+    aside: bool = False
+
+
+# The cascade speaks this argument of an aside tool as soon as the call arrives; the tool never sees it.
+SAY_NOW = "sayNow"
+SAY_NOW_SCHEMA = types.Schema(
+    type=types.Type.STRING,
+    description="The few words you say to the caller right now, spoken while this saves: show you heard them (say the name or detail back, or a brief thanks), different each time. Not the next question; that comes after the result.",
+)
 
 
 def _call_id() -> str:
@@ -91,7 +101,7 @@ def _operation_spec(name: str, op: Any) -> ToolSpec:
         session.emit({"type": "tool.failed", "callId": call_id, "tool": name, "label": op.label, "summary": r.summary or r.message})
         return {"ok": False, "error": r.error, "message": r.message, **r.result}
 
-    return ToolSpec(name=name, description=op.description, run=run, params=op.params, background=op.background, writes=getattr(op, "writes", True))
+    return ToolSpec(name=name, description=op.description, run=run, params=op.params, background=op.background, writes=getattr(op, "writes", True), aside=getattr(op, "aside", False))
 
 
 class LinkScreen(BaseModel):
@@ -216,6 +226,10 @@ class DemoTool(BaseTool):
 
     def _get_declaration(self) -> Optional[types.FunctionDeclaration]:
         params = _schema(self.spec.params.model_json_schema()) if self.spec.params else None
+        if self.spec.aside and not self.live:
+            params = params or types.Schema(type=types.Type.OBJECT, properties={})
+            params.properties = {SAY_NOW: SAY_NOW_SCHEMA, **(params.properties or {})}
+            params.required = [SAY_NOW, *(params.required or [])]
         return types.FunctionDeclaration(name=self.name, description=self.description, parameters=params)
 
     async def run_async(self, *, args: dict[str, Any], tool_context: ToolContext) -> Any:
@@ -227,7 +241,8 @@ class DemoTool(BaseTool):
         said = re.sub(r"\s+", " ", session.said_this_turn).strip() if self.live and not self.spec.background else ""
         if self.spec.writes and session.write_gate is not None and not await session.write_gate():
             return {"ok": False, "error": "speculation_discarded", "message": "That reply was based on a guess at what the caller said and was dropped; nothing was done."}
-        result = await self.spec.run(session, args or {})
+        # sayNow was for the caller (the cascade has spoken it); the note itself never sees it.
+        result = await self.spec.run(session, {k: v for k, v in (args or {}).items() if k != SAY_NOW})
         if said and isinstance(result, dict):
             # Called part-way through a reply: this result will make the agent speak again.
             result["alreadySaid"] = said

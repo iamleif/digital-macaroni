@@ -47,6 +47,7 @@ northline: DemoDefinition[NorthlineState] = DemoDefinition(
             "Record details the caller has given or confirmed so the request card fills in. Send only the fields that are new or changed. proposedSlotId must be a slot check_availability returned.",
             note_request_details,
             NoteRequestDetails,
+            aside=True,
         ),
         "check_availability": Operation(
             "Checking the schedule",

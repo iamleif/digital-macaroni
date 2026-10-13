@@ -57,7 +57,7 @@ insurance: DemoDefinition[InsuranceState] = DemoDefinition(
     vocabulary=["Bluebird", "Owen", "Macon", "Progressive", "Travelers", "Safeco", "Nationwide", "deductible", "liability", "comprehensive", "collision", "uninsured motorist", "renters", "homeowners", "declarations", "endorsement", "Lily"],
     operations={
         "get_agency_info": Operation("Looking up Bluebird", "The agency's lines, carriers, hours and how quotes, claims, changes and payments work. Use before answering any question about the agency.", get_agency_info, writes=False),
-        "note_account": Operation("Updating the account", "Record what the caller has told you about themselves and what they want quoted, so the account record fills in. Send only what is new or changed; drivers, vehicles and lists in full.", note_account, NoteAccount),
+        "note_account": Operation("Updating the account", "Record what the caller has told you about themselves and what they want quoted, so the account record fills in. Send only what is new or changed; drivers, vehicles and lists in full.", note_account, NoteAccount, aside=True),
         "find_customer": Operation("Finding the customer", "Find a current customer by full name and date of birth, or a policy number. Required before reading any policy.", find_customer, FindCustomer, writes=False),
         "get_policy": Operation("Opening the policy", "A current customer's policy: carrier, coverages, limits, deductibles, vehicles or property, renewal and billing.", get_policy, PolicyRef, writes=False),
         "report_claim": Operation("Logging the claim notice", "Log a first notice of loss for our team as details come in, and get the carrier's claims line. Never files the claim with the carrier.", report_claim, ReportClaim),

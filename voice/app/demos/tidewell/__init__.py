@@ -50,7 +50,7 @@ tidewell: DemoDefinition[BookingState] = DemoDefinition(
     vocabulary=["Tidewell", "Ellie", "Portland", "chiropractic", "chiropractor", "physiotherapy", "physio", "massage", "Dr. Lee", "Sam Patel", "Nina", "Regence", "Providence", "Moda", "Aetna", "Cigna", "PIP", "workers' comp"],
     operations={
         "get_business_info": Operation("Looking up Tidewell", "Services and self-pay prices, new-patient visits, insurance we bill, the package, hours and policies. Use before answering any question about the clinic.", get_business_info, writes=False),
-        "note_visit": Operation("Updating the patient booking", "Record what the caller has told you so the booking card fills in, including any warning signs they mention. Send only what is new or changed; follow what the result says.", note_visit, NoteVisit),
+        "note_visit": Operation("Updating the patient booking", "Record what the caller has told you so the booking card fills in, including any warning signs they mention. Send only what is new or changed; follow what the result says.", note_visit, NoteVisit, aside=True),
         "find_patient": Operation("Finding the patient", "Find a returning patient by full name and date of birth.", find_patient, FindPatient, writes=False),
         "check_availability": Operation("Checking the schedule", "Open times for a visit on a date (YYYY-MM-DD, Pacific Time), with who it's with. If that day has none, returns the next openings.", check_availability, CheckAvailability, writes=False),
         "book_appointment": Operation("Booking the visit", "Book the visit after the caller clearly said yes to the read-back. slotId must come from check_availability.", book_appointment, BookAppointment),

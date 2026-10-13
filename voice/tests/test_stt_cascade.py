@@ -211,3 +211,12 @@ def test_text_model_switch(monkeypatch):
     assert isinstance(cascade.text_model(), cascade.CascadeFallbackModel)
     setflag(monkeypatch, "text_fallback_model", "")
     assert cascade.text_model() == config.text_model
+
+
+def test_a_scripted_result_takes_the_place_of_the_acknowledgement():
+    from app.cascade import _scripted
+
+    assert _scripted({"ok": True, "say": "Great, I'll send everything for them."})
+    assert _scripted({"ok": True, "knownCustomer": {"car": "Civic", "say": "Welcome them back."}})
+    assert _scripted({"ok": True, "guide": "In your own words: the visit is $129."})
+    assert not _scripted({"ok": True, "next": "What's your date of birth?", "say": ""})

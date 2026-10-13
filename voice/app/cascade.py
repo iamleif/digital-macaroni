@@ -42,11 +42,13 @@ from .demos import demos
 from .live import LiveEvent, full_instruction
 from .session import DemoSession, get_session
 from .stt import Transcriber, open_transcriber
-from .tools import demo_tools
+from .tools import SAY_NOW, demo_tools
 
 CASCADE_NOTE = """
 
-Everything you write is turned into speech as you write it, so write only the words you say aloud: plain sentences, no lists, symbols, markdown, notes or stage directions. Keep each reply short; the caller can always ask for more. Do not announce that you are checking or looking something up: when a lookup takes a moment, the caller hears a short holding line automatically. When the caller is done, say your goodbye and call end_call in the same reply."""
+Everything you write is turned into speech as you write it, so write only the words you say aloud: plain sentences, no lists, symbols, markdown, notes or stage directions. Keep each reply short; the caller can always ask for more. Do not announce that you are checking or looking something up: when a lookup takes a moment, the caller hears a short holding line automatically. When the caller is done, say your goodbye and call end_call in the same reply.
+
+A note tool's sayNow is spoken the moment you call it, while it saves. Once its result is back, go straight on to what comes next (usually the question it gives you); never repeat what you put in sayNow."""
 
 SPEECH_RMS = 700
 # Silence after speech before the transcript is finalised and, if it reads as finished, answered.
@@ -615,10 +617,23 @@ class Cascade:
         # What the model itself wrote since its last tool call (not holding or goodbye lines), for the transcriber.
         written = ""
         before_tools = ""
+        # A note's sayNow, spoken once its result shows it is wanted; then what it said, against an echo.
+        ack = ""
+        echo = ""
 
         def say(pieces: list[str], model_text: bool = True) -> None:
-            nonlocal spoken, written
+            nonlocal spoken, written, echo
             for t in pieces:
+                if echo and model_text:
+                    # The first sentence after a note: drop it if it only says the acknowledgement again.
+                    heard, echo = echo, ""
+                    if _squash(t) == _squash(heard):
+                        continue
+                    if _squash(t).startswith(_squash(heard)):
+                        t = " ".join(t.split()[len(heard.split()) :]).strip()
+                        if not t:
+                            continue
+                        t = t[0].upper() + t[1:]
                 if model_text:
                     written = f"{written} {t}".strip()
                 if not turn.first_text:
@@ -644,6 +659,14 @@ class Cascade:
                     break
                 if event.author == "user":
                     continue
+                if ack:
+                    # The note's result is in (local tools take about a millisecond). A result with a scripted
+                    # line opens the next words itself, so the acknowledgement would only be said twice.
+                    if not any(_scripted(r.response) for r in event.get_function_responses()):
+                        say(chunker.feed(ack + " ") + chunker.flush())
+                        chunker.first = True
+                        echo = ack
+                    ack = ""
                 parts = (event.content.parts if event.content else None) or []
                 texts = [p.text for p in parts if p.text and not p.thought]
                 if event.partial:
@@ -660,10 +683,21 @@ class Cascade:
                 if calls:
                     turn.tools += len(calls)
                     say(chunker.flush())
+                    # What the model writes after the result goes out a sentence at a time again, so it
+                    # follows the words already playing without waiting for the whole rest of the reply.
+                    chunker.first = True
                     before_tools, written = written or before_tools, ""
-                    if not spoken and any(c.name == "end_call" for c in calls):
+                    if not spoken:
+                        # A note's acknowledgement plays while the model writes what comes next.
+                        ack = next((str(c.args[SAY_NOW]).strip() for c in calls if c.args and str(c.args.get(SAY_NOW) or "").strip()), "")
+                        if ack and any(self._waits(c.name) for c in calls):
+                            # A slow lookup in the same batch: say it now, in place of a holding line.
+                            say(chunker.feed(ack + " ") + chunker.flush())
+                            chunker.first = True
+                            echo, ack = ack, ""
+                    if not spoken and not ack and any(c.name == "end_call" for c in calls):
                         say([GOODBYE_LINE], False)
-                    elif not spoken and any(self._waits(c.name) for c in calls):
+                    elif not spoken and not ack and any(self._waits(c.name) for c in calls):
                         say([HOLD_LINES[self.hold % len(HOLD_LINES)]], False)
                         self.hold += 1
             if not turn.abort.is_set():
@@ -797,6 +831,15 @@ class Cascade:
                 "discarded": t.discarded,
             },
         )
+
+
+def _scripted(result: Any) -> bool:
+    """Whether a tool result hands the agent a line to say (say, line, lines, guide), at any depth."""
+    if isinstance(result, dict):
+        return any(k in ("say", "line", "lines", "guide") and v for k, v in result.items()) or any(_scripted(v) for v in result.values())
+    if isinstance(result, list):
+        return any(_scripted(v) for v in result)
+    return False
 
 
 def finished(text: str, lenient: bool = False) -> bool:
