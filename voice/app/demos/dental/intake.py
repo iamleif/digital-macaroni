@@ -10,6 +10,9 @@ from .state import DentalState
 SKIPPABLE = ("age", "dateOfBirth", "reason", "lastVisit", "insurance", "relationship", "subscriber", "memberId", "groupNumber", "medicalAlert", "howLong")
 CHART_DONE = "Chart complete: check insurance if you haven't, then move to booking."
 LOOKUP = "They said they're a current patient: use find_patient with their full name and birth date."
+SELF_PAY = "No insurance: say warmly that's not a problem, you have some good options, then call self_pay_options and give them in your own words."
+PLAN_ANSWER = "Waiting on whether they want the savings plan's sign-up link: record their answer with note_savings_plan."
+
 
 
 def _open(state: DentalState, key: str, value) -> bool:
@@ -41,6 +44,20 @@ def in_emergency(state: DentalState) -> bool:
     return bool(state.triage) or p.get("reason") == "emergency" or bool(set(p.get("symptoms") or []) & {"pain", "swelling", "knocked_out_tooth", "jaw_pain"}) or p.get("painLevel") is not None
 
 
+def self_pay_step(state: DentalState) -> Optional[tuple[str, Optional[str]]]:
+    """Straight after a new caller says they have no insurance: the options, their answer on the plan, then the household."""
+    if state.patient.get("hasInsurance") is not False or state.found or in_emergency(state):
+        return None
+    if not state.self_pay.get("offered"):
+        return "selfPay", None
+    if not state.self_pay.get("plan"):
+        return "savingsPlan", None
+    if state.patient.get("familyDue") is None and "familyDue" not in state.asked:
+        state.asked.append("familyDue")
+        return "familyDue", "Is anyone else at home due for a checkup?"
+    return None
+
+
 def intake_next(state: DentalState) -> tuple[Optional[str], Optional[str]]:
     """(field, spoken question) for the next unanswered intake question; (None, None) when the chart is complete.
     A field with no question means a tool step comes next (see LOOKUP)."""
@@ -54,6 +71,9 @@ def intake_next(state: DentalState) -> tuple[Optional[str], Optional[str]]:
         t = triage_next(state)
         if t:
             return t
+    step = self_pay_step(state)
+    if step:
+        return step
     if not p.get("name"):
         return "name", "What's your child's name?" if child else "Can I get your name?"
     if len(p["name"].split()) < 2:  # a first name alone is not a name yet
@@ -67,6 +87,11 @@ def intake_next(state: DentalState) -> tuple[Optional[str], Optional[str]]:
     emergency = in_emergency(state)
     if child and _open(state, "age", p.get("age")):
         return "age", "How old are they?"
+    # New patients: insurance comes early, so a caller without it hears the options before the paperwork.
+    if p["newPatient"] is True and not emergency and state.insurance is None and "insurance" not in state.skipped:
+        if p.get("hasInsurance") is True:
+            return "carrier", "Which plan is it?"
+        return "hasInsurance", "Do you have dental insurance?"
     if _open(state, "dateOfBirth", p.get("dateOfBirth")):
         return "dateOfBirth", "And their date of birth?" if child else "What's your date of birth?"
     if p["newPatient"] is False:
@@ -78,10 +103,6 @@ def intake_next(state: DentalState) -> tuple[Optional[str], Optional[str]]:
     if _open(state, "lastVisit", p.get("lastVisit")):
         return "lastVisit", f"When did {they} last see a dentist?"
     ins = state.insurance
-    if ins is None and "insurance" not in state.skipped:
-        if p.get("hasInsurance") is True:
-            return "carrier", "Which plan is it?"
-        return "hasInsurance", "Do you have dental insurance?"
     if ins and not ins.get("medicaid"):
         rel = p.get("relationship")
         if _open(state, "relationship", rel):
@@ -108,6 +129,12 @@ def next_fields(state: DentalState) -> dict:
         return {"next": q, "nextField": key}
     if key == "lookup":
         return {"next": None, "then": LOOKUP}
+    if key == "selfPay":
+        return {"next": None, "then": SELF_PAY}
+    if key == "savingsPlan":
+        return {"next": None, "then": PLAN_ANSWER}
     if state.triage and state.triage.get("outcome") == "er":
         return {"next": None, "then": "Emergency room first: don't book."}
+    if state.patient.get("hasInsurance") is False:
+        return {"next": None, "then": "Chart complete: move to booking."}
     return {"next": None, "then": CHART_DONE}

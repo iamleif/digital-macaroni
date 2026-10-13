@@ -77,6 +77,8 @@ class DentalState:
     seq: int = 0
     emailed: Optional[dict[str, Any]] = None
     opened: bool = False
+    # No insurance: the self-pay options were given, and the caller's answer on the savings plan ("text" the sign-up link, or "declined").
+    self_pay: dict[str, Any] = field(default_factory=dict)
 
 
 def hours_of(day: str) -> Optional[tuple[int, int]]:

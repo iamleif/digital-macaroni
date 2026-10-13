@@ -1,0 +1,22 @@
+{
+  "newPatientVisit": {
+    "price": "$129",
+    "covers": "Exam, a full set of X-rays and a cleaning",
+    "regularCleaning": "A regular cleaning. If the hygienist finds gum disease, the dentist talks through a deeper cleaning first."
+  },
+  "special": {
+    "offer": "Join the savings plan this month: the first visit is included instead of $129, plus free take-home whitening once the dentist gives the okay.",
+    "whitening": "Free take-home whitening trays once the dentist gives the okay; members keep their cleanings to keep it."
+  },
+  "plan": {
+    "name": "Aspen Grove Savings Plan",
+    "adult": { "monthly": 35, "yearly": 399, "ages": "14 and up" },
+    "child": { "monthly": 25, "yearly": 279, "ages": "13 and under" },
+    "term": "A 12-month plan, paid monthly, or once a year for less.",
+    "covers": ["Two cleanings and exams a year", "All routine X-rays", "One emergency exam", "15% off fillings, crowns and other treatment"],
+    "simple": "No deductible, no waiting period, no yearly maximum.",
+    "notInsurance": "It's the practice's own plan, not insurance.",
+    "signUp": "The sign-up link goes by text with the new-patient forms. Enrollment is confirmed at check-in.",
+    "household": "Anyone else at home can join too (kids are $25 a month): their sign-up and forms come with the caller's intake forms, and they can call back with any questions or to book."
+  }
+}

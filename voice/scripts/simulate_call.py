@@ -27,6 +27,21 @@ WS = "ws" + BASE[4:]
 ORIGIN = "http://127.0.0.1:3790"
 NUMBERS = {"northline": "+17205996395", "formfield": "+18302392110", "travel": "+19293333608", "lawfirm": "+12068879619", "hotels": "+17863053013", "realestate": "+15126451952", "insurance": "+14787073907", "lune": "+13233123248", "tidewell": "+19713662375", "dealership": "+13133511780", "dental": "+13128209899"}
 SCRIPTS = {
+    # Leif's call of 2026-10-13: a new patient with no insurance, then the family.
+    "dental_uninsured": [
+        "Yeah, I need to come in and get a cleaning.",
+        "It's Jason Alexander.",
+        "No, I haven't been there before.",
+        "No, I don't have insurance.",
+        "Sure, text me the link.",
+        "Yeah, my wife and our two kids.",
+        "June 2nd, 1999.",
+        "About a year ago.",
+        "No, nothing.",
+        "The first one works.",
+        "Yes, book it.",
+        "No, that's everything. Thanks, bye.",
+    ],
     # Leif's call of 2026-10-11: a vague request. Wes used to ask a question, then search, then answer again.
     "dealership_vague": [
         "Yeah. I need to find a car.",

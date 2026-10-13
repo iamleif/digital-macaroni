@@ -34,8 +34,8 @@ class NotePatient(BaseModel):
     symptoms: Optional[list[Symptom]] = Field(None, description="What they told you. Send the full list.")
     painLevel: Optional[int] = Field(None, ge=0, le=10)
     hasInsurance: Optional[bool] = Field(None, description="Whether they have dental insurance: their yes or no. A no is recorded as skipped.")
-    howLong: Optional[str] = Field(None, max_length=60, description="How long, in their words.")
-    lastVisit: Optional[str] = Field(None, max_length=60, description="When they last saw a dentist, in their words.")
+    howLong: Optional[str] = Field(None, max_length=60, description="Toothaches only: how long it has hurt, in their words. Not their last visit.")
+    lastVisit: Optional[str] = Field(None, max_length=60, description="When they last saw a dentist, in their words (\"about a year ago\").")
     subscriber: Optional[str] = Field(None, max_length=80, description="The insurance subscriber's name, if not the patient.")
     relationship: Optional[Literal["self", "spouse", "child", "other"]] = Field(None, description="The patient's relationship to the subscriber.")
     memberId: Optional[str] = Field(None, max_length=30)
@@ -43,6 +43,7 @@ class NotePatient(BaseModel):
     child: Optional[bool] = Field(None, description="True when the patient is a child (the caller is the parent).")
     medicalAlert: Optional[str] = Field(None, max_length=120, description="Anything the dentist should know before treatment that they chose to mention (e.g. blood thinners, needs antibiotics first, an allergy). Their words.")
     referral: Optional[str] = Field(None, max_length=60, description="How they heard about us.")
+    familyDue: Optional[bool] = Field(None, description="Their answer to whether anyone else at home is due for a checkup.")
     age: Optional[int] = Field(None, ge=0, le=120, description="The child's age, for a child.")
     skipped: Optional[list[Skippable]] = Field(None, description="Questions the caller can't or won't answer (no insurance, nothing to mention, doesn't remember): send the field name so it isn't asked again.")
 
@@ -63,6 +64,9 @@ def note_patient(state: DentalState, i: NotePatient, ctx: OpContext) -> OpResult
     changed = [k for k, v in new.items() if state.patient.get(k) != v]
     state.patient.update(new)
     state.opened = True
+    if new.get("familyDue") is True and "familyDue" in changed:
+        say = "Say great: you'll send everything for them with their intake forms, it's easy to fill out" + (", kids are $25 a month on the plan" if state.self_pay.get("plan") == "text" else "") + ", and they can call back with any questions. Don't take their names or book them now; then carry on."
+        return ok("Household · forms for them too", {"say": say, **next_fields(state)}, True)
     return ok(f"Noted {len(changed)} detail{'s' if len(changed) != 1 else ''}" if changed else "Nothing new", next_fields(state), bool(changed))
 
 
@@ -240,7 +244,8 @@ def book_appointment(state: DentalState, i: BookAppointment, ctx: OpContext) -> 
     who = provider(op(oid)["provider"])
     out: dict[str, Any] = {"appointmentId": aid, "with": who["name"]}
     if i.type == "new_patient":
-        out["say"] = "Say we'll email the new-patient forms, to arrive 15 minutes early with a photo ID and their insurance card."
+        card = "" if state.patient.get("hasInsurance") is False else " and their insurance card"
+        out["say"] = f"Say we'll send the new-patient forms, to arrive 15 minutes early with a photo ID{card}."
     elif i.type == "emergency":
         out["say"] = "Say to come a few minutes early; the dentist will see what's going on and talk through options and costs before doing anything."
     return ok(f"Booked · {aid}", out, True)
@@ -337,12 +342,19 @@ async def email_confirmation(state: DentalState, i: EmailConfirmation, ctx: OpCo
         if sent:
             state.emailed = sent
         return r
-    a = booked[-1]
+    a = booked[0]
     s = describe_slot(_sid(a))
     t = visit_type(a.type_id)  # type: ignore[arg-type]
     rows = [("With", s["with"]), ("Length", f"About {t['minutes']} minutes"), ("Where", BUSINESS["address"].split(".")[0])]
-    if a.type_id == "new_patient":
-        rows.append(("Bring", "Photo ID and your insurance card; arrive 15 minutes early"))
+    uninsured = state.patient.get("hasInsurance") is False
+    if any(b.type_id in ("new_patient", "child_cleaning") for b in booked):
+        rows.append(("Bring", "Photo ID; arrive 15 minutes early" if uninsured else "Photo ID and your insurance card; arrive 15 minutes early"))
+    if state.self_pay.get("plan") == "text":
+        rows.append(("Savings plan", "Sign-up link by text with your forms. Join this month and your first visit is included, plus free take-home whitening once the dentist gives the okay."))
+    elif uninsured:
+        rows.append(("New-patient visit", "$129: exam, a full set of X-rays and a cleaning"))
+    if state.patient.get("familyDue"):
+        rows.append(("Your household", "Forms for everyone else at home come with yours. Questions? Just call us back."))
     rows.append(("Changes", "24 hours' notice, please"))
     v = {"brand": "dental", "agent": "Josh", "service": t["name"], "day": s["day"], "time": s["time"], "zone": "Central", "name": a.patient, "reference": a.id, "rows": rows, "did": "checked the book and saved you the right chair"}
     masked, why = await email.confirm(to, email.appointment_confirmation(v))

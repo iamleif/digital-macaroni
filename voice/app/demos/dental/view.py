@@ -7,6 +7,7 @@ from typing import Any, Optional
 
 from ... import email
 from ..types import date_in, date_label, mask_number, reference
+from .self_pay import self_pay_card, plan_members
 from .state import HOLD_MIN, HOLDS, LUNCH, DentalState, active, bookable_days, clock, free, has_lunch, hours_of, parse_slot
 from .store import OPS, TIME_ZONE, TYPES, op, provider, visit_type
 
@@ -47,7 +48,7 @@ def sections(state: DentalState) -> list[dict[str, Any]]:
             f("alert", "Medical alert", "text", p.get("medicalAlert"), None),
         ]},
         {"id": "insurance", "title": "Insurance", "fields": [
-            f("carrier", "Carrier", "text", ins.get("carrier")),
+            f("carrier", "Carrier", "text", ins.get("carrier") or ("None · self-pay" if p.get("hasInsurance") is False else None)),
             f("network", "Network", "toggle", None if not ins else ("In network" if ins.get("inNetwork") else "Out of network"), ["In network", "Out of network"]),
             f("subscriber", "Subscriber", "text", p.get("subscriber") or (p.get("name") if p.get("relationship") == "self" else None)),
             f("relationship", "Relationship", "select", REL.get(p.get("relationship", "")), list(REL.values())),
@@ -60,7 +61,7 @@ def sections(state: DentalState) -> list[dict[str, Any]]:
 def stage_of(state: DentalState) -> str:
     if active(state):
         return "booked"
-    if state.insurance or state.triage:
+    if state.insurance or state.triage or state.self_pay.get("offered"):
         return "checked"
     if state.opened:
         return "chart"
@@ -105,10 +106,19 @@ def board(state: DentalState) -> dict[str, Any]:
 
 def tasks(state: DentalState) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
-    for a in active(state):
+    live = active(state)
+    if any(a.type_id in ("new_patient", "child_cleaning") for a in live):
+        n = sum(1 for a in live if a.type_id in ("new_patient", "child_cleaning"))
+        out.append({"title": "Send new-patient forms" + (f" · {n} patients" if n > 1 else ""), "who": "Josh", "due": "Now"})
+    members = plan_members(state)
+    if state.self_pay.get("plan") == "text":
+        out.append({"title": "Text savings-plan sign-up link", "who": "Practice system", "due": "Now"})
+        out.append({"title": f"Enroll {len(members)} in the savings plan · first visit included", "who": "Front office", "due": "At check-in"})
+        out.append({"title": "Take-home whitening once the dentist okays it", "who": "Dr. Patel", "due": "After the first exam"})
+    if state.patient.get("familyDue"):
+        out.append({"title": "Include household forms and plan sign-up", "who": "Josh", "due": "With the intake forms"})
+    for a in live:
         t = visit_type(a.type_id)  # type: ignore[arg-type]
-        if a.type_id == "new_patient":
-            out.append({"title": "Email new-patient forms", "who": "Josh", "due": "Now"})
         if state.insurance and not state.insurance.get("medicaid"):
             out.append({"title": f"Verify {state.insurance['carrier']} benefits", "who": "Front office", "due": "Before the visit"})
         out.append({"title": f"Reminder text · {t['name']}", "who": "Practice system", "due": "2 days before"})
@@ -131,8 +141,14 @@ def note(state: DentalState) -> Optional[str]:
         parts.append("Triage: told to go to the emergency room." if o == "er" else "Triage: same-day emergency visit." if o == "same_day" else "Triage: knocked-out tooth, seen within the hour." if o == "now" else "")
     if state.insurance:
         parts.append(f"Insurance: {state.insurance['carrier']} ({'in' if state.insurance.get('inNetwork') else 'out of'} network).")
+    elif p.get("hasInsurance") is False:
+        plan = state.self_pay.get("plan")
+        parts.append("No insurance: " + ("wants the savings plan; sign-up link to text." if plan == "text" else "gave the self-pay options; not joining the plan for now." if plan == "declined" else "self-pay options given." if state.self_pay.get("offered") else "self-pay."))
+    if p.get("familyDue"):
+        parts.append("Others at home are due too: their forms go with the caller's.")
     for a in active(state):
-        parts.append(f"Booked {visit_type(a.type_id)['name'].lower()} {date_label(a.date)} at {clock(a.start)} with {provider(op(a.op)['provider'])['name']}.")  # type: ignore[arg-type]
+        who = "" if a.patient == p.get("name") else f" for {a.patient}"
+        parts.append(f"Booked {visit_type(a.type_id)['name'].lower()}{who} {date_label(a.date)} at {clock(a.start)} with {provider(op(a.op)['provider'])['name']}.")  # type: ignore[arg-type]
     return " ".join(x for x in parts if x)
 
 
@@ -143,9 +159,10 @@ def view(state: DentalState) -> dict[str, Any]:
         "record": {"opened": state.opened, "number": (state.found or {}).get("id") or (reference("P", 600, state.seed) if state.opened else None), "title": state.patient.get("name"), "stage": stage_of(state), "sections": sections(state)},
         "board": board(state),
         "insurance": state.insurance,
+        "selfPay": self_pay_card(state),
         "triage": state.triage,
         "found": {"due": state.found["due"], "hygienist": provider(state.found["hygienist"])["name"]} if state.found else None,
-        "booked": [{"id": a.id, "visit": visit_type(a.type_id)["name"], "day": date_label(a.date), "time": clock(a.start), "with": provider(op(a.op)["provider"])["name"], "op": op(a.op)["name"], "changes": a.changes} for a in live],  # type: ignore[arg-type]
+        "booked": [{"id": a.id, "patient": a.patient, "visit": visit_type(a.type_id)["name"], "day": date_label(a.date), "time": clock(a.start), "with": provider(op(a.op)["provider"])["name"], "op": op(a.op)["name"], "changes": a.changes} for a in live],  # type: ignore[arg-type]
         "asap": state.asap,
         "messages": [{"id": m.id, "name": m.name, "summary": m.summary, "preferredTime": m.preferred_time, "callback": mask_number(m.callback_number), "urgent": m.urgent} for m in state.messages],
         "note": note(state),

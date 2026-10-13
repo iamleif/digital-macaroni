@@ -147,15 +147,15 @@ async def test_next_asks_the_name_first_and_never_repeats_answered_questions():
     r = await nxt(run, {"name": "Alex Taylor"})
     assert r["nextField"] == "newPatient"
     r = await nxt(run, {"newPatient": True})
+    assert r["nextField"] == "hasInsurance" and r["next"] == "Do you have dental insurance?"  # early, before the paperwork
+    r = await nxt(run, {"hasInsurance": True})
+    assert r["nextField"] == "carrier" and r["next"] == "Which plan is it?"
+    assert (await run("check_insurance", {"carrier": "Delta"})).ok
+    r = await nxt(run, {})
     assert r["nextField"] == "dateOfBirth"
     r = await nxt(run, {"dateOfBirth": "1990-05-04"})
     assert r["nextField"] == "lastVisit"  # reason was already given
     r = await nxt(run, {"lastVisit": "two years ago"})
-    assert r["nextField"] == "hasInsurance" and r["next"] == "Do you have dental insurance?"
-    r = await nxt(run, {"hasInsurance": True})
-    assert r["nextField"] == "carrier" and r["next"] == "Which plan is it?"
-    assert (await run("check_insurance", {"carrier": "Delta"})).ok
-    r = await nxt(run, {"reason": "cleaning"})
     assert r["nextField"] == "relationship"
     r = await nxt(run, {"relationship": "spouse"})
     assert r["nextField"] == "subscriber"
@@ -185,6 +185,8 @@ async def test_a_child_gets_the_child_questions():
     r = await nxt(run, {"name": "Mia Lee", "newPatient": True})
     assert r["nextField"] == "age"
     r = await nxt(run, {"age": 6})
+    assert r["nextField"] == "hasInsurance"
+    r = await nxt(run, {"skipped": ["insurance"]})
     assert r["nextField"] == "dateOfBirth" and "their" in r["next"]
 
 
@@ -250,7 +252,7 @@ async def test_a_first_name_alone_asks_for_the_last_name_before_intake_moves_on(
     r = await nxt(run, {"newPatient": True})
     assert r["next"] == "And your last name?"
     r = await nxt(run, {"name": "Alex Taylor"})
-    assert r["nextField"] == "dateOfBirth"
+    assert r["nextField"] == "hasInsurance"
     _, run = runner()
     f = await run("find_patient", {"name": "Karen", "dateOfBirth": "1979-06-22", "callerSaysTheyAreAPatient": True})
     assert f.error == "incomplete_name"
@@ -304,8 +306,68 @@ async def test_insurance_is_asked_as_yes_or_no_then_the_plan_only_after_a_yes():
     assert (await nxt(run, {}))["nextField"] == "relationship"
 
 
-async def test_no_insurance_skips_the_plan_and_the_insurance_list():
+async def test_no_insurance_skips_the_insurance_questions_for_the_self_pay_options():
     state, run = runner()
     await nxt(run, {"name": "Sam Lee", "newPatient": True, "dateOfBirth": "1985-01-02", "reason": "cleaning", "lastVisit": "last year"})
     r = await nxt(run, {"hasInsurance": False})
-    assert "insurance" in state.skipped and r["nextField"] == "medicalAlert"
+    assert "insurance" in state.skipped and "self_pay_options" in r["then"]
+    await run("self_pay_options")
+    r = (await run("note_savings_plan", {"wantsLink": False})).result
+    assert r["nextField"] == "familyDue"
+    assert (await nxt(run, {"familyDue": False}))["nextField"] == "medicalAlert"
+
+
+async def test_no_insurance_gets_the_options_then_the_plan_then_forms_for_the_household():
+    state, run = runner()
+    # "Hi, I need a cleaning." Name, new, then insurance comes early.
+    await run("note_patient", {"reason": "new_patient", "name": "Dan Rivera"})
+    r = await run("note_patient", {"newPatient": True})
+    assert r.result["nextField"] == "hasInsurance"
+    r = await run("note_patient", {"hasInsurance": False})
+    assert r.result["next"] is None and "self_pay_options" in r.result["then"] and "not a problem" in r.result["then"]
+    o = await run("self_pay_options")
+    assert "$129" in o.result["newPatientVisit"] and "first visit is included" in o.result["specialThisMonth"]
+    assert "$35 a month" in o.result["plan"]["adult"] and "not insurance" in o.result["plan"]["ifAsked"]
+    r = await run("note_patient", {"phone": "3125550142"})
+    assert "note_savings_plan" in r.result["then"]
+    r = await run("note_savings_plan", {"wantsLink": True})
+    assert r.result["next"] == "Is anyone else at home due for a checkup?" and "text" in r.result["say"]
+    # "Yeah, my wife and two kids." No names, no bookings: their forms go with his.
+    r = await run("note_patient", {"familyDue": True})
+    assert "intake forms" in r.result["say"] and "$25" in r.result["say"] and "Don't take their names" in r.result["say"]
+    assert r.result["nextField"] == "dateOfBirth"
+    r = await run("note_patient", {"dateOfBirth": "1986-03-14", "lastVisit": "a few years ago"})
+    assert r.result["next"].startswith("Is there anything the dentist should know")
+    r = await run("note_patient", {"skipped": ["medicalAlert"]})
+    assert r.result["then"] == "Chart complete: move to booking."
+    slot = first(await run("check_availability", {"type": "new_patient", "date": MONDAY}))
+    b = await run("book_appointment", {"slotId": slot, "type": "new_patient", "callerConfirmed": True})
+    assert b.ok and "insurance card" not in b.result["say"]
+    v = dental.view(state)
+    sp = v["selfPay"]
+    assert sp["plan"] == "text" and sp["monthly"] == 35 and sp["visit"] == "Included with the plan" and sp["household"] is True
+    titles = [t["title"] for t in v["tasks"]]
+    assert "Text savings-plan sign-up link" in titles and "Include household forms and plan sign-up" in titles
+    assert v["record"]["sections"][2]["fields"][0]["value"] == "None · self-pay"
+    assert "Others at home are due too" in v["note"] and len(v["booked"]) == 1
+
+
+async def test_a_no_to_the_plan_still_books_the_129_visit_and_the_plan_never_comes_back():
+    state, run = runner()
+    await run("note_patient", {"name": "Kim Lee", "newPatient": True, "hasInsurance": False})
+    await run("self_pay_options")
+    r = await run("note_savings_plan", {"wantsLink": False})
+    assert "Don't bring the plan up again" in r.result["say"] and r.result["next"] == "Is anyone else at home due for a checkup?"
+    await run("note_patient", {"familyDue": False})
+    r = await run("note_patient", {"dateOfBirth": "1992-01-02"})
+    assert r.result["nextField"] == "reason"
+    v = dental.view(state)
+    assert v["selfPay"]["visit"] == "$129" and v["selfPay"]["monthly"] == 0
+    assert not any("sign-up" in t["title"] for t in v["tasks"])
+
+
+async def test_an_uninsured_emergency_gets_triage_not_a_sales_pitch():
+    state, run = runner()
+    r = await run("note_patient", {"hasInsurance": False, "symptoms": ["pain"], "newPatient": True})
+    assert r.result.get("nextField") == "howLong"
+

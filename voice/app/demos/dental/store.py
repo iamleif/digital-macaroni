@@ -38,12 +38,16 @@ ALIASES: dict[str, str] = _ins["aliases"]
 OUT_OF_NETWORK: str = _ins["outOfNetwork"]
 MEDICAID: str = _ins["medicaid"]
 
+SELF_PAY: dict[str, Any] = _load("self_pay.json")
+PLAN: dict[str, Any] = SELF_PAY["plan"]
+
 PATIENTS: list[dict[str, Any]] = _load("patients.json")["patients"]
 FILL: dict[str, Any] = _load("fill.json")
 
 BUSINESS["visits"] = [{"type": t["id"], "name": t["name"], "minutes": t["minutes"], "price": t["price"]} for t in TYPES]
 BUSINESS["team"] = [{"name": p["name"], "role": p["role"]} for p in PROVIDERS]
 BUSINESS["insuranceInNetwork"] = IN_NETWORK
+BUSINESS["savingsPlan"] = f"{PLAN['name']} for patients without insurance: ${PLAN['adult']['monthly']} a month for adults, ${PLAN['child']['monthly']} for kids 13 and under; details from self_pay_options."
 
 
 def provider(pid: str) -> dict[str, Any]:
